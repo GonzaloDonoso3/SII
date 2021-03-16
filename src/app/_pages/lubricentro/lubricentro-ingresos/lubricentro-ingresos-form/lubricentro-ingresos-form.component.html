@@ -1,0 +1,317 @@
+<form
+  [formGroup]="ingresosForm"
+  novalidate
+  (ngSubmit)="onSubmit()"
+  class="mat-elevation-z10"
+>
+  <mat-card class="shipping-card">
+    <mat-card-header>
+      <mat-card-title>Ingresos Lubricentro</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="row">
+        <!-- sucursales -->
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Sucursales" formControlName="idSucursal">
+              <mat-option
+                *ngFor="let sucursal of sucursales"
+                [value]="sucursal.id"
+              >
+                {{ sucursal.razonSocial }}
+              </mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="ingresosForm.controls['idSucursal'].hasError('required')"
+            >
+              sucursal es <strong>requrido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <!-- checkbox tipoIngreso -->
+        <div class="col">
+          <section class="example-section">
+            <mat-checkbox
+              *ngFor="let tipo of defTiposIngreso"
+              class="example-margin"
+              [name]="tipo"
+              (change)="chequearTipoIngreso($event)"
+            >
+              {{ tipo }}
+            </mat-checkbox>
+          </section>
+        </div>
+        <!-- fin -->
+      </div>
+      <div class="row">
+        <!-- descripcion -->
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              placeholder="ingrese una descripcion del registro"
+              formControlName="descripcion"
+            />
+            <mat-error
+              *ngIf="ingresosForm.controls['descripcion'].hasError('required')"
+            >
+              descripcion es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- monto -->
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              placeholder="Monto"
+              formControlName="monto"
+              type="number"
+            />
+            <mat-error
+              *ngIf="ingresosForm.controls['monto'].hasError('required')"
+            >
+              Monto es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <!-- select fecha -->
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-label>Seleccionar fecha</mat-label>
+            <input matInput formControlName="fecha" [matDatepicker]="picker" />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error
+              *ngIf="ingresosForm.controls['fecha'].hasError('required')"
+            >
+              fecha es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <!-- datos vehiculo -->
+      <div class="row">
+        <!-- tipo vehiculo -->
+        <div class="col"></div>
+        <!-- PPU -->
+        <div class="col"></div>
+        <!-- marca -->
+        <div class="col"></div>
+        <!-- modelo -->
+        <div class="col"></div>
+      </div>
+      <div class="row">
+        <!-- año -->
+        <div class="col"></div>
+        <!-- Km actual -->
+        <div class="col"></div>
+        <!-- Km Mantencion -->
+        <div class="col"></div>
+      </div>
+
+      <!-- datos Cliente -->
+      <div class="row">
+        <!-- cliente -->
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              placeholder="ingrese nombre cliente"
+              formControlName="cliente"
+            />
+            <mat-error
+              *ngIf="ingresosForm.controls['cliente'].hasError('required')"
+            >
+              cliente es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <!-- tipo cliente -->
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-select
+              placeholder="Tipo Cliente"
+              formControlName="tipoCliente"
+            >
+              <mat-option *ngFor="let tipo of tiposCliente" [value]="tipo">
+                {{ tipo }}
+              </mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="ingresosForm.controls['tipoCliente'].hasError('required')"
+            >
+              Tipo_Cliente es <strong>requrido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <!-- telefono -->
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              placeholder="ingrese telefono"
+              formControlName="telefono"
+            />
+            <mat-error
+              *ngIf="ingresosForm.controls['telefono'].hasError('required')"
+            >
+              telefono es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <!-- correo -->
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              placeholder="ingrese correo"
+              formControlName="correo"
+              type="email"
+            />
+            <mat-error
+              *ngIf="
+                ingresosForm.hasError('email') &&
+                !ingresosForm.hasError('required')
+              "
+            >
+              Please enter a valid email address
+            </mat-error>
+            <mat-error
+              *ngIf="ingresosForm.controls['correo'].hasError('required')"
+            >
+              correo es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <!-- referencia -->
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Referencia" formControlName="referencia">
+              <mat-option
+                *ngFor="let referencia of referencias"
+                [value]="referencia"
+              >
+                {{ referencia }}
+              </mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="ingresosForm.controls['referencia'].hasError('required')"
+            >
+              referencia es <strong>requrido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <!-- tipo pago -->
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Tipo Pago" formControlName="tipoPago">
+              <mat-option
+                *ngFor="let tipoPago of tiposPagos"
+                [value]="tipoPago"
+              >
+                {{ tipoPago }}
+              </mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="ingresosForm.controls['tipoPago'].hasError('required')"
+            >
+              este campo es <strong>requrido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <!-- estado pago -->
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Estado Pago" formControlName="estadoPago">
+              <mat-option
+                *ngFor="let estadoPago of estadoPagos"
+                [value]="estadoPago"
+              >
+                {{ estadoPago }}
+              </mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="ingresosForm.controls['estadoPago'].hasError('required')"
+            >
+              estadoPago es <strong>requrido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <!-- numero documento -->
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              placeholder="N° documento"
+              formControlName="nDocumento"
+            />
+            <mat-error
+              *ngIf="ingresosForm.controls['nDocumento'].hasError('required')"
+            >
+              este campo es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <!-- numero autorizacion -->
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              placeholder="N° Autorizacion"
+              formControlName="nAutorizacion"
+            />
+            <mat-error
+              *ngIf="
+                ingresosForm.controls['nAutorizacion'].hasError('required')
+              "
+            >
+              este campo es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <!-- cuentas registradas -->
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-select
+              placeholder="Cuenta Bancaria"
+              formControlName="idCuentaAsignada"
+            >
+              <mat-option
+                *ngFor="let cuenta of cuentasRegistradas"
+                [value]="cuenta.id"
+              >
+                {{ cuenta.alias }} : {{ cuenta.numeroCuenta }}
+              </mat-option>
+              <mat-option>ejemplo</mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="
+                ingresosForm.controls['idCuentaAsignada'].hasError('required')
+              "
+            >
+              estadoPago es <strong>requrido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit">
+        <mat-icon>send</mat-icon> Enviar
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>

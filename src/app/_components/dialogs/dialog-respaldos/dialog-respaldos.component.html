@@ -1,0 +1,21 @@
+<h3>Respaldar Registro</h3>
+<div
+  ng2FileDrop
+  [ngClass]="{ 'nv-file-over': hasBaseDropZoneOver }"
+  (fileOver)="fileOverBase($event)"
+  [uploader]="uploader"
+  class="well my-drop-zone"
+>
+  <mat-icon>add</mat-icon> arrastrar arquivos aqui
+</div>
+<input mat-input type="file" ng2FileSelect [uploader]="uploader" multiple />
+
+<button
+  mat-fab
+  color="accent"
+  (click)="uploader.uploadAll()"
+  [disabled]="!uploader.getNotUploadedItems().length"
+>
+  <mat-icon>add</mat-icon>
+</button>
+{{ responses }}

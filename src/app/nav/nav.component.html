@@ -1,0 +1,52 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    mat-primary
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false"
+  >
+    <mat-toolbar>Grupo Firma</mat-toolbar>
+    <!--  <mat-nav-list>
+      <a *ngFor="let item of menuItems" mat-list-item routerLink="item">{{
+        item
+      }}</a>
+    </mat-nav-list> -->
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let item of menuItems" hideToggle>
+        <mat-expansion-panel-header color="white" [routerLink]="item.url">
+          <mat-panel-title>
+            <mat-icon class="main-icon">{{ item.icon }} </mat-icon>
+            {{ item.name }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-nav-list>
+          <a
+            *ngFor="let subitem of subMenuItems"
+            mat-list-item
+            [routerLink]="'/' + item.url + '/' + subitem.url"
+            ><mat-icon color="grey">{{ subitem.icon }}</mat-icon>
+            {{ subitem.name }}
+          </a>
+        </mat-nav-list>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async"
+      >
+        <mat-icon aria-label="mostrar menu lateral">menu</mat-icon>
+      </button>
+      <span>FINANZAS GRUPO FIRMA</span>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

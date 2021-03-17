@@ -43,6 +43,13 @@ export class LubricentroIngresosFormComponent {
     nDocumento: [null, Validators.required],
     nAutorizacion: [null, Validators.required],
     idCuentaAsignada: [null, Validators.required],
+    tipoVehiculo: [null, Validators.required],
+    ppu: [null, Validators.required],
+    marca: [null, Validators.required],
+    modelo: [null, Validators.required],
+    anio: [null, Validators.required],
+    kmActual: [null, Validators.required],
+    kmProximo: [null, Validators.required],
   });
   sucursales: Sucursal[];
   hasUnitNumber = false;
@@ -52,6 +59,7 @@ export class LubricentroIngresosFormComponent {
   referencias: string[];
   tiposPagos: string[];
   estadoPagos: string[];
+  tiposVehiculos: string[];
   cuentasRegistradas: any[] = [];
   constructor(
     private fb: FormBuilder,
@@ -68,6 +76,7 @@ export class LubricentroIngresosFormComponent {
     this.referencias = this.lubricentroService.referenciasListValue;
     this.tiposPagos = this.lubricentroService.tiposPagosListValue;
     this.estadoPagos = this.lubricentroService.estadosPagosListValue;
+    this.tiposVehiculos = this.lubricentroService.tiposVehiculosListValue;
     this.cuentasService.obtenerCuentas()
       .subscribe(data => { this.cuentasRegistradas = data; });
   }
@@ -81,7 +90,7 @@ export class LubricentroIngresosFormComponent {
         });
         dialogRef.afterClosed().subscribe(result => {
           this.nameRespaldo = result;
-          this.ingreso.RespaldoIngresos = [];
+          this.ingreso.RespaldoIngresoLubricentros = [];
           this.ingreso.fecha = this.ingresosForm.value.fecha;
           this.ingreso.monto = this.ingresosForm.value.monto;
           this.ingreso.tipoPago = this.ingresosForm.value.tipoPago;
@@ -98,6 +107,13 @@ export class LubricentroIngresosFormComponent {
           this.ingreso.telefono = this.ingresosForm.value.telefono;
           this.ingreso.idCuentaAsignada = this.ingresosForm.value.idCuentaAsignada;
           this.ingreso.referenciaCliente = this.ingresosForm.value.referencia;
+          this.ingreso.anio = this.ingresosForm.value.anio;
+          this.ingreso.kmActual = this.ingresosForm.value.kmActual;
+          this.ingreso.kmProximo = this.ingresosForm.value.kmProximo;
+          this.ingreso.marca = this.ingresosForm.value.marca;
+          this.ingreso.modelo = this.ingresosForm.value.modelo;
+          this.ingreso.ppu = this.ingresosForm.value.ppu;
+          this.ingreso.tipoVehiculo = this.ingresosForm.value.tipoVehiculo;
 
           let cadena = '';
           for (const tipos of this.tiposIngresos) {
@@ -105,9 +121,10 @@ export class LubricentroIngresosFormComponent {
           }
           this.ingreso.tipoIngreso = cadena;
           for (const name of this.nameRespaldo) {
-            this.ingreso.RespaldoIngresos.push({ url: name });
+            this.ingreso.RespaldoIngresoLubricentros.push({ url: name });
           }
           if (result.length > 0) {
+            console.log(this.ingreso);
             this.lubricentroService
               .ingresoRegistrar(this.ingreso)
               .pipe()

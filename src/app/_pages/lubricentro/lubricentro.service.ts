@@ -16,9 +16,8 @@ export class LubricentroService {
   public referenciasList: Observable<string[]>;
   public tiposPagosList: Observable<string[]>;
   public estadosPagosList: Observable<string[]>;
-  //egresos values
   public tiposEgresosList: Observable<string[]>;
-
+  public tiposVehiculosList: Observable<string[]>;
   // private values
 
   //ingresos values
@@ -27,6 +26,7 @@ export class LubricentroService {
   private referenciasListSubject: BehaviorSubject<string[]>;
   private tiposPagosListSubject: BehaviorSubject<string[]>;
   private estadosPagosListSubject: BehaviorSubject<string[]>;
+  private tiposVehiculosListSubject: BehaviorSubject<string[]>;
   //egresos values
   private tiposEgresosListSubject: BehaviorSubject<string[]>;
 
@@ -39,6 +39,7 @@ export class LubricentroService {
 
   private tiposEgresos = ['Gastos', 'Costos', 'Remuneraciones', 'Impuestos', 'Bancarios'];
   private empresa = 'Lubricentro';
+  private tiposVehiculos = ['Automóvil', 'Camioneta'];
   constructor(private http: HttpClient, private router: Router) {
     //Init private Subjects;
     //ingresos;
@@ -62,6 +63,9 @@ export class LubricentroService {
     this.tiposEgresosListSubject = new BehaviorSubject<string[]>(
       JSON.parse(localStorage.getItem('tiposEgresos')!)
     );
+    this.tiposVehiculosListSubject = new BehaviorSubject<string[]>(
+      JSON.parse(localStorage.getItem('tiposVehiculos')!)
+    );
 
     // public states:
     //ingresos;
@@ -79,9 +83,16 @@ export class LubricentroService {
 
     this.estadosPagosList = this.estadosPagosListSubject.asObservable();
     localStorage.setItem('estadosPagos', JSON.stringify(this.estadosPagos));
+
+    this.tiposVehiculosList = this.tiposVehiculosListSubject.asObservable();
+    localStorage.setItem('tiposVehiculos', JSON.stringify(this.tiposVehiculos));
+
+
     //egresos;
     this.tiposEgresosList = this.tiposEgresosListSubject.asObservable();
     localStorage.setItem('tiposEgresos', JSON.stringify(this.tiposEgresos));
+
+
   }
 
   //ingresos values get methods:
@@ -103,6 +114,9 @@ export class LubricentroService {
   //egresos values get methods:
   public get tiposEgresosListValue(): string[] {
     return this.tiposEgresosListSubject.value;
+  }
+  public get tiposVehiculosListValue(): string[] {
+    return this.tiposVehiculosListSubject.value;
   }
 
   /* ingresos */

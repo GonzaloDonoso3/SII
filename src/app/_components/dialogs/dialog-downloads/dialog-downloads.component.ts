@@ -34,6 +34,9 @@ export class DialogDownloadsComponent implements OnInit {
       case 'lubricentro-egreso':
         this.lubricentroService.egresoGetFiles(url);
         break;
+      case 'lubricentro-ingreso':
+        this.lubricentroService.ingresoGetFiles(url);
+        break;
       default:
         break;
     }

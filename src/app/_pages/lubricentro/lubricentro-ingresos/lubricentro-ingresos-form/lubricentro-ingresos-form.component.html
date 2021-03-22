@@ -96,29 +96,58 @@
           </mat-form-field>
         </div>
       </div>
-      <!-- datos vehiculo -->
       <div class="row">
-        <!-- tipo vehiculo -->
-        <div class="col"></div>
-        <!-- PPU -->
-        <div class="col"></div>
-        <!-- marca -->
-        <div class="col"></div>
-        <!-- modelo -->
-        <div class="col"></div>
-      </div>
-      <div class="row">
-        <!-- año -->
-        <div class="col"></div>
-        <!-- Km actual -->
-        <div class="col"></div>
-        <!-- Km Mantencion -->
-        <div class="col"></div>
+        <!-- numero autorizacion -->
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              placeholder="N° Autorizacion"
+              formControlName="nAutorizacion"
+            />
+            <mat-error
+              *ngIf="
+                ingresosForm.controls['nAutorizacion'].hasError('required')
+              "
+            >
+              este campo es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <!-- cuentas registradas -->
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-select
+              placeholder="Cuenta Bancaria"
+              formControlName="idCuentaAsignada"
+            >
+              <mat-option
+                *ngFor="let cuenta of cuentasRegistradas"
+                [value]="cuenta.id"
+              >
+                {{ cuenta.alias }} : {{ cuenta.numeroCuenta }}
+              </mat-option>
+              <mat-option>ejemplo</mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="
+                ingresosForm.controls['idCuentaAsignada'].hasError('required')
+              "
+            >
+              estadoPago es <strong>requrido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
       </div>
 
       <!-- datos Cliente -->
+      <br />
       <div class="row">
         <!-- cliente -->
+        <h5>INFO CLIENTE</h5>
+      </div>
+      <div class="row">
+        <!-- nombreCLiente -->
         <div class="col">
           <mat-form-field class="full-width">
             <input
@@ -264,45 +293,118 @@
           </mat-form-field>
         </div>
       </div>
+
+      <br />
+      <!-- datos vehiculo -->
       <div class="row">
-        <!-- numero autorizacion -->
+        <!-- cliente -->
+        <h5>INFO VEHICULO</h5>
+      </div>
+      <div class="row">
+        <!-- tipo vehiculo -->
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-select
+              placeholder="Tipo Vehiculo"
+              formControlName="tipoVehiculo"
+            >
+              <mat-option *ngFor="let tipo of tiposVehiculos" [value]="tipo">
+                {{ tipo }}
+              </mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="ingresosForm.controls['tipoVehiculo'].hasError('required')"
+            >
+              este campo es <strong>requrido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <!-- PPU -->
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="ingresar PPU" formControlName="ppu" />
+            <mat-error
+              *ngIf="ingresosForm.controls['ppu'].hasError('required')"
+            >
+              ppu es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <!-- marca -->
         <div class="col">
           <mat-form-field class="full-width">
             <input
               matInput
-              placeholder="N° Autorizacion"
-              formControlName="nAutorizacion"
+              placeholder="ingresar Marca"
+              formControlName="marca"
             />
             <mat-error
-              *ngIf="
-                ingresosForm.controls['nAutorizacion'].hasError('required')
-              "
+              *ngIf="ingresosForm.controls['marca'].hasError('required')"
             >
-              este campo es <strong>requerido</strong>
+              marca es <strong>requerido</strong>
             </mat-error>
           </mat-form-field>
         </div>
-        <!-- cuentas registradas -->
+        <!-- modelo -->
         <div class="col">
           <mat-form-field class="full-width">
-            <mat-select
-              placeholder="Cuenta Bancaria"
-              formControlName="idCuentaAsignada"
-            >
-              <mat-option
-                *ngFor="let cuenta of cuentasRegistradas"
-                [value]="cuenta.id"
-              >
-                {{ cuenta.alias }} : {{ cuenta.numeroCuenta }}
-              </mat-option>
-              <mat-option>ejemplo</mat-option>
-            </mat-select>
+            <input
+              matInput
+              placeholder="ingresar Modelo"
+              formControlName="modelo"
+            />
             <mat-error
-              *ngIf="
-                ingresosForm.controls['idCuentaAsignada'].hasError('required')
-              "
+              *ngIf="ingresosForm.controls['modelo'].hasError('required')"
             >
-              estadoPago es <strong>requrido</strong>
+              modelo es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <!-- año -->
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              placeholder="ingresar Año Vehiculo"
+              formControlName="anio"
+              type="number"
+            />
+            <mat-error
+              *ngIf="ingresosForm.controls['anio'].hasError('required')"
+            >
+              anio es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <!-- Km actual -->
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              placeholder="ingresar Kilometraje Actual"
+              formControlName="kmActual"
+            />
+            <mat-error
+              *ngIf="ingresosForm.controls['kmActual'].hasError('required')"
+            >
+              kmActual es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <!-- Km Mantencion -->
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              placeholder="ingresar Kilomtraje Estimado prox Mantencion"
+              formControlName="kmProximo"
+            />
+            <mat-error
+              *ngIf="ingresosForm.controls['kmProximo'].hasError('required')"
+            >
+              kmProximo es <strong>requerido</strong>
             </mat-error>
           </mat-form-field>
         </div>

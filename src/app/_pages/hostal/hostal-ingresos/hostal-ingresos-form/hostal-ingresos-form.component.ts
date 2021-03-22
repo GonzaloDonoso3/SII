@@ -43,6 +43,8 @@ export class HostalIngresosFormComponent {
     nDocumento: [null, Validators.required],
     nAutorizacion: [null, Validators.required],
     idCuentaAsignada: [null, Validators.required],
+
+
   });
   sucursales: Sucursal[];
   hasUnitNumber = false;
@@ -97,6 +99,7 @@ export class HostalIngresosFormComponent {
           this.ingreso.idCuentaAsignada = this.addressForm.value.idCuentaAsignada;
           this.ingreso.referenciaCliente = this.addressForm.value.referencia;
 
+
           let cadena = '';
           for (const tipos of this.tiposIngresos) {
             cadena = cadena + ' ' + tipos;
@@ -121,7 +124,7 @@ export class HostalIngresosFormComponent {
 
                 },
                 (error) => {
-                  this.snackBar.open('Tenemos Problemas para realizar el registro, favbor contactar al equipo de desarrollo', 'cerrar', {
+                  this.snackBar.open('Tenemos Problemas para realizar el registro, favor contactar al equipo de desarrollo', 'cerrar', {
                     duration: 2000,
                     verticalPosition: 'top',
                   });

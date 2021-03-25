@@ -30,11 +30,11 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
     'select',
     'id',
     'fecha',
-    'monto',
     'sucursal',
-    'respaldos',
+    'monto',
     'tipoEgreso',
-    'usuario'
+    'usuario',
+    'respaldos',
   ];
   dataSource: MatTableDataSource<EgresoHostal> = new MatTableDataSource();
   dataEgresos: EgresoHostal[] = [];

@@ -11,7 +11,6 @@ const routes: Routes = [
   { path: '', component: HostalHomeComponent },
   { path: 'ingresos', component: HostalIngresosComponent },
   { path: 'egresos', component: HostalEgresosComponent }
-
 ];
 
 @NgModule({

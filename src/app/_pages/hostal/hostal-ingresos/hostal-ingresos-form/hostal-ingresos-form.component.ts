@@ -70,9 +70,16 @@ export class HostalIngresosFormComponent {
     this.referencias = this.hostalService.referenciasListValue;
     this.tiposPagos = this.hostalService.tiposPagosListValue;
     this.estadoPagos = this.hostalService.estadosPagosListValue;
-    this.cuentasService.obtenerCuentas()
-      .subscribe(data => { this.cuentasRegistradas = data; });
+    this.obtenerCuentas();
   }
+
+
+  obtenerCuentas() {
+    this.cuentasService.obtenerCuentas().subscribe(data => {
+      this.cuentasRegistradas = data;
+    });
+  }
+
   onSubmit() {
     // $ consulta el estado del formulario antes de recibir los adjuntos
     switch (this.addressForm.status) {

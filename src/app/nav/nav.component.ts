@@ -21,20 +21,21 @@ export class NavComponent {
 
   constructor(private breakpointObserver: BreakpointObserver) {
     this.menuItems = [
-      { name: 'FIRMA ABOGADOS', icon: 'account_balance', url: 'firma_abogados' },
+      { name: 'FIRMA ABOGADOS', icon: 'account_balance', url: 'firmaAbogado' },
       { name: 'RENTACAR', icon: 'directions_car', url: 'rentacar' },
       { name: 'HOSTAL', icon: 'bed', url: 'hostal' },
       { name: 'LUBRICENTRO', icon: 'commute', url: 'lubricentro' },
-      { name: 'AGROFIRMA PROYECTOS', icon: 'agriculture', url: 'agrofirma_proyectos' }
+      { name: 'INMOBILIARIA', icon: 'chair', url: 'inmobiliaria' },
+      { name: 'AGROFIRMA PROYECTOS', icon: 'agriculture', url: 'agrofirma' }
     ];
     this.subMenuItems = [
       { name: 'INGRESOS', icon: 'align_horizontal_right', url: 'ingresos' },
       {
         name: 'EGRESOS', icon: 'align_horizontal_right', url: 'egresos'
       },
-      { name: 'ACTIVOS', icon: 'align_horizontal_right', url: 'activos' },
-      { name: 'PASIVOS', icon: 'align_horizontal_right', url: 'pasivos' },
-      { name: 'CONSOLIDADOS', icon: 'align_horizontal_right', url: 'consolidados' }];
+      { name: 'ACTIVOS', icon: 'align_horizontal_right', url: '' },
+      { name: 'PASIVOS', icon: 'align_horizontal_right', url: '' },
+      { name: 'CONSOLIDADOS', icon: 'align_horizontal_right', url: '' }];
   }
 
 }

@@ -1,9 +1,4 @@
-<form
-  [formGroup]="ingresosForm"
-  novalidate
-  (ngSubmit)="onSubmit()"
-  class="mat-elevation-z10"
->
+<form [formGroup]="ingresosForm" novalidate (ngSubmit)="onSubmit()" class="mat-elevation-z10">
   <mat-card class="shipping-card">
     <mat-card-header>
       <mat-card-title>Ingresos Lubricentro</mat-card-title>
@@ -14,16 +9,11 @@
         <div class="col">
           <mat-form-field class="full-width">
             <mat-select placeholder="Sucursales" formControlName="idSucursal">
-              <mat-option
-                *ngFor="let sucursal of sucursales"
-                [value]="sucursal.id"
-              >
+              <mat-option *ngFor="let sucursal of sucursales" [value]="sucursal.id">
                 {{ sucursal.razonSocial }}
               </mat-option>
             </mat-select>
-            <mat-error
-              *ngIf="ingresosForm.controls['idSucursal'].hasError('required')"
-            >
+            <mat-error *ngIf="ingresosForm.controls['idSucursal'].hasError('required')">
               sucursal es <strong>requrido</strong>
             </mat-error>
           </mat-form-field>
@@ -31,12 +21,8 @@
         <!-- checkbox tipoIngreso -->
         <div class="col">
           <section class="example-section">
-            <mat-checkbox
-              *ngFor="let tipo of defTiposIngreso"
-              class="example-margin"
-              [name]="tipo"
-              (change)="chequearTipoIngreso($event)"
-            >
+            <mat-checkbox *ngFor="let tipo of defTiposIngreso" class="example-margin" [name]="tipo"
+              (change)="chequearTipoIngreso($event)">
               {{ tipo }}
             </mat-checkbox>
           </section>
@@ -47,14 +33,8 @@
         <!-- descripcion -->
         <div class="col">
           <mat-form-field class="full-width">
-            <input
-              matInput
-              placeholder="ingrese una descripcion del registro"
-              formControlName="descripcion"
-            />
-            <mat-error
-              *ngIf="ingresosForm.controls['descripcion'].hasError('required')"
-            >
+            <input matInput placeholder="ingrese una descripcion del registro" formControlName="descripcion" />
+            <mat-error *ngIf="ingresosForm.controls['descripcion'].hasError('required')">
               descripcion es <strong>requerido</strong>
             </mat-error>
           </mat-form-field>
@@ -65,15 +45,8 @@
         <!-- monto -->
         <div class="col">
           <mat-form-field class="full-width">
-            <input
-              matInput
-              placeholder="Monto"
-              formControlName="monto"
-              type="number"
-            />
-            <mat-error
-              *ngIf="ingresosForm.controls['monto'].hasError('required')"
-            >
+            <input matInput placeholder="Monto" formControlName="monto" type="number" />
+            <mat-error *ngIf="ingresosForm.controls['monto'].hasError('required')">
               Monto es <strong>requerido</strong>
             </mat-error>
           </mat-form-field>
@@ -83,14 +56,9 @@
           <mat-form-field class="full-width">
             <mat-label>Seleccionar fecha</mat-label>
             <input matInput formControlName="fecha" [matDatepicker]="picker" />
-            <mat-datepicker-toggle
-              matSuffix
-              [for]="picker"
-            ></mat-datepicker-toggle>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
-            <mat-error
-              *ngIf="ingresosForm.controls['fecha'].hasError('required')"
-            >
+            <mat-error *ngIf="ingresosForm.controls['fecha'].hasError('required')">
               fecha es <strong>requerido</strong>
             </mat-error>
           </mat-form-field>
@@ -100,16 +68,10 @@
         <!-- numero autorizacion -->
         <div class="col">
           <mat-form-field class="full-width">
-            <input
-              matInput
-              placeholder="N° Autorizacion"
-              formControlName="nAutorizacion"
-            />
-            <mat-error
-              *ngIf="
+            <input matInput placeholder="N° Autorizacion" formControlName="nAutorizacion" />
+            <mat-error *ngIf="
                 ingresosForm.controls['nAutorizacion'].hasError('required')
-              "
-            >
+              ">
               este campo es <strong>requerido</strong>
             </mat-error>
           </mat-form-field>
@@ -117,23 +79,14 @@
         <!-- cuentas registradas -->
         <div class="col">
           <mat-form-field class="full-width">
-            <mat-select
-              placeholder="Cuenta Bancaria"
-              formControlName="idCuentaAsignada"
-            >
-              <mat-option
-                *ngFor="let cuenta of cuentasRegistradas"
-                [value]="cuenta.id"
-              >
+            <mat-select placeholder="Cuenta Bancaria" formControlName="idCuentaAsignada">
+              <mat-option *ngFor="let cuenta of cuentasRegistradas" [value]="cuenta.id">
                 {{ cuenta.alias }} : {{ cuenta.numeroCuenta }}
               </mat-option>
-              <mat-option>ejemplo</mat-option>
             </mat-select>
-            <mat-error
-              *ngIf="
+            <mat-error *ngIf="
                 ingresosForm.controls['idCuentaAsignada'].hasError('required')
-              "
-            >
+              ">
               estadoPago es <strong>requrido</strong>
             </mat-error>
           </mat-form-field>
@@ -150,14 +103,8 @@
         <!-- nombreCLiente -->
         <div class="col">
           <mat-form-field class="full-width">
-            <input
-              matInput
-              placeholder="ingrese nombre cliente"
-              formControlName="cliente"
-            />
-            <mat-error
-              *ngIf="ingresosForm.controls['cliente'].hasError('required')"
-            >
+            <input matInput placeholder="ingrese nombre cliente" formControlName="cliente" />
+            <mat-error *ngIf="ingresosForm.controls['cliente'].hasError('required')">
               cliente es <strong>requerido</strong>
             </mat-error>
           </mat-form-field>
@@ -165,17 +112,12 @@
         <!-- tipo cliente -->
         <div class="col">
           <mat-form-field class="full-width">
-            <mat-select
-              placeholder="Tipo Cliente"
-              formControlName="tipoCliente"
-            >
+            <mat-select placeholder="Tipo Cliente" formControlName="tipoCliente">
               <mat-option *ngFor="let tipo of tiposCliente" [value]="tipo">
                 {{ tipo }}
               </mat-option>
             </mat-select>
-            <mat-error
-              *ngIf="ingresosForm.controls['tipoCliente'].hasError('required')"
-            >
+            <mat-error *ngIf="ingresosForm.controls['tipoCliente'].hasError('required')">
               Tipo_Cliente es <strong>requrido</strong>
             </mat-error>
           </mat-form-field>
@@ -183,14 +125,8 @@
         <!-- telefono -->
         <div class="col">
           <mat-form-field class="full-width">
-            <input
-              matInput
-              placeholder="ingrese telefono"
-              formControlName="telefono"
-            />
-            <mat-error
-              *ngIf="ingresosForm.controls['telefono'].hasError('required')"
-            >
+            <input matInput placeholder="ingrese telefono" formControlName="telefono" />
+            <mat-error *ngIf="ingresosForm.controls['telefono'].hasError('required')">
               telefono es <strong>requerido</strong>
             </mat-error>
           </mat-form-field>
@@ -200,23 +136,14 @@
         <!-- correo -->
         <div class="col">
           <mat-form-field class="full-width">
-            <input
-              matInput
-              placeholder="ingrese correo"
-              formControlName="correo"
-              type="email"
-            />
-            <mat-error
-              *ngIf="
+            <input matInput placeholder="ingrese correo" formControlName="correo" type="email" />
+            <mat-error *ngIf="
                 ingresosForm.hasError('email') &&
                 !ingresosForm.hasError('required')
-              "
-            >
+              ">
               Please enter a valid email address
             </mat-error>
-            <mat-error
-              *ngIf="ingresosForm.controls['correo'].hasError('required')"
-            >
+            <mat-error *ngIf="ingresosForm.controls['correo'].hasError('required')">
               correo es <strong>requerido</strong>
             </mat-error>
           </mat-form-field>
@@ -225,16 +152,11 @@
         <div class="col">
           <mat-form-field class="full-width">
             <mat-select placeholder="Referencia" formControlName="referencia">
-              <mat-option
-                *ngFor="let referencia of referencias"
-                [value]="referencia"
-              >
+              <mat-option *ngFor="let referencia of referencias" [value]="referencia">
                 {{ referencia }}
               </mat-option>
             </mat-select>
-            <mat-error
-              *ngIf="ingresosForm.controls['referencia'].hasError('required')"
-            >
+            <mat-error *ngIf="ingresosForm.controls['referencia'].hasError('required')">
               referencia es <strong>requrido</strong>
             </mat-error>
           </mat-form-field>
@@ -245,16 +167,11 @@
         <div class="col">
           <mat-form-field class="full-width">
             <mat-select placeholder="Tipo Pago" formControlName="tipoPago">
-              <mat-option
-                *ngFor="let tipoPago of tiposPagos"
-                [value]="tipoPago"
-              >
+              <mat-option *ngFor="let tipoPago of tiposPagos" [value]="tipoPago">
                 {{ tipoPago }}
               </mat-option>
             </mat-select>
-            <mat-error
-              *ngIf="ingresosForm.controls['tipoPago'].hasError('required')"
-            >
+            <mat-error *ngIf="ingresosForm.controls['tipoPago'].hasError('required')">
               este campo es <strong>requrido</strong>
             </mat-error>
           </mat-form-field>
@@ -263,16 +180,11 @@
         <div class="col">
           <mat-form-field class="full-width">
             <mat-select placeholder="Estado Pago" formControlName="estadoPago">
-              <mat-option
-                *ngFor="let estadoPago of estadoPagos"
-                [value]="estadoPago"
-              >
+              <mat-option *ngFor="let estadoPago of estadoPagos" [value]="estadoPago">
                 {{ estadoPago }}
               </mat-option>
             </mat-select>
-            <mat-error
-              *ngIf="ingresosForm.controls['estadoPago'].hasError('required')"
-            >
+            <mat-error *ngIf="ingresosForm.controls['estadoPago'].hasError('required')">
               estadoPago es <strong>requrido</strong>
             </mat-error>
           </mat-form-field>
@@ -280,14 +192,8 @@
         <!-- numero documento -->
         <div class="col">
           <mat-form-field class="full-width">
-            <input
-              matInput
-              placeholder="N° documento"
-              formControlName="nDocumento"
-            />
-            <mat-error
-              *ngIf="ingresosForm.controls['nDocumento'].hasError('required')"
-            >
+            <input matInput placeholder="N° documento" formControlName="nDocumento" />
+            <mat-error *ngIf="ingresosForm.controls['nDocumento'].hasError('required')">
               este campo es <strong>requerido</strong>
             </mat-error>
           </mat-form-field>
@@ -304,17 +210,12 @@
         <!-- tipo vehiculo -->
         <div class="col">
           <mat-form-field class="full-width">
-            <mat-select
-              placeholder="Tipo Vehiculo"
-              formControlName="tipoVehiculo"
-            >
+            <mat-select placeholder="Tipo Vehiculo" formControlName="tipoVehiculo">
               <mat-option *ngFor="let tipo of tiposVehiculos" [value]="tipo">
                 {{ tipo }}
               </mat-option>
             </mat-select>
-            <mat-error
-              *ngIf="ingresosForm.controls['tipoVehiculo'].hasError('required')"
-            >
+            <mat-error *ngIf="ingresosForm.controls['tipoVehiculo'].hasError('required')">
               este campo es <strong>requrido</strong>
             </mat-error>
           </mat-form-field>
@@ -323,9 +224,7 @@
         <div class="col">
           <mat-form-field class="full-width">
             <input matInput placeholder="ingresar PPU" formControlName="ppu" />
-            <mat-error
-              *ngIf="ingresosForm.controls['ppu'].hasError('required')"
-            >
+            <mat-error *ngIf="ingresosForm.controls['ppu'].hasError('required')">
               ppu es <strong>requerido</strong>
             </mat-error>
           </mat-form-field>
@@ -333,14 +232,8 @@
         <!-- marca -->
         <div class="col">
           <mat-form-field class="full-width">
-            <input
-              matInput
-              placeholder="ingresar Marca"
-              formControlName="marca"
-            />
-            <mat-error
-              *ngIf="ingresosForm.controls['marca'].hasError('required')"
-            >
+            <input matInput placeholder="ingresar Marca" formControlName="marca" />
+            <mat-error *ngIf="ingresosForm.controls['marca'].hasError('required')">
               marca es <strong>requerido</strong>
             </mat-error>
           </mat-form-field>
@@ -348,14 +241,8 @@
         <!-- modelo -->
         <div class="col">
           <mat-form-field class="full-width">
-            <input
-              matInput
-              placeholder="ingresar Modelo"
-              formControlName="modelo"
-            />
-            <mat-error
-              *ngIf="ingresosForm.controls['modelo'].hasError('required')"
-            >
+            <input matInput placeholder="ingresar Modelo" formControlName="modelo" />
+            <mat-error *ngIf="ingresosForm.controls['modelo'].hasError('required')">
               modelo es <strong>requerido</strong>
             </mat-error>
           </mat-form-field>
@@ -365,15 +252,8 @@
         <!-- año -->
         <div class="col">
           <mat-form-field class="full-width">
-            <input
-              matInput
-              placeholder="ingresar Año Vehiculo"
-              formControlName="anio"
-              type="number"
-            />
-            <mat-error
-              *ngIf="ingresosForm.controls['anio'].hasError('required')"
-            >
+            <input matInput placeholder="ingresar Año Vehiculo" formControlName="anio" type="number" />
+            <mat-error *ngIf="ingresosForm.controls['anio'].hasError('required')">
               anio es <strong>requerido</strong>
             </mat-error>
           </mat-form-field>
@@ -381,14 +261,8 @@
         <!-- Km actual -->
         <div class="col">
           <mat-form-field class="full-width">
-            <input
-              matInput
-              placeholder="ingresar Kilometraje Actual"
-              formControlName="kmActual"
-            />
-            <mat-error
-              *ngIf="ingresosForm.controls['kmActual'].hasError('required')"
-            >
+            <input matInput placeholder="ingresar Kilometraje Actual" formControlName="kmActual" />
+            <mat-error *ngIf="ingresosForm.controls['kmActual'].hasError('required')">
               kmActual es <strong>requerido</strong>
             </mat-error>
           </mat-form-field>
@@ -396,14 +270,8 @@
         <!-- Km Mantencion -->
         <div class="col">
           <mat-form-field class="full-width">
-            <input
-              matInput
-              placeholder="ingresar Kilomtraje Estimado prox Mantencion"
-              formControlName="kmProximo"
-            />
-            <mat-error
-              *ngIf="ingresosForm.controls['kmProximo'].hasError('required')"
-            >
+            <input matInput placeholder="ingresar Kilomtraje Estimado prox Mantencion" formControlName="kmProximo" />
+            <mat-error *ngIf="ingresosForm.controls['kmProximo'].hasError('required')">
               kmProximo es <strong>requerido</strong>
             </mat-error>
           </mat-form-field>

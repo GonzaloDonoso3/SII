@@ -23,7 +23,6 @@ export class LubricentroIngresosComponent implements OnInit {
 
       this.sucursalService.getByEmpresa(empresa[0].id).subscribe(data => {
         const sucursales = data;
-        console.log(data);
       });
     });
   }

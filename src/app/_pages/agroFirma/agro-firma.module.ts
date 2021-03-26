@@ -1,3 +1,6 @@
+import { ReactiveFormsModule } from '@angular/forms';
+import { ComponentsModule } from './../../_components/components.module';
+import { MaterialModule } from './../../material.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AgroFirmaEgresosComponent } from './agro-firma-egresos/agro-firma-egresos.component';
@@ -11,7 +14,10 @@ import { AgroFirmaRoutingModule } from './agro-firma-routing.module';
   declarations: [AgroFirmaEgresosComponent, AgroFirmaIngresosComponent, AgroFirmaHomeComponent],
   imports: [
     CommonModule,
-    AgroFirmaRoutingModule
+    AgroFirmaRoutingModule,
+    MaterialModule,
+    ComponentsModule,
+    ReactiveFormsModule
   ]
 })
 export class AgroFirmaModule { }

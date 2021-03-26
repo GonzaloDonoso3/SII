@@ -32,7 +32,7 @@ export class HostalEgresosFormComponent implements OnInit {
     descripcion: [null, Validators.required],
     responsable: [null, Validators.required],
     idSucursal: [null, Validators.required],
-    idCuentaAsignada: [null, Validators.required],
+    /* idCuentaAsignada: [null, Validators.required], */
   });
   egreso: EgresoHostal = new EgresoHostal();
   nameRespaldo: string[] = [];
@@ -79,18 +79,14 @@ export class HostalEgresosFormComponent implements OnInit {
           this.egreso.tipoEgreso = this.egresosForm.value.tipoEgreso;
 
           for (const respaldo of this.nameRespaldo) {
-            console.log(respaldo);
             this.egreso.RespaldoEgresos.push({ url: respaldo });
           }
-          console.log(this.egreso);
           if (this.egreso.RespaldoEgresos.length > 0) {
             this.hostalService
               .egresoRegistrar(this.egreso)
               .pipe()
               .subscribe(
                 (data: any) => {
-
-                  console.log(data);
                   this.snackBar.open('Regitro Exitoso !!', 'cerrar', {
                     duration: 2000,
                     verticalPosition: 'top',
@@ -99,7 +95,7 @@ export class HostalEgresosFormComponent implements OnInit {
                   this.egresosForm.reset();
                 },
                 (error: any) => {
-                  this.snackBar.open('Tenemos Problemas para realizar el registro, favbor contactar al equipo de desarrollo', 'cerrar', {
+                  this.snackBar.open('Tenemos Problemas para realizar el registro, porfavor contactar al equipo de desarrollo', 'cerrar', {
                     duration: 2000,
                     verticalPosition: 'top',
                   });

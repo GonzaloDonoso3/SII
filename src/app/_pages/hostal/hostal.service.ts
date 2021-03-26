@@ -108,6 +108,7 @@ export class HostalService {
 
   /* ingresos */
   ingresoRegistrar(ingresos: IngresosHostal) {
+    console.log(ingresos);
     return this.http.post(
       `${environment.apiUrl}/ingreso${this.empresa}/conRespaldo`,
       ingresos

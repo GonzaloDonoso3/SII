@@ -1,3 +1,6 @@
+import { ReactiveFormsModule } from '@angular/forms';
+import { ComponentsModule } from './../../_components/components.module';
+import { MaterialModule } from './../../material.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbogadosIngresosComponent } from './abogados-ingresos/abogados-ingresos.component';
@@ -13,7 +16,10 @@ import { AbogadosEgresosListComponent } from './abogados-egresos/abogados-egreso
   declarations: [AbogadosIngresosComponent, AbogadosEgresosComponent, AbogadosHomeComponent, AbogadosEgresosFormComponent, AbogadosEgresosListComponent],
   imports: [
     CommonModule,
-    AbogadosRoutingModule
+    AbogadosRoutingModule,
+    MaterialModule,
+    ComponentsModule,
+    ReactiveFormsModule
   ]
 })
 export class AbogadosModule { }

@@ -39,12 +39,12 @@
         </div>
       </div>
       <div class="row">
-        <!-- descripcion -->
+        <!-- responsable -->
         <div class="col">
           <mat-form-field class="full-width">
-            <input matInput placeholder="ingrese una descripcion del registro" formControlName="descripcion" />
-            <mat-error *ngIf="egresosForm.controls['descripcion'].hasError('required')">
-              descripcion es <strong>requerido</strong>
+            <input matInput placeholder="ingrese nombre responsable" formControlName="responsable" />
+            <mat-error *ngIf="egresosForm.controls['responsable'].hasError('required')">
+              este campo es <strong>requerido</strong>
             </mat-error>
           </mat-form-field>
         </div>
@@ -72,17 +72,18 @@
         </div>
       </div>
       <div class="row">
-        <!-- responsable -->
+        <!-- descripcion -->
         <div class="col">
           <mat-form-field class="full-width">
-            <input matInput placeholder="ingrese nombre responsable" formControlName="responsable" />
-            <mat-error *ngIf="egresosForm.controls['responsable'].hasError('required')">
-              este campo es <strong>requerido</strong>
+            <input matInput placeholder="ingrese una descripcion del registro" formControlName="descripcion" />
+            <mat-error *ngIf="egresosForm.controls['descripcion'].hasError('required')">
+              descripcion es <strong>requerido</strong>
             </mat-error>
           </mat-form-field>
         </div>
+
         <!-- cuentas registradas -->
-        <div class="col">
+        <!--  <div class="col">
           <mat-form-field class="full-width">
             <mat-select placeholder="Cuenta Bancaria" formControlName="idCuentaAsignada">
               <mat-option *ngFor="let cuenta of cuentasRegistradas" [value]="cuenta.id">
@@ -95,7 +96,7 @@
               estadoPago es <strong>requrido</strong>
             </mat-error>
           </mat-form-field>
-        </div>
+        </div> -->
       </div>
     </mat-card-content>
     <mat-card-actions>

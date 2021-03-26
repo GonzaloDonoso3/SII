@@ -1,3 +1,6 @@
+import { ReactiveFormsModule } from '@angular/forms';
+import { ComponentsModule } from './../../_components/components.module';
+import { MaterialModule } from './../../material.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -15,7 +18,10 @@ import { InmobiliariaIngresosFormComponent } from './inmobiliaria-ingresos/inmob
   declarations: [InmobiliariaHomeComponent, InmobiliariaIngresosComponent, InmobiliariaEgresosComponent, InmobiliariaEgresosFormComponent, InmobiliariaEgresosListComponent, InmobiliariaIngresosListComponent, InmobiliariaIngresosFormComponent],
   imports: [
     CommonModule,
-    InmobiliariaRoutingModule
+    InmobiliariaRoutingModule,
+    MaterialModule,
+    ComponentsModule,
+    ReactiveFormsModule
   ]
 })
 export class InmobiliariaModule { }

@@ -42,9 +42,7 @@ export class HostalIngresosFormComponent {
     estadoPago: [null, Validators.required],
     nDocumento: [null, Validators.required],
     nAutorizacion: [null, Validators.required],
-    idCuentaAsignada: [null, Validators.required],
-
-
+    /*  idCuentaAsignada: [null, Validators.required], */
   });
   sucursales: Sucursal[];
   hasUnitNumber = false;
@@ -103,7 +101,7 @@ export class HostalIngresosFormComponent {
           this.ingreso.idUsuario = 1;
           //this.addressForm.value.idUsuario;
           this.ingreso.nAutorizacion = this.addressForm.value.nAutorizacion;
-          this.ingreso.idCuentaAsignada = this.addressForm.value.idCuentaAsignada;
+          this.ingreso.idCuentaAsignada = 1;
           this.ingreso.referenciaCliente = this.addressForm.value.referencia;
 
 

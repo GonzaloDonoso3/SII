@@ -42,7 +42,7 @@ export class LubricentroIngresosFormComponent {
     estadoPago: [null, Validators.required],
     nDocumento: [null, Validators.required],
     nAutorizacion: [null, Validators.required],
-    idCuentaAsignada: [null, Validators.required],
+    /*  idCuentaAsignada: [null, Validators.required], */
     tipoVehiculo: [null, Validators.required],
     ppu: [null, Validators.required],
     marca: [null, Validators.required],

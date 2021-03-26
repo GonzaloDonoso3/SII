@@ -32,7 +32,7 @@ export class LubricentroEgresosFormComponent implements OnInit {
     responsable: [null, Validators.required],
     idSucursal: [null, Validators.required],
     idIngreso: [null,],
-    idCuentaAsignada: [null, Validators.required],
+    /* idCuentaAsignada: [null, Validators.required], */
   });
   egreso: EgresoLubricentro = new EgresoLubricentro();
   nameRespaldo: string[] = [];

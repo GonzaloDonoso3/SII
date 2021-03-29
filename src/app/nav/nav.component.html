@@ -7,6 +7,7 @@
       <img src="assets/images/logo.png" alt="" width="187" height="50">
     </mat-toolbar>
     <br>
+    <mat-divider></mat-divider>
     <mat-accordion>
       <mat-expansion-panel *ngFor="let item of menuItems" hideToggle>
         <mat-expansion-panel-header color="white" [routerLink]="item.url">
@@ -26,11 +27,15 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async">
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
         <mat-icon aria-label="mostrar menu lateral">menu</mat-icon>
       </button>
+      <span class="example-spacer"></span>
       <span>PLATAFORMA FINANZAS - GRUPO FIRMA</span>
+      <span class="example-spacer"></span>
+      <button mat-raised-button color="accent" (click)="volverVistaAtigua()">
+        <mat-icon>reply</mat-icon> volver
+      </button>
     </mat-toolbar>
     <div class="container-page">
       <router-outlet></router-outlet>

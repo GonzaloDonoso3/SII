@@ -1,0 +1,27 @@
+import { Injectable } from '@angular/core';
+import {
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+  HttpInterceptor
+} from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { AuthSharedService } from '@app/_pages/shared/shared-services/auth-shared.service';
+
+@Injectable()
+export class ErrorInterceptor implements HttpInterceptor {
+
+  constructor(private _auth: AuthSharedService,) { }
+
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    return next.handle(request).pipe(catchError((err) => {
+      if (err.status === 401) {
+        //errores del token
+        this._auth.cerrarSesion();
+      }
+      const error = err.error.msg || err.status;
+      return throwError(error);
+    }))
+  }
+}

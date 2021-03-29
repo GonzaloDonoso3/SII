@@ -3,6 +3,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { MenusItems } from 'src/app/_models/menu-items';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-nav',
@@ -36,6 +37,10 @@ export class NavComponent {
       { name: 'ACTIVOS', icon: 'align_horizontal_right', url: '' },
       { name: 'PASIVOS', icon: 'align_horizontal_right', url: '' },
       { name: 'CONSOLIDADOS', icon: 'align_horizontal_right', url: '' }];
+  }
+
+  volverVistaAtigua() {
+    window.location.href = `${environment.indexUrl}`;
   }
 
 }

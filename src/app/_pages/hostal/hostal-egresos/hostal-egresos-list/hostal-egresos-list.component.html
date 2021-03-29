@@ -64,6 +64,13 @@
     <td mat-cell *matCellDef="let element">{{ element.sucursal }}</td>
   </ng-container>
   <!-- tipo egreso with select -->
+  <!-- monto currency fomrat -->
+  <ng-container matColumnDef="monto">
+    <th mat-header-cell *matHeaderCellDef>Monto</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.monto | currency: "$":"symbol":"1.0-0" }}
+    </td>
+  </ng-container>
   <!-- TODO repair source ts -->
   <ng-container matColumnDef="tipoEgreso">
     <th mat-header-cell *matHeaderCellDef>
@@ -79,13 +86,7 @@
     </th>
     <td mat-cell *matCellDef="let element">{{ element.tipoEgreso }}</td>
   </ng-container>
-  <!-- monto currency fomrat -->
-  <ng-container matColumnDef="monto">
-    <th mat-header-cell *matHeaderCellDef>Monto</th>
-    <td mat-cell *matCellDef="let element">
-      {{ element.monto | currency: "$":"symbol":"1.0-0" }}
-    </td>
-  </ng-container>
+
   <!-- usuario with select filter -->
   <!-- TODO add filter rule un types and here -->
   <ng-container matColumnDef="usuario">

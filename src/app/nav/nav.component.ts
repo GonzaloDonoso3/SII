@@ -41,6 +41,8 @@ export class NavComponent {
   }
 
   volverVistaAtigua() {
+    localStorage.removeItem('usertoken');
+    localStorage.removeItem('usuario');
     window.location.href = `${environment.indexUrl}`;
   }
 

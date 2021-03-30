@@ -257,7 +257,7 @@
         <!-- Km actual -->
         <div class="col">
           <mat-form-field class="full-width">
-            <input matInput placeholder="ingresar Kilometraje Actual" formControlName="kmActual" />
+            <input matInput placeholder="ingresar Kilometraje Actual" formControlName="kmActual" type="number" />
             <mat-error *ngIf="ingresosForm.controls['kmActual'].hasError('required')">
               kmActual es <strong>requerido</strong>
             </mat-error>
@@ -266,7 +266,8 @@
         <!-- Km Mantencion -->
         <div class="col">
           <mat-form-field class="full-width">
-            <input matInput placeholder="ingresar Kilomtraje Estimado prox Mantencion" formControlName="kmProximo" />
+            <input matInput placeholder="ingresar Kilomtraje Estimado prox Mantencion" formControlName="kmProximo"
+              type="number" />
             <mat-error *ngIf="ingresosForm.controls['kmProximo'].hasError('required')">
               kmProximo es <strong>requerido</strong>
             </mat-error>

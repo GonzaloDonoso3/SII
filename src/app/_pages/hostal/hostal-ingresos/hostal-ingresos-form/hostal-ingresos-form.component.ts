@@ -1,3 +1,4 @@
+import { Usuario } from '@models/shared/usuario';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
@@ -8,6 +9,7 @@ import { HostalService } from '../../hostal.service';
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 import { Sucursal } from '@app/_models/shared/sucursal';
 import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuentas-bancarias.service';
+import { AlertHelper } from '@app/_helpers/alert.helper';
 export interface DialogData {
   url: any;
 
@@ -22,6 +24,8 @@ export class HostalIngresosFormComponent {
   @Output()
   formularioListo = new EventEmitter<string>();
   // ? set checkbox
+
+  usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '');
 
   nameRespaldo = '';
   tiposIngresos: any[] = [];
@@ -60,6 +64,7 @@ export class HostalIngresosFormComponent {
     private hostalService: HostalService,
     private sucursalService: SucursalSharedService,
     private cuentasService: CuentasBancariasService,
+    private alert: AlertHelper
   ) {
 
     this.sucursales = this.sucursalService.sucursalListValue;
@@ -82,6 +87,7 @@ export class HostalIngresosFormComponent {
     // $ consulta el estado del formulario antes de recibir los adjuntos
     switch (this.addressForm.status) {
       case 'VALID':
+
         const dialogRef = this.dialog.open(DialogRespaldosComponent, {
 
           data: { url: 'ingresoHostal/upload' }
@@ -98,7 +104,7 @@ export class HostalIngresosFormComponent {
           this.ingreso.descripcionIngreso = this.addressForm.value.descripcion;
           this.ingreso.nDocumento = this.addressForm.value.nDocumento;
           this.ingreso.estadoPago = this.addressForm.value.estadoPago;
-          this.ingreso.idUsuario = 1;
+          this.ingreso.idUsuario = this.usuario.id;
           //this.addressForm.value.idUsuario;
           this.ingreso.nAutorizacion = this.addressForm.value.nAutorizacion;
           this.ingreso.idCuentaAsignada = 1;
@@ -110,20 +116,22 @@ export class HostalIngresosFormComponent {
             cadena = cadena + ' ' + tipos;
           }
           this.ingreso.tipoIngreso = cadena;
+
           for (const name of this.nameRespaldo) {
             this.ingreso.RespaldoIngresos.push({ url: name });
           }
           if (result.length > 0) {
+
             this.hostalService
               .ingresoRegistrar(this.ingreso)
               .pipe()
               .subscribe(
                 (data) => {
-
-                  this.snackBar.open('Regitro Exitoso !!', 'cerrar', {
-                    duration: 2000,
-                    verticalPosition: 'top',
-                  });
+                  this.alert.createAlert("Registro Creado con exito!");
+                  /*   this.snackBar.open('Regitro Exitoso !!', 'cerrar', {
+                      duration: 2000,
+                      verticalPosition: 'top',
+                    }); */
                   this.formularioListo.emit('true');
                   this.addressForm.reset();
 

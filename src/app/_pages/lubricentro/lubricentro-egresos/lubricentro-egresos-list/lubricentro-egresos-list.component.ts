@@ -34,9 +34,9 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
     'id',
     'fecha',
     'monto',
-    'sucursal',
     'respaldos',
     'tipoEgreso',
+    'sucursal',
     'usuario'
   ];
   dataSource: MatTableDataSource<EgresoLubricentro> = new MatTableDataSource();

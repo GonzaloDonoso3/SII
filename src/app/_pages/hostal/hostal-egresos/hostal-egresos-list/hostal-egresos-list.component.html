@@ -94,7 +94,7 @@
     <td mat-cell *matCellDef="let element">{{ element.usuario }}</td>
   </ng-container>
   <!-- respaldos with button download -->
-  <ng-container matColumnDef="respaldos">
+  <ng-container style="  text-align: center;" matColumnDef="respaldos">
     <th mat-header-cell *matHeaderCellDef>Respaldos</th>
     <td mat-cell *matCellDef="let element">
       <button mat-mini-fab (click)="recuperarArchivos(element.RespaldoEgresos)">

@@ -1,3 +1,4 @@
+import { Usuario } from '@models/shared/usuario';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -8,6 +9,7 @@ import { Sucursal } from '@app/_models/shared/sucursal';
 import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuentas-bancarias.service';
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 import { LubricentroService } from '../../lubricentro.service';
+import { AlertHelper } from '@app/_helpers/alert.helper';
 
 @Component({
   selector: 'app-lubricentro-egresos-form',
@@ -22,6 +24,8 @@ export class LubricentroEgresosFormComponent implements OnInit {
   tiposEgresos: string[] = [];
   cuentasRegistradas: any[] = [];
   // ? construccion del formulario,
+
+  usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '');
 
   egresosForm = this.fb.group({
     //agregar el detalle del formulario;
@@ -45,6 +49,7 @@ export class LubricentroEgresosFormComponent implements OnInit {
     private lubricentroService: LubricentroService,
     private sucursalService: SucursalSharedService,
     private cuentasService: CuentasBancariasService,
+    private alert: AlertHelper
   ) {
     this.sucursales = this.sucursalService.sucursalListValue;
 
@@ -76,23 +81,25 @@ export class LubricentroEgresosFormComponent implements OnInit {
           this.egreso.responsable = this.egresosForm.value.responsable;
           this.egreso.idSucursal = this.egresosForm.value.idSucursal;
           this.egreso.idIngreso = this.egresosForm.value.idIngreso;
-          this.egreso.idUsuario = 1;
+          this.egreso.idUsuario = this.usuario.id;
+          console.log(this.egreso.idUsuario);
           this.egreso.tipoEgreso = this.egresosForm.value.tipoEgreso;
 
           for (const respaldo of this.nameRespaldo) {
             this.egreso.RespaldoEgresoLubricentros.push({ url: respaldo });
           }
-          console.log(this.egreso);
           if (this.egreso.RespaldoEgresoLubricentros.length > 0) {
             this.lubricentroService
               .egresoRegistrar(this.egreso)
               .pipe()
               .subscribe(
                 (data: any) => {
-                  this.snackBar.open('Regitro Exitoso !!', 'cerrar', {
-                    duration: 2000,
-                    verticalPosition: 'top',
-                  });
+                  this.alert.createAlert("Registro Creado con exito!");
+
+                  /*   this.snackBar.open('Regitro Exitoso !!', 'cerrar', {
+                      duration: 2000,
+                      verticalPosition: 'top',
+                    }); */
                   this.formularioListo.emit('true');
                   this.egresosForm.reset();
                 },

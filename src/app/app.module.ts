@@ -1,3 +1,4 @@
+import { AlertHelper } from './_helpers/alert.helper';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptor } from './_helpers/error.interceptor';
 import { AuthInterceptor } from './_helpers/auth.interceptor';
@@ -34,7 +35,7 @@ import { AuthSharedService } from './_pages/shared/shared-services/auth-shared.s
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    AuthSharedService
+    AuthSharedService, AlertHelper
   ],
   bootstrap: [AppComponent]
 })

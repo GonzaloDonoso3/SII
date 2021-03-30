@@ -62,7 +62,7 @@ span { margin-left: 2rem;}
   word-wrap: break-word !important;
   white-space: unset !important;
   flex: 0 0 10% !important;
-  width: 10% !important;
+  width: 20% !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
   max-width: 100px;
@@ -110,11 +110,11 @@ span { margin-left: 2rem;}
   word-wrap: break-word !important;
   white-space: unset !important;
   flex: 0 0 10% !important;
-  width: 10% !important;
+  width: 20% !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
   max-width: auto;
-  text-align: left;
+  text-align: center;
   //word-break: break-word;
 
   -ms-hyphens: auto;
@@ -122,23 +122,7 @@ span { margin-left: 2rem;}
   -webkit-hyphens: auto;
   hyphens: auto;
 }
-.mat-column-tipoIngreso {
-  word-wrap: break-word !important;
-  white-space: unset !important;
-  flex: 0 0 10% !important;
-  width: 10% !important;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  max-width: auto;
-  text-align: justify;
-  word-break: break-word;
-
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
-}
-.mat-column-respaldo {
+.mat-column-tipoEgreso {
   word-wrap: break-word !important;
   white-space: unset !important;
   flex: 0 0 10% !important;
@@ -154,11 +138,26 @@ span { margin-left: 2rem;}
   -webkit-hyphens: auto;
   hyphens: auto;
 }
+.mat-column-respaldo {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 10% !important;
+  width: 20% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  max-width: auto;
+  text-align: center;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
 .mat-column-usuario {
   word-wrap: break-word !important;
   white-space: unset !important;
   flex: 0 0 10% !important;
-  width: 10% !important;
+  width: 20% !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
   max-width: auto;
@@ -174,7 +173,7 @@ span { margin-left: 2rem;}
   word-wrap: break-word !important;
   white-space: unset !important;
   flex: 0 0 10% !important;
-  width: 10% !important;
+  width: 20% !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
   max-width: auto;
@@ -187,5 +186,5 @@ span { margin-left: 2rem;}
   hyphens: auto;
 }
 mat-form-field{
-  width: 75%
+  width: 100%
 }

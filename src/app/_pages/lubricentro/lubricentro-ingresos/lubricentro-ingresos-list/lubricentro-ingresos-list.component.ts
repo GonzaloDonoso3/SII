@@ -28,9 +28,9 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
     'id',
     'fecha',
     'monto',
+    'respaldos',
     'estadoPago',
     'sucursal',
-    'respaldos',
     'tipoIngreso',
     'usuario'
   ];

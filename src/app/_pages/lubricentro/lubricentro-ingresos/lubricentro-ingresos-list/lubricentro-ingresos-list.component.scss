@@ -63,7 +63,7 @@ span {
   word-wrap: break-word !important;
   white-space: unset !important;
   flex: 0 0 10% !important;
-  width: 10% !important;
+  width: 15% !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
   max-width: 100px;
@@ -115,7 +115,7 @@ span {
   overflow-wrap: break-word;
   word-wrap: break-word;
   max-width: auto;
-  text-align: left;
+  text-align: center;
   //word-break: break-word;
 
   -ms-hyphens: auto;
@@ -131,7 +131,7 @@ span {
   overflow-wrap: break-word;
   word-wrap: break-word;
   max-width: auto;
-  text-align: justify;
+  text-align: center;
   word-break: break-word;
 
   -ms-hyphens: auto;
@@ -159,7 +159,7 @@ span {
   word-wrap: break-word !important;
   white-space: unset !important;
   flex: 0 0 10% !important;
-  width: 10% !important;
+  width: 20% !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
   max-width: auto;
@@ -188,5 +188,5 @@ span {
   hyphens: auto;
 }
 mat-form-field {
-  width: 75%;
+  width: 100%;
 }

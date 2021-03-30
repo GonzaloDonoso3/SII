@@ -1,6 +1,6 @@
 export class Usuario {
 
-    id!: string;
+    id!: number;
     nombreUsuario!: string;
     hash!: string;
     nombre!: string;

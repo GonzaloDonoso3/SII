@@ -1,3 +1,4 @@
+import { Usuario } from '@models/shared/usuario';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
@@ -8,6 +9,7 @@ import { Sucursal } from '@app/_models/shared/sucursal';
 import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuentas-bancarias.service';
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 import { LubricentroService } from '../../lubricentro.service';
+import { AlertHelper } from '@app/_helpers/alert.helper';
 
 @Component({
   selector: 'app-lubricentro-ingresos-form',
@@ -20,6 +22,8 @@ export class LubricentroIngresosFormComponent {
   @Output()
   formularioListo = new EventEmitter<string>();
   // ? set checkbox
+
+  usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '');
 
   nameRespaldo = '';
   tiposIngresos: any[] = [];
@@ -68,6 +72,7 @@ export class LubricentroIngresosFormComponent {
     private lubricentroService: LubricentroService,
     private sucursalService: SucursalSharedService,
     private cuentasService: CuentasBancariasService,
+    private alert: AlertHelper
   ) {
 
     this.sucursales = this.sucursalService.sucursalListValue;
@@ -100,7 +105,7 @@ export class LubricentroIngresosFormComponent {
           this.ingreso.descripcionIngreso = this.ingresosForm.value.descripcion;
           this.ingreso.nDocumento = this.ingresosForm.value.nDocumento;
           this.ingreso.estadoPago = this.ingresosForm.value.estadoPago;
-          this.ingreso.idUsuario = 1;
+          this.ingreso.idUsuario = this.usuario.id;
           //this.ingresosForm.value.idUsuario;
           this.ingreso.nAutorizacion = this.ingresosForm.value.nAutorizacion;
           this.ingreso.correo = this.ingresosForm.value.correo;
@@ -130,11 +135,11 @@ export class LubricentroIngresosFormComponent {
               .pipe()
               .subscribe(
                 (data) => {
-
-                  this.snackBar.open('Regitro Exitoso !!', 'cerrar', {
-                    duration: 2000,
-                    verticalPosition: 'top',
-                  });
+                  this.alert.createAlert("Registro Creado con exito!");
+                  /*   this.snackBar.open('Regitro Exitoso !!', 'cerrar', {
+                      duration: 2000,
+                      verticalPosition: 'top',
+                    }); */
                   this.formularioListo.emit('true');
                   this.ingresosForm.reset();
 

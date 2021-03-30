@@ -33,11 +33,11 @@ export class HostalIngresosListComponent implements OnInit, OnChanges {
     'fecha',
     'monto',
     'estadoPago',
-    'sucursal',
     'respaldos',
+    'nDocumento',
     'cliente',
     'tipoIngreso',
-    'nDocumento',
+    'sucursal',
     'usuario'
   ];
   dataSource: MatTableDataSource<IngresosHostal> = new MatTableDataSource();

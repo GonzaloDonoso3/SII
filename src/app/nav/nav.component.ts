@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { MenusItems } from 'src/app/_models/menu-items';
 import { environment } from '../../environments/environment';
+import { AuthSharedService } from '@app/_pages/shared/shared-services/auth-shared.service';
 
 @Component({
   selector: 'app-nav',
@@ -20,7 +21,7 @@ export class NavComponent {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver) {
+  constructor(private breakpointObserver: BreakpointObserver, public auth: AuthSharedService) {
     this.menuItems = [
       { name: 'HOSTAL', icon: 'bed', url: 'hostal' },
       { name: 'LUBRICENTRO', icon: 'commute', url: 'lubricentro' },

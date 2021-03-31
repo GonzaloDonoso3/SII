@@ -49,6 +49,8 @@ export class AuthSharedService {
 
   public estadoSesion(): boolean {
     if (localStorage.getItem('usertoken') && localStorage.getItem('usuario')) {
+      this.usuario = JSON.parse(localStorage.getItem('usuario') + '');
+      this.userToken = localStorage.getItem('usertoken') + '';
       return true;
     } else {
       this.userToken = '';

@@ -280,3 +280,13 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+
+
+mat-card{
+  overflow-x: scroll;
+
+}
+/* mat-toolbar , table,mat-paginator ,mat-card {
+  overflow-x: scroll;
+} */

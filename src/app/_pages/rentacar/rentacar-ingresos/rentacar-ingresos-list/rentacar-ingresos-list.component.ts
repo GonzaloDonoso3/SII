@@ -1,3 +1,4 @@
+import { FormGroup, FormControl } from '@angular/forms';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -33,12 +34,17 @@ export class RentacarIngresosListComponent implements OnInit {
   //configuraciones tabla
   displayedColumns: string[] = ['select', 'id', 'fecha', 'ingreso', 'tipo', 'estado', 'dias', 'sucursal', 'arriendo'];
   dataSource = new MatTableDataSource<ArriendoTabla>();
+  selection = new SelectionModel<ArriendoTabla>(true, []);
   @ViewChild(MatPaginator) paginator = null;
   @ViewChild(MatSort) sort = null;
 
+  //filtros
+  rangoFecha = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl(),
+  });
 
 
-  selection = new SelectionModel<ArriendoTabla>(true, []);
 
 
 
@@ -48,6 +54,8 @@ export class RentacarIngresosListComponent implements OnInit {
   ngOnInit(): void {
     this.cargarListaPagosArriendos();
   }
+
+
 
 
   cargarListaPagosArriendos(): void {

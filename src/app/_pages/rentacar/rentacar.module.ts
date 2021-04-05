@@ -12,10 +12,11 @@ import { RentacarIngresosListComponent } from './rentacar-ingresos/rentacar-ingr
 import { ComponentsModule } from '@app/_components/components.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RentacarIngresosFormComponent } from './rentacar-ingresos/rentacar-ingresos-form/rentacar-ingresos-form.component';
+import { RentacarModalDetallePagosComponent } from './rentacar-ingresos/rentacar-ingresos-list/rentacar-modal-detalle-pagos/rentacar-modal-detalle-pagos.component';
 
 
 @NgModule({
-  declarations: [RentacarEgresosComponent, RentacarIngresosComponent, RentacarHomeComponent, RentacarEgresosFormComponent, RentacarEgresosListComponent, RentacarIngresosListComponent, RentacarIngresosFormComponent],
+  declarations: [RentacarEgresosComponent, RentacarIngresosComponent, RentacarHomeComponent, RentacarEgresosFormComponent, RentacarEgresosListComponent, RentacarIngresosListComponent, RentacarIngresosFormComponent, RentacarModalDetallePagosComponent],
   imports: [
     CommonModule,
     RentacarRoutingModule,

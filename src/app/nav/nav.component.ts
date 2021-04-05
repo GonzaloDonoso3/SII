@@ -26,18 +26,18 @@ export class NavComponent {
       { name: 'HOSTAL', icon: 'bed', url: 'hostal' },
       { name: 'LUBRICENTRO', icon: 'commute', url: 'lubricentro' },
       { name: 'RENTACAR', icon: 'directions_car', url: 'rentacar' },
-      /*       { name: 'INMOBILIARIA', icon: 'chair', url: 'inmobiliaria' },
-            { name: 'FIRMA ABOGADOS', icon: 'account_balance', url: 'firmaAbogado' },
-            { name: 'AGROFIRMA PROYECTOS', icon: 'agriculture', url: 'agrofirma' } */
+      { name: 'INMOBILIARIA', icon: 'chair', url: 'inmobiliaria' },
+      { name: 'FIRMA ABOGADOS', icon: 'account_balance', url: 'firmaAbogado' },
+      { name: 'AGROFIRMA PROYECTOS', icon: 'agriculture', url: 'agrofirma' }
     ];
     this.subMenuItems = [
       { name: 'INGRESOS', icon: 'align_horizontal_right', url: 'ingresos' },
       {
         name: 'EGRESOS', icon: 'align_horizontal_right', url: 'egresos'
       },
-      /*  { name: 'ACTIVOS', icon: 'align_horizontal_right', url: '' },
-       { name: 'PASIVOS', icon: 'align_horizontal_right', url: '' },
-       { name: 'CONSOLIDADOS', icon: 'align_horizontal_right', url: '' } */
+      { name: 'ACTIVOS', icon: 'align_horizontal_right', url: '' },
+      { name: 'PASIVOS', icon: 'align_horizontal_right', url: '' },
+      { name: 'CONSOLIDADOS', icon: 'align_horizontal_right', url: '' }
     ];
   }
 

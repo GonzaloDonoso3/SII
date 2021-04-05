@@ -1,0 +1,82 @@
+<h1 mat-dialog-title>Arriendo Nº {{data.infoArriendo.numeroArriendo}}</h1>
+
+
+<div mat-dialog-content>
+
+    <mat-card-content>
+        <table class="example-full-width" cellspacing="0">
+            <tr>
+                <td>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Responsble</mat-label>
+                        <input disabled matInput [value]="data.infoArriendo.usuario">
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Sucursal</mat-label>
+                        <input disabled matInput [value]="data.infoArriendo.sucursalResponsable">
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>tipo</mat-label>
+                        <input disabled matInput [value]="data.infoArriendo.tipo">
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>estado</mat-label>
+                        <input disabled matInput [value]="data.infoArriendo.estado">
+                    </mat-form-field>
+                </td>
+            </tr>
+        </table>
+
+        <br><br>
+        <h2>Pagos cliente</h2>
+
+        <table style='width: 100%;' mat-table [dataSource]="pagosCliente" class="mat-elevation-z8">
+
+            <ng-container matColumnDef="monto">
+                <th mat-header-cell *matHeaderCellDef> monto </th>
+                <td mat-cell *matCellDef="let element"> {{element.monto | currency: "$":"symbol":"1.0-0"}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="dias">
+                <th mat-header-cell *matHeaderCellDef> dias </th>
+                <td mat-cell *matCellDef="let element"> {{element.dias}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="estado">
+                <th mat-header-cell *matHeaderCellDef> estado </th>
+                <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="descripcion">
+                <th mat-header-cell *matHeaderCellDef> descripcion </th>
+                <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="fecha">
+                <th mat-header-cell *matHeaderCellDef> fecha </th>
+                <td mat-cell *matCellDef="let element"> {{element.fecha | date: 'dd/MM/yyyy hh:mm a'}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="pagosClienteColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: pagosClienteColumns;"></tr>
+        </table>
+        <mat-expansion-panel (opened)="panelOpenStatePagoCliente = true" (closed)="panelOpenStatePagoCliente = false">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    mostrar comprobantes
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <li>
+                comprobante x
+            </li>
+        </mat-expansion-panel>
+
+    </mat-card-content>
+
+</div>

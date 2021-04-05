@@ -7,10 +7,12 @@ import { RentacarService } from './../../rentacar.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AlertHelper } from '@app/_helpers/alert.helper';
 import { ResponseListaArriendos, Arriendo } from '@app/_models/rentacar/responseListaArriendos';
+import { MatDialog } from '@angular/material/dialog'
+import { RentacarModalDetallePagosComponent } from './rentacar-modal-detalle-pagos/rentacar-modal-detalle-pagos.component';
 
 interface ArriendoTabla {
   id: number;
-  fecha: string;
+  fecha: Date;
   ingreso: number;
   tipo: string;
   estado: string;
@@ -28,6 +30,7 @@ interface ArriendoTabla {
 export class RentacarIngresosListComponent implements OnInit {
 
   arriendosTabla: ArriendoTabla[] = [];
+
   totalEsperadoSeleccion: number = 0;
   totalPagadoSeleccion: number = 0;
 
@@ -39,22 +42,20 @@ export class RentacarIngresosListComponent implements OnInit {
   @ViewChild(MatSort) sort = null;
 
   //filtros
-  rangoFecha = new FormGroup({
+  rangoFechaFilter = new FormGroup({
     start: new FormControl(),
     end: new FormControl(),
   });
 
 
 
-
-
-  constructor(private rentacarService: RentacarService, private alert: AlertHelper) { }
+  constructor(private rentacarService: RentacarService, private alert: AlertHelper, public dialog: MatDialog) { }
 
 
   ngOnInit(): void {
     this.cargarListaPagosArriendos();
+    this.filtrarFecha();
   }
-
 
 
 
@@ -73,14 +74,14 @@ export class RentacarIngresosListComponent implements OnInit {
     listArriendo.forEach(arriendo => {
       this.arriendosTabla.push({
         id: arriendo.infoArriendo.numeroArriendo,
-        fecha: arriendo.infoArriendo.fechaDespacho,
+        fecha: new Date(arriendo.infoArriendo.fechaDespacho),
         ingreso: arriendo.infoPagos.ingresoTotal,
         tipo: arriendo.infoArriendo.tipo,
         estado: arriendo.infoArriendo.estado,
         dias: arriendo.infoArriendo.diasTotales,
         sucursal: arriendo.infoArriendo.sucursalResponsable,
         arriendo: arriendo
-      })
+      });
     });
     this.dataSource = new MatTableDataSource(this.arriendosTabla);
     this.dataSource.paginator = this.paginator;
@@ -90,13 +91,33 @@ export class RentacarIngresosListComponent implements OnInit {
 
 
   mostrarDetalleArriendo(arriendo: Arriendo) {
-    console.log(arriendo);
+    this.dialog.open(RentacarModalDetallePagosComponent, {
+      height: '80%',
+      width: '80%',
+      data: arriendo
+    });
   }
 
 
 
-  limpiarFiltros() {
+  filtrarFecha(): void {
 
+    this.rangoFechaFilter.valueChanges.subscribe(res => {
+      if (res.start != null && res.end != null) {
+        const rango = this.rangoFechaFilter.value;
+        //filtro
+        const dataFiltered = this.arriendosTabla.filter((data: ArriendoTabla) => data.fecha >= rango.start && data.fecha <= rango.end);
+        this.dataSource = new MatTableDataSource(dataFiltered);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }
+    });
+  }
+
+  limpiarFiltros() {
+    this.dataSource = new MatTableDataSource(this.arriendosTabla);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   revelarTotal() {

@@ -39,29 +39,23 @@
         </ng-container>
 
         <ng-container matColumnDef="fecha">
-            <!--  <th mat-header-cell *matHeaderCellDef mat-sort-header> fecha </th>
- -->
-
-            <th mat-header-cell *matHeaderCellDef>
-                <mat-form-field appearance="fill">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <mat-form-field>
                     <mat-label>Fecha</mat-label>
-                    <mat-date-range-input [formGroup]="rangoFecha" [rangePicker]="picker">
-                        <input matStartDate formControlName="start" placeholder="Start date" />
-                        <input matEndDate formControlName="end" placeholder="End date" />
+                    <mat-date-range-input [formGroup]="rangoFechaFilter" [rangePicker]="picker">
+                        <input matStartDate formControlName="start" placeholder="Fecha inicio" />
+                        <input matEndDate formControlName="end" placeholder="Fecha fin" />
                     </mat-date-range-input>
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-date-range-picker #picker></mat-date-range-picker>
-
-                    <mat-error *ngIf="rangoFecha.controls.start.hasError('matStartDateInvalid')">Invalid start date
+                    <mat-error *ngIf="rangoFechaFilter.controls.start.hasError('matStartDateInvalid')">Invalid start
+                        date
                     </mat-error>
-                    <mat-error *ngIf="rangoFecha.controls.end.hasError('matEndDateInvalid')">Invalid end date
+                    <mat-error *ngIf="rangoFechaFilter.controls.end.hasError('matEndDateInvalid')">Invalid end date
                     </mat-error>
                 </mat-form-field>
             </th>
-
-
-
-            <td mat-cell *matCellDef="let element"> {{element.fecha}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.fecha | date: 'dd/MM/yyyy hh:mm a'}} </td>
         </ng-container>
 
         <ng-container matColumnDef="ingreso">

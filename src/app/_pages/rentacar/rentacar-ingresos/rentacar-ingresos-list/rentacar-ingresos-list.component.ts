@@ -82,6 +82,10 @@ export class RentacarIngresosListComponent implements OnInit {
         sucursal: arriendo.infoArriendo.sucursalResponsable,
         arriendo: arriendo
       });
+
+      if (arriendo.infoPagos.arrayPagosExtras.pagos.length > 0) {
+        console.log(arriendo.infoArriendo.numeroArriendo);
+      }
     });
     this.dataSource = new MatTableDataSource(this.arriendosTabla);
     this.dataSource.paginator = this.paginator;

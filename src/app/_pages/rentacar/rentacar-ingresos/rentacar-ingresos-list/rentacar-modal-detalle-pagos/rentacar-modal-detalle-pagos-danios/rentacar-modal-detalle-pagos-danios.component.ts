@@ -1,4 +1,15 @@
+import { Comprobante, ArrayPagosDanioClass, ArrayPagosDanioPago } from './../../../../../../_models/rentacar/responseListaArriendos';
+import { MatTableDataSource } from '@angular/material/table';
 import { Component, OnInit, Input } from '@angular/core';
+
+
+
+interface PagoDanio {
+  monto: number;
+  estado: string;
+  detalle: string;
+  fecha: Date;
+}
 
 @Component({
   selector: 'app-rentacar-modal-detalle-pagos-danios',
@@ -7,10 +18,38 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class RentacarModalDetallePagosDaniosComponent implements OnInit {
 
-  @Input() arrayPagosDanio: any
+  @Input() arrayPagosDanio: any;
+
+  pagosTabla: PagoDanio[] = [];
+  comprobantes: Comprobante[] = [];
+  dataSource = new MatTableDataSource<PagoDanio>();
+  displayedColumns: string[] = ['monto', 'estado', 'detalle', 'fecha'];
+  panelOpenState: boolean = false;
+
+
   constructor() { }
 
+
   ngOnInit(): void {
+    this.cargarPagos(this.arrayPagosDanio);
+  }
+
+
+  cargarPagos(pagosCliente: ArrayPagosDanioClass): void {
+    this.comprobantes = pagosCliente.comprobantes;
+    pagosCliente.pagos.forEach((pago: ArrayPagosDanioPago) => {
+      this.pagosTabla.push({
+        monto: pago.monto,
+        estado: pago.estado ? pago.estado : 'PAGADO',
+        detalle: pago.detalle,
+        fecha: pago.updatedAt
+      })
+    })
+    this.dataSource = new MatTableDataSource(this.pagosTabla);
+  }
+
+  descargarFile(url: string) {
+    window.open(url);
   }
 
 }

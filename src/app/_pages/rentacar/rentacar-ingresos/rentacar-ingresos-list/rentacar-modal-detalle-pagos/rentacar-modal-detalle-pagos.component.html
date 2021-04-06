@@ -79,20 +79,23 @@
     </mat-card-content>
 
 
-    <mat-card-content *ngIf="data.infoPagos.arrayPagosExtras.pagos.length != 0">
+    <!-- *ngIf="data.infoPagos.arrayPagosDanio.pagos.length != 0"  -->
+    <mat-card-content>
+        <br><br>
+        <br><br>
+        <app-rentacar-modal-detalle-pagos-danios [arrayPagosDanio]="arrayPagosDanio">
+        </app-rentacar-modal-detalle-pagos-danios>
+    </mat-card-content>
+
+
+    <!--*ngIf="data.infoPagos.arrayPagosExtras.pagos.length != 0"  -->
+    <mat-card-content>
         <br><br>
         <br><br>
         <app-rentacar-modal-detalle-pagos-extras [arrayPagosExtra]="arrayPagosExtra">
         </app-rentacar-modal-detalle-pagos-extras>
     </mat-card-content>
 
-
-    <mat-card-content *ngIf="data.infoPagos.arrayPagosDanio.pagos.length != 0">
-        <br><br>
-        <br><br>
-        <app-rentacar-modal-detalle-pagos-danios [arrayPagosDanio]="arrayPagosDanio">
-        </app-rentacar-modal-detalle-pagos-danios>
-    </mat-card-content>
 
 
     <br><br>

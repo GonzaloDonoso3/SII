@@ -22,8 +22,6 @@ export class RentacarModalDetallePagosComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.data.infoPagos);
-
     this.arrayPagosCliente = this.data.infoPagos.arrayPagosCliente;
     this.arrayPagosReemplazo = this.data.infoPagos.arrayPagosReemplazo;
     this.arrayPagosExtra = this.data.infoPagos.arrayPagosExtras;

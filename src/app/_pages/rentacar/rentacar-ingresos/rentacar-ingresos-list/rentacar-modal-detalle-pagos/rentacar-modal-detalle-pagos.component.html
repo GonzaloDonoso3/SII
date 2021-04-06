@@ -2,13 +2,14 @@
 
 
 <div mat-dialog-content>
-
+    <br>
+    <h2>Informacion del arriendo</h2>
     <mat-card-content>
         <table class="example-full-width" cellspacing="0">
             <tr>
                 <td>
                     <mat-form-field class="example-full-width">
-                        <mat-label>Responsble</mat-label>
+                        <mat-label>Responsable</mat-label>
                         <input disabled matInput [value]="data.infoArriendo.usuario">
                     </mat-form-field>
                 </td>
@@ -31,52 +32,70 @@
                     </mat-form-field>
                 </td>
             </tr>
+            <br>
+            <tr>
+                <td>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>nombre cliente</mat-label>
+                        <input disabled matInput [value]="data.infoCliente.nombre">
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>rut cliente</mat-label>
+                        <input disabled matInput [value]="data.infoCliente.rut">
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>patente vehiculo</mat-label>
+                        <input disabled matInput [value]="data.infoVehiculo.patente">
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>modelo vehiculo</mat-label>
+                        <input disabled matInput [value]="data.infoVehiculo.modelo">
+                    </mat-form-field>
+                </td>
+            </tr>
         </table>
-
-        <br><br>
-        <h2>Pagos cliente</h2>
-
-        <table style='width: 100%;' mat-table [dataSource]="pagosCliente" class="mat-elevation-z8">
-
-            <ng-container matColumnDef="monto">
-                <th mat-header-cell *matHeaderCellDef> monto </th>
-                <td mat-cell *matCellDef="let element"> {{element.monto | currency: "$":"symbol":"1.0-0"}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="dias">
-                <th mat-header-cell *matHeaderCellDef> dias </th>
-                <td mat-cell *matCellDef="let element"> {{element.dias}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="estado">
-                <th mat-header-cell *matHeaderCellDef> estado </th>
-                <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="descripcion">
-                <th mat-header-cell *matHeaderCellDef> descripcion </th>
-                <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="fecha">
-                <th mat-header-cell *matHeaderCellDef> fecha </th>
-                <td mat-cell *matCellDef="let element"> {{element.fecha | date: 'dd/MM/yyyy hh:mm a'}} </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="pagosClienteColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: pagosClienteColumns;"></tr>
-        </table>
-        <mat-expansion-panel (opened)="panelOpenStatePagoCliente = true" (closed)="panelOpenStatePagoCliente = false">
-            <mat-expansion-panel-header>
-                <mat-panel-title>
-                    mostrar comprobantes
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-            <li>
-                comprobante x
-            </li>
-        </mat-expansion-panel>
-
     </mat-card-content>
+
+
+    <mat-card-content>
+        <br><br>
+        <br><br>
+        <app-rentacar-modal-detalle-pagos-clientes [arrayPagosCliente]="arrayPagosCliente">
+        </app-rentacar-modal-detalle-pagos-clientes>
+    </mat-card-content>
+
+
+    <mat-card-content *ngIf="data.infoArriendo.tipo==='REEMPLAZO' ">
+        <br><br>
+        <br><br>
+        <app-rentacar-modal-detalle-pagos-reemplazos [arrayPagosReemplazo]="arrayPagosReemplazo">
+        </app-rentacar-modal-detalle-pagos-reemplazos>
+    </mat-card-content>
+
+
+    <mat-card-content *ngIf="data.infoPagos.arrayPagosExtras.pagos.length != 0">
+        <br><br>
+        <br><br>
+        <app-rentacar-modal-detalle-pagos-extras [arrayPagosExtra]="arrayPagosExtra">
+        </app-rentacar-modal-detalle-pagos-extras>
+    </mat-card-content>
+
+
+    <mat-card-content *ngIf="data.infoPagos.arrayPagosDanio.pagos.length != 0">
+        <br><br>
+        <br><br>
+        <app-rentacar-modal-detalle-pagos-danios [arrayPagosDanio]="arrayPagosDanio">
+        </app-rentacar-modal-detalle-pagos-danios>
+    </mat-card-content>
+
+
+    <br><br>
+    <br><br>
 
 </div>

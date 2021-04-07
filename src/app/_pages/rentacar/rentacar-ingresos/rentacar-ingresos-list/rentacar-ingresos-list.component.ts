@@ -35,7 +35,7 @@ export class RentacarIngresosListComponent implements OnInit {
   totalPagadoSeleccion: number = 0;
 
   //configuraciones tabla
-  displayedColumns: string[] = ['select', 'id', 'fecha', 'ingreso', 'tipo', 'estado', 'dias', 'sucursal', 'arriendo'];
+  displayedColumns: string[] = ['select', 'id', 'fecha', 'ingreso', 'dias', 'tipo', 'estado', 'sucursal', 'arriendo'];
   dataSource = new MatTableDataSource<ArriendoTabla>();
   selection = new SelectionModel<ArriendoTabla>(true, []);
   @ViewChild(MatPaginator) paginator = null;
@@ -47,6 +47,18 @@ export class RentacarIngresosListComponent implements OnInit {
     end: new FormControl(),
   });
 
+  tipoFilter = new FormGroup({
+    tipo: new FormControl(),
+  });
+
+  estadoFilter = new FormGroup({
+    estado: new FormControl(),
+  })
+
+  sucursalFilter = new FormGroup({
+    sucursal: new FormControl(),
+  })
+
 
 
   constructor(private rentacarService: RentacarService, private alert: AlertHelper, public dialog: MatDialog) { }
@@ -55,6 +67,9 @@ export class RentacarIngresosListComponent implements OnInit {
   ngOnInit(): void {
     this.cargarListaPagosArriendos();
     this.filtrarFecha();
+    this.filtrarTipo();
+    this.filterEstado();
+    this.filtrarSucursal()
   }
 
 
@@ -83,9 +98,6 @@ export class RentacarIngresosListComponent implements OnInit {
         arriendo: arriendo
       });
 
-      if (arriendo.infoPagos.arrayPagosExtras.pagos.length > 0) {
-        console.log(arriendo.infoArriendo.numeroArriendo);
-      }
     });
     this.dataSource = new MatTableDataSource(this.arriendosTabla);
     this.dataSource.paginator = this.paginator;
@@ -105,28 +117,72 @@ export class RentacarIngresosListComponent implements OnInit {
 
 
   filtrarFecha(): void {
-
     this.rangoFechaFilter.valueChanges.subscribe(res => {
       if (res.start != null && res.end != null) {
         const rango = this.rangoFechaFilter.value;
         //filtro
         const dataFiltered = this.arriendosTabla.filter((data: ArriendoTabla) => data.fecha >= rango.start && data.fecha <= rango.end);
-        this.dataSource = new MatTableDataSource(dataFiltered);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+        this.realizarFiltro(dataFiltered)
       }
     });
   }
 
+  filtrarTipo(): void {
+    this.tipoFilter.valueChanges.subscribe(res => {
+      let filterValue = res.tipo;
+      const dataFiltered = this.arriendosTabla.filter((data: ArriendoTabla) => data.tipo == filterValue);
+      this.realizarFiltro(dataFiltered)
+    });
+  }
+
+  filterEstado() {
+    this.estadoFilter.valueChanges.subscribe(res => {
+      let filterValue = res.estado;
+      const dataFiltered = this.arriendosTabla.filter((data: ArriendoTabla) => data.estado == filterValue);
+      this.realizarFiltro(dataFiltered)
+    });
+  }
+
+  filtrarSucursal(): void {
+    this.sucursalFilter.valueChanges.subscribe(res => {
+      let filterValue = res.sucursal;
+      const dataFiltered = this.arriendosTabla.filter((data: ArriendoTabla) => data.sucursal == filterValue);
+      this.realizarFiltro(dataFiltered)
+
+      /* 
+      this.dataSource.filterPredicate = (data: ArriendoTabla, filter: string) => data.sucursal.includes(filter);
+      this.dataSource.filter = filterValue;
+      this.dataSource.paginator = this.paginator; */
+    });
+  }
+
+
+  realizarFiltro(dataFiltered: ArriendoTabla[]) {
+    this.dataSource = new MatTableDataSource(dataFiltered);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
   limpiarFiltros() {
+
+    //reiniciar valores
+    this.sucursalFilter.patchValue({ sucursal: '' })
+    this.estadoFilter.patchValue({ estado: '' })
+    this.tipoFilter.patchValue({ tipo: '' })
+    this.rangoFechaFilter.patchValue({ start: null, end: null, })
+    this.totalEsperadoSeleccion = 0;
+    this.totalPagadoSeleccion = 0;
+
     this.dataSource = new MatTableDataSource(this.arriendosTabla);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+
   }
 
   revelarTotal() {
     let ingresoEsperado = 0;
     let ingresoPagado = 0;
+
     this.selection.selected.forEach((arriendosTabla: ArriendoTabla) => {
       ingresoEsperado = ingresoEsperado + arriendosTabla.ingreso;
 

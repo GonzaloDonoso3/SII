@@ -62,6 +62,31 @@
         </table>
     </mat-card-content>
 
+    <mat-expansion-panel style="width: 400px;" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                mostrar contratos generados
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <table *ngIf="panelOpenState" class="example-full-width" cellspacing="0">
+            <tr style="text-align:center">
+                <th>Nº doc</th>
+                <th>fecha registro</th>
+                <th></th>
+            </tr>
+            <tr *ngFor="let c of  this.data.infoArriendo.contratos" style="text-align:center">
+                <td> {{c.numero}} </td>
+                <td> {{c.fecha | date: 'dd/MM/yyyy hh:mm a'}} </td>
+                <td>
+                    <button mat-mini-fab color="primary" (click)="descargarFile(c.url)">
+                        <mat-icon>file_download</mat-icon>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </mat-expansion-panel>
+
 
     <mat-card-content>
         <br><br>
@@ -79,8 +104,8 @@
     </mat-card-content>
 
 
-    <!-- *ngIf="data.infoPagos.arrayPagosDanio.pagos.length != 0"  -->
-    <mat-card-content>
+    <!--   -->
+    <mat-card-content *ngIf="data.infoPagos.arrayPagosDanio.pagos.length != 0">
         <br><br>
         <br><br>
         <app-rentacar-modal-detalle-pagos-danios [arrayPagosDanio]="arrayPagosDanio">
@@ -88,8 +113,8 @@
     </mat-card-content>
 
 
-    <!--*ngIf="data.infoPagos.arrayPagosExtras.pagos.length != 0"  -->
-    <mat-card-content>
+    <!--  -->
+    <mat-card-content *ngIf="data.infoPagos.arrayPagosExtras.pagos.length != 0">
         <br><br>
         <br><br>
         <app-rentacar-modal-detalle-pagos-extras [arrayPagosExtra]="arrayPagosExtra">

@@ -121,7 +121,6 @@ export class HostalIngresosFormComponent {
             this.ingreso.RespaldoIngresos.push({ url: name });
           }
           if (result.length > 0) {
-
             this.hostalService
               .ingresoRegistrar(this.ingreso)
               .pipe()

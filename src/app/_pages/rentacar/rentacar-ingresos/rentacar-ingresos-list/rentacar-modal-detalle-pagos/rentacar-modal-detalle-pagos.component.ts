@@ -18,6 +18,7 @@ export class RentacarModalDetallePagosComponent implements OnInit {
 
   panelOpenState: boolean = false;
 
+  montoTotal: number = 0;
 
   constructor(public dialogRef: MatDialogRef<RentacarModalDetallePagosComponent>, @Inject(MAT_DIALOG_DATA) public data: Arriendo) {
 
@@ -28,6 +29,8 @@ export class RentacarModalDetallePagosComponent implements OnInit {
     this.arrayPagosReemplazo = this.data.infoPagos.arrayPagosReemplazo;
     this.arrayPagosExtra = this.data.infoPagos.arrayPagosExtras;
     this.arrayPagosDanio = this.data.infoPagos.arrayPagosDanio;
+
+    this.montoTotal = this.data.infoPagos.ingresoTotal;
   }
 
   descargarFile(url: string) {

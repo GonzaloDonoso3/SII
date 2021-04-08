@@ -12,10 +12,16 @@ import { RentacarIngresosListComponent } from './rentacar-ingresos/rentacar-ingr
 import { ComponentsModule } from '@app/_components/components.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RentacarIngresosFormComponent } from './rentacar-ingresos/rentacar-ingresos-form/rentacar-ingresos-form.component';
+import { RentacarModalDetallePagosComponent } from './rentacar-ingresos/rentacar-ingresos-list/rentacar-modal-detalle-pagos/rentacar-modal-detalle-pagos.component';
+import { RentacarModalDetallePagosClientesComponent } from './rentacar-ingresos/rentacar-ingresos-list/rentacar-modal-detalle-pagos/rentacar-modal-detalle-pagos-clientes/rentacar-modal-detalle-pagos-clientes.component';
+import { RentacarModalDetallePagosReemplazosComponent } from './rentacar-ingresos/rentacar-ingresos-list/rentacar-modal-detalle-pagos/rentacar-modal-detalle-pagos-reemplazos/rentacar-modal-detalle-pagos-reemplazos.component';
+import { RentacarModalDetallePagosDaniosComponent } from './rentacar-ingresos/rentacar-ingresos-list/rentacar-modal-detalle-pagos/rentacar-modal-detalle-pagos-danios/rentacar-modal-detalle-pagos-danios.component';
+import { RentacarModalDetallePagosExtrasComponent } from './rentacar-ingresos/rentacar-ingresos-list/rentacar-modal-detalle-pagos/rentacar-modal-detalle-pagos-extras/rentacar-modal-detalle-pagos-extras.component';
+import { RentacarIngresosList2Component } from './rentacar-ingresos/rentacar-ingresos-list2/rentacar-ingresos-list2.component';
 
 
 @NgModule({
-  declarations: [RentacarEgresosComponent, RentacarIngresosComponent, RentacarHomeComponent, RentacarEgresosFormComponent, RentacarEgresosListComponent, RentacarIngresosListComponent, RentacarIngresosFormComponent],
+  declarations: [RentacarEgresosComponent, RentacarIngresosComponent, RentacarHomeComponent, RentacarEgresosFormComponent, RentacarEgresosListComponent, RentacarIngresosListComponent, RentacarIngresosFormComponent, RentacarModalDetallePagosComponent, RentacarModalDetallePagosClientesComponent, RentacarModalDetallePagosReemplazosComponent, RentacarModalDetallePagosDaniosComponent, RentacarModalDetallePagosExtrasComponent, RentacarIngresosList2Component],
   imports: [
     CommonModule,
     RentacarRoutingModule,

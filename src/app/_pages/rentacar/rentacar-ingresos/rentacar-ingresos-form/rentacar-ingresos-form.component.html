@@ -1,1 +1,71 @@
-<p>rentacar-ingresos-form works!</p>
+<form [formGroup]="ingresoForm" novalidate (ngSubmit)="onSubmit()" class="mat-elevation-z10">
+    <mat-card class="shipping-card">
+        <mat-card-header>
+            <h1> Ingresos Rent A Car </h1>
+        </mat-card-header>
+        <br><br>
+        <mat-card-content>
+            <div class="row">
+
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Descripción Ingreso" formControlName="descripcionIngreso" />
+                        <mat-error *ngIf="ingresoForm.controls['descripcionIngreso'].hasError('required')">
+                            este campo es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <mat-label>Seleccionar fecha</mat-label>
+                        <input matInput formControlName="fecha" [matDatepicker]="picker" />
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error *ngIf="ingresoForm.controls['fecha'].hasError('required')">
+                            fecha es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Monto" formControlName="monto" />
+                        <mat-error *ngIf="ingresoForm.controls['monto'].hasError('required')">
+                            cliente es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <mat-select placeholder="Tipo Ingreso" formControlName="tipoIngreso">
+                            <mat-option value="Venta">
+                                Venta
+                            </mat-option>
+                            <mat-option value="Arriendo">
+                                Arriendo
+                            </mat-option>
+                            <mat-option value="Licitacion">
+                                Licitacion
+                            </mat-option>
+                            <mat-option value="Otro">
+                                Otro
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="ingresoForm.controls['tipoIngreso'].hasError('required')">
+                            tipo ingreso es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-card-content>
+
+        <!-- botón enviar -->
+        <mat-card-actions>
+            <button mat-raised-button color="primary" type="submit">
+                <mat-icon>send</mat-icon> Enviar
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</form>

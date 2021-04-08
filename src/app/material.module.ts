@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
+import { MatNativeDateModule, MatRippleModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { A11yModule } from '@angular/cdk/a11y';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -46,6 +46,9 @@ import { OverlayModule } from '@angular/cdk/overlay';
 
 @NgModule({
   declarations: [],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'es-CR' },
+  ],
   imports: [
     A11yModule,
     ClipboardModule,

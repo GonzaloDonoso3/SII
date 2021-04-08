@@ -35,9 +35,9 @@ export class NavComponent {
       {
         name: 'EGRESOS', icon: 'align_horizontal_right', url: 'egresos'
       },
-      /*  { name: 'ACTIVOS', icon: 'align_horizontal_right', url: '' },
-       { name: 'PASIVOS', icon: 'align_horizontal_right', url: '' },
-       { name: 'CONSOLIDADOS', icon: 'align_horizontal_right', url: '' } */
+      { name: 'ACTIVOS', icon: 'align_horizontal_right', url: '' },
+      { name: 'PASIVOS', icon: 'align_horizontal_right', url: '' },
+      { name: 'CONSOLIDADOS', icon: 'align_horizontal_right', url: '' }
     ];
   }
 

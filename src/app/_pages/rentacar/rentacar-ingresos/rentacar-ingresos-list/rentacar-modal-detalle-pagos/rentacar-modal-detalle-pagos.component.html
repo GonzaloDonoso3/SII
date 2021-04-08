@@ -1,0 +1,129 @@
+<h1 mat-dialog-title>Arriendo Nº {{data.infoArriendo.numeroArriendo}}</h1>
+
+
+<div mat-dialog-content>
+    <br>
+    <h2>Informacion del arriendo</h2>
+    <mat-card-content>
+        <table class="example-full-width" cellspacing="0">
+            <tr>
+                <td>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Responsable</mat-label>
+                        <input disabled matInput [value]="data.infoArriendo.usuario">
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Sucursal</mat-label>
+                        <input disabled matInput [value]="data.infoArriendo.sucursalResponsable">
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>tipo</mat-label>
+                        <input disabled matInput [value]="data.infoArriendo.tipo">
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>estado</mat-label>
+                        <input disabled matInput [value]="data.infoArriendo.estado">
+                    </mat-form-field>
+                </td>
+            </tr>
+            <br>
+            <tr>
+                <td>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>nombre cliente</mat-label>
+                        <input disabled matInput [value]="data.infoCliente.nombre">
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>rut cliente</mat-label>
+                        <input disabled matInput [value]="data.infoCliente.rut">
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>patente vehiculo</mat-label>
+                        <input disabled matInput [value]="data.infoVehiculo.patente">
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>modelo vehiculo</mat-label>
+                        <input disabled matInput [value]="data.infoVehiculo.modelo">
+                    </mat-form-field>
+                </td>
+            </tr>
+        </table>
+    </mat-card-content>
+
+    <mat-expansion-panel style="width: 400px;" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                mostrar contratos generados
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <table *ngIf="panelOpenState" class="example-full-width" cellspacing="0">
+            <tr style="text-align:center">
+                <th>Nº doc</th>
+                <th>fecha registro</th>
+                <th></th>
+            </tr>
+            <tr *ngFor="let c of  this.data.infoArriendo.contratos" style="text-align:center">
+                <td> {{c.numero}} </td>
+                <td> {{c.fecha | date: 'dd/MM/yyyy hh:mm a'}} </td>
+                <td>
+                    <button mat-mini-fab color="primary" (click)="descargarFile(c.url)">
+                        <mat-icon>file_download</mat-icon>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </mat-expansion-panel>
+
+
+    <mat-card-content>
+        <br><br>
+        <br><br>
+        <app-rentacar-modal-detalle-pagos-clientes [arrayPagosCliente]="arrayPagosCliente">
+        </app-rentacar-modal-detalle-pagos-clientes>
+    </mat-card-content>
+
+
+    <mat-card-content *ngIf="data.infoArriendo.tipo==='REEMPLAZO' ">
+        <br><br>
+        <br><br>
+        <app-rentacar-modal-detalle-pagos-reemplazos [arrayPagosReemplazo]="arrayPagosReemplazo">
+        </app-rentacar-modal-detalle-pagos-reemplazos>
+    </mat-card-content>
+
+
+    <!--   -->
+    <mat-card-content *ngIf="data.infoPagos.arrayPagosDanio.pagos.length != 0">
+        <br><br>
+        <br><br>
+        <app-rentacar-modal-detalle-pagos-danios [arrayPagosDanio]="arrayPagosDanio">
+        </app-rentacar-modal-detalle-pagos-danios>
+    </mat-card-content>
+
+
+    <!--  -->
+    <mat-card-content *ngIf="data.infoPagos.arrayPagosExtras.pagos.length != 0">
+        <br><br>
+        <br><br>
+        <app-rentacar-modal-detalle-pagos-extras [arrayPagosExtra]="arrayPagosExtra">
+        </app-rentacar-modal-detalle-pagos-extras>
+    </mat-card-content>
+
+
+
+    <br><br>
+    <br><br>
+
+</div>

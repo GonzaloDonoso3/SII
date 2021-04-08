@@ -1,3 +1,4 @@
+
 export interface ResponseListaArriendos {
     success: boolean;
     data: Arriendo[];
@@ -16,21 +17,22 @@ export interface InfoArriendo {
     numeroArriendo: number;
     estado: InfoArriendoEstado;
     tipo: InfoArriendoTipo;
-    fechaDespacho: string;
-    fechaRecepcion: string;
+    fechaDespacho: Date;
+    fechaRecepcion: Date;
     sucursalResponsable: SucursalResponsable;
     diasTotales: number;
+    usuario: Usuario;
 }
 
 export interface Contrato {
     numero: number;
-    fecha: string;
+    fecha: Date;
     url: string;
 }
 
 export enum InfoArriendoEstado {
     Activo = "ACTIVO",
-    EConfirmado = "E-CONFIRMADO",
+    Confirmado = "CONFIRMADO",
     Finalizado = "FINALIZADO",
     Firmado = "FIRMADO",
     Pendiente = "PENDIENTE",
@@ -48,6 +50,15 @@ export enum InfoArriendoTipo {
     Empresa = "EMPRESA",
     Particular = "PARTICULAR",
     Reemplazo = "REEMPLAZO",
+}
+
+export enum Usuario {
+    CarolinaGrupoFirma = "CAROLINA GRUPO FIRMA",
+    ContactoRancagua = "CONTACTO RANCAGUA",
+    DiegoAntonioRiosRojas = "DIEGO ANTONIO RIOS ROJAS",
+    IndiraGrupoFirma = "INDIRA GRUPO FIRMA",
+    KarlaBarreto = "KARLA BARRETO",
+    RitaAravenaVasquez = "RITA ARAVENA VASQUEZ",
 }
 
 export interface InfoCliente {
@@ -99,7 +110,7 @@ export interface ArrayPagosClientePago {
     monto: number;
     deudor: string;
     estado: PagoEstado;
-    updatedAt: string;
+    updatedAt: Date;
     descripcion?: string;
 }
 
@@ -118,15 +129,34 @@ export interface ArrayPagosDanioClass {
 export interface ArrayPagosDanioPago {
     monto: number;
     detalle: string;
-    updatedAt: string;
     estado?: PagoEstado;
+    updatedAt: Date;
 }
 
 export interface InfoVehiculo {
     patente: string;
-    marca: string;
+    marca: Marca;
     modelo: string;
     año: number;
     kilomentrosEnDespacho: number;
     kilomentrosEnRecepcion: number | null;
+}
+
+export enum Marca {
+    Chevrolet = "CHEVROLET",
+    Fiat = "FIAT ",
+    Hyundai = "HYUNDAI",
+    Kia = "KIA ",
+    MarcaCHEVROLET = "CHEVROLET ",
+    MarcaKIA = "KIA",
+    MarcaNISSAN = "NISSAN",
+    MarcaRENAULT = "RENAULT",
+    MarcaSSANYONG = "SSANYONG",
+    MarcaVOLKSWAGEN = "VOLKSWAGEN ",
+    Mitsubichi = "MITSUBICHI ",
+    Mitsubishi = "MITSUBISHI ",
+    Nissan = "NISSAN ",
+    Renault = "RENAULT ",
+    Ssanyong = "SSANYONG ",
+    Volkswagen = "VOLKSWAGEN",
 }

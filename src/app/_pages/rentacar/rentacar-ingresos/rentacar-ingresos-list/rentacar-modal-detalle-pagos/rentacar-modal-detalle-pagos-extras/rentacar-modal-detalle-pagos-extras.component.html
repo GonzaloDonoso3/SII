@@ -1,0 +1,56 @@
+<h2>Pagos Extras efectuados por el cliente</h2>
+<table style='width: 100%;' mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="monto">
+        <th mat-header-cell *matHeaderCellDef> monto </th>
+        <td mat-cell *matCellDef="let element"> {{element.monto | currency: "$":"symbol":"1.0-0"}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="estado">
+        <th mat-header-cell *matHeaderCellDef> estado </th>
+        <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="detalle">
+        <th mat-header-cell *matHeaderCellDef> detalle </th>
+        <td mat-cell *matCellDef="let element"> {{element.detalle}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="fecha">
+        <th mat-header-cell *matHeaderCellDef> fecha </th>
+        <td mat-cell *matCellDef="let element"> {{element.fecha | date: 'dd/MM/yyyy hh:mm a'}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            mostrar comprobantes
+        </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <table *ngIf="panelOpenState" class="example-full-width" cellspacing="0">
+        <tr style="text-align:center">
+            <th>Nº doc</th>
+            <th>Tipo</th>
+            <th>Metodo pago</th>
+            <th>Abono</th>
+            <th></th>
+        </tr>
+        <tr *ngFor="let c of comprobantes" style="text-align:center">
+            <td> {{c.folio}} </td>
+            <td> {{c.tipo}} </td>
+            <td> {{c.metodoPago}} </td>
+            <td> {{c.abono | currency: "$":"symbol":"1.0-0"}} </td>
+            <td>
+                <button mat-mini-fab color="primary" (click)="descargarFile(c.url)">
+                    <mat-icon>file_download</mat-icon>
+                </button>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <h3 style="text-align:center" *ngIf="panelOpenState&&comprobantes.length===0">No hay comprobante subido</h3>
+</mat-expansion-panel>

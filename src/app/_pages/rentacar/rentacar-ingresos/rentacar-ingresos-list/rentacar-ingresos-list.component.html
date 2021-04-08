@@ -39,24 +39,24 @@
         </ng-container>
 
         <ng-container matColumnDef="fecha">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <th mat-header-cell *matHeaderCellDef>
                 <mat-form-field>
                     <mat-label>Fecha</mat-label>
-                    <mat-date-range-input [formGroup]="rangoFechaFilter" [rangePicker]="picker">
+                    <mat-date-range-input [formGroup]="formFilter" [rangePicker]="picker">
                         <input matStartDate formControlName="start" placeholder="Fecha inicio" />
                         <input matEndDate formControlName="end" placeholder="Fecha fin" />
                     </mat-date-range-input>
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-date-range-picker #picker></mat-date-range-picker>
-                    <mat-error *ngIf="rangoFechaFilter.controls.start.hasError('matStartDateInvalid')">Invalid start
+                    <mat-error *ngIf="formFilter.controls.start.hasError('matStartDateInvalid')">Invalid start
                         date
                     </mat-error>
-                    <mat-error *ngIf="rangoFechaFilter.controls.end.hasError('matEndDateInvalid')">Invalid end date
+                    <mat-error *ngIf="formFilter.controls.end.hasError('matEndDateInvalid')">Invalid end date
                     </mat-error>
                 </mat-form-field>
             </th>
             <td style="text-align:center" mat-cell *matCellDef="let element">
-                {{element.fecha | date: 'dd/MM/yyyy hh:mm a'}}
+                {{element.fecha | date: 'dd/MM/yyyy'}}
             </td>
         </ng-container>
 
@@ -66,9 +66,22 @@
                 "$":"symbol":"1.0-0" }} </td>
         </ng-container>
 
+
+        <ng-container matColumnDef="patente">
+            <th mat-header-cell *matHeaderCellDef>
+                <div [formGroup]="formFilter">
+                    <mat-form-field class="fill">
+                        <input matInput placeholder="vehiculo" formControlName="patente" />
+                    </mat-form-field>
+                </div>
+            </th>
+            <td style="text-align:center" mat-cell *matCellDef="let element"> {{element.patente }} </td>
+        </ng-container>
+
+
         <ng-container matColumnDef="tipo">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                <div [formGroup]="tipoFilter">
+            <th mat-header-cell *matHeaderCellDef>
+                <div [formGroup]="formFilter">
                     <mat-form-field>
                         <mat-select placeholder="Tipo" formControlName="tipo">
                             <mat-option value="PARTICULAR"> PARTICULAR </mat-option>
@@ -82,8 +95,8 @@
         </ng-container>
 
         <ng-container matColumnDef="estado">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                <div [formGroup]="estadoFilter">
+            <th mat-header-cell *matHeaderCellDef>
+                <div [formGroup]="formFilter">
                     <mat-form-field>
                         <mat-select placeholder="Estado" formControlName="estado">
                             <mat-option value="PENDIENTE"> PENDIENTE </mat-option>
@@ -105,8 +118,8 @@
         </ng-container>
 
         <ng-container matColumnDef="sucursal">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                <div [formGroup]="sucursalFilter">
+            <th mat-header-cell *matHeaderCellDef>
+                <div [formGroup]="formFilter">
                     <mat-form-field>
                         <mat-select placeholder="sucursal" formControlName="sucursal">
                             <mat-option value="TALCA"> TALCA </mat-option>
@@ -123,10 +136,9 @@
         <ng-container matColumnDef="arriendo">
             <th mat-header-cell *matHeaderCellDef></th>
             <td style="text-align:center" mat-cell *matCellDef="let element">
-                <button mat-mini-fab color="primary" (click)="mostrarDetalleArriendo(element.arriendo)">
+                <button mat-mini-fab color="primary" (click)="mostrarModalDetalleArriendo(element.arriendo)">
                     <mat-icon>assignment</mat-icon>
                 </button>
-
             </td>
         </ng-container>
 

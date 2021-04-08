@@ -1,0 +1,89 @@
+<mat-toolbar color="primary">
+    <button mat-raised-button (click)="limpiarFiltros()" color="accent">
+        Limpiar filtros
+    </button>
+    <span>Otros Ingresos Rent A Car</span>
+    <span>Monto Registros Seleccionados
+        {{ totalEsperadoSeleccion | currency: "$":"symbol":"1.0-0" }} / {{ totalPagadoSeleccion | currency:
+        "$":"symbol":"1.0-0" }}
+    </span>
+    <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="revelarTotal()">
+        Revelar total
+    </button>
+</mat-toolbar>
+
+<!-- tabla -->
+<div class="table-responsive">
+
+    <table mat-table matSort [dataSource]="dataSource" matSortActive="id" matSortDirection="desc">
+
+        <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="$event ? masterToggle() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()">
+                </mat-checkbox>
+            </th>
+            <td style="text-align:center" mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)">
+                </mat-checkbox>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> id </th>
+            <td mat-cell *matCellDef="let element"> {{element.id }}</td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="fecha">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> fecha </th>
+            <td mat-cell *matCellDef="let element"> {{element.fecha | date: 'dd/MM/yyyy'}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="ingreso">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> ingreso </th>
+            <td mat-cell *matCellDef="let element"> {{element.ingreso | currency: "$":"symbol":"1.0-0" }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="respaldo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> respaldo </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-mini-fab>
+                    <mat-icon>get_app</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tipoIngreso">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> tipoIngreso </th>
+            <td mat-cell *matCellDef="let element"> {{element.tipoIngreso}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="descripcion">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> descripcion </th>
+            <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+
+    <!-- loading -->
+    <!--  <mat-grid-list cols="3" *ngIf="ingresoTabla.length === 0">
+        <mat-grid-tile></mat-grid-tile>
+        <mat-grid-tile>
+            <div>
+                <mat-spinner></mat-spinner>
+                <h4>Cargando tabla...</h4>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile></mat-grid-tile>
+    </mat-grid-list>
+ -->
+    <mat-paginator [pageSizeOptions]='[10,30,50,100]' showFirstLastButtons></mat-paginator>
+
+</div>

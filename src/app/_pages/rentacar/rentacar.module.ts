@@ -17,10 +17,11 @@ import { RentacarModalDetallePagosClientesComponent } from './rentacar-ingresos/
 import { RentacarModalDetallePagosReemplazosComponent } from './rentacar-ingresos/rentacar-ingresos-list/rentacar-modal-detalle-pagos/rentacar-modal-detalle-pagos-reemplazos/rentacar-modal-detalle-pagos-reemplazos.component';
 import { RentacarModalDetallePagosDaniosComponent } from './rentacar-ingresos/rentacar-ingresos-list/rentacar-modal-detalle-pagos/rentacar-modal-detalle-pagos-danios/rentacar-modal-detalle-pagos-danios.component';
 import { RentacarModalDetallePagosExtrasComponent } from './rentacar-ingresos/rentacar-ingresos-list/rentacar-modal-detalle-pagos/rentacar-modal-detalle-pagos-extras/rentacar-modal-detalle-pagos-extras.component';
+import { RentacarIngresosList2Component } from './rentacar-ingresos/rentacar-ingresos-list2/rentacar-ingresos-list2.component';
 
 
 @NgModule({
-  declarations: [RentacarEgresosComponent, RentacarIngresosComponent, RentacarHomeComponent, RentacarEgresosFormComponent, RentacarEgresosListComponent, RentacarIngresosListComponent, RentacarIngresosFormComponent, RentacarModalDetallePagosComponent, RentacarModalDetallePagosClientesComponent, RentacarModalDetallePagosReemplazosComponent, RentacarModalDetallePagosDaniosComponent, RentacarModalDetallePagosExtrasComponent],
+  declarations: [RentacarEgresosComponent, RentacarIngresosComponent, RentacarHomeComponent, RentacarEgresosFormComponent, RentacarEgresosListComponent, RentacarIngresosListComponent, RentacarIngresosFormComponent, RentacarModalDetallePagosComponent, RentacarModalDetallePagosClientesComponent, RentacarModalDetallePagosReemplazosComponent, RentacarModalDetallePagosDaniosComponent, RentacarModalDetallePagosExtrasComponent, RentacarIngresosList2Component],
   imports: [
     CommonModule,
     RentacarRoutingModule,

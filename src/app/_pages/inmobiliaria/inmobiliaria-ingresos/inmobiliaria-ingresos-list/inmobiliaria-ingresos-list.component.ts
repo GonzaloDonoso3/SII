@@ -69,6 +69,7 @@ export class InmobiliariaIngresosListComponent implements OnInit {
     Propiedad: new FormControl(),
 
   });
+  
   sucursales: Sucursal[] = [];
   selection = new SelectionModel<IngresosInmobiliaria>(true, []);
   tiposIngresos: string[] = [];

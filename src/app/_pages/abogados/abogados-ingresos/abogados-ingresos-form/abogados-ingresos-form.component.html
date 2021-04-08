@@ -1,0 +1,73 @@
+<form [formGroup]="addressForm" novalidate (ngSubmit)="onSubmit()" class="mat-elevation-z10">
+    <mat-card class="shipping-card">
+        <mat-card-header>
+            <h1> Ingresos FIRMA ABOGADOS CHILE </h1>
+        </mat-card-header>
+        <br><br>
+        <mat-card-content>
+            <div class="row">
+                <!-- Rut Cliente -->
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="RUT Cliente" formControlName="rutCliente" />
+                        <mat-error *ngIf="addressForm.controls['rutCliente'].hasError('required')">
+                            este campo es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <button mat-raised-button color="primary" type="submit">
+                    <mat-icon>search</mat-icon> Buscar
+                  </button>
+            </div>
+
+            <div class="row">
+                <!-- Nombre Cliente-->
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Nombre Cliente" formControlName="nombreCliente" />
+                        <mat-error *ngIf="addressForm.controls['nombreCliente'].hasError('required')">
+                            este campo es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <!-- Email -->
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Email" formControlName="email" type="email" />
+                        <mat-error *ngIf="addressForm.controls['email'].hasError('required')">
+                            este campo es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Teléfono -->
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Teléfono" formControlName="telefono" />
+                        <mat-error *ngIf="addressForm.controls['telefono'].hasError('required')">
+                            este campo es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <!-- Dirección -->
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Dirección" formControlName="direccion" />
+                        <mat-error *ngIf="addressForm.controls['direccion'].hasError('required')">
+                            este campo es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-card-content>
+
+        <!-- botón enviar -->
+        <mat-card-actions>
+            <button mat-raised-button color="primary" type="submit">
+              <mat-icon>send</mat-icon> Enviar
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</form>

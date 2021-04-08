@@ -161,6 +161,9 @@ export class RentacarIngresosListComponent implements OnInit {
     this.dataSource = new MatTableDataSource(dataFiltered);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.selection.clear();
+    this.totalEsperadoSeleccion = 0;
+    this.totalPagadoSeleccion = 0;
   }
 
   limpiarFiltros() {
@@ -176,7 +179,7 @@ export class RentacarIngresosListComponent implements OnInit {
     this.dataSource = new MatTableDataSource(this.arriendosTabla);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-
+    this.selection.clear()
   }
 
   revelarTotal() {

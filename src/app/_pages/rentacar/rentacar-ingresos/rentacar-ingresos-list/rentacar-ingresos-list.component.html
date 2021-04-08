@@ -1,4 +1,4 @@
-<mat-toolbar color="primary" style="overflow-x: scroll;">
+<mat-toolbar color="primary">
     <button mat-raised-button (click)="limpiarFiltros()" color="accent">
         Limpiar filtros
     </button>
@@ -14,7 +14,7 @@
 
 
 <!-- tabla -->
-<div class="mat-elevation-z8" style="overflow-x: scroll;">
+<div class="table-responsive">
 
     <table mat-table matSort [dataSource]="dataSource" matSortActive="id" matSortDirection="desc">
 

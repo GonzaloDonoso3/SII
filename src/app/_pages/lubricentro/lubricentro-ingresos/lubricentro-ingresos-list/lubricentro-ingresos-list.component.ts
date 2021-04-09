@@ -45,7 +45,6 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
     idSucursal: new FormControl(),
     tipoIngreso: new FormControl(),
     estadoPago: new FormControl(),
-    fixed: new FormControl(),
   })
 
 

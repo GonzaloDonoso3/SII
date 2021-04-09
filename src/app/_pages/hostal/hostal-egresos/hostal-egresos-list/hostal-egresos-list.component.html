@@ -37,16 +37,16 @@
             <th mat-header-cell *matHeaderCellDef>
                 <mat-form-field appearance="fill">
                     <mat-label>Fecha</mat-label>
-                    <mat-date-range-input [formGroup]="rangoFecha" [rangePicker]="picker">
+                    <mat-date-range-input [formGroup]="formFilter" [rangePicker]="picker">
                         <input matStartDate formControlName="start" placeholder="Start date" />
                         <input matEndDate formControlName="end" placeholder="End date" />
                     </mat-date-range-input>
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-date-range-picker #picker></mat-date-range-picker>
 
-                    <mat-error *ngIf="rangoFecha.controls.start.hasError('matStartDateInvalid')">Invalid start date
+                    <mat-error *ngIf="formFilter.controls.start.hasError('matStartDateInvalid')">Invalid start date
                     </mat-error>
-                    <mat-error *ngIf="rangoFecha.controls.end.hasError('matEndDateInvalid')">Invalid end date
+                    <mat-error *ngIf="formFilter.controls.end.hasError('matEndDateInvalid')">Invalid end date
                     </mat-error>
                 </mat-form-field>
             </th>
@@ -55,7 +55,7 @@
         <!-- sucursal with text input -->
         <ng-container matColumnDef="sucursal">
             <th mat-header-cell *matHeaderCellDef>
-                <div [formGroup]="sucursalFilter">
+                <div [formGroup]="formFilter">
                     <mat-form-field class="full-width">
                         <mat-select placeholder="Sucursal" formControlName="idSucursal">
                             <mat-option *ngFor="let sucursal of sucursales" [value]="sucursal.razonSocial">
@@ -78,7 +78,7 @@
         <!-- TODO repair source ts -->
         <ng-container matColumnDef="tipoEgreso">
             <th mat-header-cell *matHeaderCellDef>
-                <div [formGroup]="tipoEgresoFilter">
+                <div [formGroup]="formFilter">
                     <mat-form-field class="full-width">
                         <mat-select placeholder="Tipo Egreso" formControlName="tipoEgreso">
                             <mat-option *ngFor="let tipo of tiposEgresos" [value]="tipo">

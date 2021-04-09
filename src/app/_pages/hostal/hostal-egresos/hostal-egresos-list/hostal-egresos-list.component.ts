@@ -1,7 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -40,17 +39,17 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
   dataEgresos: EgresoHostal[] = [];
 
   changelog: string[] = [];
-  rangoFecha = new FormGroup({
+
+
+  //filtros
+  formFilter = new FormGroup({
     start: new FormControl(),
     end: new FormControl(),
-
-  });
-  sucursalFilter = new FormGroup({
     idSucursal: new FormControl(),
-  });
-  tipoEgresoFilter = new FormGroup({
     tipoEgreso: new FormControl(),
-  });
+  })
+
+
   sucursales: Sucursal[] = [];
   selection = new SelectionModel<EgresoHostal>(true, []);
   tiposEgresos: string[] = [];
@@ -67,20 +66,7 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.rangoFecha.valueChanges.subscribe(res => {
-      if (res.start != null && res.end != null) {
-        const rango = this.rangoFecha.value;
-        this.applyDateFilter(rango.start,
-          rango.end);
-      }
-    });
-    this.sucursalFilter.valueChanges.subscribe(res => {
-      this.applySucursalFilter(res.idSucursal);
-    });
-    this.tipoEgresoFilter.valueChanges.subscribe(res => {
-      this.applyTipoEgresoFilter(res.tipoEgreso);
-    });
-
+    this.aplicarfiltros();
   }
 
   // ? refresh when form is ready.
@@ -98,20 +84,64 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
           egreso.usuario = egreso.Usuario.nombreUsuario;
           return egreso;
         });
-        console.log(data);
         this.dataSource = new MatTableDataSource(this.dataEgresos);
         this.dataSource.paginator = this.paginator.toArray()[0];
-
       });
     }
   }
+
+
   recuperarArchivos(listArchivos: any) {
     this.dialog.open(DialogDownloadsComponent, {
-
       data: { archivos: listArchivos, servicio: 'hostal-egreso' },
-
     });
   }
+
+
+
+  revelarTotal() {
+    this.totalSeleccion = 0;
+    console.log(this.selection.selected.length);
+    this.selection.selected.forEach(data => {
+      this.totalSeleccion += data.monto;
+    });
+  }
+
+
+  aplicarfiltros() {
+    this.formFilter.valueChanges.subscribe(res => {
+
+      let dataFiltered = this.dataEgresos;
+
+      if (res.idSucursal) {
+        dataFiltered = dataFiltered.filter((data: EgresoHostal) => data.sucursal == res.idSucursal);
+      }
+
+      if (res.tipoEgreso) {
+        dataFiltered = dataFiltered.filter((data: EgresoHostal) => data.tipoEgreso == res.tipoEgreso);
+      }
+
+      if (res.start && res.end) {
+        dataFiltered = dataFiltered.filter((data: EgresoHostal) => new Date(data.fecha) >= res.start && new Date(data.fecha) <= res.end);
+      }
+
+      this.dataSource = new MatTableDataSource(dataFiltered);
+      this.dataSource.paginator = this.paginator.toArray()[0];
+      this.selection.clear();
+    })
+  }
+
+
+  // ? filters
+  limpiarFiltros() {
+    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null })
+    this.dataSource = new MatTableDataSource(this.dataEgresos);
+    this.dataSource.paginator = this.paginator.toArray()[0];
+    this.selection.clear()
+    this.totalSeleccion = 0;
+  }
+
+
 
   // ? selection rows
   // *  INFO this.selection.selected : return array with all selected objects(rows) into table
@@ -128,61 +158,6 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
       this.dataSource.filteredData.forEach(row => {
         this.selection.select(row);
       });
-
   }
-  revelarTotal() {
-    this.totalSeleccion = 0;
-    console.log(this.selection.selected.length);
-    this.selection.selected.forEach(data => {
-      this.totalSeleccion += data.monto;
-    });
-  }
-
-  // ? filters
-  limpiarFiltros() {
-    this.dataSource = new MatTableDataSource(this.dataEgresos);
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-
-  applyDateFilter(start: Date, end: Date) {
-
-    const dataFiltered = this.dataEgresos.map(data => {
-      data.fecha = new Date(data.fecha);
-      return data;
-    }).filter(comp => comp.fecha >= start && comp.fecha <= end);
-
-    this.dataSource = new MatTableDataSource(dataFiltered);
-
-    this.dataSource.paginator = this.paginator.toArray()[0];
-
-
-  }
-  applySucursalFilter(filterValue: string) {
-    this.dataSource.filterPredicate = (data: EgresoHostal, filter: string) => data.sucursal === filter;
-    this.dataSource.filter = filterValue;
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-  applyTipoEgresoFilter(filterValue: string) {
-    this.dataSource.filterPredicate = (data: EgresoHostal, filter: string) => data.tipoEgreso === filter;
-    this.dataSource.filter = filterValue;
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-
-  /* fijarFiltro(e: MatCheckboxChange) {
-    if (e.checked) {
-      this.dataSource =
-        new MatTableDataSource(
-          this.dataEgresos
-            .filter(data =>
-              data.estadoPago == this.estadoPagoFilter.value.estadoPago
-            ));
-    }
-    if (!e.checked) {
-      this.dataSource =
-        new MatTableDataSource(
-          this.dataEgresos
-        );
-    }
-  } */
 
 }

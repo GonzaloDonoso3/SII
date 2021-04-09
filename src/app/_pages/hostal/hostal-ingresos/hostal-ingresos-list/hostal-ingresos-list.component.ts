@@ -44,28 +44,19 @@ export class HostalIngresosListComponent implements OnInit, OnChanges {
   dataIngresos: IngresosHostal[] = [];
 
   changelog: string[] = [];
-  rangoFecha = new FormGroup({
+
+
+  formFilter = new FormGroup({
     start: new FormControl(),
     end: new FormControl(),
-
-  });
-  sucursalFilter = new FormGroup({
     idSucursal: new FormControl(),
-  });
-  clienteFilter = new FormGroup({
-    cliente: new FormControl(),
-  });
-  tipoIngresoFilter = new FormGroup({
     tipoIngreso: new FormControl(),
-  });
-  estadoPagoFilter = new FormGroup({
+    cliente: new FormControl(),
     estadoPago: new FormControl(),
-    fixed: new FormControl(),
-  });
-  numeroDocumentoFilter = new FormGroup({
     nDocumento: new FormControl(),
+  })
 
-  });
+
   sucursales: Sucursal[] = [];
   selection = new SelectionModel<IngresosHostal>(true, []);
   tiposIngresos: string[] = [];
@@ -86,30 +77,8 @@ export class HostalIngresosListComponent implements OnInit, OnChanges {
     this.sucursales = this.sucursalService.sucursalListValue;
     this.tiposIngresos = this.hostalService.tiposIngresosListValue;
     this.estadosPagos = this.hostalService.estadosPagosListValue;
-    this.rangoFecha.valueChanges.subscribe(res => {
-      if (res.start != null && res.end != null) {
-        const rango = this.rangoFecha.value;
-        this.applyDateFilter(rango.start,
-          rango.end);
-      }
-    });
-    this.sucursalFilter.valueChanges.subscribe(res => {
-      this.applySucursalFilter(res.idSucursal);
-    });
-    this.clienteFilter.valueChanges.subscribe(res => {
-      this.applyClienteFilter(res.cliente);
-    });
-    this.tipoIngresoFilter.valueChanges.subscribe(res => {
-      this.applyTipoIngresoFilter(res.tipoIngreso);
-    });
-    this.estadoPagoFilter.valueChanges.subscribe(res => {
-      this.applyEstadoPagoFilter(res.estadoPago);
-    });
-    this.numeroDocumentoFilter.valueChanges.subscribe(res => {
-      console.log('filtro');
-      this.applyDocumentoFilter(res.nDocumento);
-    });
 
+    this.aplicarfiltros();
   }
 
   // ? refresh when form is ready.
@@ -133,13 +102,76 @@ export class HostalIngresosListComponent implements OnInit, OnChanges {
       });
     }
   }
+
+
   recuperarArchivos(listArchivos: any) {
     this.dialog.open(DialogDownloadsComponent, {
-
       data: { archivos: listArchivos, servicio: 'hostal-ingreso' },
-
     });
   }
+
+
+  revelarTotal() {
+    this.totalSeleccion = 0;
+    console.log(this.selection.selected.length);
+    this.selection.selected.forEach(data => {
+      this.totalSeleccion += data.monto;
+    });
+  }
+
+
+
+  aplicarfiltros() {
+
+    this.formFilter.valueChanges.subscribe(res => {
+
+      let dataFiltered = this.dataIngresos;
+
+      if (res.cliente) {
+        dataFiltered = dataFiltered.filter((data: IngresosHostal) => data.cliente.includes(res.cliente));
+      }
+
+      if (res.nDocumento) {
+        dataFiltered = dataFiltered.filter((data: IngresosHostal) => data.nDocumento.includes(res.nDocumento));
+      }
+
+      if (res.estadoPago) {
+        dataFiltered = dataFiltered.filter((data: IngresosHostal) => data.estadoPago == res.estadoPago);
+      }
+
+      if (res.tipoIngreso) {
+        dataFiltered = dataFiltered.filter((data: IngresosHostal) => data.tipoIngreso == res.tipoIngreso);
+      }
+
+      if (res.idSucursal) {
+        dataFiltered = dataFiltered.filter((data: IngresosHostal) => data.sucursal == res.idSucursal);
+      }
+
+      if (res.start && res.end) {
+        dataFiltered = dataFiltered.filter((data: IngresosHostal) => new Date(data.fecha) >= res.start && new Date(data.fecha) <= res.end);
+      }
+
+      this.dataSource = new MatTableDataSource(dataFiltered);
+      this.dataSource.paginator = this.paginator.toArray()[0];
+      this.totalSeleccion = 0;
+      this.selection.clear();
+    })
+  }
+
+
+
+
+
+  // ? filters
+  limpiarFiltros() {
+    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoIngreso: null, estadoPago: null, cliente: null, nDocumento: null })
+    this.dataSource = new MatTableDataSource(this.dataIngresos);
+    this.dataSource.paginator = this.paginator.toArray()[0];
+    this.selection.clear()
+    this.totalSeleccion = 0;
+  }
+
+
 
   // ? selection rows
   isAllSelected() {
@@ -156,94 +188,10 @@ export class HostalIngresosListComponent implements OnInit, OnChanges {
         this.selection.select(row);
 
       });
-    console.log(this.selection.selected);
   }
-  revelarTotal() {
-    this.totalSeleccion = 0;
-    console.log(this.selection.selected.length);
-    this.selection.selected.forEach(data => {
-      this.totalSeleccion += data.monto;
-    });
-  }
-
-  // ? filters
-  limpiarFiltros() {
-    this.dataSource = new MatTableDataSource(this.dataIngresos);
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-
-  applyDateFilter(start: Date, end: Date) {
-    if (!this.estadoPagoFilter.value.fixed) {
-      const datafiltered = this.dataIngresos.map(data => {
-        data.fecha = new Date(data.fecha);
-        return data;
-      }).filter(comp => comp.fecha >= start && comp.fecha <= end);
-
-      this.dataSource = new MatTableDataSource(datafiltered);
-
-      this.dataSource.paginator = this.paginator.toArray()[0];
-    } else {
-      this.dataSource.filterPredicate = (data: IngresosHostal, filter: string) => {
-        const compare = new Date(data.fecha);
-        const filterValue = filter.split(' ');
-        const startValue = new Date(Number(filterValue[0]));
-        const endValue = new Date(Number(filterValue[1]));
 
 
 
-        return compare >= startValue && compare <= endValue;
-      };
-      const filteredDate = `${start.getTime()} ${end.getTime()}`;
-      this.dataSource.filter = filteredDate;
-      this.dataSource.paginator = this.paginator.toArray()[0];
-    }
-
-  }
-  applySucursalFilter(filterValue: string) {
-    this.dataSource.filterPredicate = (data: IngresosHostal, filter: string) => data.sucursal === filter;
-    this.dataSource.filter = filterValue;
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-  applyClienteFilter(filterValue: string) {
-    this.dataSource.filterPredicate = (data: IngresosHostal, filter: string) => data.cliente.startsWith(filter);
-    this.dataSource.filter = filterValue;
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-  applyTipoIngresoFilter(filterValue: string) {
-    this.dataSource.filterPredicate = (data: IngresosHostal, filter: string) => data.tipoIngreso.includes(filter);
-    this.dataSource.filter = filterValue;
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-  applyEstadoPagoFilter(filterlimpiarFiltrosValue: string) {
-    this.dataSource.filterPredicate = (data: IngresosHostal, filter: string) => data.estadoPago === filter;
-    this.dataSource.filter = filterlimpiarFiltrosValue;
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-  applyDocumentoFilter(_filter: string) {
-    this.dataSource.filterPredicate = (data: IngresosHostal, filter: string) => {
-      if (!data.nDocumento === null) {
-        return data.nDocumento.startsWith(filter);
-      } else {
-        return data.nDocumento === filter;
-      }
-    };
-    this.dataSource.filter = _filter;
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-  fijarFiltro(e: MatCheckboxChange) {
-    if (e.checked) {
-      this.dataSource =
-        new MatTableDataSource(
-          this.dataIngresos
-            .filter(data =>
-              data.estadoPago === this.estadoPagoFilter.value.estadoPago
-            ));
-    }
-    if (!e.checked) {
-      this.dataSource =
-        new MatTableDataSource(
-          this.dataIngresos
-        );
-    }
-  }
 }
+
+

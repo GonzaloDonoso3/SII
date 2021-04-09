@@ -67,7 +67,7 @@
                     <mat-error *ngIf="rangoFecha.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
                 </mat-form-field>
             </th>
-            <td mat-cell *matCellDef="let element">{{ element.fechaContrato | date }}</td>
+            <td mat-cell *matCellDef="let element">{{ element.fechaContrato | date: 'dd/MM/yyyy' }}</td>
         </ng-container>
 
         <ng-container matColumnDef="monto">

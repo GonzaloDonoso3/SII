@@ -37,6 +37,7 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
   dataContrato: any;
 
+
   changelog: string[] = [];
 
   rutFilter = new FormGroup({
@@ -46,16 +47,16 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
   clienteFilter = new FormGroup({
     cliente: new FormControl(),
   });
-  telefonoFilter = new FormGroup({
-    telefono: new FormControl(),
-  });
 
   estadoPagoFilter = new FormGroup({
     estadoPago: new FormControl(),
   });
+
   sucursalFilter = new FormGroup({
     sucursal: new FormControl(),
   });
+
+
   usuarioFilter = new FormGroup({
     usuario: new FormControl(),
   });
@@ -91,12 +92,12 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
       this.applyClienteFilter(res.cliente);
     });
 
-    this.telefonoFilter.valueChanges.subscribe(res => {
-      this.applyTelefonoFilter(res.telefono);
+    this.estadoPagoFilter.valueChanges.subscribe(res => {
+      this.applyEstadoPagoFilter(res.estadoPago);
     });
 
-    this.estadoPagoFilter.valueChanges.subscribe(res => {
-      this.applyEstadoPagoFilter(res.direccion);
+    this.sucursalFilter.valueChanges.subscribe(res => {
+      this.applySucursalFilter(res.sucursal);
     });
 
     this.rangoFecha.valueChanges.subscribe(res => {
@@ -106,6 +107,11 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
           rango.end);
       }
     });
+
+    this.usuarioFilter.valueChanges.subscribe(res => {
+      this.applyUsuarioFilter(res.usuario);
+    });
+
   }
 
   getContratos(){
@@ -168,6 +174,18 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
     this.dataSource.paginator = this.paginator.toArray()[0];
   }
 
+  applyEstadoPagoFilter(_filter: string) {
+    this.dataSource.filterPredicate = (data: any, filter: string) => {
+      if (!data.estadoPago === null) {
+        return data.estadoPago.startsWith(filter);
+      } else {
+        return data.estadoPago === filter;
+      }
+    };
+    this.dataSource.filter = _filter;
+    this.dataSource.paginator = this.paginator.toArray()[0];
+  }
+
   applyDateFilter(start: Date, end: Date) {
     if (!this.clienteFilter.value.fixed) {
       const datafiltered = this.dataContrato.map((data: any) => {
@@ -193,26 +211,24 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
 
   }
 
-  applyTelefonoFilter(_filter: string) {
+  applySucursalFilter(_filter: string) {
     this.dataSource.filterPredicate = (data: any, filter: string) => {
-      if (!data.fono === null) {
-        return data.fono.startsWith(filter);
+      if (!data.sucursal === null) {
+        return data.sucursal.startsWith(filter);
       } else {
-        return data.fono === filter;
+        return data.sucursal === filter;
       }
     };
     this.dataSource.filter = _filter;
     this.dataSource.paginator = this.paginator.toArray()[0];
   }
 
-
-
-  applyEstadoPagoFilter(_filter: string) {
+  applyUsuarioFilter(_filter: string) {
     this.dataSource.filterPredicate = (data: any, filter: string) => {
-      if (!data.estadoPago === null) {
-        return data.estadoPago.startsWith(filter);
+      if (!data.usuario === null) {
+        return data.usuario.startsWith(filter);
       } else {
-        return data.estadoPago === filter;
+        return data.usuario === filter;
       }
     };
     this.dataSource.filter = _filter;

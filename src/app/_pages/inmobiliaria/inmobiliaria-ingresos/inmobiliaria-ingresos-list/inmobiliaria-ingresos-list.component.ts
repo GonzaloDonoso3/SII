@@ -15,6 +15,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Sucursal } from '@app/_models/shared/sucursal';
 import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { Usuario } from '../../../../_models/rentacar/responseListaArriendos';
+
+
 
 @Component({
   selector: 'app-inmobiliaria-ingresos-list',
@@ -29,6 +32,7 @@ export class InmobiliariaIngresosListComponent implements OnInit {
   // ? Inputs & Outputs
   @Input()
   refrescar = '';
+
 
   // ? table definitions.
   displayedColumns: string[] = [
@@ -47,6 +51,9 @@ export class InmobiliariaIngresosListComponent implements OnInit {
   dataIngresos: IngresosInmobiliaria[] = [];
 
   changelog: string[] = [];
+
+
+
   rangoFecha = new FormGroup({
     start: new FormControl(),
     end: new FormControl(),
@@ -237,8 +244,6 @@ export class InmobiliariaIngresosListComponent implements OnInit {
     }
 
   }
-
-
 
   fijarFiltro(e: MatCheckboxChange) {
     if (e.checked) {

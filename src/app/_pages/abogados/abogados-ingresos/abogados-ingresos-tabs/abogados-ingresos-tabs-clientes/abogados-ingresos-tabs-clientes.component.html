@@ -4,7 +4,7 @@
   </button>
     <span> Listado Clientes </span>
     <!-- ***************************** cambiar metodo botón ********************************** -->
-    <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="masterToggle()">
+    <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="exportAsXLSX()">
     Exportar
   </button>
 </mat-toolbar>
@@ -31,7 +31,7 @@
 
         <ng-container matColumnDef="rut">
             <th mat-header-cell *matHeaderCellDef>
-                <div [formGroup]="rutFilter">
+                <div [formGroup]="formFilter">
                     <mat-form-field class="fill">
                         <input matInput placeholder="Rut" formControlName="rut" />
                     </mat-form-field>
@@ -43,7 +43,7 @@
 
         <ng-container matColumnDef="nombre">
             <th mat-header-cell *matHeaderCellDef>
-                <div [formGroup]="nombreFilter">
+                <div [formGroup]="formFilter">
                     <mat-form-field class="fill">
                         <input matInput placeholder="Nombre" formControlName="nombre" />
                     </mat-form-field>
@@ -54,7 +54,7 @@
 
         <ng-container matColumnDef="telefono">
             <th mat-header-cell *matHeaderCellDef>
-                <div [formGroup]="telefonoFilter">
+                <div [formGroup]="formFilter">
                     <mat-form-field class="fill">
                         <input matInput placeholder="Teléfono" formControlName="telefono" />
                     </mat-form-field>
@@ -65,7 +65,7 @@
 
         <ng-container matColumnDef="email">
             <th mat-header-cell *matHeaderCellDef>
-                <div [formGroup]="emailFilter">
+                <div [formGroup]="formFilter">
                     <mat-form-field class="fill">
                         <input matInput placeholder="Email" formControlName="email" />
                     </mat-form-field>
@@ -76,7 +76,7 @@
 
         <ng-container matColumnDef="direccion">
             <th mat-header-cell *matHeaderCellDef>
-                <div [formGroup]="direccionFilter">
+                <div [formGroup]="formFilter">
                     <mat-form-field class="fill">
                         <input matInput placeholder="Direccion" formControlName="direccion" />
                     </mat-form-field>

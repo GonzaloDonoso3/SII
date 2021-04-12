@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Component, Input, OnInit, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
 import { AbogadosTabsService } from '../../../abogados-tabs.service';
-import { Cliente } from '../../../../../_models/abogados/cliente';
+import { Cliente } from '../../../../../_models/shared/cliente';
 import { MatDialog } from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Sucursal } from '@app/_models/shared/sucursal';
@@ -36,32 +36,23 @@ export class AbogadosIngresosTabsClientesComponent implements OnInit {
     'direccion'
   ];
   dataSource: MatTableDataSource<Cliente> = new MatTableDataSource();
-  dataCliente: any;
+  dataCliente: Cliente[] = [];
 
-  changelog: string[] = [];
-
-  rutFilter = new FormGroup({
+  
+  formFilter = new FormGroup({
     rut: new FormControl(),
-  });
-  nombreFilter = new FormGroup({
     nombre: new FormControl(),
-  });
-  telefonoFilter = new FormGroup({
     telefono: new FormControl(),
-  });
-  emailFilter = new FormGroup({
     email: new FormControl(),
-  });
-  direccionFilter = new FormGroup({
     direccion: new FormControl(),
 
-  });
+  })
+
+
   sucursales: Sucursal[] = [];
   selection = new SelectionModel<Cliente>(true, []);
-  tiposIngresos: string[] = [];
-  estadosPagos: string[] = [];
   totalSeleccion = 0;
-  cuentasRegistradas: any[] = [];
+  selectedRows!: any[];
 
 
   constructor(
@@ -73,26 +64,7 @@ export class AbogadosIngresosTabsClientesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getClientes();
-
-    this.rutFilter.valueChanges.subscribe(res => {
-      this.applyRutFilter(res.rut);
-    });
-
-    this.nombreFilter.valueChanges.subscribe(res => {
-      this.applyNombreFilter(res.nombre);
-    });
-
-    this.telefonoFilter.valueChanges.subscribe(res => {
-      this.applyTelefonoFilter(res.telefono);
-    });
-
-    this.emailFilter.valueChanges.subscribe(res => {
-      this.applyEmailFilter(res.email);
-    });
-
-    this.direccionFilter.valueChanges.subscribe(res => {
-      this.applyDireccionFilter(res.direccion);
-    });
+    this.aplicarfiltros();
   }
 
   getClientes(){
@@ -126,69 +98,50 @@ export class AbogadosIngresosTabsClientesComponent implements OnInit {
 
 
   // Filtros
+  aplicarfiltros() {
+    this.formFilter.valueChanges.subscribe(res => {
+
+      let dataFiltered = this.dataCliente;
+
+      //Filtro Rut Falta
+      if (res.rut) {
+        dataFiltered = dataFiltered.filter((data: Cliente) => data.rut == res.rut);
+      }
+
+      //Filtro Nombre Falta
+      if (res.nombre) {
+        dataFiltered = dataFiltered.filter((data: Cliente) => data.nombre == res.nombre);
+      }
+
+      //Filtro Telefono
+      if (res.telefono) {
+        dataFiltered = dataFiltered.filter((data: Cliente) => data.fono == res.telefono);
+      }
+      
+      //Filtro Email
+      if (res.email) {
+        dataFiltered = dataFiltered.filter((data: Cliente) => data.email == res.email);
+      }
+
+      //Filtro Dirección
+      if (res.direccion) {
+        dataFiltered = dataFiltered.filter((data: Cliente) => data.direccion == res.direccion);
+      }
+      
+
+      this.dataSource = new MatTableDataSource(dataFiltered);
+      this.dataSource.paginator = this.paginator.toArray()[0];
+      this.totalSeleccion = 0;
+      this.selection.clear();
+    })
+  }
+
   limpiarFiltros() {
+    this.formFilter.patchValue({ rut: null, nombre: null, telefono: null, email: null, direccion: null})
     this.dataSource = new MatTableDataSource(this.dataCliente);
     this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-
-  applyRutFilter(_filter: string) {
-    this.dataSource.filterPredicate = (data: Cliente, filter: string) => {
-      if (!data.rut === null) {
-        return data.rut.startsWith(filter);
-      } else {
-        return data.rut === filter;
-      }
-    };
-    this.dataSource.filter = _filter;
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-
-  applyNombreFilter(_filter: string) {
-    this.dataSource.filterPredicate = (data: Cliente, filter: string) => {
-      if (!data.nombre === null) {
-        return data.nombre.startsWith(filter);
-      } else {
-        return data.nombre === filter;
-      }
-    };
-    this.dataSource.filter = _filter;
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-
-  applyTelefonoFilter(_filter: string) {
-    this.dataSource.filterPredicate = (data: Cliente, filter: string) => {
-      if (!data.fono === null) {
-        return data.fono.startsWith(filter);
-      } else {
-        return data.fono === filter;
-      }
-    };
-    this.dataSource.filter = _filter;
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-
-  applyEmailFilter(_filter: string) {
-    this.dataSource.filterPredicate = (data: Cliente, filter: string) => {
-      if (!data.email === null) {
-        return data.email.startsWith(filter);
-      } else {
-        return data.email === filter;
-      }
-    };
-    this.dataSource.filter = _filter;
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-
-  applyDireccionFilter(_filter: string) {
-    this.dataSource.filterPredicate = (data: Cliente, filter: string) => {
-      if (!data.direccion === null) {
-        return data.direccion.startsWith(filter);
-      } else {
-        return data.direccion === filter;
-      }
-    };
-    this.dataSource.filter = _filter;
-    this.dataSource.paginator = this.paginator.toArray()[0];
+    this.selection.clear()
+    this.totalSeleccion = 0;
   }
   
 
@@ -198,5 +151,12 @@ export class AbogadosIngresosTabsClientesComponent implements OnInit {
       data: { archivos: listArchivos, servicio: 'inmobiliaria-ingreso' },
 
     });
+  }
+
+  //Metodo exportar excel
+  exportAsXLSX(): void {
+    this.selectedRows = [];
+    this.selection.selected.forEach((x) => this.selectedRows.push(x));
+    this.abogadosTabsService.exportAsExcelFile(this.selectedRows, 'Lista-Clientes');
   }
 }

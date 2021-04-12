@@ -6,7 +6,14 @@ import { AbogadosTabsService } from '../../../abogados-tabs.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Sucursal } from '@app/_models/shared/sucursal';
+import { Cliente } from '@app/_models/shared/cliente';
+import { Contrato } from '../../../../../_models/abogados/contrato';
 import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
+import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
+import { AgGridAngular } from 'ag-grid-angular';
+
+
+
 
 @Component({
   selector: 'app-abogados-ingresos-tabs-contratos',
@@ -17,6 +24,7 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
 
   // ? childrens
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
+  @ViewChild('agGrid') agGrid!: AgGridAngular;
 
   // ? Inputs & Outputs
   @Input()
@@ -34,91 +42,52 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
     'sucursal',
     'usuario'
   ];
-  dataSource: MatTableDataSource<any> = new MatTableDataSource();
-  dataContrato: any;
+  dataSource: MatTableDataSource<Contrato> = new MatTableDataSource();
+  dataContrato: Contrato[] = [];
 
-
-  changelog: string[] = [];
-
-  rutFilter = new FormGroup({
+  formFilter = new FormGroup({
     rut: new FormControl(),
-  });
-  
-  clienteFilter = new FormGroup({
     cliente: new FormControl(),
-  });
-
-  estadoPagoFilter = new FormGroup({
     estadoPago: new FormControl(),
-  });
-
-  sucursalFilter = new FormGroup({
     sucursal: new FormControl(),
-  });
-
-
-  usuarioFilter = new FormGroup({
     usuario: new FormControl(),
-  });
-
-  rangoFecha = new FormGroup({
     start: new FormControl(),
     end: new FormControl(),
-  });
+  })
 
   sucursales: Sucursal[] = [];
+  clientes: Cliente[] = [];
   selection = new SelectionModel<any>(true, []);
-  tiposIngresos: string[] = [];
-  estadosPagos: string[] = [];
   totalSeleccion = 0;
-  cuentasRegistradas: any[] = [];
+  selectedRows!: any[];
+
 
 
   constructor(
     private abogadosTabsService: AbogadosTabsService,
+    private sucursalService: SucursalSharedService,
     public dialog: MatDialog,
   ) { 
     
   }
 
   ngOnInit(): void {
+
+    this.sucursales = this.sucursalService.sucursalListValue;
+    this.clientes = this.abogadosTabsService.obtenerClientes();
     this.getContratos();
-
-    this.rutFilter.valueChanges.subscribe(res => {
-      this.applyRutFilter(res.rut);
-    });
-
-    this.clienteFilter.valueChanges.subscribe(res => {
-      this.applyClienteFilter(res.cliente);
-    });
-
-    this.estadoPagoFilter.valueChanges.subscribe(res => {
-      this.applyEstadoPagoFilter(res.estadoPago);
-    });
-
-    this.sucursalFilter.valueChanges.subscribe(res => {
-      this.applySucursalFilter(res.sucursal);
-    });
-
-    this.rangoFecha.valueChanges.subscribe(res => {
-      if (res.start != null && res.end != null) {
-        const rango = this.rangoFecha.value;
-        this.applyDateFilter(rango.start,
-          rango.end);
-      }
-    });
-
-    this.usuarioFilter.valueChanges.subscribe(res => {
-      this.applyUsuarioFilter(res.usuario);
-    });
+    this.aplicarfiltros();
 
   }
 
   getContratos(){
        //Carga Tabla 
-       this.abogadosTabsService.obtenerContratos().subscribe((Contrato: any) => {
-        this.dataContrato = Contrato.map((Contrato: any) => {
-          return Contrato;
+       this.abogadosTabsService.obtenerContratos().subscribe((result: Contrato[]) => {
+        this.dataContrato = result.map(Contrato => {
+          Contrato.sucursal = Contrato.Sucursal.razonSocial;
+          Contrato.usuario = Contrato.Usuario.nombreUsuario;
+          
+          return Contrato; 
         });
         this.dataSource = new MatTableDataSource(this.dataContrato);
         this.dataSource.paginator = this.paginator.toArray()[0];
@@ -143,105 +112,61 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
     console.log(this.selection.selected);
   }
 
+  aplicarfiltros() {
+    this.formFilter.valueChanges.subscribe(res => {
 
-  // Filtros
+      let dataFiltered = this.dataContrato;
+
+      //Filtro Rut Falta
+      if (res.rut) {
+        dataFiltered = dataFiltered.filter((data: Contrato) => data.Cliente.rut = res.rut);
+      }
+
+      //Filtro Cliente Falta
+      if (res.cliente) {
+        dataFiltered = dataFiltered.filter((data: Contrato) => data.cliente = res.cliente);
+      }
+
+      //Filtro Fecha
+      if (res.start && res.end) {
+        dataFiltered = dataFiltered.filter((data: Contrato) => new Date(data.fechaContrato) >= res.start && new Date(data.fechaContrato) <= res.end);
+      }
+      
+      //Filtro Estado Pago
+      if (res.estadoPago) {
+        dataFiltered = dataFiltered.filter((data: Contrato) => data.estadoPago == res.estadoPago);
+      }
+
+      //Filtro Sucursal
+      if (res.sucursal) {
+        dataFiltered = dataFiltered.filter((data: Contrato) => data.sucursal == res.sucursal);
+      }
+
+      //Filtro Usuario
+      if (res.usuario) {
+        dataFiltered = dataFiltered.filter((data: Contrato) => data.usuario == res.usuario);
+      }
+      
+
+      this.dataSource = new MatTableDataSource(dataFiltered);
+      this.dataSource.paginator = this.paginator.toArray()[0];
+      this.totalSeleccion = 0;
+      this.selection.clear();
+    })
+  }
+
   limpiarFiltros() {
+    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null, Propiedad: null, descripcionEgreso: null, })
     this.dataSource = new MatTableDataSource(this.dataContrato);
     this.dataSource.paginator = this.paginator.toArray()[0];
+    this.selection.clear()
+    this.totalSeleccion = 0;
   }
 
-  applyRutFilter(_filter: string) {
-    this.dataSource.filterPredicate = (data: any, filter: string) => {
-      if (!data.clienteRut === null) {
-        return data.clienteRut.startsWith(filter);
-      } else {
-        return data.clienteRut === filter;
-      }
-    };
-    this.dataSource.filter = _filter;
-    this.dataSource.paginator = this.paginator.toArray()[0];
+  //Metodo exportar excel
+  exportAsXLSX(): void {
+    this.selectedRows = [];
+    this.selection.selected.forEach((x) => this.selectedRows.push(x));
+    this.abogadosTabsService.exportAsExcelFile(this.selectedRows, 'Lista-Contratos');
   }
-
-  applyClienteFilter(_filter: string) {
-    this.dataSource.filterPredicate = (data: any, filter: string) => {
-      if (!data.cliente === null) {
-        return data.cliente.startsWith(filter);
-      } else {
-        return data.cliente === filter;
-      }
-    };
-    this.dataSource.filter = _filter;
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-
-  applyEstadoPagoFilter(_filter: string) {
-    this.dataSource.filterPredicate = (data: any, filter: string) => {
-      if (!data.estadoPago === null) {
-        return data.estadoPago.startsWith(filter);
-      } else {
-        return data.estadoPago === filter;
-      }
-    };
-    this.dataSource.filter = _filter;
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-
-  applyDateFilter(start: Date, end: Date) {
-    if (!this.clienteFilter.value.fixed) {
-      const datafiltered = this.dataContrato.map((data: any) => {
-        data.fechaContrato = new Date(data.fechaContrato);
-        return data;
-      }).filter((comp: { fechaContrato: Date; }) => comp.fechaContrato >= start && comp.fechaContrato <= end);
-
-      this.dataSource = new MatTableDataSource(datafiltered);
-
-      this.dataSource.paginator = this.paginator.toArray()[0];
-    } else {
-      this.dataSource.filterPredicate = (data: any, filter: string) => {
-        const compare = new Date(data.fechaContrato);
-        const filterValue = filter.split(' ');
-        const startValue = new Date(Number(filterValue[0]));
-        const endValue = new Date(Number(filterValue[1]));
-        return compare >= startValue && compare <= endValue;
-      };
-      const filteredDate = `${start.getTime()} ${end.getTime()}`;
-      this.dataSource.filter = filteredDate;
-      this.dataSource.paginator = this.paginator.toArray()[0];
-    }
-
-  }
-
-  applySucursalFilter(_filter: string) {
-    this.dataSource.filterPredicate = (data: any, filter: string) => {
-      if (!data.sucursal === null) {
-        return data.sucursal.startsWith(filter);
-      } else {
-        return data.sucursal === filter;
-      }
-    };
-    this.dataSource.filter = _filter;
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-
-  applyUsuarioFilter(_filter: string) {
-    this.dataSource.filterPredicate = (data: any, filter: string) => {
-      if (!data.usuario === null) {
-        return data.usuario.startsWith(filter);
-      } else {
-        return data.usuario === filter;
-      }
-    };
-    this.dataSource.filter = _filter;
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-  
-
-  recuperarArchivos(listArchivos: any) {
-    this.dialog.open(DialogDownloadsComponent, {
-
-      data: { archivos: listArchivos, servicio: 'inmobiliaria-ingreso' },
-
-    });
-  }
-
 }

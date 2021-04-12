@@ -1,23 +1,15 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { first, filter } from 'rxjs/operators';
-import { AlertHelper } from '@app/_helpers/alert.helper';
 import { Component, Input, OnInit, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
 import { InmobiliariaService } from '../../inmobiliaria.service';
 import { IngresosInmobiliaria } from '@app/_models/inmobiliaria/ingresoInmobiliaria';
-import { logging } from 'protractor';
 import { MatDialog } from '@angular/material/dialog';
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
-import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuentas-bancarias.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Sucursal } from '@app/_models/shared/sucursal';
 import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { Usuario } from '../../../../_models/rentacar/responseListaArriendos';
-
-
 
 @Component({
   selector: 'app-inmobiliaria-ingresos-list',
@@ -32,7 +24,6 @@ export class InmobiliariaIngresosListComponent implements OnInit {
   // ? Inputs & Outputs
   @Input()
   refrescar = '';
-
 
   // ? table definitions.
   displayedColumns: string[] = [
@@ -53,30 +44,38 @@ export class InmobiliariaIngresosListComponent implements OnInit {
   changelog: string[] = [];
 
 
-
-  rangoFecha = new FormGroup({
+  formFilter = new FormGroup({
     start: new FormControl(),
     end: new FormControl(),
-
-  });
-  sucursalFilter = new FormGroup({
     idSucursal: new FormControl(),
-  });
-  clienteFilter = new FormGroup({
-    cliente: new FormControl(),
-  });
-  tipoIngresoFilter = new FormGroup({
     tipoIngreso: new FormControl(),
-  });
-  descripcionIngresoFilter = new FormGroup({
     descripcionIngreso: new FormControl(),
-    fixed: new FormControl(),
-  });
-  propiedadFilter = new FormGroup({
     Propiedad: new FormControl(),
+  })
 
-  });
+
+  /*   rangoFecha = new FormGroup({
+      start: new FormControl(),
+      end: new FormControl(),
   
+    });
+    sucursalFilter = new FormGroup({
+      idSucursal: new FormControl(),
+    });
+    clienteFilter = new FormGroup({
+      cliente: new FormControl(),
+    });
+    tipoIngresoFilter = new FormGroup({
+      tipoIngreso: new FormControl(),
+    });
+    descripcionIngresoFilter = new FormGroup({
+      descripcionIngreso: new FormControl(),
+      fixed: new FormControl(),
+    });
+    propiedadFilter = new FormGroup({
+      Propiedad: new FormControl(),
+  
+    }); */
   sucursales: Sucursal[] = [];
   selection = new SelectionModel<IngresosInmobiliaria>(true, []);
   tiposIngresos: string[] = [];
@@ -94,30 +93,30 @@ export class InmobiliariaIngresosListComponent implements OnInit {
   ngOnInit(): void {
     this.sucursales = this.sucursalService.sucursalListValue;
     this.tiposIngresos = this.inmobiliariaService.tiposIngresosListValue;
-
-    this.rangoFecha.valueChanges.subscribe(res => {
-      if (res.start != null && res.end != null) {
-        const rango = this.rangoFecha.value;
-        this.applyDateFilter(rango.start,
-          rango.end);
-      }
-    });
-    this.sucursalFilter.valueChanges.subscribe(res => {
-      this.applySucursalFilter(res.idSucursal);
-    });
-    
-    this.tipoIngresoFilter.valueChanges.subscribe(res => {
-      this.applyTipoIngresoFilter(res.tipoIngreso);
-    });
-    
-    this.propiedadFilter.valueChanges.subscribe(res => {
-      this.applyPropiedadFilter(res.Propiedad);
-    });
-
-    this.descripcionIngresoFilter.valueChanges.subscribe(res => {
-      this.applyDescripcionIngresoFilter(res.descripcionIngreso);
-    });
-
+    this.aplicarfiltros();
+    /*  this.rangoFecha.valueChanges.subscribe(res => {
+       if (res.start != null && res.end != null) {
+         const rango = this.rangoFecha.value;
+         this.applyDateFilter(rango.start,
+           rango.end);
+       }
+     });
+     this.sucursalFilter.valueChanges.subscribe(res => {
+       this.applySucursalFilter(res.idSucursal);
+     });
+ 
+     this.tipoIngresoFilter.valueChanges.subscribe(res => {
+       this.applyTipoIngresoFilter(res.tipoIngreso);
+     });
+ 
+     this.propiedadFilter.valueChanges.subscribe(res => {
+       this.applyPropiedadFilter(res.Propiedad);
+     });
+ 
+     this.descripcionIngresoFilter.valueChanges.subscribe(res => {
+       this.applyDescripcionIngresoFilter(res.descripcionIngreso);
+     });
+  */
   }
 
   // ? refresh when form is ready.
@@ -176,89 +175,134 @@ export class InmobiliariaIngresosListComponent implements OnInit {
     });
   }
 
+
+
+
+
+
+  aplicarfiltros() {
+    this.formFilter.valueChanges.subscribe(res => {
+
+      let dataFiltered = this.dataIngresos;
+
+      if (res.Propiedad) {
+        dataFiltered = dataFiltered.filter((data: IngresosInmobiliaria) => data.propiedad.includes(res.Propiedad));
+      }
+
+      if (res.descripcionIngreso) {
+        dataFiltered = dataFiltered.filter((data: IngresosInmobiliaria) => data.descripcionIngreso.includes(res.descripcionIngreso));
+      }
+
+      if (res.tipoIngreso) {
+        dataFiltered = dataFiltered.filter((data: IngresosInmobiliaria) => data.tipoIngreso == res.tipoIngreso);
+      }
+
+      if (res.idSucursal) {
+        dataFiltered = dataFiltered.filter((data: IngresosInmobiliaria) => data.sucursal == res.idSucursal);
+      }
+
+      if (res.start && res.end) {
+        dataFiltered = dataFiltered.filter((data: IngresosInmobiliaria) => new Date(data.fecha) >= res.start && new Date(data.fecha) <= res.end);
+      }
+
+      this.dataSource = new MatTableDataSource(dataFiltered);
+      this.dataSource.paginator = this.paginator.toArray()[0];
+      this.totalSeleccion = 0;
+      this.selection.clear();
+    })
+  }
+
+
+
+
   // Filtros
   limpiarFiltros() {
+    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoIngreso: null, estadoPago: null, cliente: null, nDocumento: null })
     this.dataSource = new MatTableDataSource(this.dataIngresos);
     this.dataSource.paginator = this.paginator.toArray()[0];
+    this.selection.clear()
+    this.totalSeleccion = 0;
   }
 
-  applySucursalFilter(filterValue: string) {
-    this.dataSource.filterPredicate = (data: IngresosInmobiliaria, filter: string) => data.sucursal === filter;
-    this.dataSource.filter = filterValue;
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-  applyPropiedadFilter(_filter: string) {
-    this.dataSource.filterPredicate = (data: IngresosInmobiliaria, filter: string) => {
-      if (!data.propiedad === null) {
-        return data.propiedad.startsWith(filter);
-      } else {
-        return data.propiedad === filter;
-      }
-    };
-    this.dataSource.filter = _filter;
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-  
-  applyDescripcionIngresoFilter(_filter: string) {
-    this.dataSource.filterPredicate = (data: IngresosInmobiliaria, filter: string ) => {
-      if (!data.descripcionIngreso === null){
-        return data.descripcionIngreso.startsWith(filter);
-      }else{
-        return data.descripcionIngreso === filter;
-      }
-    }
-    this.dataSource.filter = _filter;
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-
-  applyTipoIngresoFilter(filterValue: string) {
-    this.dataSource.filterPredicate = (data: IngresosInmobiliaria, filter: string) => data.tipoIngreso.includes(filter);
-    this.dataSource.filter = filterValue;
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-
-  applyDateFilter(start: Date, end: Date) {
-    if (!this.descripcionIngresoFilter.value.fixed) {
-      const datafiltered = this.dataIngresos.map(data => {
-        data.fecha = new Date(data.fecha);
-        return data;
-      }).filter(comp => comp.fecha >= start && comp.fecha <= end);
-
-      this.dataSource = new MatTableDataSource(datafiltered);
-
-      this.dataSource.paginator = this.paginator.toArray()[0];
-    } else {
-      this.dataSource.filterPredicate = (data: IngresosInmobiliaria, filter: string) => {
-        const compare = new Date(data.fecha);
-        const filterValue = filter.split(' ');
-        const startValue = new Date(Number(filterValue[0]));
-        const endValue = new Date(Number(filterValue[1]));
-
-
-
-        return compare >= startValue && compare <= endValue;
-      };
-      const filteredDate = `${start.getTime()} ${end.getTime()}`;
-      this.dataSource.filter = filteredDate;
-      this.dataSource.paginator = this.paginator.toArray()[0];
-    }
-
-  }
-
-  fijarFiltro(e: MatCheckboxChange) {
-    if (e.checked) {
-      this.dataSource =
-        new MatTableDataSource(
-          this.dataIngresos
-            .filter(data =>
-              data.tipoIngreso === this.descripcionIngresoFilter.value.estadoPago
-            ));
-    }
-    if (!e.checked) {
-      this.dataSource =
-        new MatTableDataSource(
-          this.dataIngresos
-        );
-    }
-  }
+  /*  applySucursalFilter(filterValue: string) {
+     this.dataSource.filterPredicate = (data: IngresosInmobiliaria, filter: string) => data.sucursal === filter;
+     this.dataSource.filter = filterValue;
+     this.dataSource.paginator = this.paginator.toArray()[0];
+   }
+   applyPropiedadFilter(_filter: string) {
+     this.dataSource.filterPredicate = (data: IngresosInmobiliaria, filter: string) => {
+       if (!data.propiedad === null) {
+         return data.propiedad.startsWith(filter);
+       } else {
+         return data.propiedad === filter;
+       }
+     };
+     this.dataSource.filter = _filter;
+     this.dataSource.paginator = this.paginator.toArray()[0];
+   }
+ 
+   applyDescripcionIngresoFilter(_filter: string) {
+     this.dataSource.filterPredicate = (data: IngresosInmobiliaria, filter: string) => {
+       if (!data.descripcionIngreso === null) {
+         return data.descripcionIngreso.startsWith(filter);
+       } else {
+         return data.descripcionIngreso === filter;
+       }
+     }
+     this.dataSource.filter = _filter;
+     this.dataSource.paginator = this.paginator.toArray()[0];
+   }
+ 
+   applyTipoIngresoFilter(filterValue: string) {
+     this.dataSource.filterPredicate = (data: IngresosInmobiliaria, filter: string) => data.tipoIngreso.includes(filter);
+     this.dataSource.filter = filterValue;
+     this.dataSource.paginator = this.paginator.toArray()[0];
+   }
+ 
+   applyDateFilter(start: Date, end: Date) {
+     if (!this.descripcionIngresoFilter.value.fixed) {
+       const datafiltered = this.dataIngresos.map(data => {
+         data.fecha = new Date(data.fecha);
+         return data;
+       }).filter(comp => comp.fecha >= start && comp.fecha <= end);
+ 
+       this.dataSource = new MatTableDataSource(datafiltered);
+ 
+       this.dataSource.paginator = this.paginator.toArray()[0];
+     } else {
+       this.dataSource.filterPredicate = (data: IngresosInmobiliaria, filter: string) => {
+         const compare = new Date(data.fecha);
+         const filterValue = filter.split(' ');
+         const startValue = new Date(Number(filterValue[0]));
+         const endValue = new Date(Number(filterValue[1]));
+ 
+ 
+ 
+         return compare >= startValue && compare <= endValue;
+       };
+       const filteredDate = `${start.getTime()} ${end.getTime()}`;
+       this.dataSource.filter = filteredDate;
+       this.dataSource.paginator = this.paginator.toArray()[0];
+     }
+ 
+   }
+ 
+ 
+ 
+   fijarFiltro(e: MatCheckboxChange) {
+     if (e.checked) {
+       this.dataSource =
+         new MatTableDataSource(
+           this.dataIngresos
+             .filter(data =>
+               data.tipoIngreso === this.descripcionIngresoFilter.value.estadoPago
+             ));
+     }
+     if (!e.checked) {
+       this.dataSource =
+         new MatTableDataSource(
+           this.dataIngresos
+         );
+     }
+   } */
 }

@@ -16,7 +16,7 @@ export class RentacarService {
   constructor(private http: HttpClient) { }
 
   getListaPagosArriendos(): Observable<ResponseListaArriendos> {
-    return this.http.get<ResponseListaArriendos>(`https://www.imlchile.cl:3010/rentacar/api/v2/mostrarArriendoFinanzas`, { headers: this.headers });
+    return this.http.get<ResponseListaArriendos>(`https://190.121.9.99:3010/rentacar/api/v2/mostrarArriendoFinanzas`, { headers: this.headers });
   }
 
 

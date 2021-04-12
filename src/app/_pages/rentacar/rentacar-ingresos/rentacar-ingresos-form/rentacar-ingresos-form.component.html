@@ -9,15 +9,6 @@
 
                 <div class="col">
                     <mat-form-field class="full-width">
-                        <input matInput placeholder="Descripción Ingreso" formControlName="descripcionIngreso" />
-                        <mat-error *ngIf="ingresoForm.controls['descripcionIngreso'].hasError('required')">
-                            este campo es <strong>requerido</strong>
-                        </mat-error>
-                    </mat-form-field>
-                </div>
-
-                <div class="col">
-                    <mat-form-field class="full-width">
                         <mat-label>Seleccionar fecha</mat-label>
                         <input matInput formControlName="fecha" [matDatepicker]="picker" />
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -58,7 +49,39 @@
                         </mat-error>
                     </mat-form-field>
                 </div>
+
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <mat-select placeholder="Licitacion" formControlName="licitacion">
+                            <mat-option value="">2785-233-LR19 ILUSTRE MUNICIPALIDAD </mat-option>
+                            <mat-option value="">21057489-189-LR19 M SALVADOR </mat-option>
+                            <mat-option value="">5463-3-LE20 H DE PEÑA </mat-option>
+
+                        </mat-select>
+                        <mat-error *ngIf="ingresoForm.controls['licitacion'].hasError('required')">
+                            Licitacion es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
             </div>
+
+            <div class="row">
+
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Descripción Ingreso" formControlName="descripcionIngreso" />
+                        <mat-error *ngIf="ingresoForm.controls['descripcionIngreso'].hasError('required')">
+                            este campo es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+
+            </div>
+
+
+
         </mat-card-content>
 
         <!-- botón enviar -->

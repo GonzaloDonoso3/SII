@@ -15,6 +15,7 @@ export class RentacarIngresosFormComponent implements OnInit {
     monto: [null, Validators.required],
     tipoIngreso: [null, Validators.required],
     descripcionIngreso: [null, Validators.required],
+    licitacion: [null, Validators.required],
     fecha: [null, Validators.required],
   })
 

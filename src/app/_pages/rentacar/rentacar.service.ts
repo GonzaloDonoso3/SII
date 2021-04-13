@@ -19,6 +19,10 @@ export class RentacarService {
     return this.http.get<ResponseListaArriendos>(`https://190.121.9.99:3010/rentacar/api/v2/mostrarArriendoFinanzas`, { headers: this.headers });
   }
 
+  getLicitaciones(): Observable<any> {
+    return this.http.get<any>(`http://localhost:3001/rentacar/licitacion/cargarLicitaciones`, { headers: this.headers });
+  }
+
 
 
 }

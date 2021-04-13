@@ -1,6 +1,7 @@
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { RentacarService } from '../../rentacar.service';
 
 @Component({
   selector: 'app-rentacar-ingresos-form',
@@ -19,15 +20,19 @@ export class RentacarIngresosFormComponent implements OnInit {
     fecha: [null, Validators.required],
   })
 
-  constructor(private fb: FormBuilder, private snackBar: MatSnackBar) {
+  constructor(private fb: FormBuilder, private snackBar: MatSnackBar, private rentacarService: RentacarService) {
 
   }
 
-
-
-
   ngOnInit(): void {
+    this.cargarLicitaciones();
+  }
 
+
+  cargarLicitaciones() {
+    this.rentacarService.getLicitaciones().subscribe((data) => {
+      console.log(data);
+    })
   }
 
   onSubmit() {

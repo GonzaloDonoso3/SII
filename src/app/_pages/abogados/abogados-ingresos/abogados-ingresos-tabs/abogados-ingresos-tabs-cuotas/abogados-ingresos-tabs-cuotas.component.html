@@ -37,7 +37,7 @@
                     </mat-form-field>
                 </div>
             </th>
-            <td mat-cell *matCellDef="let element">{{ element.fechaPago }}</td>
+            <td mat-cell *matCellDef="let element">{{ element.fechaPago | date: 'dd/MM/yyyy'}}</td>
         </ng-container>
 
         <ng-container matColumnDef="monto">

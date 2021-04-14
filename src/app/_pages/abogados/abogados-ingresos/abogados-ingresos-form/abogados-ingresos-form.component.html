@@ -1,4 +1,4 @@
-<form [formGroup]="addressForm" novalidate (ngSubmit)="onSubmit()" class="mat-elevation-z10">
+<form [formGroup]="addressForm" novalidate class="mat-elevation-z10">
     <mat-card class="shipping-card">
         <mat-card-header>
             <h1> Ingresos FIRMA ABOGADOS CHILE </h1>
@@ -15,7 +15,7 @@
                         </mat-error>
                     </mat-form-field>
                 </div>
-                <button mat-raised-button color="primary" type="submit">
+                <button mat-raised-button color="primary" (click)="buscarExistencia()">
                     <mat-icon>search</mat-icon> Buscar
                   </button>
             </div>
@@ -64,10 +64,8 @@
         </mat-card-content>
 
         <!-- botón enviar -->
-        <mat-card-actions>
-            <button mat-raised-button color="primary" type="submit">
-              <mat-icon>send</mat-icon> Enviar
-            </button>
-        </mat-card-actions>
+        <button mat-raised-button color="primary" (click)="crearCliente()">
+            <mat-icon>send</mat-icon> Enviar
+        </button>
     </mat-card>
 </form>

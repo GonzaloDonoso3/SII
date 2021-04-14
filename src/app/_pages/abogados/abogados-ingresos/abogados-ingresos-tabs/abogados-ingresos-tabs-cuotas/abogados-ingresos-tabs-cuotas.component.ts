@@ -71,7 +71,6 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
      this.dataCuotas = Cuotas.map(Cuotas => {
        return Cuotas;
      });
-     console.log(this.dataCuotas);
      this.dataSource = new MatTableDataSource(this.dataCuotas);
      this.dataSource.paginator = this.paginator.toArray()[0];
    });

@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { DialogContratosComponent } from './dialog-contratos/dialog-contratos.component';
+import { MatDialog } from '@angular/material/dialog';
+import { AbogadosService } from '../../abogados.service';
+
+
 
 @Component({
   selector: 'app-abogados-ingresos-acciones',
@@ -7,9 +12,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AbogadosIngresosAccionesComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public dialog:MatDialog,
+    private abogadosService: AbogadosService,
+    ) { }
 
   ngOnInit(): void {
   }
 
+
+  openDialogContratos():void{
+    this.abogadosService.openDialogContratos();
+  }
 }

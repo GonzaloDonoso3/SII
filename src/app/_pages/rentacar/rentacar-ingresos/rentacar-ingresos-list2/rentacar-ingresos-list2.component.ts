@@ -3,6 +3,7 @@ import { MatSort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { RentacarService } from '../../rentacar.service';
 
 
 
@@ -12,8 +13,9 @@ interface IngresoTabla {
   fecha: Date;
   ingreso: number;
   respaldo: string;
-  tipoIngreso: string;
   descripcion: string;
+  cliente: string;
+  codigoLicitacion: string;
 }
 
 @Component({
@@ -29,7 +31,7 @@ export class RentacarIngresosList2Component implements OnInit {
   totalPagadoSeleccion: number = 0;
 
   //configuraciones tabla
-  displayedColumns: string[] = ['select', 'id', 'fecha', 'ingreso', 'respaldo', 'tipoIngreso', 'descripcion'];
+  displayedColumns: string[] = ['select', 'id', 'fecha', 'ingreso', 'respaldo', 'cliente', 'codigoLicitacion', 'descripcion'];
   dataSource = new MatTableDataSource<IngresoTabla>();
   selection = new SelectionModel<IngresoTabla>(true, []);
   @ViewChild(MatPaginator) paginator = null;
@@ -37,7 +39,7 @@ export class RentacarIngresosList2Component implements OnInit {
 
 
 
-  constructor() { }
+  constructor(private rentacarService: RentacarService) { }
 
   ngOnInit(): void {
     this.cargarListaIngresos();
@@ -46,18 +48,31 @@ export class RentacarIngresosList2Component implements OnInit {
 
   cargarListaIngresos(): void {
 
-    this.ingresoTabla.push({
-      id: 1,
-      descripcion: 'x skdlmklsm slkdkmsld mslkskmd lsmxskxsml smdklsm  skcmslcmk sklmccm ',
-      fecha: new Date(),
-      ingreso: 0,
-      respaldo: 'url',
-      tipoIngreso: 'VENTA'
-    })
 
-    this.dataSource = new MatTableDataSource(this.ingresoTabla);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.rentacarService.getIngresosLicitacion().subscribe((response) => {
+      console.log(response.data);
+
+      response.data.forEach((ingreso: any) => {
+
+        this.ingresoTabla.push({
+          id: ingreso.id_ingresoLicitacion,
+          fecha: ingreso.fecha_ingresoLicitacion,
+          ingreso: ingreso.monto_ingresoLicitacion,
+          respaldo: '',
+          descripcion: ingreso.descripcion_ingresoLicitacion,
+          cliente: ingreso.licitacione.clientesLicitacione.nombre_clienteLicitacion,
+          codigoLicitacion: ingreso.licitacione.codigo_licitacion
+        })
+
+      })
+
+      this.dataSource = new MatTableDataSource(this.ingresoTabla);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    });
+
+
+
   }
 
 

@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:3000/api',
+  apiRentacarUrl: 'http://localhost:3001/rentacar/',
   indexUrl: "http://localhost:4200"
 };
 

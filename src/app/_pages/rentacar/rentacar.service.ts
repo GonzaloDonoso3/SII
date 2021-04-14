@@ -1,8 +1,9 @@
+import { RequestResponse } from './../../_models/rentacar/requestResponse';
 import { ResponseListaArriendos } from './../../_models/rentacar/responseListaArriendos';
 import { Observable } from 'rxjs';
-
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,13 +17,21 @@ export class RentacarService {
   constructor(private http: HttpClient) { }
 
   getListaPagosArriendos(): Observable<ResponseListaArriendos> {
-    return this.http.get<ResponseListaArriendos>(`https://190.121.9.99:3010/rentacar/api/v2/mostrarArriendoFinanzas`, { headers: this.headers });
+    return this.http.get<ResponseListaArriendos>(`${environment.apiRentacarUrl}api/v2/mostrarArriendoFinanzas`, { headers: this.headers });
   }
 
-  getLicitaciones(): Observable<any> {
-    return this.http.get<any>(`http://localhost:3001/rentacar/licitacion/cargarLicitaciones`, { headers: this.headers });
+  getLicitaciones(): Observable<RequestResponse> {
+    return this.http.get<RequestResponse>(`${environment.apiRentacarUrl}licitacion/cargarLicitaciones`, { headers: this.headers });
   }
 
 
+  postIngresoLicitacion(ingresoLicitacion: any): Observable<RequestResponse> {
+    return this.http.post<RequestResponse>(`${environment.apiRentacarUrl}licitacion/crearIngreso`, ingresoLicitacion, { headers: this.headers, });
+  }
+
+
+  getIngresosLicitacion(): Observable<RequestResponse> {
+    return this.http.get<RequestResponse>(`${environment.apiRentacarUrl}licitacion/cargarIngresos`, { headers: this.headers });
+  }
 
 }

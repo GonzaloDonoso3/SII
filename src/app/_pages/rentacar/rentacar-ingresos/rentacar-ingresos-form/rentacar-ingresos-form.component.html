@@ -5,6 +5,7 @@
         </mat-card-header>
         <br><br>
         <mat-card-content>
+            <h4>Registrar ingresos por licitacion</h4>
             <div class="row">
 
                 <div class="col">
@@ -21,42 +22,21 @@
 
                 <div class="col">
                     <mat-form-field class="full-width">
-                        <input matInput placeholder="Monto" formControlName="monto" />
+                        <input matInput placeholder="Monto" formControlName="monto" type="number" />
                         <mat-error *ngIf="ingresoForm.controls['monto'].hasError('required')">
-                            cliente es <strong>requerido</strong>
+                            monto es <strong>requerido</strong>
                         </mat-error>
                     </mat-form-field>
                 </div>
 
-                <div class="col">
-                    <mat-form-field class="full-width">
-                        <mat-select placeholder="Tipo Ingreso" formControlName="tipoIngreso">
-                            <mat-option value="Venta">
-                                Venta
-                            </mat-option>
-                            <mat-option value="Arriendo">
-                                Arriendo
-                            </mat-option>
-                            <mat-option value="Licitacion">
-                                Licitacion
-                            </mat-option>
-                            <mat-option value="Otro">
-                                Otro
-                            </mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="ingresoForm.controls['tipoIngreso'].hasError('required')">
-                            tipo ingreso es <strong>requerido</strong>
-                        </mat-error>
-                    </mat-form-field>
-                </div>
 
                 <div class="col">
                     <mat-form-field class="full-width">
-                        <mat-select placeholder="Licitacion" formControlName="licitacion">
-                            <mat-option value="">2785-233-LR19 ILUSTRE MUNICIPALIDAD </mat-option>
-                            <mat-option value="">21057489-189-LR19 M SALVADOR </mat-option>
-                            <mat-option value="">5463-3-LE20 H DE PEÑA </mat-option>
-
+                        <mat-select placeholder="Licitaciones disponibles" formControlName="licitacion">
+                            <mat-option *ngFor="let licitacion of arrayLicitaciones" [value]="licitacion.id_licitacion">
+                                {{licitacion.codigo_licitacion}} -
+                                {{licitacion.clientesLicitacione.nombre_clienteLicitacion}}
+                            </mat-option>
                         </mat-select>
                         <mat-error *ngIf="ingresoForm.controls['licitacion'].hasError('required')">
                             Licitacion es <strong>requerido</strong>

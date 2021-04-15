@@ -1,11 +1,12 @@
 <mat-dialog-content>
+    <h1 class="cliente">Cliente: {{ nombreClienteLocal }} </h1>
     <mat-grid-list cols="2" class="grid">
         <!-- ********************** Formulario Contratos ********************** -->
         <mat-grid-tile class="grid-body">
             <form [formGroup]="addressFormContrato" novalidate class="mat-elevation-z10">
                 <mat-card class="shipping-card">
                     <mat-card-header>
-                        <h1> Agregar contrato </h1>
+                        <h1> Agregar contrato</h1>
                     </mat-card-header>
                     <br><br>
                     <mat-card-content>

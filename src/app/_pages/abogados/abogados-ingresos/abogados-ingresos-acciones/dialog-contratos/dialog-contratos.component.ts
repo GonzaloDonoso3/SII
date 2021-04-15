@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 import { Sucursal } from '@app/_models/shared/sucursal';
@@ -11,7 +11,6 @@ import { AbogadosTabsService } from '../../../abogados-tabs.service';
 import { nuevoContrato } from '../../../../../_models/abogados/nuevoContrato';
 import { nuevaCuota } from '../../../../../_models/abogados/nuevaCuota';
 import { Usuario } from '@app/_models/shared/usuario';
-import { MatDialog } from '@angular/material/dialog';
 import { AbogadosService } from '../../../abogados.service';
 
 
@@ -35,6 +34,7 @@ export class DialogContratosComponent implements OnInit {
   saldoPendiente = 0;
   usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '');
   idCliente = localStorage.getItem("idCliente");
+  nombreClienteLocal = localStorage.getItem("nombreCliente");
   
 
 

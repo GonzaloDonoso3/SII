@@ -12,6 +12,9 @@ import { AbogadosService } from '../../abogados.service';
 })
 export class AbogadosIngresosAccionesComponent implements OnInit {
 
+  validacion: boolean = false;
+  nombreClienteLocal = localStorage.getItem("nombreCliente");
+
   constructor(
     public dialog:MatDialog,
     private abogadosService: AbogadosService,
@@ -20,6 +23,13 @@ export class AbogadosIngresosAccionesComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  activarTablaContratos(){
+    this.validacion = true;
+  }
+
+  desactivarTablaContratos(){
+    this.validacion = false;
+  }
 
   openDialogContratos():void{
     this.abogadosService.openDialogContratos();

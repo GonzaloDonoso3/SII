@@ -6,15 +6,22 @@
         <br><br>
         <mat-card-content>
             <div class="row">
-                <!--  Mostrar Contratos Cliente-->
+                <!--  Botones Acciones -->
                 <div class="col">
-                    <button mat-raised-button color="primary" type="submit" style="width: 50%;">
+                    <!-- Boton mostrar tabla contratos clientes -->
+                    <button mat-raised-button color="primary" type="submit" class="boton-inicio" (click)="activarTablaContratos()">
                         <mat-icon>visibility</mat-icon>  Mostrar Contratos Cliente
                     </button>
-                    <button mat-raised-button color="primary" type="submit" style="width: 50%;" (click)="openDialogContratos()">
+                    <!-- Boton Modal Generar Contrato-->
+                    <button mat-raised-button color="primary" type="submit" class="boton-inicio" (click)="openDialogContratos()">
                         <mat-icon>note_add</mat-icon> Contratos 
                     </button>
                 </div>
+            </div>
+            <br>
+            <!-- Tabla Contratos Clientes -->
+            <div *ngIf="validacion">
+                <app-dialog-mostrar-contratos></app-dialog-mostrar-contratos>
             </div>
         </mat-card-content>
     </mat-card>

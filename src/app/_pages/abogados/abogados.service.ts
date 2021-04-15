@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogContratosComponent } from './abogados-ingresos/abogados-ingresos-acciones/dialog-contratos/dialog-contratos.component';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -21,7 +20,10 @@ export class AbogadosService {
     });
   }
 
+
   closeDialogContratos(){
     this.dialog.closeAll();
   }
+
+
 }

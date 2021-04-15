@@ -111,12 +111,15 @@ export class AbogadosIngresosFormComponent implements OnInit {
       .subscribe((x: any) => {
         this.elPadreDice = x;
         this.idCliente = this.elPadreDice.cliente.id;
+
+        // Crear un local que almacene datos del cliente
         localStorage.setItem("idCliente", this.idCliente);
+        localStorage.setItem("nombreCliente", this.elPadreDice.cliente.nombre);
+
         this.abogadosTabsService
           .obtenerContratosCliente(this.idCliente)
           .subscribe((contratos: null) => {
             this.causasCliente = contratos;
-            console.log(this.causasCliente);
           });
         if (!this.elPadreDice.created) {
           this.f.nombreCliente.setValue(this.elPadreDice.cliente.nombre);
@@ -127,7 +130,6 @@ export class AbogadosIngresosFormComponent implements OnInit {
             duration: 2000,
             verticalPosition: 'top',
           });
-          console.log(this.elPadreDice);
         } else {
           this.snackBar.open('El Usuario no existe, complete la informacion y actualice los datos', 'cerrar', {
             duration: 2000,

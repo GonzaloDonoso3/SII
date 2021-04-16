@@ -28,6 +28,8 @@ export class DialogMostrarContratosComponent implements OnInit {
 
   idEmpresa = 2;
   empresa = new Empresa();
+  contratoR : any;
+ 
 
     // ? table definitions.
     displayedColumns: string[] = [
@@ -173,13 +175,32 @@ export class DialogMostrarContratosComponent implements OnInit {
     this.abogadosTabsService.exportAsExcelFile(this.selectedRows, 'Lista-Contratos-Cliente');
   }
 
-  // Abrir Ventanas Modal
+  // Abrir Ventana Modal Registrar Pago
   openDialogRegistrarPago(){
+    this.selectedRows = [];
+    this.selection.selected.forEach((x) => this.selectedRows.push(x));
+    this.selectedRows.forEach((x) => {
+      localStorage.setItem("idContratoPago", x.id);
+    });
     this.abogadosService.openDialogRegistrarPago();
   }
 
+  obtenerContrato(nContrato: any): void {
+    this.abogadosTabsService.obtenerContratoNumero(nContrato).subscribe((x:any) => {
+      this.contratoR = x;
+    });
+  }
+
   openDialogRepactarCuotas(){
+    this.selectedRows = [];
+    this.selection.selected.forEach((x) => this.selectedRows.push(x));
+    this.selectedRows.forEach((x) => {
+      localStorage.setItem("idContratoPago", x.id);
+    });
     this.abogadosService.openDialogRepactarCuotas();
   }
+
+
+ 
 
 }

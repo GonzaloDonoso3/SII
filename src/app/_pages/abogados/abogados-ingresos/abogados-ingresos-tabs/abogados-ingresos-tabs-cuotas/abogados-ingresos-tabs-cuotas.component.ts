@@ -6,8 +6,6 @@ import { AbogadosTabsService } from '../../../abogados-tabs.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Cuota } from '../../../../../_models/abogados/cuota';
-import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
-import { Contrato } from '../../../../../_models/abogados/contrato';
 
 
 
@@ -21,10 +19,6 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
 
   // ? childrens
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
-
-  // ? Inputs & Outputs
-  @Input()
-  refrescar = '';
 
   // ? table definitions.
   displayedColumns: string[] = [

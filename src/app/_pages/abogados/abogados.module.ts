@@ -17,11 +17,13 @@ import { AbogadosIngresosTabsClientesComponent } from './abogados-ingresos/aboga
 import { AbogadosIngresosTabsCuotasComponent } from './abogados-ingresos/abogados-ingresos-tabs/abogados-ingresos-tabs-cuotas/abogados-ingresos-tabs-cuotas.component';
 import { DialogContratosComponent } from './abogados-ingresos/abogados-ingresos-acciones/dialog-contratos/dialog-contratos.component';
 import { DialogMostrarContratosComponent } from './abogados-ingresos/abogados-ingresos-acciones/dialog-mostrar-contratos/dialog-mostrar-contratos.component';
+import { DialogRegistrarPagoComponent } from './abogados-ingresos/abogados-ingresos-acciones/dialog-registrar-pago/dialog-registrar-pago.component';
+import { DialogRepactarCuotasComponent } from './abogados-ingresos/abogados-ingresos-acciones/dialog-repactar-cuotas/dialog-repactar-cuotas.component';
 
 
 
 @NgModule({
-  declarations: [AbogadosIngresosComponent, AbogadosEgresosComponent, AbogadosHomeComponent, AbogadosEgresosFormComponent, AbogadosEgresosListComponent, AbogadosIngresosFormComponent, AbogadosIngresosAccionesComponent, AbogadosIngresosTabsComponent, AbogadosIngresosTabsContratosComponent, AbogadosIngresosTabsClientesComponent, AbogadosIngresosTabsCuotasComponent, DialogContratosComponent, DialogMostrarContratosComponent],
+  declarations: [AbogadosIngresosComponent, AbogadosEgresosComponent, AbogadosHomeComponent, AbogadosEgresosFormComponent, AbogadosEgresosListComponent, AbogadosIngresosFormComponent, AbogadosIngresosAccionesComponent, AbogadosIngresosTabsComponent, AbogadosIngresosTabsContratosComponent, AbogadosIngresosTabsClientesComponent, AbogadosIngresosTabsCuotasComponent, DialogContratosComponent, DialogMostrarContratosComponent, DialogRegistrarPagoComponent, DialogRepactarCuotasComponent],
   imports: [
     CommonModule,
     AbogadosRoutingModule,

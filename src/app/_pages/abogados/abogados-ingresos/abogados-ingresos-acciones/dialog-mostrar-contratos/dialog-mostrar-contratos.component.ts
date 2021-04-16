@@ -12,6 +12,7 @@ import { AbogadosIngresosAccionesComponent } from '../abogados-ingresos-acciones
 import { Empresa } from '@app/_models/shared/empresa';
 import { EmpresaSharedService } from '@app/_pages/shared/shared-services/empresa-shared.service';
 import { first } from 'rxjs/operators';
+import { AbogadosService } from '../../../abogados.service';
 
 
 @Component({
@@ -57,11 +58,13 @@ export class DialogMostrarContratosComponent implements OnInit {
   selection = new SelectionModel<any>(true, []);
   totalSeleccion = 0;
   selectedRows!: any[];
+  
 
   constructor(
     private abogadosAcciones: AbogadosIngresosAccionesComponent,
     private abogadosTabsService: AbogadosTabsService,
     private empresaService: EmpresaSharedService,
+    private abogadosService: AbogadosService
   ) { }
 
   ngOnInit(): void {
@@ -163,10 +166,20 @@ export class DialogMostrarContratosComponent implements OnInit {
       });
   }
 
-   //Metodo exportar excel
+   // Metodo exportar excel
    exportAsXLSX(): void {
     this.selectedRows = [];
     this.selection.selected.forEach((x) => this.selectedRows.push(x));
     this.abogadosTabsService.exportAsExcelFile(this.selectedRows, 'Lista-Contratos-Cliente');
   }
+
+  // Abrir Ventanas Modal
+  openDialogRegistrarPago(){
+    this.abogadosService.openDialogRegistrarPago();
+  }
+
+  openDialogRepactarCuotas(){
+    this.abogadosService.openDialogRepactarCuotas();
+  }
+
 }

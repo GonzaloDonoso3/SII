@@ -5,10 +5,10 @@
     <span>Contratos cliente: {{ nombreClienteLocal }}</span>
     <div class="row">
         <div class="col">
-            <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="desactivarTablaContratos()">
+            <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="openDialogRegistrarPago()">
                 <mat-icon>paid</mat-icon>  Registrar Pago 
             </button>
-            <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="desactivarTablaContratos()">
+            <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="openDialogRepactarCuotas()">
                 <mat-icon>calculate</mat-icon>  Repactar Cuotas
             </button>
             <button mat-raised-button color="accent" style="margin-left: 1rem" class="btn-circle" (click)="exportAsXLSX()">

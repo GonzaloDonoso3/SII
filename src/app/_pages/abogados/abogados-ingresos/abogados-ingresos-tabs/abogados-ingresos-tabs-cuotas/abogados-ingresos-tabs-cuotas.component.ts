@@ -6,8 +6,6 @@ import { AbogadosTabsService } from '../../../abogados-tabs.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Cuota } from '../../../../../_models/abogados/cuota';
-import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
-import { Contrato } from '../../../../../_models/abogados/contrato';
 
 
 
@@ -21,10 +19,6 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
 
   // ? childrens
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
-
-  // ? Inputs & Outputs
-  @Input()
-  refrescar = '';
 
   // ? table definitions.
   displayedColumns: string[] = [
@@ -41,7 +35,8 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
   dataCuotas: Cuota[] = [];
 
   formFilter = new FormGroup({
-    fechaCompromiso: new FormControl(),
+    startCompromiso: new FormControl(),
+    endCompromiso: new FormControl(),
     startRegistro: new FormControl(),
     endRegistro: new FormControl(),
     startActualizacion: new FormControl(),
@@ -71,7 +66,6 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
      this.dataCuotas = Cuotas.map(Cuotas => {
        return Cuotas;
      });
-     console.log(this.dataCuotas);
      this.dataSource = new MatTableDataSource(this.dataCuotas);
      this.dataSource.paginator = this.paginator.toArray()[0];
    });
@@ -112,8 +106,11 @@ aplicarfiltros() {
     }
 
     //Filtro Fecha Compromiso
-    if (res.fechaCompromiso) {
-      dataFiltered = dataFiltered.filter((data: Cuota) => data.fechaPago == res.fechaCompromiso);
+    if (res.startCompromiso && res.endCompromiso) {
+      dataFiltered = this.dataCuotas.map((data: any) => {
+        data.fechaPago = new Date(data.fechaPago);
+        return data;
+      }).filter((comp: { fechaPago: Date; }) => comp.fechaPago >= res.startCompromiso && comp.fechaPago <= res.endCompromiso);
     }
     
     //Filtro Fecha Registro Falta
@@ -122,7 +119,6 @@ aplicarfiltros() {
         data.createdAt = new Date(data.createdAt);
         return data;
       }).filter((comp: { createdAt: Date; }) => comp.createdAt >= res.startRegistro && comp.createdAt <= res.endRegistro);
-      
     }
 
     //Filtro Fecha Actualización Falta
@@ -139,7 +135,7 @@ aplicarfiltros() {
 }
 
 limpiarFiltros() {
-  this.formFilter.patchValue({ estadoPago: null, numeroContrato: null, fechaCompromiso: null, startRegistro: null, endRegistro: null, startActualizacion: null, endActualizacion: null })
+  this.formFilter.patchValue({ estadoPago: null, numeroContrato: null, startCompromiso: null, endCompromiso: null,startRegistro: null, endRegistro: null, startActualizacion: null, endActualizacion: null })
   this.dataSource = new MatTableDataSource(this.dataCuotas);
   this.dataSource.paginator = this.paginator.toArray()[0];
   this.selection.clear()

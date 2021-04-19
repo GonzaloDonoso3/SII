@@ -15,11 +15,15 @@ import { AbogadosIngresosTabsComponent } from './abogados-ingresos/abogados-ingr
 import { AbogadosIngresosTabsContratosComponent } from './abogados-ingresos/abogados-ingresos-tabs/abogados-ingresos-tabs-contratos/abogados-ingresos-tabs-contratos.component';
 import { AbogadosIngresosTabsClientesComponent } from './abogados-ingresos/abogados-ingresos-tabs/abogados-ingresos-tabs-clientes/abogados-ingresos-tabs-clientes.component';
 import { AbogadosIngresosTabsCuotasComponent } from './abogados-ingresos/abogados-ingresos-tabs/abogados-ingresos-tabs-cuotas/abogados-ingresos-tabs-cuotas.component';
+import { DialogContratosComponent } from './abogados-ingresos/abogados-ingresos-acciones/dialog-contratos/dialog-contratos.component';
+import { DialogMostrarContratosComponent } from './abogados-ingresos/abogados-ingresos-acciones/dialog-mostrar-contratos/dialog-mostrar-contratos.component';
+import { DialogRegistrarPagoComponent } from './abogados-ingresos/abogados-ingresos-acciones/dialog-registrar-pago/dialog-registrar-pago.component';
+import { DialogRepactarCuotasComponent } from './abogados-ingresos/abogados-ingresos-acciones/dialog-repactar-cuotas/dialog-repactar-cuotas.component';
 
 
 
 @NgModule({
-  declarations: [AbogadosIngresosComponent, AbogadosEgresosComponent, AbogadosHomeComponent, AbogadosEgresosFormComponent, AbogadosEgresosListComponent, AbogadosIngresosFormComponent, AbogadosIngresosAccionesComponent, AbogadosIngresosTabsComponent, AbogadosIngresosTabsContratosComponent, AbogadosIngresosTabsClientesComponent, AbogadosIngresosTabsCuotasComponent],
+  declarations: [AbogadosIngresosComponent, AbogadosEgresosComponent, AbogadosHomeComponent, AbogadosEgresosFormComponent, AbogadosEgresosListComponent, AbogadosIngresosFormComponent, AbogadosIngresosAccionesComponent, AbogadosIngresosTabsComponent, AbogadosIngresosTabsContratosComponent, AbogadosIngresosTabsClientesComponent, AbogadosIngresosTabsCuotasComponent, DialogContratosComponent, DialogMostrarContratosComponent, DialogRegistrarPagoComponent, DialogRepactarCuotasComponent],
   imports: [
     CommonModule,
     AbogadosRoutingModule,

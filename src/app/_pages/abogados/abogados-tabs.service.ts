@@ -65,10 +65,9 @@ export class AbogadosTabsService {
   }
   registrarPago(idCuota: any): any {
     return this.http.post<[]>(
-      `${environment.apiUrl}/cuotasContrato/registrarPago/`,
-      idCuota
-    );
+      `${environment.apiUrl}/cuotasContrato/registrarPago/`, idCuota);
   }
+  
   repactarContrato(excuotas: any, newcuotas: any): any {
     return this.http.post<[]>(
       `${environment.apiUrl}/cuotasContrato/repactarContrato/`,

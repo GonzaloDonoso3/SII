@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { DialogContratosComponent } from './dialog-contratos/dialog-contratos.component';
+import { MatDialog } from '@angular/material/dialog';
+import { AbogadosService } from '../../abogados.service';
+
+
 
 @Component({
   selector: 'app-abogados-ingresos-acciones',
@@ -7,9 +12,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AbogadosIngresosAccionesComponent implements OnInit {
 
-  constructor() { }
+  validacion: boolean = false;
+  nombreClienteLocal = localStorage.getItem("nombreCliente");
+
+  constructor(
+    public dialog:MatDialog,
+    private abogadosService: AbogadosService,
+    ) { }
 
   ngOnInit(): void {
   }
 
+  activarTablaContratos(){
+    this.validacion = true;
+  }
+
+  desactivarTablaContratos(){
+    this.validacion = false;
+  }
+
+  openDialogContratos():void{
+    this.abogadosService.openDialogContratos();
+  }
 }

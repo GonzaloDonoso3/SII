@@ -9,6 +9,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { Cuota } from '../../../../../_models/abogados/cuota';
 import { Contrato } from '../../../../../_models/abogados/contrato';
 import { SelectionModel } from '@angular/cdk/collections';
+import { DialogRespaldosComponent } from 'src/app/_components/dialogs/dialog-respaldos/dialog-respaldos.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -33,6 +35,8 @@ export class DialogRegistrarPagoComponent implements OnInit {
     dataContrato: Contrato[] = [];
 
     idContrato = localStorage.getItem("idContratoPago");
+    idCuota : any;
+    cuota: any;
     
   
     formFilter = new FormGroup({
@@ -47,7 +51,8 @@ export class DialogRegistrarPagoComponent implements OnInit {
 
   constructor(
     private abogadosTabsService: AbogadosTabsService,
-    private abogadosService: AbogadosService
+    private abogadosService: AbogadosService,
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -63,7 +68,6 @@ export class DialogRegistrarPagoComponent implements OnInit {
     .subscribe((x: any) => {
      this.dataSource = new MatTableDataSource(x.CuotasContratos);
      this.dataSource.paginator = this.paginator.toArray()[0];
-     console.log(x);
    });
   }
 
@@ -85,4 +89,53 @@ export class DialogRegistrarPagoComponent implements OnInit {
     console.log(this.selection.selected);
   }
 
+  procesarPago(){
+   const dialogRef = this.dialog.open(DialogRespaldosComponent, {
+      data: { url: 'cuotasContrato/upload' }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      let respaldo = {};
+      const arrayRespaldos: {}[] = [];
+      const respuesta = result;
+      let idCuota: string;
+      let cuota: any;
+
+      this.selectedRows = [];
+      this.selection.selected.forEach((x) => this.selectedRows.push(x));
+      this.selectedRows.forEach((x) => {
+        idCuota = x.id;
+        cuota = x;
+      });
+      respuesta.forEach((resp: any) => {
+        respaldo = { idCuotaFirma: idCuota, url: resp };
+        arrayRespaldos.push(respaldo);
+      });
+
+      this.abogadosTabsService.agregarRespaldos(arrayRespaldos).subscribe(
+        () => {
+          this.pagarCuota(idCuota, cuota);
+        },
+        (error: any) => {
+          console.log(error);
+        }
+      );
+    });
+  }
+
+  pagarCuota(idCuota: string, cuota:any): void {
+    const body = { idCuota };
+    this.abogadosTabsService
+      .registrarPago(body)
+      .pipe()
+      .subscribe((x:any) => {
+        this.abogadosTabsService
+          .obtenerContratoNumero(this.idContrato)
+          .pipe()
+          .subscribe((x:any) => {
+            this.dataSource = new MatTableDataSource(x.CuotasContratos);
+            this.dataSource.paginator = this.paginator.toArray()[0];
+            this.abogadosService.closeDialogContratos();
+          });
+      });
+  }
 }

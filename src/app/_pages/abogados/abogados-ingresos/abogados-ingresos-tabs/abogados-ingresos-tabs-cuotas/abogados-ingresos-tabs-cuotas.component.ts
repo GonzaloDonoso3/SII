@@ -35,7 +35,8 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
   dataCuotas: Cuota[] = [];
 
   formFilter = new FormGroup({
-    fechaCompromiso: new FormControl(),
+    startCompromiso: new FormControl(),
+    endCompromiso: new FormControl(),
     startRegistro: new FormControl(),
     endRegistro: new FormControl(),
     startActualizacion: new FormControl(),
@@ -105,8 +106,11 @@ aplicarfiltros() {
     }
 
     //Filtro Fecha Compromiso
-    if (res.fechaCompromiso) {
-      dataFiltered = dataFiltered.filter((data: Cuota) => data.fechaPago == res.fechaCompromiso);
+    if (res.startCompromiso && res.endCompromiso) {
+      dataFiltered = this.dataCuotas.map((data: any) => {
+        data.fechaPago = new Date(data.fechaPago);
+        return data;
+      }).filter((comp: { fechaPago: Date; }) => comp.fechaPago >= res.startCompromiso && comp.fechaPago <= res.endCompromiso);
     }
     
     //Filtro Fecha Registro Falta
@@ -115,7 +119,6 @@ aplicarfiltros() {
         data.createdAt = new Date(data.createdAt);
         return data;
       }).filter((comp: { createdAt: Date; }) => comp.createdAt >= res.startRegistro && comp.createdAt <= res.endRegistro);
-      
     }
 
     //Filtro Fecha Actualización Falta
@@ -132,7 +135,7 @@ aplicarfiltros() {
 }
 
 limpiarFiltros() {
-  this.formFilter.patchValue({ estadoPago: null, numeroContrato: null, fechaCompromiso: null, startRegistro: null, endRegistro: null, startActualizacion: null, endActualizacion: null })
+  this.formFilter.patchValue({ estadoPago: null, numeroContrato: null, startCompromiso: null, endCompromiso: null,startRegistro: null, endRegistro: null, startActualizacion: null, endActualizacion: null })
   this.dataSource = new MatTableDataSource(this.dataCuotas);
   this.dataSource.paginator = this.paginator.toArray()[0];
   this.selection.clear()

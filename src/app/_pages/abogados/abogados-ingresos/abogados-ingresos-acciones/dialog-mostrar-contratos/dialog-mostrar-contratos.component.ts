@@ -86,7 +86,6 @@ export class DialogMostrarContratosComponent implements OnInit {
      });
      this.dataSource = new MatTableDataSource(this.dataContrato);
      this.dataSource.paginator = this.paginator.toArray()[0];
-     console.log(this.dataContrato);
    });
 }
 
@@ -108,7 +107,6 @@ export class DialogMostrarContratosComponent implements OnInit {
         this.selection.select(row);
 
       });
-    console.log(this.selection.selected);
   }
 
   aplicarfiltros() {

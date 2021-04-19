@@ -127,9 +127,12 @@ export class DialogContratosComponent implements OnInit {
       .guardarCuotas(this.listaCuotas)
       .pipe()
       .subscribe((x:any) => {
-        console.log(x);
         this.abogadosService.closeDialogContratos();
         this.listaCuotas = [];
+        this.snackBar.open('Contato generado con exito', 'cerrar', {
+          duration: 2000,
+          verticalPosition: 'top',
+        });
       });
   }
 
@@ -139,7 +142,6 @@ export class DialogContratosComponent implements OnInit {
       .pipe(first())
       .subscribe((x) => {
         x.Sucursals = Object.values(x.Sucursals);
-
         this.empresa = x;
       });
   }

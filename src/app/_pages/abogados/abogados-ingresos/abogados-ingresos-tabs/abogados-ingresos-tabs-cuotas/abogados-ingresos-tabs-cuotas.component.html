@@ -29,15 +29,22 @@
             <td mat-cell *matCellDef="let element">{{ element.id }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="fechaCompromiso">
+        <ng-container matColumnDef="fechaCompromiso" class="mat-column-date">
             <th mat-header-cell *matHeaderCellDef>
-                <div [formGroup]="formFilter">
-                    <mat-form-field class="fill">
-                        <input matInput placeholder="Fecha Compromiso" formControlName="fechaCompromiso" />
-                    </mat-form-field>
-                </div>
+                <mat-form-field appearance="fill">
+                    <mat-label>Fecha Registro</mat-label>
+                    <mat-date-range-input [formGroup]="formFilter" [rangePicker]="picker">
+                        <input matStartDate formControlName="startCompromiso" placeholder="Start date" type="date" />
+                        <input matEndDate formControlName="endCompromiso" placeholder="End date" type="date" />
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+
+                    <mat-error *ngIf="formFilter.controls.startCompromiso.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+                    <mat-error *ngIf="formFilter.controls.endCompromiso.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+                </mat-form-field>
             </th>
-            <td mat-cell *matCellDef="let element">{{ element.fechaPago | date: 'dd/MM/yyyy'}}</td>
+            <td mat-cell *matCellDef="let element">{{ element.fechaPago | date: 'dd/MM/yyyy' }}</td>
         </ng-container>
 
         <ng-container matColumnDef="monto">

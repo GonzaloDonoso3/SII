@@ -33,10 +33,18 @@ export class DialogRepactarCuotasComponent implements OnInit {
   ];
   dataSource: MatTableDataSource<Contrato> = new MatTableDataSource();
   dataContrato: Contrato[] = [];
+
+  displayedColumns2: string[] = [
+    'fechaCuotaTabla',
+    'montoCuotaTabla',
+  ];
+  dataSourceCuotas: MatTableDataSource<nuevaCuota> = new MatTableDataSource();
   
   idContrato = localStorage.getItem("idContratoPago");
   nombreClienteLocal = localStorage.getItem("nombreCliente");
   contratoR !: any;
+  cuotas !: any;
+  datos !: any;
 
   addressFormContrato = this.fb.group({
     fechaCuota: ['', Validators.required],
@@ -47,7 +55,8 @@ export class DialogRepactarCuotasComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private abogadosTabsService: AbogadosTabsService,
-    private abogadosService: AbogadosService
+    private abogadosService: AbogadosService,
+    private snackBar: MatSnackBar,
   ) { }
 
   ngOnInit(): void {
@@ -65,6 +74,39 @@ export class DialogRepactarCuotasComponent implements OnInit {
      this.contratoR = x;
      console.log(this.contratoR);
    });
+  }
+
+  get f(): any {
+    return this.addressFormContrato.controls;
+  }
+
+  calcularCuotas(): void {
+    this.cuotas = [];
+    this.datos = new nuevaCuota();
+    this.datos.idContrato = this.idContrato;
+    this.datos.nCuotas = this.f.cantidadCuota.value;
+    this.datos.montoInicial = this.f.montoCuota.value;
+    this.datos.fechaInicio = this.f.fechaCuota.value;
+    this.abogadosTabsService
+      .calcularCuotas(this.datos)
+      .pipe()
+      .subscribe((x:any) => {
+        this.cuotas = x;
+        this.dataSourceCuotas = new MatTableDataSource(this.cuotas);
+      });
+  }
+
+  repactar(): void {
+    this.abogadosTabsService
+      .repactarContrato(this.contratoR.CuotasContratos, this.cuotas)
+      .subscribe((x:any) => {
+        console.log(x);
+      });
+      this.abogadosService.closeDialogContratos();
+      this.snackBar.open('Cuotas repactadas con exito', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
   }
 
 

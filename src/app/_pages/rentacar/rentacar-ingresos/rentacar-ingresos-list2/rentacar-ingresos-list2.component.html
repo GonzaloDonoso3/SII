@@ -3,12 +3,14 @@
         Limpiar filtros
     </button>
     <span>Otros Ingresos Rent A Car</span>
-    <span>Monto Registros Seleccionados
-        {{ totalEsperadoSeleccion | currency: "$":"symbol":"1.0-0" }} / {{ totalPagadoSeleccion | currency:
-        "$":"symbol":"1.0-0" }}
+    <span>Monto total Seleccionados
+        {{ totalIngresoSeleccion | currency: "$":"symbol":"1.0-0" }}
     </span>
     <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="revelarTotal()">
         Revelar total
+    </button>
+    <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="exportAsXLSX()">
+        Exportar excel
     </button>
 </mat-toolbar>
 

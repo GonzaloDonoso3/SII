@@ -1,6 +1,7 @@
+import { Usuario } from '@models/shared/usuario';
 import { AlertHelper } from '@app/_helpers/alert.helper';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RentacarService } from '../../rentacar.service';
 
@@ -14,6 +15,7 @@ import { RentacarService } from '../../rentacar.service';
 })
 export class RentacarIngresosFormComponent implements OnInit {
 
+  @Output() formularioListo = new EventEmitter<string>();
 
 
   ingresoForm: FormGroup = this.fb.group({
@@ -24,6 +26,7 @@ export class RentacarIngresosFormComponent implements OnInit {
   })
 
   arrayLicitaciones: any[] = [];
+  usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '');
 
   ingresoLicitacion: any = {};
 
@@ -47,17 +50,22 @@ export class RentacarIngresosFormComponent implements OnInit {
     switch (this.ingresoForm.status) {
       case 'VALID':
 
+
+        //capturar los respaldos en un modal
+
+
         this.ingresoLicitacion.fecha_ingresoLicitacion = this.ingresoForm.value.fecha;
         this.ingresoLicitacion.descripcion_ingresoLicitacion = this.ingresoForm.value.descripcionIngreso;
         this.ingresoLicitacion.id_licitacion = this.ingresoForm.value.licitacion;
         this.ingresoLicitacion.monto_ingresoLicitacion = this.ingresoForm.value.monto;
-        this.ingresoLicitacion.userAt = null;
+        this.ingresoLicitacion.userAt = this.usuario.nombreUsuario;
 
         this.rentacarService.postIngresoLicitacion(this.ingresoLicitacion).subscribe((response) => {
 
           console.log(response.data.id_ingresoLicitacion);
           //subir imagenes con la id
 
+          this.formularioListo.emit('true');
           this.alert.createAlert("Registro Creado con exito!");
           this.ingresoForm.reset();
         })

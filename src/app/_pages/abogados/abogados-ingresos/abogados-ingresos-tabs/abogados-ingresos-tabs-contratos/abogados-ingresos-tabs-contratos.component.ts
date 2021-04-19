@@ -67,8 +67,8 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
     private abogadosTabsService: AbogadosTabsService,
     private sucursalService: SucursalSharedService,
     public dialog: MatDialog,
-  ) { 
-    
+  ) {
+
   }
 
   ngOnInit(): void {
@@ -80,21 +80,21 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
 
   }
 
-  getContratos(){
-       //Carga Tabla 
-       this.abogadosTabsService.obtenerContratos().subscribe((result: Contrato[]) => {
-        this.dataContrato = result.map(Contrato => {
-          Contrato.sucursal = Contrato.Sucursal.razonSocial;
-          Contrato.usuario = Contrato.Usuario.nombreUsuario;
-          
-          return Contrato; 
-        });
-        this.dataSource = new MatTableDataSource(this.dataContrato);
-        this.dataSource.paginator = this.paginator.toArray()[0];
+  getContratos() {
+    //Carga Tabla 
+    this.abogadosTabsService.obtenerContratos().subscribe((result: Contrato[]) => {
+      this.dataContrato = result.map(Contrato => {
+        Contrato.sucursal = Contrato.Sucursal.razonSocial;
+        Contrato.usuario = Contrato.Usuario.nombreUsuario;
+
+        return Contrato;
       });
+      this.dataSource = new MatTableDataSource(this.dataContrato);
+      this.dataSource.paginator = this.paginator.toArray()[0];
+    });
   }
 
-   // ? selection rows
+  // ? selection rows
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
@@ -119,19 +119,31 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
 
       //Filtro Rut Falta
       if (res.rut) {
-        dataFiltered = dataFiltered.filter((data: Contrato) => data.Cliente.rut = res.rut);
+        dataFiltered = dataFiltered.filter((data: Contrato) => {
+          try {
+            return data.Cliente.rut.includes(res.rut)
+          } catch (error) {
+            return false;
+          }
+        });
       }
 
       //Filtro Cliente Falta
       if (res.cliente) {
-        dataFiltered = dataFiltered.filter((data: Contrato) => data.cliente = res.cliente);
+        dataFiltered = dataFiltered.filter((data: Contrato) => {
+          try {
+            return data.cliente.includes(res.cliente.toUpperCase())
+          } catch (error) {
+            return false;
+          }
+        });
       }
 
       //Filtro Fecha
       if (res.start && res.end) {
         dataFiltered = dataFiltered.filter((data: Contrato) => new Date(data.fechaContrato) >= res.start && new Date(data.fechaContrato) <= res.end);
       }
-      
+
       //Filtro Estado Pago
       if (res.estadoPago) {
         dataFiltered = dataFiltered.filter((data: Contrato) => data.estadoPago == res.estadoPago);
@@ -139,14 +151,14 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
 
       //Filtro Sucursal
       if (res.sucursal) {
-        dataFiltered = dataFiltered.filter((data: Contrato) => data.sucursal == res.sucursal);
+        dataFiltered = dataFiltered.filter((data: Contrato) => data.sucursal.includes(res.sucursal.toUpperCase()));
       }
 
       //Filtro Usuario
       if (res.usuario) {
-        dataFiltered = dataFiltered.filter((data: Contrato) => data.usuario == res.usuario);
+        dataFiltered = dataFiltered.filter((data: Contrato) => data.usuario.includes(res.usuario));
       }
-      
+
 
       this.dataSource = new MatTableDataSource(dataFiltered);
       this.dataSource.paginator = this.paginator.toArray()[0];

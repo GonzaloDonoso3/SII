@@ -28,8 +28,8 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
     'monto',
     'estadoPago',
     'numeroContrato',
-    'fechaRegistro',
-    'fechaActualizacion',
+    /*  'fechaRegistro',
+     'fechaActualizacion', */
   ];
   dataSource: MatTableDataSource<Cuota> = new MatTableDataSource();
   dataCuotas: Cuota[] = [];
@@ -37,10 +37,10 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
   formFilter = new FormGroup({
     startCompromiso: new FormControl(),
     endCompromiso: new FormControl(),
-    startRegistro: new FormControl(),
-    endRegistro: new FormControl(),
-    startActualizacion: new FormControl(),
-    endActualizacion: new FormControl(),
+    /*  startRegistro: new FormControl(),
+     endRegistro: new FormControl(),
+     startActualizacion: new FormControl(),
+     endActualizacion: new FormControl(), */
     estadoPago: new FormControl(),
     numeroContrato: new FormControl(),
   })
@@ -60,92 +60,96 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
     this.aplicarfiltros();
   }
 
-  getCuotas(){
+  getCuotas() {
     //Carga Tabla 
     this.abogadosTabsService.obtenerCuotas().subscribe((Cuotas: Cuota[]) => {
-     this.dataCuotas = Cuotas.map(Cuotas => {
-       return Cuotas;
-     });
-     this.dataSource = new MatTableDataSource(this.dataCuotas);
-     this.dataSource.paginator = this.paginator.toArray()[0];
-   });
-}
-
-isAllSelected() {
-  const numSelected = this.selection.selected.length;
-  const numRows = this.dataSource.data.length;
-  return numSelected === numRows;
-}
-
-masterToggle() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-  this.isAllSelected() ?
-    this.selection.clear() :
-    this.dataSource.filteredData.forEach(row => {
-      this.selection.select(row);
-
+      this.dataCuotas = Cuotas.map(Cuotas => {
+        return Cuotas;
+      });
+      this.dataSource = new MatTableDataSource(this.dataCuotas);
+      this.dataSource.paginator = this.paginator.toArray()[0];
     });
-  console.log(this.selection.selected);
-}
+  }
+
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  masterToggle() {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.filteredData.forEach(row => {
+        this.selection.select(row);
+
+      });
+    console.log(this.selection.selected);
+  }
 
 
-// Filtros
-aplicarfiltros() {
-  this.formFilter.valueChanges.subscribe(res => {
+  // Filtros
+  aplicarfiltros() {
+    this.formFilter.valueChanges.subscribe(res => {
 
-    let dataFiltered = this.dataCuotas;
+      let dataFiltered = this.dataCuotas;
+      console.log(dataFiltered);
+      //Filtro Estado
+      if (res.estadoPago) {
+        dataFiltered = dataFiltered.filter((data: Cuota) => data.estado == res.estadoPago);
+      }
 
-    //Filtro Estado
-    if (res.estadoPago) {
-      dataFiltered = dataFiltered.filter((data: Cuota) => data.estado == res.estadoPago);
-    }
+      //Filtro Numero Contrato
+      if (res.numeroContrato) {
+        dataFiltered = dataFiltered.filter((data: Cuota) => data.idContrato == res.numeroContrato);
+      }
 
-    //Filtro Numero Contrato
-    if (res.numeroContrato) {
-      dataFiltered = dataFiltered.filter((data: Cuota) => data.idContrato == res.numeroContrato);
-    }
+      //Filtro Fecha Compromiso
+      if (res.startCompromiso && res.endCompromiso) {
+        dataFiltered = dataFiltered.filter((data: any) => new Date(data.fechaPago) >= res.startCompromiso && new Date(data.fechaPago) <= res.endCompromiso);
+      }
 
-    //Filtro Fecha Compromiso
-    if (res.startCompromiso && res.endCompromiso) {
-      dataFiltered = this.dataCuotas.map((data: any) => {
-        data.fechaPago = new Date(data.fechaPago);
-        return data;
-      }).filter((comp: { fechaPago: Date; }) => comp.fechaPago >= res.startCompromiso && comp.fechaPago <= res.endCompromiso);
-    }
-    
-    //Filtro Fecha Registro Falta
-    if (res.startRegistro && res.endRegistro) {
-      dataFiltered = this.dataCuotas.map((data: any) => {
-        data.createdAt = new Date(data.createdAt);
-        return data;
-      }).filter((comp: { createdAt: Date; }) => comp.createdAt >= res.startRegistro && comp.createdAt <= res.endRegistro);
-    }
+      /*     if (res.startCompromiso && res.endCompromiso) {
+            dataFiltered = this.dataCuotas.map((data: any) => {
+              data.fechaPago = new Date(data.fechaPago);
+              return data;
+            }).filter((comp: { fechaPago: Date; }) => comp.fechaPago >= res.startCompromiso && comp.fechaPago <= res.endCompromiso);
+          }
+     */
+      //Filtro Fecha Registro Falta
+      /*      if (res.startRegistro && res.endRegistro) {
+             dataFiltered = this.dataCuotas.map((data: any) => {
+               data.createdAt = new Date(data.createdAt);
+               return data;
+             }).filter((comp: { createdAt: Date; }) => comp.createdAt >= res.startRegistro && comp.createdAt <= res.endRegistro);
+           }
+     
+           //Filtro Fecha Actualización Falta
+           if (res.startActualizacion && res.endActualizacion) {
+             dataFiltered = dataFiltered.filter((data: Cuota) => new Date(data.updateAt) >= res.startActualizacion && new Date(data.updateAt) <= res.endActualizacion);
+           }
+      */
 
-    //Filtro Fecha Actualización Falta
-    if (res.startActualizacion && res.endActualizacion) {
-      dataFiltered = dataFiltered.filter((data: Cuota) => new Date(data.updateAt) >= res.startActualizacion && new Date(data.updateAt) <= res.endActualizacion);
-    }
-    
+      this.dataSource = new MatTableDataSource(dataFiltered);
+      this.dataSource.paginator = this.paginator.toArray()[0];
+      this.totalSeleccion = 0;
+      this.selection.clear();
+    })
+  }
 
-    this.dataSource = new MatTableDataSource(dataFiltered);
+  limpiarFiltros() {
+    this.formFilter.patchValue({ estadoPago: null, numeroContrato: null, startCompromiso: null, endCompromiso: null, /* startRegistro: null, endRegistro: null, startActualizacion: null, endActualizacion: null */ })
+    this.dataSource = new MatTableDataSource(this.dataCuotas);
     this.dataSource.paginator = this.paginator.toArray()[0];
+    this.selection.clear()
     this.totalSeleccion = 0;
-    this.selection.clear();
-  })
-}
+  }
 
-limpiarFiltros() {
-  this.formFilter.patchValue({ estadoPago: null, numeroContrato: null, startCompromiso: null, endCompromiso: null,startRegistro: null, endRegistro: null, startActualizacion: null, endActualizacion: null })
-  this.dataSource = new MatTableDataSource(this.dataCuotas);
-  this.dataSource.paginator = this.paginator.toArray()[0];
-  this.selection.clear()
-  this.totalSeleccion = 0;
-}
-
-//Metodo exportar excel
-exportAsXLSX(): void {
-  this.selectedRows = [];
-  this.selection.selected.forEach((x) => this.selectedRows.push(x));
-  this.abogadosTabsService.exportAsExcelFile(this.selectedRows, 'Lista-Cuotas');
-}
+  //Metodo exportar excel
+  exportAsXLSX(): void {
+    this.selectedRows = [];
+    this.selection.selected.forEach((x) => this.selectedRows.push(x));
+    this.abogadosTabsService.exportAsExcelFile(this.selectedRows, 'Lista-Cuotas');
+  }
 }

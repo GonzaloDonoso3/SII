@@ -18,8 +18,8 @@ import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downlo
 })
 export class AbogadosIngresosTabsClientesComponent implements OnInit {
 
-   // ? childrens
-   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
+  // ? childrens
+  @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
 
   // ? Inputs & Outputs
   @Input()
@@ -38,7 +38,7 @@ export class AbogadosIngresosTabsClientesComponent implements OnInit {
   dataSource: MatTableDataSource<Cliente> = new MatTableDataSource();
   dataCliente: Cliente[] = [];
 
-  
+
   formFilter = new FormGroup({
     rut: new FormControl(),
     nombre: new FormControl(),
@@ -58,8 +58,8 @@ export class AbogadosIngresosTabsClientesComponent implements OnInit {
   constructor(
     private abogadosTabsService: AbogadosTabsService,
     public dialog: MatDialog,
-  ) { 
-    
+  ) {
+
   }
 
   ngOnInit(): void {
@@ -67,18 +67,18 @@ export class AbogadosIngresosTabsClientesComponent implements OnInit {
     this.aplicarfiltros();
   }
 
-  getClientes(){
-       //Carga Tabla 
-       this.abogadosTabsService.obtenerClientes().subscribe((Cliente: Cliente[]) => {
-        this.dataCliente = Cliente.map(Cliente => {
-          return Cliente;
-        });
-        this.dataSource = new MatTableDataSource(this.dataCliente);
-        this.dataSource.paginator = this.paginator.toArray()[0];
+  getClientes() {
+    //Carga Tabla 
+    this.abogadosTabsService.obtenerClientes().subscribe((Cliente: Cliente[]) => {
+      this.dataCliente = Cliente.map(Cliente => {
+        return Cliente;
       });
+      this.dataSource = new MatTableDataSource(this.dataCliente);
+      this.dataSource.paginator = this.paginator.toArray()[0];
+    });
   }
 
-   // ? selection rows
+  // ? selection rows
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
@@ -105,29 +105,29 @@ export class AbogadosIngresosTabsClientesComponent implements OnInit {
 
       //Filtro Rut Falta
       if (res.rut) {
-        dataFiltered = dataFiltered.filter((data: Cliente) => data.rut == res.rut);
+        dataFiltered = dataFiltered.filter((data: Cliente) => data.rut.includes(res.rut));
       }
 
       //Filtro Nombre Falta
       if (res.nombre) {
-        dataFiltered = dataFiltered.filter((data: Cliente) => data.nombre == res.nombre);
+        dataFiltered = dataFiltered.filter((data: Cliente) => data.nombre.includes(res.nombre.toUpperCase()));
       }
 
       //Filtro Telefono
       if (res.telefono) {
-        dataFiltered = dataFiltered.filter((data: Cliente) => data.fono == res.telefono);
+        dataFiltered = dataFiltered.filter((data: Cliente) => data.fono.includes(res.telefono));
       }
-      
+
       //Filtro Email
       if (res.email) {
-        dataFiltered = dataFiltered.filter((data: Cliente) => data.email == res.email);
+        dataFiltered = dataFiltered.filter((data: Cliente) => data.email.includes(res.email.toUpperCase()))
       }
 
       //Filtro Dirección
       if (res.direccion) {
-        dataFiltered = dataFiltered.filter((data: Cliente) => data.direccion == res.direccion);
+        dataFiltered = dataFiltered.filter((data: Cliente) => data.direccion.includes(res.direccion.toUpperCase()));
       }
-      
+
 
       this.dataSource = new MatTableDataSource(dataFiltered);
       this.dataSource.paginator = this.paginator.toArray()[0];
@@ -137,13 +137,13 @@ export class AbogadosIngresosTabsClientesComponent implements OnInit {
   }
 
   limpiarFiltros() {
-    this.formFilter.patchValue({ rut: null, nombre: null, telefono: null, email: null, direccion: null})
+    this.formFilter.patchValue({ rut: null, nombre: null, telefono: null, email: null, direccion: null })
     this.dataSource = new MatTableDataSource(this.dataCliente);
     this.dataSource.paginator = this.paginator.toArray()[0];
     this.selection.clear()
     this.totalSeleccion = 0;
   }
-  
+
 
   recuperarArchivos(listArchivos: any) {
     this.dialog.open(DialogDownloadsComponent, {

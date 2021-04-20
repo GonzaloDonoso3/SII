@@ -1,27 +1,26 @@
-# NewFinanzasClient
+Requisitos:
+* Tener instalado node.js 
+* Tener instalador angular/cli
+* Tener un gestor de base de datos mysql
+* Tener instalado git
+ 
+Instrucciones de instalación:
+ 
+* En el grupo organizacional de github existen 3 repositorios , uno llamado api-rest-finanzas , client-angular-finanzas y client-angular-finanzas2 , es necesario clonar esos 3 repositorios.
+* Por defecto los proyectos estarán en la rama master , cambiese a la rama development y en base a esa rama crece una nueva con su nombre.
+*  Una vez posicionado en su rama , hacer ppm Install en cada uno de los proyectos para instalar sus respectivas dependencias.
+* En el proyecto “api-rest-finanzas” crear un nuevo archivo .env el cual contenga las  siguiente variables de entorno:
+	PORT=3000
+	LOCAL=true
+	NODE_ENV="dev"
+	USERNAME="root"
+	PASSWORD=""
+	DATABASE=“bd_finanzas”
+	SECRET=“secret”
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.1.4.
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+* A continuación en el gestor de base de datos cree una nueva base de datos llamada “bd_finanzas” y iniciar el proyecto con el comando npm run dev .
+* Una vez ejecutado el comando espere hasta que se haya sincronizado las tablas.
+* Luego importe el script .sql en la base de datos “bd_finanzas” el cual llenara todas las tablas con datos de prueba.
+* Luego iniciar el proyecto client-angular-finanzas con el comando ng serve y iniciar el proyecto client-angular-finanzas2 con el comando ng serve —Port 4201 para que los 2 se ejecuten en puertos distintos.
+* Una vez en ejecución , en el navegador colocar http://localhost:4200  y iniciar sesión con usuario:admin y clave: admin123.
+* Si surge algún problema o duda portase en contacto.

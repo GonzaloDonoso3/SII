@@ -1,0 +1,131 @@
+<mat-toolbar color="primary">
+    <button mat-raised-button (click)="limpiarFiltros()" color="accent">
+        Limpiar filtros
+    </button>
+    <span> Listado Contratos </span>
+    <!-- ***************************** cambiar metodo botón ********************************** -->
+    <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="exportAsXLSX()">
+        Exportar
+    </button>
+</mat-toolbar>
+
+<div class="table-responsive">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z10">
+        <!-- check column -->
+
+        <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="$event ? masterToggle() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()">
+                </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)">
+                </mat-checkbox>
+            </td>
+        </ng-container>
+        <!-- data columns -->
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>ID </th>
+            <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="rut">
+            <th mat-header-cell *matHeaderCellDef>
+                <div [formGroup]="formFilter">
+                    <mat-form-field class="fill">
+                        <input matInput placeholder="Rut" formControlName="rut" />
+                    </mat-form-field>
+                </div>
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.clienteRut }}</td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="cliente">
+            <th mat-header-cell *matHeaderCellDef>
+                <div [formGroup]="formFilter">
+                    <mat-form-field class="fill">
+                        <input matInput placeholder="Cliente" formControlName="cliente" />
+                    </mat-form-field>
+                </div>
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.cliente }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="fecha" class="mat-column-date">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-form-field appearance="fill">
+                    <mat-label>Fecha</mat-label>
+                    <mat-date-range-input [formGroup]="formFilter" [rangePicker]="picker">
+                        <input matStartDate formControlName="start" placeholder="Start date" />
+                        <input matEndDate formControlName="end" placeholder="End date" />
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+
+                    <mat-error *ngIf="formFilter.controls.start.hasError('matStartDateInvalid')">Invalid start date
+                    </mat-error>
+                    <mat-error *ngIf="formFilter.controls.end.hasError('matEndDateInvalid')">Invalid end date
+                    </mat-error>
+                </mat-form-field>
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.fechaContrato | date: 'dd/MM/yyyy' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="monto">
+            <th mat-header-cell *matHeaderCellDef> Monto </th>
+            <td mat-cell *matCellDef="let element">
+                {{ element.montoContrato | currency: "$":"symbol":"1.0-0" }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="estadoPago">
+            <th mat-header-cell *matHeaderCellDef>
+                <div [formGroup]="formFilter">
+                    <mat-form-field>
+                        <mat-select placeholder="estadoPago" formControlName="estadoPago">
+                            <mat-option value="pendiente"> pendiente </mat-option>
+                            <mat-option value="pagado"> pagado </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.estadoPago }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="sucursal">
+            <th mat-header-cell *matHeaderCellDef>
+                <div [formGroup]="formFilter">
+                    <mat-form-field class="fill">
+                        <input matInput placeholder="Sucursal" formControlName="sucursal" />
+                    </mat-form-field>
+                </div>
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.sucursal }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="usuario">
+            <th mat-header-cell *matHeaderCellDef>
+                <div [formGroup]="formFilter">
+                    <mat-form-field class="fill">
+                        <input matInput placeholder="Usuario" formControlName="usuario" />
+                    </mat-form-field>
+                </div>
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.usuario }}</td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No existen coincidencias</td>
+        </tr>
+    </table>
+</div>
+<mat-paginator [pageSizeOptions]="[10, 30, 50, 100]"></mat-paginator>

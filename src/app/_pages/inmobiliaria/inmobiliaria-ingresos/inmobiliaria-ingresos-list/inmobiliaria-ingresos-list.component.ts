@@ -53,29 +53,6 @@ export class InmobiliariaIngresosListComponent implements OnInit {
     Propiedad: new FormControl(),
   })
 
-
-  /*   rangoFecha = new FormGroup({
-      start: new FormControl(),
-      end: new FormControl(),
-  
-    });
-    sucursalFilter = new FormGroup({
-      idSucursal: new FormControl(),
-    });
-    clienteFilter = new FormGroup({
-      cliente: new FormControl(),
-    });
-    tipoIngresoFilter = new FormGroup({
-      tipoIngreso: new FormControl(),
-    });
-    descripcionIngresoFilter = new FormGroup({
-      descripcionIngreso: new FormControl(),
-      fixed: new FormControl(),
-    });
-    propiedadFilter = new FormGroup({
-      Propiedad: new FormControl(),
-  
-    }); */
   sucursales: Sucursal[] = [];
   selection = new SelectionModel<IngresosInmobiliaria>(true, []);
   tiposIngresos: string[] = [];
@@ -94,29 +71,6 @@ export class InmobiliariaIngresosListComponent implements OnInit {
     this.sucursales = this.sucursalService.sucursalListValue;
     this.tiposIngresos = this.inmobiliariaService.tiposIngresosListValue;
     this.aplicarfiltros();
-    /*  this.rangoFecha.valueChanges.subscribe(res => {
-       if (res.start != null && res.end != null) {
-         const rango = this.rangoFecha.value;
-         this.applyDateFilter(rango.start,
-           rango.end);
-       }
-     });
-     this.sucursalFilter.valueChanges.subscribe(res => {
-       this.applySucursalFilter(res.idSucursal);
-     });
- 
-     this.tipoIngresoFilter.valueChanges.subscribe(res => {
-       this.applyTipoIngresoFilter(res.tipoIngreso);
-     });
- 
-     this.propiedadFilter.valueChanges.subscribe(res => {
-       this.applyPropiedadFilter(res.Propiedad);
-     });
- 
-     this.descripcionIngresoFilter.valueChanges.subscribe(res => {
-       this.applyDescripcionIngresoFilter(res.descripcionIngreso);
-     });
-  */
   }
 
   // ? refresh when form is ready.

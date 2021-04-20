@@ -154,8 +154,8 @@ export class InmobiliariaEgresosListComponent implements OnInit {
 
       if (res.idSucursal) {
         dataFiltered = dataFiltered.filter((data: EgresosInmobiliaria) => data.sucursal == res.idSucursal);
-      }
 
+      }
       if (res.start && res.end) {
         dataFiltered = dataFiltered.filter((data: EgresosInmobiliaria) => new Date(data.fecha) >= res.start && new Date(data.fecha) <= res.end);
       }
@@ -164,8 +164,8 @@ export class InmobiliariaEgresosListComponent implements OnInit {
       this.dataSource.paginator = this.paginator.toArray()[0];
       this.totalSeleccion = 0;
       this.selection.clear();
-    })
 
+    })
 
   }
 
@@ -178,9 +178,6 @@ export class InmobiliariaEgresosListComponent implements OnInit {
     this.selection.clear()
     this.totalSeleccion = 0;
   }
-
-
-
 
 
 }

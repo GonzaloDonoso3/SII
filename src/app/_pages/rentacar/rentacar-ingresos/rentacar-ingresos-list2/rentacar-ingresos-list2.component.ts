@@ -1,3 +1,4 @@
+import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { RentacarModalVerFilesComponent } from './../rentacar-ingresos-form/rentacar-modal-ver-files/rentacar-modal-ver-files.component';
 import { MatPaginator } from '@angular/material/paginator';
@@ -17,7 +18,8 @@ interface IngresoTabla {
   respaldo: any;
   descripcion: string;
   cliente: string;
-  codigoLicitacion: string;
+  empresaEmisora: string;
+  usuario: string;
 }
 
 @Component({
@@ -29,12 +31,21 @@ export class RentacarIngresosList2Component implements OnInit, OnChanges {
 
   @Input() refrescar = '';
 
+  //filtros
+  formFilter = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl(),
+    cliente: new FormControl(),
+    empresaEmisora: new FormControl(),
+    descripcion: new FormControl(),
+  })
+
 
   ingresoTabla: IngresoTabla[] = [];
   totalIngresoSeleccion: number = 0;
 
   //configuraciones tabla
-  displayedColumns: string[] = ['select', 'id', 'fecha', 'ingreso', 'respaldo', 'cliente', 'codigoLicitacion', 'descripcion'];
+  displayedColumns: string[] = ['select', 'id', 'fecha', 'ingreso', 'respaldo', 'cliente', 'empresaEmisora', 'descripcion', 'usuario'];
   dataSource = new MatTableDataSource<IngresoTabla>();
   selection = new SelectionModel<IngresoTabla>(true, []);
   selectedRows!: any[];
@@ -49,14 +60,18 @@ export class RentacarIngresosList2Component implements OnInit, OnChanges {
 
   }
 
+
+
   ngOnChanges(changes: SimpleChanges): void {
+    console.log(this.refrescar);
     this.cargarListaIngresos();
+    this.aplicarfiltros();
   }
 
   cargarListaIngresos(): void {
     this.ingresoTabla.length = 0;
     this.rentacarService.getIngresosLicitacion().subscribe((response) => {
-      console.log(response.data);
+
       response.data.forEach((ingreso: any) => {
         this.ingresoTabla.push({
           id: ingreso.id_ingresoLicitacion,
@@ -65,7 +80,8 @@ export class RentacarIngresosList2Component implements OnInit, OnChanges {
           respaldo: ingreso.respaldoIngresoLicitaciones,
           descripcion: ingreso.descripcion_ingresoLicitacion,
           cliente: ingreso.licitacione.clientesLicitacione.nombre_clienteLicitacion,
-          codigoLicitacion: ingreso.licitacione.codigo_licitacion
+          empresaEmisora: ingreso.licitacione.propietario.nombre_propietario,
+          usuario: ingreso.licitacione.userAt
         });
       });
       this.dataSource = new MatTableDataSource(this.ingresoTabla);
@@ -75,8 +91,39 @@ export class RentacarIngresosList2Component implements OnInit, OnChanges {
   }
 
 
-  limpiarFiltros() {
 
+  aplicarfiltros() {
+    this.formFilter.valueChanges.subscribe(res => {
+      let dataFiltered = this.ingresoTabla;
+      if (res.descripcion) {
+        dataFiltered = dataFiltered.filter((data: IngresoTabla) => data.descripcion.includes(res.descripcion));
+      }
+      if (res.cliente) {
+        dataFiltered = dataFiltered.filter((data: IngresoTabla) => data.cliente.includes(res.cliente.toUpperCase()));
+      }
+      if (res.empresaEmisora) {
+        dataFiltered = dataFiltered.filter((data: IngresoTabla) => data.empresaEmisora.includes(res.empresaEmisora));
+      }
+      if (res.start && res.end) {
+        dataFiltered = dataFiltered.filter((data: IngresoTabla) => new Date(data.fecha) >= res.start && new Date(data.fecha) <= res.end);
+      }
+      this.dataSource = new MatTableDataSource(dataFiltered);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.selection.clear();
+      this.totalIngresoSeleccion = 0;
+    })
+  }
+
+
+
+  limpiarFiltros() {
+    this.formFilter.patchValue({ start: null, end: null, cliente: null, descripcion: null, })
+    this.dataSource = new MatTableDataSource(this.ingresoTabla);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.selection.clear()
+    this.totalIngresoSeleccion = 0;
   }
 
 

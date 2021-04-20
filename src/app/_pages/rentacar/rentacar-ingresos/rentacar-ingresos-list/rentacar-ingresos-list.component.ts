@@ -19,7 +19,10 @@ interface ArriendoTabla {
   dias: number;
   sucursal: string;
   patente: string;
-  arriendo: Arriendo
+  cliente: string;
+  rut: string;
+  usuario: string;
+  arriendo: Arriendo;
 }
 
 
@@ -39,6 +42,7 @@ export class RentacarIngresosListComponent implements OnInit {
   displayedColumns: string[] = ['select', 'id', 'fecha', 'ingreso', 'patente', 'dias', 'tipo', 'estado', 'sucursal', 'arriendo'];
   dataSource = new MatTableDataSource<ArriendoTabla>();
   selection = new SelectionModel<ArriendoTabla>(true, []);
+  selectedRows!: any[];
   @ViewChild(MatPaginator) paginator = null;
   @ViewChild(MatSort) sort = null;
 
@@ -75,6 +79,7 @@ export class RentacarIngresosListComponent implements OnInit {
 
   cargarArriendosEnTabla(listArriendo: Arriendo[]): void {
     listArriendo.forEach(arriendo => {
+      arriendo
       this.arriendosTabla.push({
         id: arriendo.infoArriendo.numeroArriendo,
         fecha: new Date(arriendo.infoArriendo.fechaDespacho),
@@ -84,6 +89,9 @@ export class RentacarIngresosListComponent implements OnInit {
         estado: arriendo.infoArriendo.estado,
         dias: arriendo.infoArriendo.diasTotales,
         sucursal: arriendo.infoArriendo.sucursalResponsable,
+        cliente: arriendo.infoCliente.nombre,
+        rut: arriendo.infoCliente.rut,
+        usuario: arriendo.infoArriendo.usuario,
         arriendo: arriendo
       });
 
@@ -111,7 +119,7 @@ export class RentacarIngresosListComponent implements OnInit {
       let dataFiltered = this.arriendosTabla;
 
       if (res.patente) {
-        dataFiltered = dataFiltered.filter((data: ArriendoTabla) => data.patente.includes(res.patente));
+        dataFiltered = dataFiltered.filter((data: ArriendoTabla) => data.patente.includes(res.patente.toUpperCase()));
       }
 
       if (res.sucursal) {
@@ -193,7 +201,12 @@ export class RentacarIngresosListComponent implements OnInit {
   }
 
 
-
+  //Metodo exportar excel
+  exportAsXLSX(): void {
+    this.selectedRows = [];
+    this.selection.selected.forEach((x) => this.selectedRows.push(x));
+    this.rentacarService.exportAsExcelFile(this.selectedRows, 'Lista-arriendos');
+  }
 
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */

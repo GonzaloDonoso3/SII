@@ -9,11 +9,21 @@ import { AbogadosHomeComponent } from './abogados-home/abogados-home.component';
 import { AbogadosRoutingModule } from './abogados-routing.module';
 import { AbogadosEgresosFormComponent } from './abogados-egresos/abogados-egresos-form/abogados-egresos-form.component';
 import { AbogadosEgresosListComponent } from './abogados-egresos/abogados-egresos-list/abogados-egresos-list.component';
+import { AbogadosIngresosFormComponent } from './abogados-ingresos/abogados-ingresos-form/abogados-ingresos-form.component';
+import { AbogadosIngresosAccionesComponent } from './abogados-ingresos/abogados-ingresos-acciones/abogados-ingresos-acciones.component';
+import { AbogadosIngresosTabsComponent } from './abogados-ingresos/abogados-ingresos-tabs/abogados-ingresos-tabs.component';
+import { AbogadosIngresosTabsContratosComponent } from './abogados-ingresos/abogados-ingresos-tabs/abogados-ingresos-tabs-contratos/abogados-ingresos-tabs-contratos.component';
+import { AbogadosIngresosTabsClientesComponent } from './abogados-ingresos/abogados-ingresos-tabs/abogados-ingresos-tabs-clientes/abogados-ingresos-tabs-clientes.component';
+import { AbogadosIngresosTabsCuotasComponent } from './abogados-ingresos/abogados-ingresos-tabs/abogados-ingresos-tabs-cuotas/abogados-ingresos-tabs-cuotas.component';
+import { DialogContratosComponent } from './abogados-ingresos/abogados-ingresos-acciones/dialog-contratos/dialog-contratos.component';
+import { DialogMostrarContratosComponent } from './abogados-ingresos/abogados-ingresos-acciones/dialog-mostrar-contratos/dialog-mostrar-contratos.component';
+import { DialogRegistrarPagoComponent } from './abogados-ingresos/abogados-ingresos-acciones/dialog-registrar-pago/dialog-registrar-pago.component';
+import { DialogRepactarCuotasComponent } from './abogados-ingresos/abogados-ingresos-acciones/dialog-repactar-cuotas/dialog-repactar-cuotas.component';
 
 
 
 @NgModule({
-  declarations: [AbogadosIngresosComponent, AbogadosEgresosComponent, AbogadosHomeComponent, AbogadosEgresosFormComponent, AbogadosEgresosListComponent],
+  declarations: [AbogadosIngresosComponent, AbogadosEgresosComponent, AbogadosHomeComponent, AbogadosEgresosFormComponent, AbogadosEgresosListComponent, AbogadosIngresosFormComponent, AbogadosIngresosAccionesComponent, AbogadosIngresosTabsComponent, AbogadosIngresosTabsContratosComponent, AbogadosIngresosTabsClientesComponent, AbogadosIngresosTabsCuotasComponent, DialogContratosComponent, DialogMostrarContratosComponent, DialogRegistrarPagoComponent, DialogRepactarCuotasComponent],
   imports: [
     CommonModule,
     AbogadosRoutingModule,

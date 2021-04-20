@@ -23,10 +23,14 @@
     "@angular/platform-browser": "~11.1.2",
     "@angular/platform-browser-dynamic": "~11.1.2",
     "@angular/router": "~11.1.2",
+    "ag-grid-angular": "^25.1.0",
+    "ag-grid-community": "^25.1.0",
+    "file-saver": "^2.0.5",
     "ng2-file-upload": "^1.4.0",
     "rxjs": "~6.6.0",
     "sweetalert2": "^10.15.7",
     "tslib": "^2.0.0",
+    "xlsx": "^0.16.9",
     "zone.js": "~0.11.3"
   },
   "devDependencies": {
@@ -38,6 +42,7 @@
     "@angular-eslint/template-parser": "1.2.0",
     "@angular/cli": "~11.1.4",
     "@angular/compiler-cli": "~11.1.2",
+    "@types/file-saver": "^2.0.2",
     "@types/jasmine": "~3.6.0",
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "^4.18.0",

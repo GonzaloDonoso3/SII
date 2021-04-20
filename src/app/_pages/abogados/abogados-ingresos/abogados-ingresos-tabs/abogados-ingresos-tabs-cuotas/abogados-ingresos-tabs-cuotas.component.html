@@ -7,6 +7,9 @@
     <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="exportAsXLSX()">
     Exportar
   </button>
+    <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="getCuotas()">
+    <mat-icon>autorenew</mat-icon>
+</button>
 </mat-toolbar>
 
 <div class="table-responsive">
@@ -29,6 +32,7 @@
             <td mat-cell *matCellDef="let element">{{ element.id }}</td>
         </ng-container>
 
+        <!-- Campo Fecha Compromiso -->
         <ng-container matColumnDef="fechaCompromiso" class="mat-column-date">
             <th mat-header-cell *matHeaderCellDef>
                 <mat-form-field appearance="fill">
@@ -47,6 +51,7 @@
             <td mat-cell *matCellDef="let element">{{ element.fechaPago | date: 'dd/MM/yyyy' }}</td>
         </ng-container>
 
+        <!-- Campo Monto-->
         <ng-container matColumnDef="monto">
             <th mat-header-cell *matHeaderCellDef> Monto Cuota</th>
             <td mat-cell *matCellDef="let element">
@@ -54,7 +59,7 @@
             </td>
         </ng-container>
 
-
+        <!-- Campo Estado Pago-->
         <ng-container matColumnDef="estadoPago">
             <th mat-header-cell *matHeaderCellDef>
                 <div [formGroup]="formFilter">
@@ -66,6 +71,7 @@
             <td mat-cell *matCellDef="let element">{{ element.estado }}</td>
         </ng-container>
 
+        <!-- Campo N° Contrato -->
         <ng-container matColumnDef="numeroContrato">
             <th mat-header-cell *matHeaderCellDef>
                 <div [formGroup]="formFilter">
@@ -77,6 +83,7 @@
             <td mat-cell *matCellDef="let element">{{ element.idContrato }}</td>
         </ng-container>
 
+        <!-- Campo Fecha Registro-->
         <ng-container matColumnDef="fechaRegistro" class="mat-column-date">
             <th mat-header-cell *matHeaderCellDef>
                 <mat-form-field appearance="fill">
@@ -95,6 +102,7 @@
             <td mat-cell *matCellDef="let element">{{ element.createdAt | date: 'dd/MM/yyyy' }}</td>
         </ng-container>
 
+        <!-- Campo Fecha Actualización -->
         <ng-container matColumnDef="fechaActualizacion" class="mat-column-date">
             <th mat-header-cell *matHeaderCellDef>
                 <mat-form-field appearance="fill">

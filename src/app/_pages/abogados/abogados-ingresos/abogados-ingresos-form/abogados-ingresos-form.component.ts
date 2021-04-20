@@ -69,6 +69,7 @@ export class AbogadosIngresosFormComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  // Metodo crear Cliente
   crearCliente(){
     this.cliente = new Cliente();
     this.cliente.nombre = this.f.nombreCliente.value;
@@ -111,8 +112,7 @@ export class AbogadosIngresosFormComponent implements OnInit {
       .subscribe((x: any) => {
         this.elPadreDice = x;
         this.idCliente = this.elPadreDice.cliente.id;
-
-        // Crear un local que almacene datos del cliente
+        // Crear un localStorage que almacene datos del cliente para usarlos mas adelante
         localStorage.setItem("idCliente", this.idCliente);
         localStorage.setItem("nombreCliente", this.elPadreDice.cliente.nombre);
 

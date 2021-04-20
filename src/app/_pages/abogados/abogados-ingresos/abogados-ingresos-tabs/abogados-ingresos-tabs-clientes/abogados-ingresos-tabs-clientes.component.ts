@@ -35,10 +35,12 @@ export class AbogadosIngresosTabsClientesComponent implements OnInit {
     'email',
     'direccion'
   ];
+
+  // Tabla en donde se almacenará los datos de la bd 
   dataSource: MatTableDataSource<Cliente> = new MatTableDataSource();
   dataCliente: Cliente[] = [];
 
-  
+  // Definir el formulario que permitirá aplicar los filtros
   formFilter = new FormGroup({
     rut: new FormControl(),
     nombre: new FormControl(),
@@ -67,6 +69,7 @@ export class AbogadosIngresosTabsClientesComponent implements OnInit {
     this.aplicarfiltros();
   }
 
+  // Obtener el listado de cliente desde la BD
   getClientes(){
        //Carga Tabla 
        this.abogadosTabsService.obtenerClientes().subscribe((Cliente: Cliente[]) => {
@@ -85,6 +88,7 @@ export class AbogadosIngresosTabsClientesComponent implements OnInit {
     return numSelected === numRows;
   }
 
+  // Metodo que sirve para la seleccion de un campo de la tabla
   masterToggle() {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     this.isAllSelected() ?
@@ -103,12 +107,12 @@ export class AbogadosIngresosTabsClientesComponent implements OnInit {
 
       let dataFiltered = this.dataCliente;
 
-      //Filtro Rut Falta
+      //Filtro Rut
       if (res.rut) {
         dataFiltered = dataFiltered.filter((data: Cliente) => data.rut == res.rut);
       }
 
-      //Filtro Nombre Falta
+      //Filtro Nombre
       if (res.nombre) {
         dataFiltered = dataFiltered.filter((data: Cliente) => data.nombre == res.nombre);
       }
@@ -136,6 +140,7 @@ export class AbogadosIngresosTabsClientesComponent implements OnInit {
     })
   }
 
+  //Limpiar los filtros
   limpiarFiltros() {
     this.formFilter.patchValue({ rut: null, nombre: null, telefono: null, email: null, direccion: null})
     this.dataSource = new MatTableDataSource(this.dataCliente);
@@ -144,15 +149,6 @@ export class AbogadosIngresosTabsClientesComponent implements OnInit {
     this.totalSeleccion = 0;
   }
   
-
-  recuperarArchivos(listArchivos: any) {
-    this.dialog.open(DialogDownloadsComponent, {
-
-      data: { archivos: listArchivos, servicio: 'inmobiliaria-ingreso' },
-
-    });
-  }
-
   //Metodo exportar excel
   exportAsXLSX(): void {
     this.selectedRows = [];

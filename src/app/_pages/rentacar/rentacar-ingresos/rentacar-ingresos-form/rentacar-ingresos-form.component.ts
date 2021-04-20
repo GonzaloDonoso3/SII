@@ -19,6 +19,7 @@ export class RentacarIngresosFormComponent implements OnInit {
 
   @Output() formularioListo = new EventEmitter<string>();
 
+  num: number = 0;
 
   ingresoForm: FormGroup = this.fb.group({
     monto: [null, Validators.required],
@@ -64,7 +65,8 @@ export class RentacarIngresosFormComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe(result => {
           console.log(result);
-          this.formularioListo.emit('true');
+          this.formularioListo.emit(this.num + "");
+          this.num++;
           this.ingresoForm.reset();
         });
 

@@ -1,3 +1,5 @@
+import { MatDialog } from '@angular/material/dialog';
+import { RentacarModalVerFilesComponent } from './../rentacar-ingresos-form/rentacar-modal-ver-files/rentacar-modal-ver-files.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -12,7 +14,7 @@ interface IngresoTabla {
   id: number;
   fecha: Date;
   ingreso: number;
-  respaldo: string;
+  respaldo: any;
   descripcion: string;
   cliente: string;
   codigoLicitacion: string;
@@ -41,7 +43,7 @@ export class RentacarIngresosList2Component implements OnInit, OnChanges {
 
 
 
-  constructor(private rentacarService: RentacarService) { }
+  constructor(private rentacarService: RentacarService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
 
@@ -54,12 +56,13 @@ export class RentacarIngresosList2Component implements OnInit, OnChanges {
   cargarListaIngresos(): void {
     this.ingresoTabla.length = 0;
     this.rentacarService.getIngresosLicitacion().subscribe((response) => {
+      console.log(response.data);
       response.data.forEach((ingreso: any) => {
         this.ingresoTabla.push({
           id: ingreso.id_ingresoLicitacion,
           fecha: ingreso.fecha_ingresoLicitacion,
           ingreso: ingreso.monto_ingresoLicitacion,
-          respaldo: '',
+          respaldo: ingreso.respaldoIngresoLicitaciones,
           descripcion: ingreso.descripcion_ingresoLicitacion,
           cliente: ingreso.licitacione.clientesLicitacione.nombre_clienteLicitacion,
           codigoLicitacion: ingreso.licitacione.codigo_licitacion
@@ -86,6 +89,12 @@ export class RentacarIngresosList2Component implements OnInit, OnChanges {
     this.totalIngresoSeleccion = totalIngresoSeleccion;
   }
 
+
+  recuperarArchivos(listArchivos: any) {
+    this.dialog.open(RentacarModalVerFilesComponent, {
+      data: { archivos: listArchivos },
+    });
+  }
 
 
   //Metodo exportar excel

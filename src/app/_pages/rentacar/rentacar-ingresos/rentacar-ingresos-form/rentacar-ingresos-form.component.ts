@@ -1,3 +1,5 @@
+import { RentacarModalSubirFilesComponent } from './rentacar-modal-subir-files/rentacar-modal-subir-files.component';
+import { MatDialog } from '@angular/material/dialog';
 import { Usuario } from '@models/shared/usuario';
 import { AlertHelper } from '@app/_helpers/alert.helper';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -30,7 +32,7 @@ export class RentacarIngresosFormComponent implements OnInit {
 
   ingresoLicitacion: any = {};
 
-  constructor(private fb: FormBuilder, private alert: AlertHelper, private snackBar: MatSnackBar, private rentacarService: RentacarService) {
+  constructor(private fb: FormBuilder, private alert: AlertHelper, private snackBar: MatSnackBar, private rentacarService: RentacarService, private dialog: MatDialog) {
 
   }
 
@@ -50,25 +52,23 @@ export class RentacarIngresosFormComponent implements OnInit {
     switch (this.ingresoForm.status) {
       case 'VALID':
 
-
-        //capturar los respaldos en un modal
-
-
         this.ingresoLicitacion.fecha_ingresoLicitacion = this.ingresoForm.value.fecha;
         this.ingresoLicitacion.descripcion_ingresoLicitacion = this.ingresoForm.value.descripcionIngreso;
         this.ingresoLicitacion.id_licitacion = this.ingresoForm.value.licitacion;
         this.ingresoLicitacion.monto_ingresoLicitacion = this.ingresoForm.value.monto;
         this.ingresoLicitacion.userAt = this.usuario.nombreUsuario;
 
-        this.rentacarService.postIngresoLicitacion(this.ingresoLicitacion).subscribe((response) => {
+        const dialogRef = this.dialog.open(RentacarModalSubirFilesComponent, {
+          data: { ingresoLicitacion: this.ingresoLicitacion }
+        });
 
-          console.log(response.data.id_ingresoLicitacion);
-          //subir imagenes con la id
-
+        dialogRef.afterClosed().subscribe(result => {
+          console.log(result);
           this.formularioListo.emit('true');
-          this.alert.createAlert("Registro Creado con exito!");
           this.ingresoForm.reset();
-        })
+        });
+
+
 
         break;
       case 'INVALID':

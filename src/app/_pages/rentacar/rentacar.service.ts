@@ -21,7 +21,7 @@ const EXCEL_EXTENSION = '.xlsx';
 export class RentacarService {
 
   headers: HttpHeaders = new HttpHeaders({
-    'usertoken': '9580af34ca299aa979a151280f6ef856bdee8b4dc9c17641d15df2cf54a5c7c876d369bc1b66715fa483c100755014f4'
+    'usertoken': environment.usertoken
   })
 
   constructor(private http: HttpClient) { }

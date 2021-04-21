@@ -42,9 +42,12 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
     'sucursal',
     'usuario'
   ];
+
+  // Tabla en donde se almacenará los datos de la bd 
   dataSource: MatTableDataSource<Contrato> = new MatTableDataSource();
   dataContrato: Contrato[] = [];
 
+  // Definir el formulario que permitirá aplicar los filtros
   formFilter = new FormGroup({
     rut: new FormControl(),
     cliente: new FormControl(),
@@ -71,6 +74,7 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
 
   }
 
+  //Metodo que se ejecuta al abrir la página
   ngOnInit(): void {
 
     this.sucursales = this.sucursalService.sucursalListValue;
@@ -80,18 +84,20 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
 
   }
 
+  // Obtener el listado de contratos desde la BD
   getContratos() {
     //Carga Tabla 
     this.abogadosTabsService.obtenerContratos().subscribe((result: Contrato[]) => {
       this.dataContrato = result.map(Contrato => {
         Contrato.sucursal = Contrato.Sucursal.razonSocial;
         Contrato.usuario = Contrato.Usuario.nombreUsuario;
-
         return Contrato;
       });
       this.dataSource = new MatTableDataSource(this.dataContrato);
       this.dataSource.paginator = this.paginator.toArray()[0];
+
     });
+
   }
 
   // ? selection rows
@@ -101,6 +107,7 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
     return numSelected === numRows;
   }
 
+  // Metodo que sirve para la seleccion de un campo de la tabla
   masterToggle() {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     this.isAllSelected() ?
@@ -112,31 +119,20 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
     console.log(this.selection.selected);
   }
 
+  // Filtros
   aplicarfiltros() {
     this.formFilter.valueChanges.subscribe(res => {
 
       let dataFiltered = this.dataContrato;
 
-      //Filtro Rut Falta
+      //Filtro Rut
       if (res.rut) {
-        dataFiltered = dataFiltered.filter((data: Contrato) => {
-          try {
-            return data.Cliente.rut.includes(res.rut)
-          } catch (error) {
-            return false;
-          }
-        });
+        dataFiltered = dataFiltered.filter((data: any) => data.clienteRut == res.rut);
       }
 
-      //Filtro Cliente Falta
+      //Filtro Cliente
       if (res.cliente) {
-        dataFiltered = dataFiltered.filter((data: Contrato) => {
-          try {
-            return data.cliente.includes(res.cliente.toUpperCase())
-          } catch (error) {
-            return false;
-          }
-        });
+        dataFiltered = dataFiltered.filter((data: Contrato) => data.cliente == res.cliente);
       }
 
       //Filtro Fecha
@@ -167,8 +163,9 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
     })
   }
 
+  //Limpiar los filtros
   limpiarFiltros() {
-    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null, Propiedad: null, descripcionEgreso: null, })
+    this.formFilter.patchValue({ start: null, end: null, rut: null, cliente: null, estadoPago: null, sucursal: null, usuario: null })
     this.dataSource = new MatTableDataSource(this.dataContrato);
     this.dataSource.paginator = this.paginator.toArray()[0];
     this.selection.clear()

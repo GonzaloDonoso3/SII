@@ -69,12 +69,14 @@ export class DialogMostrarContratosComponent implements OnInit {
     private abogadosService: AbogadosService
   ) { }
 
+  //Metodos que se ejecutan al iniciar el componente
   ngOnInit(): void {
     this.getContratosCliente();
     this.aplicarfiltros();
     this.obtenerEmpresa(this.idEmpresa);
   }
 
+  //Obtener la lista de los contratos del cliente desde la BD
   getContratosCliente(){
     //Carga Tabla 
     this.abogadosTabsService.obtenerContratosCliente(this.idCliente).subscribe((result: Contrato[]) => {
@@ -89,8 +91,10 @@ export class DialogMostrarContratosComponent implements OnInit {
    });
 }
 
+ // Ocultar la tabla de los contratos del cliente
   desactivarTablaContratos(){
    this.abogadosAcciones.desactivarTablaContratos();
+   localStorage.removeItem("nombreCliente");
   }
 
   isAllSelected() {
@@ -175,30 +179,35 @@ export class DialogMostrarContratosComponent implements OnInit {
 
   // Abrir Ventana Modal Registrar Pago
   openDialogRegistrarPago(){
+    //Selecciona los valores de la fila seleccionada
     this.selectedRows = [];
     this.selection.selected.forEach((x) => this.selectedRows.push(x));
     this.selectedRows.forEach((x) => {
       localStorage.setItem("idContratoPago", x.id);
     });
-    this.abogadosService.openDialogRegistrarPago();
+    //Se ejecuta el metodo que abre el dialog, enviandole le id del contrato
+    let idContato = localStorage.getItem("idContratoPago");
+    this.abogadosService.openDialogRegistrarPago(idContato);
   }
 
-  obtenerContrato(nContrato: any): void {
+  // Abrir Ventana Modal Repactar Cuotas
+  openDialogRepactarCuotas(){
+    //Selecciona los valores de la fila seleccionada
+    this.selectedRows = [];
+    this.selection.selected.forEach((x) => this.selectedRows.push(x));
+    this.selectedRows.forEach((x) => {
+      localStorage.setItem("idContratoPago", x.id);
+    });
+    //Se ejecuta el metodo que abre el dialog, enviandole le id del contrato
+    let idContato = localStorage.getItem("idContratoPago");
+    this.abogadosService.openDialogRepactarCuotas(idContato);
+  }
+
+ /*obtenerContrato(nContrato: any): void {
     this.abogadosTabsService.obtenerContratoNumero(nContrato).subscribe((x:any) => {
       this.contratoR = x;
     });
-  }
-
-  openDialogRepactarCuotas(){
-    this.selectedRows = [];
-    this.selection.selected.forEach((x) => this.selectedRows.push(x));
-    this.selectedRows.forEach((x) => {
-      localStorage.setItem("idContratoPago", x.id);
-    });
-    this.abogadosService.openDialogRepactarCuotas();
-  }
-
-
+  }*/
  
 
 }

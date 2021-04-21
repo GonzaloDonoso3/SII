@@ -43,26 +43,33 @@ export class AbogadosTabsService {
       `${environment.apiUrl}/contratoCienteAbogado/contratosCliente/${idCliente}`
     );
   }
-  calcularCuotas(data: any): any {
-    return this.http.post<[]>(
-      `${environment.apiUrl}/cuotasContrato/calcularCuotas`,
-      data
-    );
-  }
+
   crearSinoExisteContrato(contrato: any): any {
     return this.http.post<[]>(
       `${environment.apiUrl}/contratoCienteAbogado/`,
       contrato
     );
   }
-  guardarCuotas(cuotas: any): any {
-    return this.http.post<[]>(`${environment.apiUrl}/cuotasContrato/`, cuotas);
-  }
+
   obtenerContratoNumero(nContrato: any): any {
     return this.http.get<[]>(
       `${environment.apiUrl}/contratoCienteAbogado/contratosNumero/${nContrato}`
     );
   }
+
+  /* Servicios Cuotas */
+
+  calcularCuotas(data: any): any {
+    return this.http.post<[]>(
+      `${environment.apiUrl}/cuotasContrato/calcularCuotas`,
+      data
+    );
+  }
+  
+  guardarCuotas(cuotas: any): any {
+    return this.http.post<[]>(`${environment.apiUrl}/cuotasContrato/`, cuotas);
+  }
+
   registrarPago(idCuota: any): any {
     return this.http.post<[]>(
       `${environment.apiUrl}/cuotasContrato/registrarPago/`, idCuota);

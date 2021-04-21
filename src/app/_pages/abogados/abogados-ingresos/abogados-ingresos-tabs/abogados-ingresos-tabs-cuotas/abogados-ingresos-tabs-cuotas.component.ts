@@ -28,19 +28,22 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
     'monto',
     'estadoPago',
     'numeroContrato',
-    /*  'fechaRegistro',
-     'fechaActualizacion', */
+    'fechaRegistro',
+    'fechaActualizacion',
   ];
+
+  // Tabla en donde se almacenará los datos de la bd 
   dataSource: MatTableDataSource<Cuota> = new MatTableDataSource();
   dataCuotas: Cuota[] = [];
 
+  // Definir el formulario que permitirá aplicar los filtros
   formFilter = new FormGroup({
     startCompromiso: new FormControl(),
     endCompromiso: new FormControl(),
-    /*  startRegistro: new FormControl(),
-     endRegistro: new FormControl(),
-     startActualizacion: new FormControl(),
-     endActualizacion: new FormControl(), */
+    startRegistro: new FormControl(),
+    endRegistro: new FormControl(),
+    startActualizacion: new FormControl(),
+    endActualizacion: new FormControl(),
     estadoPago: new FormControl(),
     numeroContrato: new FormControl(),
   })
@@ -55,11 +58,14 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
     public dialog: MatDialog,
   ) { }
 
+  //Metodo que se ejecuta al abrir la página
   ngOnInit(): void {
     this.getCuotas();
     this.aplicarfiltros();
   }
 
+
+  // Obtener el listado de cuotas desde la BD
   getCuotas() {
     //Carga Tabla 
     this.abogadosTabsService.obtenerCuotas().subscribe((Cuotas: Cuota[]) => {
@@ -70,6 +76,7 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
       this.dataSource.paginator = this.paginator.toArray()[0];
     });
   }
+
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -89,12 +96,13 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
   }
 
 
+
   // Filtros
   aplicarfiltros() {
     this.formFilter.valueChanges.subscribe(res => {
 
       let dataFiltered = this.dataCuotas;
-      console.log(dataFiltered);
+
       //Filtro Estado
       if (res.estadoPago) {
         dataFiltered = dataFiltered.filter((data: Cuota) => data.estado == res.estadoPago);
@@ -107,39 +115,37 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
 
       //Filtro Fecha Compromiso
       if (res.startCompromiso && res.endCompromiso) {
-        dataFiltered = dataFiltered.filter((data: any) => new Date(data.fechaPago) >= res.startCompromiso && new Date(data.fechaPago) <= res.endCompromiso);
+        dataFiltered = dataFiltered.filter((comp: Cuota) => comp.fechaPago >= res.startCompromiso && comp.fechaPago <= res.endCompromiso);
       }
 
-      /*     if (res.startCompromiso && res.endCompromiso) {
-            dataFiltered = this.dataCuotas.map((data: any) => {
-              data.fechaPago = new Date(data.fechaPago);
-              return data;
-            }).filter((comp: { fechaPago: Date; }) => comp.fechaPago >= res.startCompromiso && comp.fechaPago <= res.endCompromiso);
-          }
-     */
-      //Filtro Fecha Registro Falta
-      /*      if (res.startRegistro && res.endRegistro) {
-             dataFiltered = this.dataCuotas.map((data: any) => {
-               data.createdAt = new Date(data.createdAt);
-               return data;
-             }).filter((comp: { createdAt: Date; }) => comp.createdAt >= res.startRegistro && comp.createdAt <= res.endRegistro);
-           }
-     
-           //Filtro Fecha Actualización Falta
-           if (res.startActualizacion && res.endActualizacion) {
-             dataFiltered = dataFiltered.filter((data: Cuota) => new Date(data.updateAt) >= res.startActualizacion && new Date(data.updateAt) <= res.endActualizacion);
-           }
-      */
+      //Filtro Fecha Registro
+      if (res.startRegistro && res.endRegistro) {
+        dataFiltered = this.dataCuotas.map((data: any) => {
+          data.createdAt = new Date(data.createdAt);
+          return data;
+        }).filter((comp: { createdAt: Date; }) => comp.createdAt >= res.startRegistro && comp.createdAt <= res.endRegistro);
+      }
+
+      //Filtro Fecha Actualización
+      if (res.startActualizacion && res.endActualizacion) {
+        console.log("Holi");
+        dataFiltered = this.dataCuotas.map((data: any) => {
+          data.updatedAt = new Date(data.updatedAt);
+          return data;
+        }).filter((comp: { updatedAt: Date; }) => comp.updatedAt >= res.startActualizacion && comp.updatedAt <= res.endActualizacion);
+      }
 
       this.dataSource = new MatTableDataSource(dataFiltered);
       this.dataSource.paginator = this.paginator.toArray()[0];
+      this.selection.clear()
       this.totalSeleccion = 0;
-      this.selection.clear();
     })
   }
 
+
+  //Limpiar los filtros realizados
   limpiarFiltros() {
-    this.formFilter.patchValue({ estadoPago: null, numeroContrato: null, startCompromiso: null, endCompromiso: null, /* startRegistro: null, endRegistro: null, startActualizacion: null, endActualizacion: null */ })
+    this.formFilter.patchValue({ estadoPago: null, numeroContrato: null, startCompromiso: null, endCompromiso: null, startRegistro: null, endRegistro: null, startActualizacion: null, endActualizacion: null })
     this.dataSource = new MatTableDataSource(this.dataCuotas);
     this.dataSource.paginator = this.paginator.toArray()[0];
     this.selection.clear()

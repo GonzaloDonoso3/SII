@@ -24,7 +24,7 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
   displayedColumns: string[] = [
     'select',
     'id',
-    'fechaCompromiso',
+    'fechaPago',
     'monto',
     'estadoPago',
     'numeroContrato',
@@ -38,8 +38,7 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
 
   // Definir el formulario que permitirá aplicar los filtros
   formFilter = new FormGroup({
-    startCompromiso: new FormControl(),
-    endCompromiso: new FormControl(),
+    fechaPago: new FormControl(),
     startRegistro: new FormControl(),
     endRegistro: new FormControl(),
     startActualizacion: new FormControl(),
@@ -114,8 +113,8 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
       }
 
       //Filtro Fecha Compromiso
-      if (res.startCompromiso && res.endCompromiso) {
-        dataFiltered = dataFiltered.filter((comp: Cuota) => comp.fechaPago >= res.startCompromiso && comp.fechaPago <= res.endCompromiso);
+      if (res.fechaPago) {
+        dataFiltered = dataFiltered.filter((comp: Cuota) => comp.fechaPago.includes(res.fechaPago));
       }
 
       //Filtro Fecha Registro
@@ -128,7 +127,6 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
 
       //Filtro Fecha Actualización
       if (res.startActualizacion && res.endActualizacion) {
-        console.log("Holi");
         dataFiltered = this.dataCuotas.map((data: any) => {
           data.updatedAt = new Date(data.updatedAt);
           return data;

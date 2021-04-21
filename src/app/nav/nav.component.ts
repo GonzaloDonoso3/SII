@@ -27,8 +27,8 @@ export class NavComponent {
       { name: 'LUBRICENTRO', icon: 'commute', url: 'lubricentro' },
       { name: 'RENTACAR', icon: 'directions_car', url: 'rentacar' },
       { name: 'INMOBILIARIA', icon: 'chair', url: 'inmobiliaria' },
-      /*   { name: 'FIRMA ABOGADOS', icon: 'account_balance', url: 'firmaAbogado' },
-        { name: 'AGROFIRMA PROYECTOS', icon: 'agriculture', url: 'agrofirma' } */
+      { name: 'FIRMA ABOGADOS', icon: 'account_balance', url: 'firmaAbogado' },
+      /* { name: 'AGROFIRMA PROYECTOS', icon: 'agriculture', url: 'agrofirma' } */
     ];
     this.subMenuItems = [
       { name: 'INGRESOS', icon: 'align_horizontal_right', url: 'ingresos' },

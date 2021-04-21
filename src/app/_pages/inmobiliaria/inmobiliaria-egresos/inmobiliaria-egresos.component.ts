@@ -30,7 +30,7 @@ export class InmobiliariaEgresosComponent implements OnInit {
   }
 
   //Definir que el formulario esta listo
-  formularioListo(e: string): void {
+  formularioListo(e: any): void {
 
     this.ngOnInit();
     this.refrescar = e;

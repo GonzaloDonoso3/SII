@@ -36,7 +36,7 @@ export class InmobiliariaEgresosListComponent implements OnInit {
     'descripcionEgreso',
     'sucursal',
     'usuario',
-    //  'responsable'
+    'responsable'
   ];
 
   //Creación de variables y asignación de datos
@@ -52,6 +52,7 @@ export class InmobiliariaEgresosListComponent implements OnInit {
     descripcionEgreso: new FormControl(),
     tipoEgreso: new FormControl(),
     Propiedad: new FormControl(),
+    responsable: new FormControl(),
   })
 
 
@@ -154,6 +155,10 @@ export class InmobiliariaEgresosListComponent implements OnInit {
 
       if (res.sucursal) {
         dataFiltered = dataFiltered.filter((data: EgresosInmobiliaria) => data.sucursal == res.sucursal);
+      }
+
+      if (res.responsable) {
+        dataFiltered = dataFiltered.filter((data: EgresosInmobiliaria) => data.responsable == res.responsable);
       }
 
       if (res.start && res.end) {

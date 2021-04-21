@@ -17,18 +17,12 @@ import { AlertHelper } from '@app/_helpers/alert.helper';
 })
 export class InmobiliariaEgresosFormComponent implements OnInit {
 
-  @Output()
+
   formularioListo = new EventEmitter<string>();
-  // ? set checkbox
-
   usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '');
-
   nameRespaldo = '';
-  tiposEgresos: any[] = [];
-
-
-  // ? Validar si es necesario importar modelos de datos
   egreso: any = {};
+
   // ? Configuración de formulario
   addressForm = this.fb.group({
     idSucursal: [null, Validators.required],
@@ -98,7 +92,7 @@ export class InmobiliariaEgresosFormComponent implements OnInit {
             .pipe()
             .subscribe(
               (data) => {
-                this.alert.createAlert("Registro Creado con exito!");
+                this.alert.createAlert("Registro Creado con exito");
                 this.formularioListo.emit('true');
                 this.addressForm.reset();
 
@@ -112,7 +106,7 @@ export class InmobiliariaEgresosFormComponent implements OnInit {
             );
         } else {
           //Si es incorrecto se envía un mensaje de error
-          this.snackBar.open('Debemos Recibir sus respaldos para continuar !!', 'cerrar', {
+          this.snackBar.open('Debemos Recibir sus respaldos para continuar', 'cerrar', {
             duration: 5000,
             verticalPosition: 'top',
           });
@@ -122,7 +116,7 @@ export class InmobiliariaEgresosFormComponent implements OnInit {
     
       //Si el formulario es erroneo 
     case 'INVALID':
-      this.snackBar.open('EL formulario debe ser Completado !!', 'cerrar', {
+      this.snackBar.open('EL formulario debe ser Completado', 'cerrar', {
         duration: 2000,
         verticalPosition: 'top',
       });

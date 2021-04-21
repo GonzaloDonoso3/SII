@@ -37,7 +37,7 @@ export class DialogContratosComponent implements OnInit {
   nombreClienteLocal = localStorage.getItem("nombreCliente");
   
 
-
+// Variables que permiten realizar los filtros
   addressFormContrato = this.fb.group({
     fechaContrato: ['', Validators.required],
     idSucursal: ['', Validators.required],
@@ -45,6 +45,7 @@ export class DialogContratosComponent implements OnInit {
     nContrato: ['', Validators.required],
   });
 
+// Variables que permiten realizar los filtros
   addressFormCuotas = this.fb.group({
     fechaCuota: ['', Validators.required],
     montoCuota: ['', Validators.required],
@@ -71,14 +72,17 @@ export class DialogContratosComponent implements OnInit {
     this.obtenerEmpresa(this.idEmpresa);
   }
 
+  //Metodo que ayuda a obtener los valores del formulario
   get f(): any {
     return this.addressFormContrato.controls;
   }
 
+  //Metodo que ayuda a obtener los valores del formulario
   get c(): any {
     return this.addressFormCuotas.controls;
   }
 
+  //Metodo que los datos del contrato (formulario) esten correctos
   validarContrato(){
     this.contrato.id;
     this.contrato.fechaContrato = this.f.fechaContrato.value;
@@ -93,6 +97,7 @@ export class DialogContratosComponent implements OnInit {
     
     this.contrato.estadoPago = 'pendiente';
     this.abogadosTabService
+    //Si el contrato no existe se crea
       .crearSinoExisteContrato(this.contrato)
       .pipe()
       .subscribe((x: any) => {
@@ -105,29 +110,34 @@ export class DialogContratosComponent implements OnInit {
       });
   }
 
+  //Metodo que permite agregar las cuotas a una tabla 
   agregarCuotas(): any{
     this.cuota.montoCuota = this.c.montoCuota.value;
+    //Si el monto de las cuotas es menor al saldo pendiente 
     if (this.cuota.montoCuota <= this.saldoPendiente) {
       this.cuota.estado = 'pendiente';
-      this.cuota.fechaPago = this.fechaCompromisoCuota;
+      this.cuota.fechaPago = this.c.fechaCuota.value;
       this.cuota.idContrato = this.contrato.id;
       this.cuota.idUsuario = this.usuario.id;
       this.listaCuotas.push(this.cuota);
-      console.log(this.listaCuotas);
+      
       this.saldoPendiente = this.saldoPendiente - this.cuota.montoCuota;
       this.cuota = new nuevaCuota();
       this.dataSource = new MatTableDataSource(this.listaCuotas);
-    } else {
+    } 
+    //Si no se muestra el error
+    else {
       alert('monto no coincide con saldo pendiente');
     }
   }
 
+  //Metodo que permite guardar el contrato
   guardarContrato(){
     this.abogadosTabService
       .guardarCuotas(this.listaCuotas)
       .pipe()
       .subscribe((x:any) => {
-        this.abogadosService.closeDialogContratos();
+        this.abogadosService.closeDialogModal();
         this.listaCuotas = [];
         this.snackBar.open('Contato generado con exito', 'cerrar', {
           duration: 2000,

@@ -63,6 +63,7 @@ export class DialogRepactarCuotasComponent implements OnInit {
     this.getContratosCliente();
   }
 
+  //Se obtienen los contratos del cliente desde la BD
   getContratosCliente(){
     //Carga Tabla 
     this.abogadosTabsService
@@ -80,6 +81,7 @@ export class DialogRepactarCuotasComponent implements OnInit {
     return this.addressFormContrato.controls;
   }
 
+  //Se calculan las cuotas segun los datos ingresados 
   calcularCuotas(): void {
     this.cuotas = [];
     this.datos = new nuevaCuota();
@@ -96,18 +98,22 @@ export class DialogRepactarCuotasComponent implements OnInit {
       });
   }
 
+  //Con este metodo se realiza finalmente la repactación
   repactar(): void {
     this.abogadosTabsService
       .repactarContrato(this.contratoR.CuotasContratos, this.cuotas)
       .subscribe((x:any) => {
         console.log(x);
       });
-      this.abogadosService.closeDialogContratos();
+      this.abogadosService.closeDialogModal();
       this.snackBar.open('Cuotas repactadas con exito', 'cerrar', {
         duration: 2000,
         verticalPosition: 'top',
       });
   }
-
+   // Cerrar Dialog
+   closeDialog(){
+    this.abogadosService.closeDialogModal();
+   }
 
 }

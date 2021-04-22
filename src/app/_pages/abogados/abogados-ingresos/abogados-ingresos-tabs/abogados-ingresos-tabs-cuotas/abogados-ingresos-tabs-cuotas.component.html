@@ -1,14 +1,14 @@
 <mat-toolbar color="primary">
     <button mat-raised-button (click)="limpiarFiltros()" color="accent">
-    Limpiar filtros
-  </button>
+        Limpiar filtros
+    </button>
     <span> Listado Cuotas </span>
     <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="exportAsXLSX()">
-    Exportar
-  </button>
+        Exportar
+    </button>
     <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="getCuotas()">
-    <mat-icon>autorenew</mat-icon>
-</button>
+        <mat-icon>autorenew</mat-icon>
+    </button>
 </mat-toolbar>
 
 <div class="table-responsive">
@@ -17,40 +17,38 @@
 
         <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>
-                <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+                <mat-checkbox (change)="$event ? masterToggle() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()">
                 </mat-checkbox>
             </th>
             <td mat-cell *matCellDef="let row">
-                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)">
                 </mat-checkbox>
             </td>
         </ng-container>
+
         <!-- data columns -->
         <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef>ID </th>
             <td mat-cell *matCellDef="let element">{{ element.id }}</td>
         </ng-container>
 
-        <!-- Campo Fecha Compromiso -->
-        <ng-container matColumnDef="fechaCompromiso" class="mat-column-date">
-            <th mat-header-cell *matHeaderCellDef>
-                <mat-form-field appearance="fill">
-                    <mat-label>Fecha Registro</mat-label>
-                    <mat-date-range-input [formGroup]="formFilter" [rangePicker]="picker">
-                        <input matStartDate formControlName="startCompromiso" placeholder="Start date" type="date" />
-                        <input matEndDate formControlName="endCompromiso" placeholder="End date" type="date" />
-                    </mat-date-range-input>
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-date-range-picker #picker></mat-date-range-picker>
 
-                    <mat-error *ngIf="formFilter.controls.startCompromiso.hasError('matStartDateInvalid')">Invalid start date</mat-error>
-                    <mat-error *ngIf="formFilter.controls.endCompromiso.hasError('matEndDateInvalid')">Invalid end date</mat-error>
-                </mat-form-field>
+        <!-- Campo Fecha Compromiso -->
+        <ng-container matColumnDef="fechaPago" class="mat-column-date">
+            <th mat-header-cell *matHeaderCellDef>
+                <div [formGroup]="formFilter">
+                    <mat-form-field class="fill">
+                        <input matInput placeholder="fecha Compromiso" formControlName="fechaPago" />
+                    </mat-form-field>
+                </div>
             </th>
-            <td mat-cell *matCellDef="let element">{{ element.fechaPago | date: 'dd/MM/yyyy' }}</td>
+            <td mat-cell *matCellDef="let element">{{ element.fechaPago }}</td>
         </ng-container>
 
-        <!-- Campo Monto-->
+
         <ng-container matColumnDef="monto">
             <th mat-header-cell *matHeaderCellDef> Monto Cuota</th>
             <td mat-cell *matCellDef="let element">
@@ -63,7 +61,10 @@
             <th mat-header-cell *matHeaderCellDef>
                 <div [formGroup]="formFilter">
                     <mat-form-field class="fill">
-                        <input matInput placeholder="Estado Pago" formControlName="estadoPago" />
+                        <mat-select placeholder="Estado Pago" formControlName="estadoPago">
+                            <mat-option value="pendiente"> pendiente </mat-option>
+                            <mat-option value="pagado"> pagado </mat-option>
+                        </mat-select>
                     </mat-form-field>
                 </div>
             </th>
@@ -82,39 +83,51 @@
             <td mat-cell *matCellDef="let element">{{ element.idContrato }}</td>
         </ng-container>
 
+
         <!-- Campo Fecha Registro-->
-        <ng-container matColumnDef="fechaRegistro" class="mat-column-date">
+
+        <ng-container matColumnDef="fechaRegistro">
             <th mat-header-cell *matHeaderCellDef>
-                <mat-form-field appearance="fill">
-                    <mat-label>Fecha Registro</mat-label>
+                <mat-form-field>
+                    <mat-label>fechaRegistro</mat-label>
                     <mat-date-range-input [formGroup]="formFilter" [rangePicker]="picker">
-                        <input matStartDate formControlName="startRegistro" placeholder="Start date" type="date" />
-                        <input matEndDate formControlName="endRegistro" placeholder="End date" type="date" />
+                        <input matStartDate formControlName="startRegistro" placeholder="inicio" />
+                        <input matEndDate formControlName="endRegistro" placeholder=" fin" />
                     </mat-date-range-input>
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-date-range-picker #picker></mat-date-range-picker>
-
-                    <mat-error *ngIf="formFilter.controls.startRegistro.hasError('matStartDateInvalid')">Invalid start date</mat-error>
-                    <mat-error *ngIf="formFilter.controls.endRegistro.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+                    <mat-error *ngIf="formFilter.controls.startRegistro.hasError('matStartDateInvalid')">Invalid start
+                        date
+                    </mat-error>
+                    <mat-error *ngIf="formFilter.controls.endRegistro.hasError('matEndDateInvalid')">Invalid end date
+                    </mat-error>
                 </mat-form-field>
             </th>
-            <td mat-cell *matCellDef="let element">{{ element.createdAt | date: 'dd/MM/yyyy' }}</td>
+            <td style="text-align:center" mat-cell *matCellDef="let element">
+                {{element.createdAt | date: 'dd/MM/yyyy'}}
+            </td>
         </ng-container>
 
+
+
         <!-- Campo Fecha Actualización -->
-        <ng-container matColumnDef="fechaActualizacion" class="mat-column-date">
+        <ng-container matColumnDef="fechaActualizacion">
             <th mat-header-cell *matHeaderCellDef>
                 <mat-form-field appearance="fill">
                     <mat-label>Fecha Actualización</mat-label>
                     <mat-date-range-input [formGroup]="formFilter" [rangePicker]="picker">
-                        <input matStartDate formControlName="startActualizacion" placeholder="Start date" />
-                        <input matEndDate formControlName="endActualizacion" placeholder="End date" />
+                        <input matStartDate formControlName="startActualizacion" placeholder="inicio" />
+                        <input matEndDate formControlName="endActualizacion" placeholder="fin" />
                     </mat-date-range-input>
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-date-range-picker #picker></mat-date-range-picker>
 
-                    <mat-error *ngIf="formFilter.controls.startActualizacion.hasError('matStartDateInvalid')">Invalid start date</mat-error>
-                    <mat-error *ngIf="formFilter.controls.endActualizacion.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+                    <mat-error *ngIf="formFilter.controls.startActualizacion.hasError('matStartDateInvalid')">
+                        Invalid
+                        start date</mat-error>
+                    <mat-error *ngIf="formFilter.controls.endActualizacion.hasError('matEndDateInvalid')">
+                        Invalid end
+                        date</mat-error>
                 </mat-form-field>
             </th>
             <td mat-cell *matCellDef="let element">{{ element.updatedAt | date: 'dd/MM/yyyy' }}</td>

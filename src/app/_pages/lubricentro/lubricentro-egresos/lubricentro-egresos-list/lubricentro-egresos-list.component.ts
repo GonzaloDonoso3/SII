@@ -43,17 +43,15 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
   dataEgresos: EgresoLubricentro[] = [];
 
   changelog: string[] = [];
-  rangoFecha = new FormGroup({
+
+  //filtros
+  formFilter = new FormGroup({
     start: new FormControl(),
     end: new FormControl(),
-
-  });
-  sucursalFilter = new FormGroup({
     idSucursal: new FormControl(),
-  });
-  tipoEgresoFilter = new FormGroup({
     tipoEgreso: new FormControl(),
-  });
+  })
+
   sucursales: Sucursal[] = [];
   selection = new SelectionModel<EgresoLubricentro>(true, []);
   tiposEgresos: string[] = [];
@@ -70,21 +68,65 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.rangoFecha.valueChanges.subscribe(res => {
-      if (res.start != null && res.end != null) {
-        const rango = this.rangoFecha.value;
-        this.applyDateFilter(rango.start,
-          rango.end);
-      }
-    });
-    this.sucursalFilter.valueChanges.subscribe(res => {
-      this.applySucursalFilter(res.idSucursal);
-    });
-    this.tipoEgresoFilter.valueChanges.subscribe(res => {
-      this.applyTipoEgresoFilter(res.tipoEgreso);
-    });
-
+    this.aplicarfiltros();
   }
+
+
+
+  aplicarfiltros() {
+    this.formFilter.valueChanges.subscribe(res => {
+
+      let dataFiltered = this.dataEgresos;
+
+      if (res.idSucursal) {
+        dataFiltered = dataFiltered.filter((data: EgresoLubricentro) => data.sucursal == res.idSucursal);
+      }
+
+      if (res.tipoEgreso) {
+        dataFiltered = dataFiltered.filter((data: EgresoLubricentro) => data.tipoEgreso == res.tipoEgreso);
+      }
+
+      if (res.start && res.end) {
+        dataFiltered = dataFiltered.filter((data: EgresoLubricentro) => new Date(data.fecha) >= res.start && new Date(data.fecha) <= res.end);
+      }
+
+      this.dataSource = new MatTableDataSource(dataFiltered);
+      this.dataSource.paginator = this.paginator.toArray()[0];
+      this.selection.clear();
+    })
+  }
+
+
+  // ? filters
+  limpiarFiltros() {
+    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null })
+    this.dataSource = new MatTableDataSource(this.dataEgresos);
+    this.dataSource.paginator = this.paginator.toArray()[0];
+    this.selection.clear()
+    this.totalSeleccion = 0;
+  }
+
+
+
+
+  recuperarArchivos(listArchivos: any) {
+    this.dialog.open(DialogDownloadsComponent, {
+      data: { archivos: listArchivos, servicio: 'lubricentro-egreso' },
+    });
+  }
+
+
+
+
+  revelarTotal() {
+    this.totalSeleccion = 0;
+    console.log(this.selection.selected.length);
+    this.selection.selected.forEach(data => {
+      this.totalSeleccion += data.monto;
+    });
+  }
+
+
 
   // ? refresh when form is ready.
 
@@ -108,13 +150,8 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
       });
     }
   }
-  recuperarArchivos(listArchivos: any) {
-    this.dialog.open(DialogDownloadsComponent, {
 
-      data: { archivos: listArchivos, servicio: 'lubricentro-egreso' },
 
-    });
-  }
 
   // ? selection rows
   // *  INFO this.selection.selected : return array with all selected objects(rows) into table
@@ -133,59 +170,6 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
       });
 
   }
-  revelarTotal() {
-    this.totalSeleccion = 0;
-    console.log(this.selection.selected.length);
-    this.selection.selected.forEach(data => {
-      this.totalSeleccion += data.monto;
-    });
-  }
 
-  // ? filters
-  limpiarFiltros() {
-    this.dataSource = new MatTableDataSource(this.dataEgresos);
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-
-  applyDateFilter(start: Date, end: Date) {
-
-    const dataFiltered = this.dataEgresos.map(data => {
-      data.fecha = new Date(data.fecha);
-      return data;
-    }).filter(comp => comp.fecha >= start && comp.fecha <= end);
-
-    this.dataSource = new MatTableDataSource(dataFiltered);
-
-    this.dataSource.paginator = this.paginator.toArray()[0];
-
-
-  }
-  applySucursalFilter(filterValue: string) {
-    this.dataSource.filterPredicate = (data: EgresoLubricentro, filter: string) => data.sucursal === filter;
-    this.dataSource.filter = filterValue;
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-  applyTipoEgresoFilter(filterValue: string) {
-    this.dataSource.filterPredicate = (data: EgresoLubricentro, filter: string) => data.tipoEgreso === filter;
-    this.dataSource.filter = filterValue;
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-
-  /* fijarFiltro(e: MatCheckboxChange) {
-    if (e.checked) {
-      this.dataSource =
-        new MatTableDataSource(
-          this.dataEgresos
-            .filter(data =>
-              data.estadoPago == this.estadoPagoFilter.value.estadoPago
-            ));
-    }
-    if (!e.checked) {
-      this.dataSource =
-        new MatTableDataSource(
-          this.dataEgresos
-        );
-    }
-  } */
 
 }

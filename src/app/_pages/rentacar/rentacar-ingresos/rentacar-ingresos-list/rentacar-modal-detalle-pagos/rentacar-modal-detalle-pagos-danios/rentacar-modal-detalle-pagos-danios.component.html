@@ -27,7 +27,10 @@
 <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
     <mat-expansion-panel-header>
         <mat-panel-title>
-            mostrar comprobantes
+            Total : {{totalIngreso | currency: "$":"symbol":"1.0-0"}}
+            <span style="margin-left: 30rem;">
+                mostrar comprobantes
+            </span>
         </mat-panel-title>
     </mat-expansion-panel-header>
 

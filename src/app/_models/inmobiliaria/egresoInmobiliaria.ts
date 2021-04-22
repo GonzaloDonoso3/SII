@@ -10,7 +10,7 @@ export class EgresosInmobiliaria {
   sucursal!: string;
   usuario!: string;
   responsable!: string;
-  descripcionEgreso!: string;
+  descripcion!: string;
   Sucursal!: Sucursal;
   Usuario!: Usuario;
   RespaldoEgresoInmobiliaria!: any[];

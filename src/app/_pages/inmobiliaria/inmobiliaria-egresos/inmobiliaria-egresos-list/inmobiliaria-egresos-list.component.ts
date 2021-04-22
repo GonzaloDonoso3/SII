@@ -138,7 +138,6 @@ export class InmobiliariaEgresosListComponent implements OnInit {
 
   aplicarfiltros() {
     this.formFilter.valueChanges.subscribe(res => {
-
       let dataFiltered = this.dataEgresos;
 
       if (res.Propiedad) {
@@ -146,17 +145,16 @@ export class InmobiliariaEgresosListComponent implements OnInit {
       }
 
       if (res.descripcionEgreso) {
-        dataFiltered = dataFiltered.filter((data: EgresosInmobiliaria) => data.descripcionEgreso.includes(res.descripcionEgreso));
+        dataFiltered = dataFiltered.filter((data: EgresosInmobiliaria) => data.descripcion.includes(res.descripcionEgreso));
       }
 
       if (res.tipoEgreso) {
         dataFiltered = dataFiltered.filter((data: EgresosInmobiliaria) => data.tipoEgreso == res.tipoEgreso);
       }
 
-      if (res.sucursal) {
-        dataFiltered = dataFiltered.filter((data: EgresosInmobiliaria) => data.sucursal == res.sucursal);
+      if (res.idSucursal) {
+        dataFiltered = dataFiltered.filter((data: EgresosInmobiliaria) => data.sucursal == res.idSucursal);
       }
-
       if (res.responsable) {
         dataFiltered = dataFiltered.filter((data: EgresosInmobiliaria) => data.responsable == res.responsable);
       }
@@ -171,7 +169,7 @@ export class InmobiliariaEgresosListComponent implements OnInit {
       this.selection.clear();
     })
   }
-
+    
 
   // Inicio Filtros
   limpiarFiltros() {
@@ -181,9 +179,6 @@ export class InmobiliariaEgresosListComponent implements OnInit {
     this.selection.clear()
     this.totalSeleccion = 0;
   }
-
-
-
 
 
 }

@@ -38,21 +38,16 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
   dataIngresos: IngresosLubricentro[] = [];
 
   changelog: string[] = [];
-  rangoFecha = new FormGroup({
+
+  formFilter = new FormGroup({
     start: new FormControl(),
     end: new FormControl(),
-
-  });
-  sucursalFilter = new FormGroup({
     idSucursal: new FormControl(),
-  });
-  tipoIngresoFilter = new FormGroup({
     tipoIngreso: new FormControl(),
-  });
-  estadoPagoFilter = new FormGroup({
     estadoPago: new FormControl(),
-    fixed: new FormControl(),
-  });
+  })
+
+
   sucursales: Sucursal[] = [];
   selection = new SelectionModel<IngresosLubricentro>(true, []);
   tiposIngresos: string[] = [];
@@ -69,25 +64,70 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
     this.tiposIngresos = this.lubricentroService.tiposIngresosListValue;
     this.estadosPagos = this.lubricentroService.estadosPagosListValue;
   }
-  ngOnInit(): void {
-    this.rangoFecha.valueChanges.subscribe(res => {
-      if (res.start != null && res.end != null) {
-        const rango = this.rangoFecha.value;
-        this.applyDateFilter(rango.start,
-          rango.end);
-      }
-    });
-    this.sucursalFilter.valueChanges.subscribe(res => {
-      this.applySucursalFilter(res.idSucursal);
-    });
-    this.tipoIngresoFilter.valueChanges.subscribe(res => {
-      this.applyTipoIngresoFilter(res.tipoIngreso);
-    });
-    this.estadoPagoFilter.valueChanges.subscribe(res => {
-      this.applyEstadoPagoFilter(res.estadoPago);
-    });
 
+
+  ngOnInit(): void {
+    this.aplicarfiltros();
   }
+
+
+
+  recuperarArchivos(listArchivos: any) {
+    this.dialog.open(DialogDownloadsComponent, {
+
+      data: { archivos: listArchivos, servicio: 'lubricentro-ingreso' },
+
+    });
+  }
+
+
+  revelarTotal() {
+    this.totalSeleccion = 0;
+    console.log(this.selection.selected.length);
+    this.selection.selected.forEach(data => {
+      this.totalSeleccion += data.monto;
+    });
+  }
+
+
+  aplicarfiltros() {
+    this.formFilter.valueChanges.subscribe(res => {
+
+      let dataFiltered = this.dataIngresos;
+
+      if (res.estadoPago) {
+        dataFiltered = dataFiltered.filter((data: IngresosLubricentro) => data.estadoPago == res.estadoPago);
+      }
+
+      if (res.tipoIngreso) {
+        dataFiltered = dataFiltered.filter((data: IngresosLubricentro) => data.tipoIngreso == res.tipoIngreso);
+      }
+
+      if (res.idSucursal) {
+        dataFiltered = dataFiltered.filter((data: IngresosLubricentro) => data.sucursal == res.idSucursal);
+      }
+
+      if (res.start && res.end) {
+        dataFiltered = dataFiltered.filter((data: IngresosLubricentro) => new Date(data.fecha) >= res.start && new Date(data.fecha) <= res.end);
+      }
+
+      this.dataSource = new MatTableDataSource(dataFiltered);
+      this.dataSource.paginator = this.paginator.toArray()[0];
+      this.totalSeleccion = 0;
+      this.selection.clear();
+    })
+  }
+
+
+  limpiarFiltros() {
+    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoIngreso: null, estadoPago: null, })
+    this.dataSource = new MatTableDataSource(this.dataIngresos);
+    this.dataSource.paginator = this.paginator.toArray()[0];
+    this.selection.clear()
+    this.totalSeleccion = 0;
+  }
+
+
   // ? refresh when form is ready.
   ngOnChanges(changes: SimpleChanges): void {
     for (const propName of Object.keys(changes)) {
@@ -109,13 +149,6 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
       });
     }
   }
-  recuperarArchivos(listArchivos: any) {
-    this.dialog.open(DialogDownloadsComponent, {
-
-      data: { archivos: listArchivos, servicio: 'lubricentro-ingreso' },
-
-    });
-  }
 
   // ? selection rows
   // *  INFO this.selection.selected : return array with all selected objects(rows) into table
@@ -132,65 +165,6 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
       this.dataSource.filteredData.forEach(row => {
         this.selection.select(row);
       });
-
-  }
-  revelarTotal() {
-    this.totalSeleccion = 0;
-    console.log(this.selection.selected.length);
-    this.selection.selected.forEach(data => {
-      this.totalSeleccion += data.monto;
-    });
-  }
-
-  // ? filters
-  limpiarFiltros() {
-    this.dataSource = new MatTableDataSource(this.dataIngresos);
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-
-  applyDateFilter(start: Date, end: Date) {
-
-    const dataFiltered = this.dataIngresos.map(data => {
-      data.fecha = new Date(data.fecha);
-      return data;
-    }).filter(comp => comp.fecha >= start && comp.fecha <= end);
-
-    this.dataSource = new MatTableDataSource(dataFiltered);
-
-    this.dataSource.paginator = this.paginator.toArray()[0];
-
-
-  }
-  applySucursalFilter(filterValue: string) {
-    this.dataSource.filterPredicate = (data: IngresosLubricentro, filter: string) => data.sucursal === filter;
-    this.dataSource.filter = filterValue;
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-  applyTipoIngresoFilter(filterValue: string) {
-    this.dataSource.filterPredicate = (data: IngresosLubricentro, filter: string) => data.tipoIngreso.includes(filter);
-    this.dataSource.filter = filterValue;
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-  applyEstadoPagoFilter(filterlimpiarFiltrosValue: string) {
-    this.dataSource.filterPredicate = (data: IngresosLubricentro, filter: string) => data.estadoPago === filter;
-    this.dataSource.filter = filterlimpiarFiltrosValue;
-    this.dataSource.paginator = this.paginator.toArray()[0];
-  }
-  fijarFiltro(e: MatCheckboxChange) {
-    if (e.checked) {
-      this.dataSource =
-        new MatTableDataSource(
-          this.dataIngresos
-            .filter(data =>
-              data.estadoPago === this.estadoPagoFilter.value.estadoPago
-            ));
-    }
-    if (!e.checked) {
-      this.dataSource =
-        new MatTableDataSource(
-          this.dataIngresos
-        );
-    }
   }
 
 

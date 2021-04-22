@@ -26,7 +26,7 @@ export class RentacarModalDetallePagosClientesComponent implements OnInit {
   dataSource = new MatTableDataSource<PagoCliente>();
   displayedColumns: string[] = ['monto', 'dias', 'estado', 'descripcion', 'fecha'];
   panelOpenState: boolean = false;
-
+  totalIngreso: number = 0;
 
   constructor() { }
 
@@ -37,6 +37,7 @@ export class RentacarModalDetallePagosClientesComponent implements OnInit {
 
   cargarPagos(pagosCliente: ArrayPagosClienteClass): void {
     this.comprobantes = pagosCliente.comprobantes;
+    this.totalIngreso = pagosCliente.montoTotal;
     pagosCliente.pagos.forEach((pago: ArrayPagosClientePago) => {
       this.pagosTabla.push({
         monto: pago.monto,

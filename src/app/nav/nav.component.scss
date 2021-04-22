@@ -53,3 +53,23 @@ mat-toolbar {
 .mat-flat-button {
     min-width: 8rem !important;
 }
+
+.select-nav {
+    width: 17%;
+    margin-left: 5%;
+}
+
+mat-select {
+    color: white;
+}
+
+.select-nav,
+a {
+    text-decoration: none;
+    color: black;
+}
+
+// Cambiar color placeholder
+::ng-deep .mat-select-placeholder {
+    color: white !important;
+}

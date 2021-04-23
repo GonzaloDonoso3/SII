@@ -29,7 +29,7 @@ export class InmobiliariaIngresosFormComponent implements OnInit {
 
   nameRespaldo = '';
   tiposIngresos: any[] = [];
-
+  num: number = 0;
 
   // ? Validar si es necesario importar modelos de datos
   ingreso: any = {};
@@ -54,15 +54,15 @@ export class InmobiliariaIngresosFormComponent implements OnInit {
     private cuentasService: CuentasBancariasService,
     private alert: AlertHelper,
     private inmobiliariaService: InmobiliariaService,
-  ) { 
+  ) {
     this.sucursales = this.sucursalService.sucursalListValue;
   }
 
   ngOnInit(): void {
-    
+
   }
 
-  onSubmit(){
+  onSubmit() {
     // $ consulta el estado del formulario antes de recibir los adjuntos
     switch (this.addressForm.status) {
       case 'VALID':
@@ -87,14 +87,14 @@ export class InmobiliariaIngresosFormComponent implements OnInit {
           } else {
             this.ingreso.propiedad = this.addressForm.value.propiedad;
           }
-          
+
           //Si el usuario elegio otro tipoIngreso se le asigna el nombre ingresado
           if (this.addressForm.value.tipoIngreso == 'Otro') {
             this.ingreso.tipoIngreso = this.addressForm.value.ingresoOtros;
           } else {
             this.ingreso.tipoIngreso = this.addressForm.value.tipoIngreso;
           }
-          
+
           //Se le asigna la id del usuario logueado
           this.ingreso.idUsuario = this.usuario.id;
 
@@ -110,7 +110,8 @@ export class InmobiliariaIngresosFormComponent implements OnInit {
               .subscribe(
                 (data) => {
                   this.alert.createAlert("Registro Creado con exito!");
-                  this.formularioListo.emit('true');
+                  this.formularioListo.emit(this.num + "");
+                  this.num++;
                   this.addressForm.reset();
 
                 },
@@ -138,7 +139,7 @@ export class InmobiliariaIngresosFormComponent implements OnInit {
           verticalPosition: 'top',
         });
         break;
-      
+
       default:
         break;
     }

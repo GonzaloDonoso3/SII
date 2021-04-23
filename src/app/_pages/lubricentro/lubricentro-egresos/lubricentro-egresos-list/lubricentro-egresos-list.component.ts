@@ -1,5 +1,6 @@
+import { MatSort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
+import { Component, Input, ViewChild, OnChanges, OnInit, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -23,6 +24,7 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
 
   // ? childrens
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
+  @ViewChild(MatSort) sort = null;
 
   // ? Inputs & Outputs
   @Input()
@@ -92,6 +94,7 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
 
       this.dataSource = new MatTableDataSource(dataFiltered);
       this.dataSource.paginator = this.paginator.toArray()[0];
+      this.dataSource.sort = this.sort;
       this.selection.clear();
     })
   }
@@ -103,6 +106,7 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
     this.dataSource = new MatTableDataSource(this.dataEgresos);
     this.dataSource.paginator = this.paginator.toArray()[0];
     this.selection.clear()
+    this.dataSource.sort = this.sort;
     this.totalSeleccion = 0;
   }
 
@@ -146,6 +150,7 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
         console.log(data);
         this.dataSource = new MatTableDataSource(this.dataEgresos);
         this.dataSource.paginator = this.paginator.toArray()[0];
+        this.dataSource.sort = this.sort;
 
       });
     }

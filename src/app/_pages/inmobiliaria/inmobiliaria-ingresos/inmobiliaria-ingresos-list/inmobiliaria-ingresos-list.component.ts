@@ -1,3 +1,4 @@
+import { MatSort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -20,7 +21,7 @@ export class InmobiliariaIngresosListComponent implements OnInit {
 
   // ? childrens
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
-
+  @ViewChild(MatSort) sort = null;
   // ? Inputs & Outputs
   @Input()
   refrescar = '';
@@ -91,6 +92,7 @@ export class InmobiliariaIngresosListComponent implements OnInit {
         });
         this.dataSource = new MatTableDataSource(this.dataIngresos);
         this.dataSource.paginator = this.paginator.toArray()[0];
+        this.dataSource.sort = this.sort;
       });
     }
   }
@@ -162,6 +164,7 @@ export class InmobiliariaIngresosListComponent implements OnInit {
       this.dataSource = new MatTableDataSource(dataFiltered);
       this.dataSource.paginator = this.paginator.toArray()[0];
       this.totalSeleccion = 0;
+      this.dataSource.sort = this.sort;
       this.selection.clear();
     })
   }
@@ -174,89 +177,10 @@ export class InmobiliariaIngresosListComponent implements OnInit {
     this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoIngreso: null, estadoPago: null, cliente: null, nDocumento: null })
     this.dataSource = new MatTableDataSource(this.dataIngresos);
     this.dataSource.paginator = this.paginator.toArray()[0];
+    this.dataSource.sort = this.sort;
     this.selection.clear()
     this.totalSeleccion = 0;
   }
 
-  /*  applySucursalFilter(filterValue: string) {
-     this.dataSource.filterPredicate = (data: IngresosInmobiliaria, filter: string) => data.sucursal === filter;
-     this.dataSource.filter = filterValue;
-     this.dataSource.paginator = this.paginator.toArray()[0];
-   }
-   applyPropiedadFilter(_filter: string) {
-     this.dataSource.filterPredicate = (data: IngresosInmobiliaria, filter: string) => {
-       if (!data.propiedad === null) {
-         return data.propiedad.startsWith(filter);
-       } else {
-         return data.propiedad === filter;
-       }
-     };
-     this.dataSource.filter = _filter;
-     this.dataSource.paginator = this.paginator.toArray()[0];
-   }
- 
-   applyDescripcionIngresoFilter(_filter: string) {
-     this.dataSource.filterPredicate = (data: IngresosInmobiliaria, filter: string) => {
-       if (!data.descripcionIngreso === null) {
-         return data.descripcionIngreso.startsWith(filter);
-       } else {
-         return data.descripcionIngreso === filter;
-       }
-     }
-     this.dataSource.filter = _filter;
-     this.dataSource.paginator = this.paginator.toArray()[0];
-   }
- 
-   applyTipoIngresoFilter(filterValue: string) {
-     this.dataSource.filterPredicate = (data: IngresosInmobiliaria, filter: string) => data.tipoIngreso.includes(filter);
-     this.dataSource.filter = filterValue;
-     this.dataSource.paginator = this.paginator.toArray()[0];
-   }
- 
-   applyDateFilter(start: Date, end: Date) {
-     if (!this.descripcionIngresoFilter.value.fixed) {
-       const datafiltered = this.dataIngresos.map(data => {
-         data.fecha = new Date(data.fecha);
-         return data;
-       }).filter(comp => comp.fecha >= start && comp.fecha <= end);
- 
-       this.dataSource = new MatTableDataSource(datafiltered);
- 
-       this.dataSource.paginator = this.paginator.toArray()[0];
-     } else {
-       this.dataSource.filterPredicate = (data: IngresosInmobiliaria, filter: string) => {
-         const compare = new Date(data.fecha);
-         const filterValue = filter.split(' ');
-         const startValue = new Date(Number(filterValue[0]));
-         const endValue = new Date(Number(filterValue[1]));
- 
- 
- 
-         return compare >= startValue && compare <= endValue;
-       };
-       const filteredDate = `${start.getTime()} ${end.getTime()}`;
-       this.dataSource.filter = filteredDate;
-       this.dataSource.paginator = this.paginator.toArray()[0];
-     }
- 
-   }
- 
- 
- 
-   fijarFiltro(e: MatCheckboxChange) {
-     if (e.checked) {
-       this.dataSource =
-         new MatTableDataSource(
-           this.dataIngresos
-             .filter(data =>
-               data.tipoIngreso === this.descripcionIngresoFilter.value.estadoPago
-             ));
-     }
-     if (!e.checked) {
-       this.dataSource =
-         new MatTableDataSource(
-           this.dataIngresos
-         );
-     }
-   } */
+
 }

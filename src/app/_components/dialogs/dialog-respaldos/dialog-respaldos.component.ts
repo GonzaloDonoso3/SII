@@ -1,3 +1,4 @@
+import { AlertHelper } from '@app/_helpers/alert.helper';
 import { Component, Inject, OnInit, Output, EventEmitter } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -19,11 +20,14 @@ export class DialogRespaldosComponent implements OnInit {
   hasBaseDropZoneOver: boolean;
   hasAnotherDropZoneOver: boolean;
   constructor(
+    private alert: AlertHelper,
     public dialogRef: MatDialogRef<DialogRespaldosComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private snackBar: MatSnackBar,
   ) {
+    //IMPORTANTE: en la api Rest proteger ruta de los upload!! estan espuestas!!! 
     this.uploader = new FileUploader({
+      headers: [{ name: 'authorization', value: localStorage.getItem('usertoken') + '' }],
       url: `http://localhost:3000/api/${this.data.url}`,
       itemAlias: 'photo',
     });
@@ -33,8 +37,8 @@ export class DialogRespaldosComponent implements OnInit {
       status: any,
       headers: any
     ) => {
-
       if (!response) {
+        this.alert.errorAlert('tenemos problemas para procesar su solicitud, favor contactar equipo de desarrollo');
         this.snackBar.open(`tenemos problemas para procesar su solicitud, favor contactar equipo de desarrollo`, 'cerrar', {
           duration: 5000,
         });
@@ -69,6 +73,11 @@ export class DialogRespaldosComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  subirFiles() {
+    this.alert.loadingAlert();
+    this.uploader.uploadAll()
   }
 
 }

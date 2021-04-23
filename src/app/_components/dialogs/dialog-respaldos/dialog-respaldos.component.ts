@@ -1,3 +1,4 @@
+import { environment } from '@environments/environment';
 import { AlertHelper } from '@app/_helpers/alert.helper';
 import { Component, Inject, OnInit, Output, EventEmitter } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -28,7 +29,7 @@ export class DialogRespaldosComponent implements OnInit {
     //IMPORTANTE: en la api Rest proteger ruta de los upload!! estan espuestas!!! 
     this.uploader = new FileUploader({
       headers: [{ name: 'authorization', value: localStorage.getItem('usertoken') + '' }],
-      url: `http://localhost:3000/api/${this.data.url}`,
+      url: `${environment.apiUrl}/${this.data.url}`,
       itemAlias: 'photo',
     });
     this.uploader.onCompleteItem = (

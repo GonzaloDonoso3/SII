@@ -10,6 +10,8 @@ import { SucursalSharedService } from '../../../shared/shared-services/sucursal-
 import { first } from 'rxjs/operators';
 import { EmpresaSharedService } from '../../../shared/shared-services/empresa-shared.service';
 import { Empresa } from '@app/_models/shared/empresa';
+import { AdministracionService } from '../../administracion.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -30,7 +32,9 @@ export class AdministracionSucursalesListComponent implements OnInit {
       'giro',
       'actividad',
       'direccion',
-      'empresa'
+      'empresa',
+      'descripcion',
+      'botones'
     ];
   
     // Tabla en donde se almacenará los datos de la bd 
@@ -45,6 +49,7 @@ export class AdministracionSucursalesListComponent implements OnInit {
       actividad: new FormControl(),
       direccion: new FormControl(),
       empresa: new FormControl(),
+      descripcion: new FormControl(),
   
     })
   
@@ -55,19 +60,29 @@ export class AdministracionSucursalesListComponent implements OnInit {
     selection = new SelectionModel<Sucursal>(true, []);
     totalSeleccion = 0;
     selectedRows!: any[];
+    sucursalesDelete!:any;
 
   constructor(
     private sucursalService: SucursalSharedService,
-    private empresaService: EmpresaSharedService
+    private empresaService: EmpresaSharedService,
+    private administracionService: AdministracionService,
+    private snackBar: MatSnackBar,
   ) { }
 
   ngOnInit(): void {
-    this.getClientes();
+    this.getSucursales();
     this.getEmpresas();
+    this.aplicarfiltros();
+    
+    //Cargar una lista auxilar con las sucursales, que posteriormente nos ayudará a eliminar un registro
+    this.sucursalService
+      .getAll()
+      .pipe(first())
+      .subscribe((sucursalesDelete) => (this.sucursalesDelete = sucursalesDelete));
   }
 
   // Obtener el listado de cliente desde la BD
-  getClientes() {
+  getSucursales() {
     //Carga Tabla 
     this.sucursalService.getAll().pipe(first()).subscribe((result: Sucursal[]) => {
       this.dataSucursal = result.map(Sucursal => {
@@ -80,6 +95,7 @@ export class AdministracionSucursalesListComponent implements OnInit {
     });
   }
 
+  // Obtener las empresas
   getEmpresas(){
     this.empresaService
     .getAll()
@@ -108,28 +124,90 @@ export class AdministracionSucursalesListComponent implements OnInit {
       console.log(this.selection.selected);
     }
 
+  // Filtros
+  aplicarfiltros() {
+    this.formFilter.valueChanges.subscribe(res => {
+
+      let dataFiltered = this.dataSucursal;
+
+      //Filtro Estado
+      if (res.razonSocial) {
+        dataFiltered = dataFiltered.filter((data: Sucursal) => data.razonSocial == res.razonSocial);
+      }
+
+      //Filtro Numero Contrato
+      if (res.rut) {
+        dataFiltered = dataFiltered.filter((data: Sucursal) => data.rut == res.rut);
+      }
+
+      //Filtro Fecha Compromiso
+      if (res.giro) {
+        dataFiltered = dataFiltered.filter((data: Sucursal) => data.giro == res.giro);
+      }
+
+      //Filtro Estado
+      if (res.actividad) {
+        dataFiltered = dataFiltered.filter((data: Sucursal) => data.actividad == res.actividad);
+      }
+
+      //Filtro Numero Contrato
+      if (res.direccion) {
+        dataFiltered = dataFiltered.filter((data: Sucursal) => data.direccion == res.direccion);
+      }
+
+      //Filtro Fecha Compromiso
+      if (res.empresa) {
+        console.log(res.empresa);
+        dataFiltered = dataFiltered.filter((data: Sucursal) => data.idEmpresa == res.empresa);
+      }
+
+      this.dataSource = new MatTableDataSource(dataFiltered);
+      this.dataSource.paginator = this.paginator.toArray()[0];
+      this.selection.clear()
+      this.totalSeleccion = 0;
+    })
+  }
+
   //Limpiar los filtros
   limpiarFiltros() {
-    this.formFilter.patchValue({ rut: null, nombre: null, telefono: null, email: null, direccion: null })
+    this.formFilter.patchValue({ rut: null, razonSocial: null, giro: null, actividad: null, direccion: null,  empresa: null})
     this.dataSource = new MatTableDataSource(this.dataSucursal);
     this.dataSource.paginator = this.paginator.toArray()[0];
     this.selection.clear()
     this.totalSeleccion = 0;
   }
 
-  //Obtener los respaldos asociados
-  recuperarArchivos(listArchivos: any) {
-    /*this.dialog.open(DialogDownloadsComponent, {
-      data: { archivos: listArchivos, servicio: 'inmobiliaria-ingreso' },
-    });*/
-  }
-
-
   //Metodo exportar excel
   exportAsXLSX(): void {
-   /* this.selectedRows = [];
+   this.selectedRows = [];
     this.selection.selected.forEach((x) => this.selectedRows.push(x));
-    this.abogadosTabsService.exportAsExcelFile(this.selectedRows, 'Lista-Clientes');*/
+    this.administracionService.exportAsExcelFile(this.selectedRows, 'Lista-Sucursales');
   }
 
+  //Abrir Modal Editar
+  openDialogEdit(id: any, razonSocial: any){
+    localStorage.setItem("idSucursalEdit", id);
+    localStorage.setItem("razonSocialSucursalEdit", razonSocial);
+    this.administracionService.openDialogEditSucursal();
+  }
+
+  //Metodo eliminar una sucursal
+  deleteSucursal(id: any, razonSocial: any) {
+    const sucursal = this.sucursalesDelete.find((x: any) => x.id === id);
+    if (confirm('Esta seguro que desea eliminar el registro: ' + razonSocial)) {
+      sucursal.isDeleting = true;
+      this.sucursalService
+        .delete(id)
+        .pipe(first())
+        .subscribe(() => {
+          this.sucursales = this.sucursales.filter((x: any) => x.id !== id);
+        });
+      sucursal.isDeleting = false;
+    }
+    this.snackBar.open('Sucursal eliminada', 'cerrar', {
+      duration: 2000,
+      verticalPosition: 'top',
+    });
+    this.getSucursales();
+  }
 }

@@ -10,11 +10,17 @@ import { AdministracionHomeComponent } from './administracion-home/administracio
 import { AdministracionRoutingModule } from './administracion-routing.module';
 import { AdministracionSucursalesFormComponent } from './administracion-sucursales/administracion-sucursales-form/administracion-sucursales-form.component';
 import { AdministracionSucursalesListComponent } from './administracion-sucursales/administracion-sucursales-list/administracion-sucursales-list.component';
+import { DialogSucursalesEditarComponent } from './administracion-sucursales/administracion-sucursales-list/dialog-sucursales-editar/dialog-sucursales-editar.component';
+import { AdministracionEmpresasFormComponent } from './administracion-empresas/administracion-empresas-form/administracion-empresas-form.component';
+import { AdministracionEmpresasListComponent } from './administracion-empresas/administracion-empresas-list/administracion-empresas-list.component';
+import { DialogEmpresasEditarComponent } from './administracion-empresas/administracion-empresas-list/dialog-empresas-editar/dialog-empresas-editar.component';
+import { AdministracionUsuariosFormComponent } from './administracion-usuarios/administracion-usuarios-form/administracion-usuarios-form.component';
+import { AdministracionUsuariosListComponent } from './administracion-usuarios/administracion-usuarios-list/administracion-usuarios-list.component';
 
 
 
 @NgModule({
-  declarations: [AdministracionUsuariosComponent, AdministracionSucursalesComponent, AdministracionEmpresasComponent, AdministracionHomeComponent, AdministracionSucursalesFormComponent, AdministracionSucursalesListComponent],
+  declarations: [AdministracionUsuariosComponent, AdministracionSucursalesComponent, AdministracionEmpresasComponent, AdministracionHomeComponent, AdministracionSucursalesFormComponent, AdministracionSucursalesListComponent, DialogSucursalesEditarComponent, AdministracionEmpresasFormComponent, AdministracionEmpresasListComponent, DialogEmpresasEditarComponent, AdministracionUsuariosFormComponent, AdministracionUsuariosListComponent],
   imports: [
     CommonModule,
     AdministracionRoutingModule,

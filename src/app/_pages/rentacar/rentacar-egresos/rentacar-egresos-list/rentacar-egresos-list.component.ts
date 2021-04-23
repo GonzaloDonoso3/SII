@@ -147,7 +147,7 @@ export class RentacarEgresosListComponent implements OnInit {
       let dataFiltered = this.dataEgresos;
 
       if (res.descripcionEgreso) {
-        dataFiltered = dataFiltered.filter((data: EgresosRentacar) => data.descripcion == res.descripcionEgreso);
+        dataFiltered = dataFiltered.filter((data: EgresosRentacar) => data.descripcion.includes(res.descripcionEgreso));
       }
 
       if (res.tipoEgreso) {

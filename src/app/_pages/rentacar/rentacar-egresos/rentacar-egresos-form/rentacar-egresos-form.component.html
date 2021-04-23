@@ -39,6 +39,9 @@
                             <mat-option value="Impuestos">
                                 Impuestos
                             </mat-option>
+                            <mat-option value="Inversiones">
+                                Inversiones
+                            </mat-option>
                         </mat-select>
                         <mat-error *ngIf="addressForm.controls['tipoEgreso'].hasError('required')">
                             tipo ingreso es <strong>requerido</strong>
@@ -98,8 +101,8 @@
         <!-- Botón enviar -->
         <mat-card-actions>
             <button mat-raised-button color="primary" type="submit">
-          <mat-icon>send</mat-icon> Enviar
-        </button>
+                <mat-icon>send</mat-icon> Enviar
+            </button>
         </mat-card-actions>
     </mat-card>
 </form>

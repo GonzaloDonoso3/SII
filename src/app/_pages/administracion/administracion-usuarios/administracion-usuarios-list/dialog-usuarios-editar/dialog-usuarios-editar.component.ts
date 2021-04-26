@@ -3,21 +3,25 @@ import { Usuario } from '@models/shared/usuario';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 import { first } from 'rxjs/operators';
 import { RolSharedService } from '@app/_pages/shared/shared-services/rol-shared.service';
-import { UsuarioSharedService } from '../../../shared/shared-services/usuario-shared.service';
+import { UsuarioSharedService } from '../../../../shared/shared-services/usuario-shared.service';
+import { AdministracionService } from '../../../administracion.service';
+
 
 @Component({
-  selector: 'app-administracion-usuarios-form',
-  templateUrl: './administracion-usuarios-form.component.html',
-  styleUrls: ['./administracion-usuarios-form.component.scss']
+  selector: 'app-dialog-usuarios-editar',
+  templateUrl: './dialog-usuarios-editar.component.html',
+  styleUrls: ['./dialog-usuarios-editar.component.scss']
 })
-export class AdministracionUsuariosFormComponent implements OnInit {
+export class DialogUsuariosEditarComponent implements OnInit {
 
   formularioListo = new EventEmitter<string>();
   usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '');
   roles : any;
+  dataUsuario: any;
+  idUsuario : any;
+  nombreUsuario: any;
   
   
 
@@ -35,15 +39,19 @@ export class AdministracionUsuariosFormComponent implements OnInit {
     private fb: FormBuilder,
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private sucursalService: SucursalSharedService,
     private rolService: RolSharedService,
-    private usuarioService: UsuarioSharedService
+    private usuarioService: UsuarioSharedService,
+    private administracionService: AdministracionService
   ) { }
 
   ngOnInit(): void {
+    this.idUsuario = localStorage.getItem("idUsuarioEdit");
+    this.nombreUsuario = localStorage.getItem("nombreSucursalEdit");
+    this.getUsuario();
     this.getRoles();
   }
 
+  // Obtener Roles
   getRoles(){
     this.rolService
       .getAll()
@@ -51,24 +59,48 @@ export class AdministracionUsuariosFormComponent implements OnInit {
       .subscribe((roles) => (this.roles = roles));
   }
 
+  get f() {
+    return this.addressForm.controls;
+  }
 
+  //Obtener Usuarios
+  getUsuario() {
+    //Carga Tabla 
+    this.usuarioService.getAll().pipe(first()).subscribe((result: Usuario[]) => {
+      this.dataUsuario = result.map(Usuario => {
+        return Usuario;
+      });
+      // Cargar los datos del usuario en el formulario
+      this.dataUsuario.forEach((x:Usuario) => {
+        if(x.id == this.idUsuario){
+          this.f.nombre.setValue(x.nombre);
+          this.f.apellido.setValue(x.apellido);
+          this.f.nombreUsuario.setValue(x.nombreUsuario);
+        }
+      });
+    });
+  }
+
+  // Metodo editar usuario
   onSubmit(){
     switch (this.addressForm.status) {
       //Si el formulario esta correcto
       case 'VALID':
         this.usuarioService
-      .register(this.addressForm.value)
+      .update(this.idUsuario ,this.addressForm.value)
       .pipe(first())
       .subscribe(
         (data) => {
-          this.snackBar.open('Usuario ingresado con exito', 'cerrar', {
+          this.snackBar.open('Usuario editado con exito', 'cerrar', {
             duration: 2000,
             verticalPosition: 'top',
           });
           this.addressForm.reset();
+          this.administracionService.closeDialogModal();
+          
         },
         (error) => {
-          this.snackBar.open('No se pudo ingresar el usuario, contacte con informatica', 'cerrar', {
+          this.snackBar.open('No se pudo editar el usuario, contacte con informatica', 'cerrar', {
             duration: 2000,
             verticalPosition: 'top',
           });
@@ -88,4 +120,5 @@ export class AdministracionUsuariosFormComponent implements OnInit {
         break;
     }
   }
+
 }

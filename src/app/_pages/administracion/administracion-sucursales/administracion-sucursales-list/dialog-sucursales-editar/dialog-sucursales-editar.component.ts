@@ -51,8 +51,7 @@ export class DialogSucursalesEditarComponent implements OnInit {
     this.getSucursal();
   }
 
-
-
+// Obtener empresas
   getEmpresas(){
     this.empresaService
     .getAll()
@@ -66,6 +65,7 @@ export class DialogSucursalesEditarComponent implements OnInit {
     return this.addressForm.controls;
   }
 
+  // Obtener la sucursal que se quiere editar
   getSucursal() {
     //Carga Tabla 
     this.sucursalService.getAll().pipe(first()).subscribe((result: Sucursal[]) => {
@@ -73,6 +73,7 @@ export class DialogSucursalesEditarComponent implements OnInit {
         //Sucursal.empresa = Sucursal.Empresa.razonSocial;
         return Sucursal;
       });
+      // Obtener la sucursal que se quiere editar y asignar sus valores al formulario
       this.dataSucursal.forEach((x:any) => {
         if(x.id == this.idSucursal){
           this.f.razonSocial.setValue(x.razonSocial);
@@ -87,6 +88,7 @@ export class DialogSucursalesEditarComponent implements OnInit {
     });
   }
 
+  // Metodo editar sucursal
   onSubmit(){
     this.sucursalService
     .update(this.idSucursal, this.addressForm.value)
@@ -108,6 +110,7 @@ export class DialogSucursalesEditarComponent implements OnInit {
     );
   }
 
+  //Cerrar Modal
   closeDialog(){
     this.administracionService.closeDialogModal();
   }

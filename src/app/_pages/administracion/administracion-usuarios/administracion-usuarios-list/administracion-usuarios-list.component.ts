@@ -2,20 +2,16 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Component, Input, OnInit, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Sucursal } from '@app/_models/shared/sucursal';
-import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
 import { SucursalSharedService } from '../../../shared/shared-services/sucursal-shared.service';
 import { first } from 'rxjs/operators';
 import { EmpresaSharedService } from '../../../shared/shared-services/empresa-shared.service';
-import { Empresa } from '@app/_models/shared/empresa';
 import { AdministracionService } from '../../administracion.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UsuarioSharedService } from '../../../shared/shared-services/usuario-shared.service';
 import { Usuario } from '@app/_models/shared/usuario';
 import { RolSharedService } from '../../../shared/shared-services/rol-shared.service';
-import { Rol } from '@models/shared/rol';
+import { Rol } from '@app/_models/shared/rol';
 
 @Component({
   selector: 'app-administracion-usuarios-list',
@@ -52,7 +48,7 @@ export class AdministracionUsuariosListComponent implements OnInit {
   })
 
   usuarios: Usuario[] = [];
-  roles : any;
+  roles : Rol[] = [];
   nombreEmpresa!: string;
   selection = new SelectionModel<Usuario>(true, []);
   totalSeleccion = 0;
@@ -72,8 +68,7 @@ constructor(
 ngOnInit(): void {
   this.getUsuarios();
   this.getRoles();
-  this.getRol();
-  //this.aplicarfiltros();
+  this.aplicarfiltros();
   
   //Cargar una lista auxilar con las sucursales, que posteriormente nos ayudará a eliminar un registro
   this.usuariosService
@@ -82,36 +77,31 @@ ngOnInit(): void {
     .subscribe((sucursalesDelete) => (this.sucursalesDelete = sucursalesDelete));
 }
 
-// Obtener el listado de cliente desde la BD
+// Obtener el listado de usuarios desde la BD
 getUsuarios() {
   //Carga Tabla 
   this.usuariosService.getAll().pipe(first()).subscribe((result: Usuario[]) => {
     this.dataUsuario = result.map(Usuario => {
+
+      //Buscar Rol del usuario
+      this.roles.forEach((rol) => {
+        if(Usuario.RolID == parseInt(rol.id)){
+          Usuario.rol = rol.nombre;
+        }
+      });
       return Usuario;
     });
     this.dataSource = new MatTableDataSource(this.dataUsuario);
     this.dataSource.paginator = this.paginator.toArray()[0];
-    console.log(this.dataUsuario);
   });
 }
 
+// Obtener los roles
 getRoles(){
   this.rolService
     .getAll()
     .pipe(first())
     .subscribe((roles) => (this.roles = roles));
-}
-
-getRol(){
-  this.rolService.getById("1").pipe(first()).subscribe(
-    response => {
-      this.rol = response;
-      console.log(this.rol)
-    },
-    error =>{
-
-    }
-    );
 }
 
   // ? selection rows
@@ -133,53 +123,43 @@ getRol(){
     console.log(this.selection.selected);
   }
 
-/* Filtros
+// Filtros
 aplicarfiltros() {
   this.formFilter.valueChanges.subscribe(res => {
 
     let dataFiltered = this.dataUsuario;
 
-    //Filtro Estado
-    if (res.razonSocial) {
-      dataFiltered = dataFiltered.filter((data: Sucursal) => data.razonSocial == res.razonSocial);
+    //Filtro Nombre
+    if (res.nombre) {
+      dataFiltered = dataFiltered.filter((data: Usuario) => data.nombre == res.nombre);
     }
 
-    //Filtro Numero Contrato
-    if (res.rut) {
-      dataFiltered = dataFiltered.filter((data: Sucursal) => data.rut == res.rut);
+    //Filtro Apellido
+    if (res.apellido) {
+      dataFiltered = dataFiltered.filter((data: Usuario) => data.apellido == res.apellido);
     }
 
-    //Filtro Fecha Compromiso
-    if (res.giro) {
-      dataFiltered = dataFiltered.filter((data: Sucursal) => data.giro == res.giro);
+    //Filtro Nombre Usuario
+    if (res.nombreUsuario) {
+      dataFiltered = dataFiltered.filter((data: Usuario) => data.nombreUsuario == res.nombreUsuario);
     }
 
-    //Filtro Estado
-    if (res.actividad) {
-      dataFiltered = dataFiltered.filter((data: Sucursal) => data.actividad == res.actividad);
+    //Filtro Roles
+    if (res.roles) {
+      dataFiltered = dataFiltered.filter((data: Usuario) => data.rol == res.roles);
     }
 
-    //Filtro Numero Contrato
-    if (res.direccion) {
-      dataFiltered = dataFiltered.filter((data: Sucursal) => data.direccion == res.direccion);
-    }
-
-    //Filtro Fecha Compromiso
-    if (res.empresa) {
-      console.log(res.empresa);
-      dataFiltered = dataFiltered.filter((data: Sucursal) => data.idEmpresa == res.empresa);
-    }
-
+  
     this.dataSource = new MatTableDataSource(dataFiltered);
     this.dataSource.paginator = this.paginator.toArray()[0];
     this.selection.clear()
     this.totalSeleccion = 0;
   })
 }
-*/
+
 //Limpiar los filtros
 limpiarFiltros() {
-  this.formFilter.patchValue({ rut: null, razonSocial: null, giro: null, actividad: null, direccion: null,  empresa: null})
+  this.formFilter.patchValue({ nombre: null, apellido: null, nombreUsuario: null, roles: null})
   this.dataSource = new MatTableDataSource(this.dataUsuario);
   this.dataSource.paginator = this.paginator.toArray()[0];
   this.selection.clear()
@@ -194,10 +174,10 @@ exportAsXLSX(): void {
 }
 
 //Abrir Modal Editar
-openDialogEdit(id: any, razonSocial: any){
-  localStorage.setItem("idSucursalEdit", id);
-  localStorage.setItem("razonSocialSucursalEdit", razonSocial);
-  this.administracionService.openDialogEditSucursal();
+openDialogEdit(id: any, nombre: any){
+  localStorage.setItem("idUsuarioEdit", id);
+  localStorage.setItem("nombreSucursalEdit", nombre);
+  this.administracionService.openDialogEditUsuario();
 }
 
 //Metodo eliminar una sucursal

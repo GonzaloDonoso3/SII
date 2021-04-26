@@ -1,15 +1,12 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Component, Input, OnInit, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Sucursal } from '@app/_models/shared/sucursal';
-import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
 import { SucursalSharedService } from '../../../shared/shared-services/sucursal-shared.service';
 import { first } from 'rxjs/operators';
 import { EmpresaSharedService } from '../../../shared/shared-services/empresa-shared.service';
-import { Empresa } from '@app/_models/shared/empresa';
 import { AdministracionService } from '../../administracion.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -81,12 +78,11 @@ export class AdministracionSucursalesListComponent implements OnInit {
       .subscribe((sucursalesDelete) => (this.sucursalesDelete = sucursalesDelete));
   }
 
-  // Obtener el listado de cliente desde la BD
+  // Obtener el listado de sucursales desde la BD
   getSucursales() {
     //Carga Tabla 
     this.sucursalService.getAll().pipe(first()).subscribe((result: Sucursal[]) => {
       this.dataSucursal = result.map(Sucursal => {
-        //Sucursal.empresa = Sucursal.Empresa.razonSocial;
         return Sucursal;
       });
       this.dataSource = new MatTableDataSource(this.dataSucursal);
@@ -130,35 +126,39 @@ export class AdministracionSucursalesListComponent implements OnInit {
 
       let dataFiltered = this.dataSucursal;
 
-      //Filtro Estado
+      //Filtro Razón Social
       if (res.razonSocial) {
         dataFiltered = dataFiltered.filter((data: Sucursal) => data.razonSocial == res.razonSocial);
       }
 
-      //Filtro Numero Contrato
+      //Filtro Rut
       if (res.rut) {
         dataFiltered = dataFiltered.filter((data: Sucursal) => data.rut == res.rut);
       }
 
-      //Filtro Fecha Compromiso
+      //Filtro Giro
       if (res.giro) {
         dataFiltered = dataFiltered.filter((data: Sucursal) => data.giro == res.giro);
       }
 
-      //Filtro Estado
+      //Filtro Actividad
       if (res.actividad) {
         dataFiltered = dataFiltered.filter((data: Sucursal) => data.actividad == res.actividad);
       }
 
-      //Filtro Numero Contrato
+      //Filtro Dirección
       if (res.direccion) {
         dataFiltered = dataFiltered.filter((data: Sucursal) => data.direccion == res.direccion);
       }
 
-      //Filtro Fecha Compromiso
+      //Filtro Empresa
       if (res.empresa) {
-        console.log(res.empresa);
         dataFiltered = dataFiltered.filter((data: Sucursal) => data.idEmpresa == res.empresa);
+      }
+
+      //Filtro Descripción
+      if (res.descripcion) {
+        dataFiltered = dataFiltered.filter((data: Sucursal) => data.descripcion == res.descripcion);
       }
 
       this.dataSource = new MatTableDataSource(dataFiltered);
@@ -170,7 +170,7 @@ export class AdministracionSucursalesListComponent implements OnInit {
 
   //Limpiar los filtros
   limpiarFiltros() {
-    this.formFilter.patchValue({ rut: null, razonSocial: null, giro: null, actividad: null, direccion: null,  empresa: null})
+    this.formFilter.patchValue({ rut: null, razonSocial: null, giro: null, actividad: null, direccion: null,  empresa: null, descripcion: null})
     this.dataSource = new MatTableDataSource(this.dataSucursal);
     this.dataSource.paginator = this.paginator.toArray()[0];
     this.selection.clear()

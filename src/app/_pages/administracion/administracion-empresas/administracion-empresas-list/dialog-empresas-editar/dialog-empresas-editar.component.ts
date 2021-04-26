@@ -49,31 +49,21 @@ export class DialogEmpresasEditarComponent implements OnInit {
     this.idEmpresa = localStorage.getItem("idEmpresaEdit");
     this.razonSocial = localStorage.getItem("razonSocialEmpresaEdit");
     this.getEmpresas();
-    this.getSucursal();
-  }
-
-
-
-  getEmpresas(){
-    this.empresaService
-    .getAll()
-    .pipe(first())
-    .subscribe((empresas) => {
-      this.empresas = empresas;
-    });
   }
 
   get f() {
     return this.addressForm.controls;
   }
 
-  getSucursal() {
+  //Metodo que busca la sucursal que se quiere editar
+  getEmpresas() {
     //Carga Tabla 
     this.empresaService.getAll().pipe(first()).subscribe((result: Empresa[]) => {
       this.dataEmpresa = result.map(Empresa => {
         return Empresa;
       });
       this.dataEmpresa.forEach((x:any) => {
+        //Carga los datos de la sucursal en el formulario
         if(x.id == this.idEmpresa){
           this.f.razonSocial.setValue(x.razonSocial);
           this.f.rut.setValue(x.rut);
@@ -86,6 +76,7 @@ export class DialogEmpresasEditarComponent implements OnInit {
     });
   }
 
+  //Metodo editar empresa
   onSubmit(){
     this.empresaService
     .update(this.idEmpresa, this.addressForm.value)

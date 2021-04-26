@@ -115,27 +115,27 @@ aplicarfiltros() {
 
     let dataFiltered = this.dataEmpresa;
 
-    //Filtro Estado
+    //Filtro Razón Social
     if (res.razonSocial) {
       dataFiltered = dataFiltered.filter((data: Empresa) => data.razonSocial == res.razonSocial);
     }
 
-    //Filtro Numero Contrato
+    //Filtro Rut
     if (res.rut) {
       dataFiltered = dataFiltered.filter((data: Empresa) => data.rut == res.rut);
     }
 
-    //Filtro Fecha Compromiso
+    //Filtro Giro
     if (res.giro) {
       dataFiltered = dataFiltered.filter((data: Empresa) => data.giro == res.giro);
     }
 
-    //Filtro Estado
+    //Filtro Actividad
     if (res.actividad) {
       dataFiltered = dataFiltered.filter((data: Empresa) => data.actividad == res.actividad);
     }
 
-    //Filtro Numero Contrato
+    //Filtro Dirección
     if (res.direccion) {
       dataFiltered = dataFiltered.filter((data: Empresa) => data.direccion == res.direccion);
     }
@@ -149,7 +149,7 @@ aplicarfiltros() {
 
 //Limpiar los filtros
 limpiarFiltros() {
-  this.formFilter.patchValue({ rut: null, razonSocial: null, giro: null, actividad: null, direccion: null,  empresa: null})
+  this.formFilter.patchValue({ rut: null, razonSocial: null, giro: null, actividad: null, direccion: null})
   this.dataSource = new MatTableDataSource(this.dataEmpresa);
   this.dataSource.paginator = this.paginator.toArray()[0];
   this.selection.clear()

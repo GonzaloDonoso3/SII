@@ -45,6 +45,7 @@ export class AdministracionEmpresasFormComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  //Metodo guardar empresa
   onSubmit(){
     switch (this.addressForm.status) {
       //Si el formulario esta correcto

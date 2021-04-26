@@ -57,6 +57,7 @@ export class AdministracionSucursalesFormComponent implements OnInit {
     });
   }
 
+  //Metodo guardar sucursal
   onSubmit(){
     switch (this.addressForm.status) {
       //Si el formulario esta correcto

@@ -16,11 +16,16 @@ import { AdministracionEmpresasListComponent } from './administracion-empresas/a
 import { DialogEmpresasEditarComponent } from './administracion-empresas/administracion-empresas-list/dialog-empresas-editar/dialog-empresas-editar.component';
 import { AdministracionUsuariosFormComponent } from './administracion-usuarios/administracion-usuarios-form/administracion-usuarios-form.component';
 import { AdministracionUsuariosListComponent } from './administracion-usuarios/administracion-usuarios-list/administracion-usuarios-list.component';
+import { DialogUsuariosEditarComponent } from './administracion-usuarios/administracion-usuarios-list/dialog-usuarios-editar/dialog-usuarios-editar.component';
+import { AdministracionRolesComponent } from './administracion-roles/administracion-roles.component';
+import { AdministracionRolesFormComponent } from './administracion-roles/administracion-roles-form/administracion-roles-form.component';
+import { AdministracionRolesListComponent } from './administracion-roles/administracion-roles-list/administracion-roles-list.component';
+import { DialogRolesEditarComponent } from './administracion-roles/administracion-roles-list/dialog-roles-editar/dialog-roles-editar.component';
 
 
 
 @NgModule({
-  declarations: [AdministracionUsuariosComponent, AdministracionSucursalesComponent, AdministracionEmpresasComponent, AdministracionHomeComponent, AdministracionSucursalesFormComponent, AdministracionSucursalesListComponent, DialogSucursalesEditarComponent, AdministracionEmpresasFormComponent, AdministracionEmpresasListComponent, DialogEmpresasEditarComponent, AdministracionUsuariosFormComponent, AdministracionUsuariosListComponent],
+  declarations: [AdministracionUsuariosComponent, AdministracionSucursalesComponent, AdministracionEmpresasComponent, AdministracionHomeComponent, AdministracionSucursalesFormComponent, AdministracionSucursalesListComponent, DialogSucursalesEditarComponent, AdministracionEmpresasFormComponent, AdministracionEmpresasListComponent, DialogEmpresasEditarComponent, AdministracionUsuariosFormComponent, AdministracionUsuariosListComponent, DialogUsuariosEditarComponent, AdministracionRolesComponent, AdministracionRolesFormComponent, AdministracionRolesListComponent, DialogRolesEditarComponent],
   imports: [
     CommonModule,
     AdministracionRoutingModule,

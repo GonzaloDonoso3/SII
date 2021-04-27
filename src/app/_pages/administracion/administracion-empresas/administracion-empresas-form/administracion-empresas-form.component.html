@@ -1,0 +1,77 @@
+<form [formGroup]="addressForm" novalidate (ngSubmit)="onSubmit()" class="mat-elevation-z10">
+    <mat-card class="shipping-card">
+        <mat-card-header>
+            <h1>Empresas</h1>
+        </mat-card-header>
+        <br><br>
+        <mat-card-content>
+            <div class="row">
+                <!-- Razón Social-->
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Razón Social" formControlName="razonSocial" />
+                        <mat-error *ngIf="addressForm.controls['razonSocial'].hasError('required')">
+                            este campo es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <!-- RUT Empresa -->
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="RUT Empresa" formControlName="rut" />
+                        <mat-error *ngIf="addressForm.controls['rut'].hasError('required')">
+                            este campo es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Giro -->
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Giro" formControlName="giro" />
+                        <mat-error *ngIf="addressForm.controls['giro'].hasError('required')">
+                            este campo es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <!-- Dirección -->
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Actividad" formControlName="actividad" />
+                        <mat-error *ngIf="addressForm.controls['actividad'].hasError('required')">
+                            este campo es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Dirección -->
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Dirección" formControlName="direccion" />
+                        <mat-error *ngIf="addressForm.controls['direccion'].hasError('required')">
+                            este campo es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <!-- Dirección -->
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Descripcion" formControlName="descripcion" />
+                        <mat-error *ngIf="addressForm.controls['descripcion'].hasError('required')">
+                            este campo es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-card-content>
+
+        <!-- botón enviar -->
+        <button mat-raised-button color="primary" type="submit">
+            <mat-icon>send</mat-icon> Enviar
+        </button>
+    </mat-card>
+</form>

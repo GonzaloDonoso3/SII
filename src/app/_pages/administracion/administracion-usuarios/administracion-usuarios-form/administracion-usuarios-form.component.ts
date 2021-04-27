@@ -1,37 +1,33 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Usuario } from '@models/shared/usuario';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatCheckboxChange } from '@angular/material/checkbox';
-import { DialogRespaldosComponent } from 'src/app/_components/dialogs/dialog-respaldos/dialog-respaldos.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
-import { EmpresaSharedService } from '@app/_pages/shared/shared-services/empresa-shared.service';
-import { Sucursal } from '@app/_models/shared/sucursal';
-import { AlertHelper } from '@app/_helpers/alert.helper';
 import { first } from 'rxjs/operators';
-
+import { RolSharedService } from '@app/_pages/shared/shared-services/rol-shared.service';
+import { UsuarioSharedService } from '../../../shared/shared-services/usuario-shared.service';
 
 @Component({
-  selector: 'app-administracion-sucursales-form',
-  templateUrl: './administracion-sucursales-form.component.html',
-  styleUrls: ['./administracion-sucursales-form.component.scss']
+  selector: 'app-administracion-usuarios-form',
+  templateUrl: './administracion-usuarios-form.component.html',
+  styleUrls: ['./administracion-usuarios-form.component.scss']
 })
-export class AdministracionSucursalesFormComponent implements OnInit {
+export class AdministracionUsuariosFormComponent implements OnInit {
 
   formularioListo = new EventEmitter<string>();
   usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '');
-  empresas : any;
+  roles : any;
+  
+  
 
   // ? Configuración de formulario
   addressForm = this.fb.group({
-    idEmpresa: ['', Validators.required],
-    razonSocial: ['', Validators.required],
-    rut: ['', Validators.required],
-    giro: ['', Validators.required],
-    actividad: ['', Validators.required],
-    direccion: ['', Validators.required],
-    descripcion: ['', Validators.required],
+    RolID: ['', Validators.required],
+    nombre: ['', Validators.required],
+    apellido: ['', Validators.required],
+    nombreUsuario: ['', Validators.required],
+    hash: ['', [Validators.required , Validators.minLength(6)]],
   });
 
 
@@ -40,41 +36,39 @@ export class AdministracionSucursalesFormComponent implements OnInit {
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
     private sucursalService: SucursalSharedService,
-    private empresaService: EmpresaSharedService,
-    private alert: AlertHelper
+    private rolService: RolSharedService,
+    private usuarioService: UsuarioSharedService
   ) { }
 
   ngOnInit(): void {
-    this.getEmpresas();
+    this.getRoles();
   }
 
-  getEmpresas(){
-    this.empresaService
-    .getAll()
-    .pipe(first())
-    .subscribe((empresas) => {
-      this.empresas = empresas;
-    });
+  getRoles(){
+    this.rolService
+      .getAll()
+      .pipe(first())
+      .subscribe((roles) => (this.roles = roles));
   }
 
-  //Metodo guardar sucursal
+
   onSubmit(){
     switch (this.addressForm.status) {
       //Si el formulario esta correcto
       case 'VALID':
-        this.sucursalService
-      .create(this.addressForm.value)
+        this.usuarioService
+      .register(this.addressForm.value)
       .pipe(first())
       .subscribe(
         (data) => {
-          this.snackBar.open('Sucursal ingresada con exito', 'cerrar', {
+          this.snackBar.open('Usuario ingresado con exito', 'cerrar', {
             duration: 2000,
             verticalPosition: 'top',
           });
           this.addressForm.reset();
         },
         (error) => {
-          this.snackBar.open('No se pudo ingresar la sucursal, contacte con informatica', 'cerrar', {
+          this.snackBar.open('No se pudo ingresar el usuario, contacte con informatica', 'cerrar', {
             duration: 2000,
             verticalPosition: 'top',
           });
@@ -94,5 +88,4 @@ export class AdministracionSucursalesFormComponent implements OnInit {
         break;
     }
   }
-
 }

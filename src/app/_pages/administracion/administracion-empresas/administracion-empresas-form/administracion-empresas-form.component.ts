@@ -11,13 +11,12 @@ import { Sucursal } from '@app/_models/shared/sucursal';
 import { AlertHelper } from '@app/_helpers/alert.helper';
 import { first } from 'rxjs/operators';
 
-
 @Component({
-  selector: 'app-administracion-sucursales-form',
-  templateUrl: './administracion-sucursales-form.component.html',
-  styleUrls: ['./administracion-sucursales-form.component.scss']
+  selector: 'app-administracion-empresas-form',
+  templateUrl: './administracion-empresas-form.component.html',
+  styleUrls: ['./administracion-empresas-form.component.scss']
 })
-export class AdministracionSucursalesFormComponent implements OnInit {
+export class AdministracionEmpresasFormComponent implements OnInit {
 
   formularioListo = new EventEmitter<string>();
   usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '');
@@ -25,7 +24,6 @@ export class AdministracionSucursalesFormComponent implements OnInit {
 
   // ? Configuración de formulario
   addressForm = this.fb.group({
-    idEmpresa: ['', Validators.required],
     razonSocial: ['', Validators.required],
     rut: ['', Validators.required],
     giro: ['', Validators.required],
@@ -45,36 +43,26 @@ export class AdministracionSucursalesFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getEmpresas();
   }
 
-  getEmpresas(){
-    this.empresaService
-    .getAll()
-    .pipe(first())
-    .subscribe((empresas) => {
-      this.empresas = empresas;
-    });
-  }
-
-  //Metodo guardar sucursal
+  //Metodo guardar empresa
   onSubmit(){
     switch (this.addressForm.status) {
       //Si el formulario esta correcto
       case 'VALID':
-        this.sucursalService
+        this.empresaService
       .create(this.addressForm.value)
       .pipe(first())
       .subscribe(
         (data) => {
-          this.snackBar.open('Sucursal ingresada con exito', 'cerrar', {
+          this.snackBar.open('Empresa ingresada con exito', 'cerrar', {
             duration: 2000,
             verticalPosition: 'top',
           });
           this.addressForm.reset();
         },
         (error) => {
-          this.snackBar.open('No se pudo ingresar la sucursal, contacte con informatica', 'cerrar', {
+          this.snackBar.open('No se pudo ingresar la empresa, contacte con informatica', 'cerrar', {
             duration: 2000,
             verticalPosition: 'top',
           });
@@ -94,5 +82,4 @@ export class AdministracionSucursalesFormComponent implements OnInit {
         break;
     }
   }
-
 }

@@ -57,6 +57,9 @@ export class NavComponent {
       {
         name: 'SUCURSALES', icon: 'align_horizontal_right', url: 'sucursales'
       },
+      {
+        name: 'ROLES', icon: 'align_horizontal_right', url: 'roles'
+      }
       /*    { name: 'ACTIVOS', icon: 'align_horizontal_right', url: '' },
          { name: 'PASIVOS', icon: 'align_horizontal_right', url: '' },
          { name: 'CONSOLIDADOS', icon: 'align_horizontal_right', url: '' } */

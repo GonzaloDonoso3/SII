@@ -33,7 +33,7 @@
             </button>
 
             <!-- ********** Inicio Menú Administación **********-->
-            <!--     <div *ngFor="let item of menuItemsAdmin" hideToggle class="select-nav" style='font-size: 0.8rem;'>
+            <div *ngFor="let item of menuItemsAdmin" hideToggle class="select-nav" style='font-size: 0.8rem;'>
                 <mat-select placeholder="{{ item.name }}" class="select-nav2">
                     <mat-option *ngFor="let subitem of subMenuItemsAdmin">
                         <a mat-list-item [routerLink]="'/' + item.url + '/' + subitem.url">
@@ -41,7 +41,7 @@
                         </a>
                     </mat-option>
                 </mat-select>
-            </div> -->
+            </div>
             <!-- ********** Fin Menú Administación **********-->
 
             <span class="example-spacer"></span>

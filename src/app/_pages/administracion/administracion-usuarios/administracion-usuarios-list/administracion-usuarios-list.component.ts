@@ -66,7 +66,6 @@ constructor(
 ) { }
 
 ngOnInit(): void {
-  this.getUsuarios();
   this.getRoles();
   this.aplicarfiltros();
   
@@ -75,6 +74,8 @@ ngOnInit(): void {
     .getAll()
     .pipe(first())
     .subscribe((sucursalesDelete) => (this.sucursalesDelete = sucursalesDelete));
+
+    this.getUsuarios();
 }
 
 // Obtener el listado de usuarios desde la BD

@@ -7,7 +7,8 @@ export const environment = {
   apiUrl: 'http://localhost:3000/api',
   apiRentacarUrl: 'http://localhost:3001/rentacar/',
   pathApiRent: 'http://localhost:3001/',
-  indexUrl: "http://localhost:4200",
+  indexUrl: "http://localhost:4201",
+  indexUrlAntigua: "http://localhost:4200",
   usertoken: "9580af34ca299aa979a151280f6ef856bdee8b4dc9c17641d15df2cf54a5c7c876d369bc1b66715fa483c100755014f4"
 };
 

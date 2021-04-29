@@ -1,1 +1,46 @@
-<app-nav></app-nav>
+<!-- Si NO existe el usuario y el token se muestra el login -->
+<div *ngIf="!estadoSesion">
+    <form [formGroup]="addressForm" novalidate (ngSubmit)="onSubmit()" class="loginForm mat-elevation-z10">
+        <mat-card class="shipping-card-login">
+            <mat-card-header>
+                <img class="imgLogin" src="../../assets/images/logo.png">
+            </mat-card-header>
+            <br><br>
+            <mat-card-content>
+                <div class="row-login">
+                    <!-- sucursales -->
+                    <div class="col-login">
+                        <mat-form-field class="full-width-login">
+                            <input matInput placeholder="Nombre Usuario (correo)" formControlName="nombreUsuario" type="email" />
+                            <mat-error *ngIf="addressForm.controls['nombreUsuario'].hasError('required')">
+                                este campo es <strong>requerido</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-login">
+                        <mat-form-field class="full-width-login">
+                            <input matInput placeholder="Contraseña" formControlName="hash" type="password" />
+                            <mat-error *ngIf="addressForm.controls['hash'].hasError('required')">
+                                este campo es <strong>requerido</strong>
+                            </mat-error>
+                            <mat-error *ngIf="addressForm.controls['hash'].hasError('minlength')">
+                                la contraseña debe tener un minimo de <strong>6 caracteres</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </mat-card-content>
+            <!-- botón enviar -->
+            <button mat-raised-button color="primary" type="submit">
+                <mat-icon>send</mat-icon> Enviar
+            </button>
+        </mat-card>
+    </form>
+</div>
+
+<!-- Si existe el usuario y el token se muestra la pagina -->
+<div *ngIf="estadoSesion" class="nav-index">
+    <app-nav></app-nav>
+</div>

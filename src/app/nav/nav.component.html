@@ -45,9 +45,12 @@
             <span>PLATAFORMA FINANZAS - GRUPO FIRMA</span>
             <span class="example-spacer"></span>
             <span style="font-size: 0.9rem;margin-right: 1rem;"> {{auth.usuario.nombreUsuario}} </span>
-            <button mat-raised-button color="accent" (click)="volverVistaAtigua()">
-        <mat-icon>reply</mat-icon> volver
-      </button>
+            <button mat-raised-button color="accent" style="margin-right: 1rem;" (click)="volverVistaAtigua()">
+                <mat-icon>reply</mat-icon> volver
+            </button>
+            <button mat-raised-button color="accent" (click)="cerrarSesion()">
+                <mat-icon>logout</mat-icon> Salir
+            </button>
         </mat-toolbar>
         <div class="container-page">
             <router-outlet></router-outlet>

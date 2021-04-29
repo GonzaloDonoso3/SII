@@ -16,6 +16,7 @@ const administracionModule = () => import('./_pages/administracion/administracio
 const routes: Routes = [
   { path: '', canActivate: [AuthGuard], component: HomeMainComponent, },
   { path: 'auth/:token', component: AuthComponent },
+  { path: 'home', canActivate: [AuthGuard], component:HomeMainComponent},
   { path: 'hostal', canActivate: [AuthGuard], loadChildren: hostalModule },
   { path: 'lubricentro', canActivate: [AuthGuard], loadChildren: lubricentroModule },
   { path: 'inmobiliaria', canActivate: [AuthGuard], loadChildren: inmobiliariaModule },

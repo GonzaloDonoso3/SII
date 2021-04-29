@@ -14,7 +14,7 @@ import { AuthComponent } from './auth/auth.component';
 
 
 @NgModule({
-  declarations: [FormComponent, DialogRespaldosComponent, TableComponent, DialogDownloadsComponent, AuthComponent,],
+  declarations: [FormComponent, DialogRespaldosComponent, TableComponent, DialogDownloadsComponent, AuthComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

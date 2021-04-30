@@ -55,7 +55,7 @@ export class DialogEmpresasEditarComponent implements OnInit {
     return this.addressForm.controls;
   }
 
-  //Metodo que busca la sucursal que se quiere editar
+  //Metodo que busca la empresa que se quiere editar
   getEmpresas() {
     //Carga Tabla 
     this.empresaService.getAll().pipe(first()).subscribe((result: Empresa[]) => {

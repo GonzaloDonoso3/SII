@@ -51,7 +51,6 @@ export class AdministracionUsuariosFormComponent implements OnInit {
       .subscribe((roles) => (this.roles = roles));
   }
 
-
   onSubmit(){
     switch (this.addressForm.status) {
       //Si el formulario esta correcto

@@ -1,4 +1,5 @@
-<!-- Si NO existe el usuario y el token se muestra el login -->
+<app-nav></app-nav>
+<!-- 
 <div *ngIf="!estadoSesion">
     <form [formGroup]="addressForm" novalidate (ngSubmit)="onSubmit()" class="loginForm mat-elevation-z10">
         <mat-card class="shipping-card-login">
@@ -8,7 +9,6 @@
             <br><br>
             <mat-card-content>
                 <div class="row-login">
-                    <!-- sucursales -->
                     <div class="col-login">
                         <mat-form-field class="full-width-login">
                             <input matInput placeholder="Nombre Usuario (correo)" formControlName="nombreUsuario" type="email" />
@@ -32,7 +32,6 @@
                     </div>
                 </div>
             </mat-card-content>
-            <!-- botón enviar -->
             <button mat-raised-button color="primary" type="submit">
                 <mat-icon>send</mat-icon> Enviar
             </button>
@@ -40,7 +39,6 @@
     </form>
 </div>
 
-<!-- Si existe el usuario y el token se muestra la pagina -->
 <div *ngIf="estadoSesion" class="nav-index">
     <app-nav></app-nav>
-</div>
+</div> -->

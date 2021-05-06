@@ -24,7 +24,7 @@ export class LubricentroEgresosFormComponent implements OnInit {
   tiposEgresos: string[] = [];
   cuentasRegistradas: any[] = [];
   // ? construccion del formulario,
-  num: number = 0;
+
   usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '');
 
   egresosForm = this.fb.group({
@@ -95,8 +95,12 @@ export class LubricentroEgresosFormComponent implements OnInit {
               .subscribe(
                 (data: any) => {
                   this.alert.createAlert("Registro Creado con exito!");
-                  this.formularioListo.emit(this.num + "");
-                  this.num++;
+
+                  /*   this.snackBar.open('Regitro Exitoso !!', 'cerrar', {
+                      duration: 2000,
+                      verticalPosition: 'top',
+                    }); */
+                  this.formularioListo.emit('true');
                   this.egresosForm.reset();
                 },
                 (error: any) => {

@@ -3,7 +3,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HostalService } from '@app/_pages/hostal/hostal.service';
 import { LubricentroService } from '@app/_pages/lubricentro/lubricentro.service';
 import { InmobiliariaService } from '@app/_pages/inmobiliaria/inmobiliaria.service';
-import { RentacarService } from '@app/_pages/rentacar/rentacar.service';
 
 
 export interface DialogData {
@@ -24,7 +23,6 @@ export class DialogDownloadsComponent implements OnInit {
     private hostalService: HostalService,
     private lubricentroService: LubricentroService,
     private inmobiliariaService: InmobiliariaService,
-    private rentacarService: RentacarService,
   ) {
     this.archivos = this.data.archivos;
   }
@@ -47,9 +45,6 @@ export class DialogDownloadsComponent implements OnInit {
         break;
         case 'inmobiliaria-egreso':
         this.inmobiliariaService.egresoGetFiles(url);
-        break;
-        case 'rentacar-egreso':
-        this.rentacarService.egresoGetFiles(url);
         break;
       default:
         break;

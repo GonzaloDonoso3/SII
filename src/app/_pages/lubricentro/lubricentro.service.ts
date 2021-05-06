@@ -37,7 +37,7 @@ export class LubricentroService {
   private tiposPagos = ['Efectivo', 'Debito', 'Credito', 'Transferencia', 'Cheque', 'Entidad Publica', 'pago 30 dias'];
   private estadosPagos = ['PENDIENTE', 'PAGADO'];
 
-  private tiposEgresos = ['Gastos', 'Costos', 'Remuneraciones', 'Impuestos', 'Bancarios', 'Inversiones'];
+  private tiposEgresos = ['Gastos', 'Costos', 'Remuneraciones', 'Impuestos', 'Bancarios'];
   private empresa = 'Lubricentro';
   private tiposVehiculos = ['Automóvil', 'Camioneta'];
   constructor(private http: HttpClient, private router: Router) {

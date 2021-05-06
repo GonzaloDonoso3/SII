@@ -124,9 +124,9 @@
                 <!-- monto -->
                 <div class="col">
                     <mat-form-field class="full-width">
-                        <input matInput placeholder="Monto" formControlName="monto" type="number" />
+                        <input matInput placeholder="Monto" formControlName="monto" />
                         <mat-error *ngIf="addressForm.controls['monto'].hasError('required')">
-                            campo es <strong>requerido</strong>
+                            cliente es <strong>requerido</strong>
                         </mat-error>
                     </mat-form-field>
                 </div>
@@ -136,8 +136,8 @@
         <!-- botón enviar -->
         <mat-card-actions>
             <button mat-raised-button color="primary" type="submit">
-                <mat-icon>send</mat-icon> Enviar
-            </button>
+          <mat-icon>send</mat-icon> Enviar
+        </button>
         </mat-card-actions>
     </mat-card>
 </form>

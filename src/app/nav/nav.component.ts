@@ -14,8 +14,6 @@ import { AuthSharedService } from '@app/_pages/shared/shared-services/auth-share
 export class NavComponent {
   menuItems: MenusItems[];
   subMenuItems: MenusItems[];
-  menuItemsAdmin: MenusItems[];
-  subMenuItemsAdmin: MenusItems[];
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -30,36 +28,13 @@ export class NavComponent {
       { name: 'RENTACAR', icon: 'directions_car', url: 'rentacar' },
       { name: 'INMOBILIARIA', icon: 'chair', url: 'inmobiliaria' },
       { name: 'FIRMA ABOGADOS', icon: 'account_balance', url: 'firmaAbogado' },
-      /* { name: 'AGROFIRMA PROYECTOS', icon: 'agriculture', url: 'agrofirma' } */
+       /* { name: 'AGROFIRMA PROYECTOS', icon: 'agriculture', url: 'agrofirma' } */
     ];
     this.subMenuItems = [
       { name: 'INGRESOS', icon: 'align_horizontal_right', url: 'ingresos' },
       {
         name: 'EGRESOS', icon: 'align_horizontal_right', url: 'egresos'
       },
-      /*    { name: 'ACTIVOS', icon: 'align_horizontal_right', url: '' },
-         { name: 'PASIVOS', icon: 'align_horizontal_right', url: '' },
-         { name: 'CONSOLIDADOS', icon: 'align_horizontal_right', url: '' } */
-    ];
-
-
-    this.menuItemsAdmin = [
-      { name: 'ADMINISTRACIÓN', icon: 'manage_accounts', url: 'administracion' },
-    ];
-    this.subMenuItemsAdmin = [
-      { name: 'USUARIOS', icon: 'align_horizontal_right', url: 'usuarios' 
-      },
-
-      {
-        name: 'EMPRESAS', icon: 'align_horizontal_right', url: 'empresas'
-      },
-
-      {
-        name: 'SUCURSALES', icon: 'align_horizontal_right', url: 'sucursales'
-      },
-      {
-        name: 'ROLES', icon: 'align_horizontal_right', url: 'roles'
-      }
       /*    { name: 'ACTIVOS', icon: 'align_horizontal_right', url: '' },
          { name: 'PASIVOS', icon: 'align_horizontal_right', url: '' },
          { name: 'CONSOLIDADOS', icon: 'align_horizontal_right', url: '' } */

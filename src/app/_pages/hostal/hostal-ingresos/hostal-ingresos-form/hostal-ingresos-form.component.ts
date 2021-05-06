@@ -26,7 +26,7 @@ export class HostalIngresosFormComponent {
   // ? set checkbox
 
   usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '');
-  num: number = 0;
+
   nameRespaldo = '';
   tiposIngresos: any[] = [];
 
@@ -127,8 +127,11 @@ export class HostalIngresosFormComponent {
               .subscribe(
                 (data) => {
                   this.alert.createAlert("Registro Creado con exito!");
-                  this.formularioListo.emit(this.num + "");
-                  this.num++;
+                  /*   this.snackBar.open('Regitro Exitoso !!', 'cerrar', {
+                      duration: 2000,
+                      verticalPosition: 'top',
+                    }); */
+                  this.formularioListo.emit('true');
                   this.addressForm.reset();
 
                 },

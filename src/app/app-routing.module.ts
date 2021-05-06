@@ -11,7 +11,6 @@ const inmobiliariaModule = () => import('./_pages/inmobiliaria/inmobiliaria.modu
 const rentacarModule = () => import('./_pages/rentacar/rentacar.module').then((x) => x.RentacarModule);
 const agroFirmaModule = () => import('./_pages/agroFirma/agro-firma.module').then((x) => x.AgroFirmaModule);
 const abogadosModule = () => import('./_pages/abogados/abogados.module').then((x) => x.AbogadosModule);
-const administracionModule = () => import('./_pages/administracion/administracion.module').then((x) => x.AdministracionModule);
 
 const routes: Routes = [
   { path: '', canActivate: [AuthGuard], component: HomeMainComponent, },
@@ -21,8 +20,7 @@ const routes: Routes = [
   { path: 'inmobiliaria', canActivate: [AuthGuard], loadChildren: inmobiliariaModule },
   { path: 'rentacar', canActivate: [AuthGuard], loadChildren: rentacarModule },
   { path: 'agrofirma', canActivate: [AuthGuard], loadChildren: agroFirmaModule },
-  { path: 'firmaAbogado', canActivate: [AuthGuard], loadChildren: abogadosModule },
-  { path: 'administracion', canActivate: [AuthGuard], loadChildren: administracionModule }
+  { path: 'firmaAbogado', canActivate: [AuthGuard], loadChildren: abogadosModule }
 ];
 
 @NgModule({

@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
-
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { RegistroEgresoFirma } from '@app/_models/registros/egresosFirma';
-
 import { environment } from '@environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
-
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 
@@ -18,28 +15,28 @@ const EXCEL_EXTENSION = '.xlsx';
 })
 export class AbogadosService {
   
-  // public values
+  // PUBLIC VALUES
   public tiposIngresosList: Observable<string[]>;
   public tiposClientesList: Observable<string[]>;
   public referenciasList: Observable<string[]>;
   public tiposPagosList: Observable<string[]>;
   public estadosPagosList: Observable<string[]>;
-  //egresos values
+  //EGRESOS VALUES
   public tiposEgresosList: Observable<string[]>;
 
 
-  // private values
+  // PRIVATE VALUES
 
-  //ingresos values
+  //INGRESOS VALUES
   private tiposIngresosListSubject: BehaviorSubject<any[]>;
   private tiposClientesListSubject: BehaviorSubject<string[]>;
   private referenciasListSubject: BehaviorSubject<string[]>;
   private tiposPagosListSubject: BehaviorSubject<string[]>;
   private estadosPagosListSubject: BehaviorSubject<string[]>;
-  //egresos values
+  //EGRESOS VALUES
   private tiposEgresosListSubject: BehaviorSubject<string[]>;
 
-  // ! strict lists
+  // STRICT LISTS
   private tiposIngresos = ['Alojamiento', 'Desayuno', 'Almuerzo', 'Cena', ' Consumo Bebidas', 'Consumo Varios'];
   private tiposClientes = ['Particular', 'Empresa'];
   private referencias = ['Llamada', 'Booking', 'Correo', 'PaginaWeb', 'Facebook'];
@@ -49,8 +46,8 @@ export class AbogadosService {
   private tiposEgresos = ['Gastos', 'Costos', 'Remuneraciones', 'Impuestos', 'Bancarios'];
   private empresa = 'FirmaAbogado';
   constructor(private http: HttpClient, private router: Router) {
-    //Init private Subjects;
-    //ingresos;
+    
+    //INGRESOS
 
     this.tiposIngresosListSubject = new BehaviorSubject<string[]>(
       JSON.parse(localStorage.getItem('tiposIngresos')!)
@@ -67,13 +64,13 @@ export class AbogadosService {
     this.estadosPagosListSubject = new BehaviorSubject<string[]>(
       JSON.parse(localStorage.getItem('estadosPagos')!)
     );
-    //egresos;
+    //EGRESOS
     this.tiposEgresosListSubject = new BehaviorSubject<string[]>(
       JSON.parse(localStorage.getItem('tiposEgresos')!)
     );
 
-    // public states:
-    //ingresos;
+    // PUBLIC STATES:
+    //INGRESOS
     this.tiposIngresosList = this.tiposIngresosListSubject.asObservable();
     localStorage.setItem('tiposIngresos', JSON.stringify(this.tiposIngresos));
 
@@ -88,12 +85,12 @@ export class AbogadosService {
 
     this.estadosPagosList = this.estadosPagosListSubject.asObservable();
     localStorage.setItem('estadosPagos', JSON.stringify(this.estadosPagos));
-    //egresos;
+    //EGRESOS
     this.tiposEgresosList = this.tiposEgresosListSubject.asObservable();
     localStorage.setItem('tiposEgresos', JSON.stringify(this.tiposEgresos));
   }
 
-  // METODO EXPORTAR EXCEL
+  // METODO PARA EXPORTAR EXCEL
   public exportAsExcelFile(json: any[], excelFileName: string): void {
     const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
     const workbook: XLSX.WorkBook = {
@@ -114,7 +111,7 @@ export class AbogadosService {
     );
   }
 
-  //ingresos values get methods:
+  //INGRESOS VALUES GET METHODS:
   public get tiposIngresosListValue(): string[] {
     return this.tiposIngresosListSubject.value;
   }
@@ -130,12 +127,12 @@ export class AbogadosService {
   public get estadosPagosListValue(): string[] {
     return this.estadosPagosListSubject.value;
   }
-  //egresos values get methods:
+  //EGRESOS VALUES GET METHODS:
   public get tiposEgresosListValue(): string[] {
     return this.tiposEgresosListSubject.value;
   }
 
-  /* egresos */
+  /* EGRESOS */
   egresoRegistrar(egresosFirma: RegistroEgresoFirma) {
     console.log(egresosFirma);
     return this.http.post(
@@ -160,5 +157,5 @@ export class AbogadosService {
       `${environment.apiUrl}/egreso${this.empresa}/${id}`
     );
   }
-  /* /egresos */
+
   } 

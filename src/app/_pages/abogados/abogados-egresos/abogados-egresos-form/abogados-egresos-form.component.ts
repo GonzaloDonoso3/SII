@@ -10,7 +10,6 @@ import { Usuario } from '@app/_models/shared/usuario';
 import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuentas-bancarias.service';
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 import { AbogadosService } from '@app/_pages/abogados/abogados.service';
-//import { Console } from 'node:console';
 
 
 @Component({
@@ -24,20 +23,19 @@ export class AbogadosEgresosFormComponent implements OnInit {
   formularioListo = new EventEmitter<string>();
 
   usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '');
-  // ? set checkbox
+  
   tiposEgresos: string[] = [];
   cuentasRegistradas: any[] = [];
-  // ? construccion del formulario,
+  // ARMANDO EL FORMULARIO
 
   egresosForm = this.fb.group({
-    //agregar el detalle del formulario;
+    //VALIDANDO QUE LOS CAMPOS NO ESTEN VACIOS;
     fecha: [null, Validators.required],
     monto: [null, Validators.required],
     tipoEgreso: [null, Validators.required],
     descripcion: [null, Validators.required],
     responsable: [null, Validators.required],
     idSucursal: [null, Validators.required],
-    /* idCuentaAsignada: [null, Validators.required], */
   });  
   egreso: RegistroEgresoFirma = new RegistroEgresoFirma();
   nameRespaldo: string[] = [];

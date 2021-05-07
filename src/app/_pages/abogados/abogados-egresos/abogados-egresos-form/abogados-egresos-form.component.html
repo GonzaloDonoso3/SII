@@ -1,4 +1,4 @@
-<!-- <p>abogados-egresos-form works!</p> -->
+<!-- FORMULARIO EGRESOS ABOGADOS -->
 <form [formGroup]="egresosForm" novalidate (ngSubmit)="onSubmit()">
     <mat-card class="shipping-card mat-elevation-z10">
       <mat-card-header>
@@ -8,7 +8,7 @@
   
       <mat-card-content>
         <div class="row">
-          <!-- sucursales -->
+          <!-- SUCURSALES -->
           <div class="col">
             <mat-form-field class="full-width">
               <mat-select placeholder="Sucursales" formControlName="idSucursal">
@@ -21,7 +21,7 @@
               </mat-error>
             </mat-form-field>
           </div>
-          <!-- select tipoEgreso -->
+          <!-- TIPOS DE EGRESOS -->
           <div class="col">
             <mat-form-field class="full-width">
               <mat-select placeholder="Tipos Egresos" formControlName="tipoEgreso">
@@ -34,10 +34,10 @@
               </mat-error>
             </mat-form-field>
           </div>
-          <!-- fin -->
+          
         </div>
         <div class="row">
-          <!-- monto -->
+          <!-- MONTO -->
           <div class="col">
             <mat-form-field class="full-width">
               <input matInput placeholder="Monto" formControlName="monto" type="number" />
@@ -46,7 +46,7 @@
               </mat-error>
             </mat-form-field>
           </div>
-          <!-- select fecha -->
+          <!-- FECHA -->
           <div class="col">
             <mat-form-field class="full-width">
               <mat-label>Seleccionar fecha</mat-label>
@@ -58,8 +58,7 @@
               </mat-error>
             </mat-form-field>
           </div>
-          <!-- responsable -->
-  
+          <!-- RESPONSABLE -->
           <div class="col">
             <mat-form-field class="full-width">
               <input matInput placeholder="ingrese nombre responsable" formControlName="responsable" />
@@ -70,7 +69,7 @@
           </div>
         </div>
         <div class="row">
-          <!-- descripcion -->
+          <!-- DESCRIPCION -->
           <div class="col">
             <mat-form-field class="full-width">
               <input matInput placeholder="ingrese una descripcion del registro" formControlName="descripcion" />
@@ -79,22 +78,7 @@
               </mat-error>
             </mat-form-field>
           </div>
-  
-          <!-- cuentas registradas -->
-          <!--     <div class="col">
-            <mat-form-field class="full-width">
-              <mat-select placeholder="Cuenta Bancaria" formControlName="idCuentaAsignada">
-                <mat-option *ngFor="let cuenta of cuentasRegistradas" [value]="cuenta.id">
-                  {{ cuenta.alias }} : {{ cuenta.numeroCuenta }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="
-                  egresosForm.controls['idCuentaAsignada'].hasError('required')
-                ">
-                estadoPago es <strong>requrido</strong>
-              </mat-error>
-            </mat-form-field>
-          </div> -->
+
         </div>
       </mat-card-content>
       <mat-card-actions>

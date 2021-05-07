@@ -31,7 +31,7 @@ export class AbogadosEgresosListComponent implements OnInit, OnChanges {
 @Input()
 refrescar = '';
 
-// ? table definitions.
+// DEFINIENDO LOS CAMPOS DE LA TABLA.
 displayedColumns: string[] = [
   'select',
   'id',
@@ -49,7 +49,7 @@ dataEgresos: RegistroEgresoFirma[] = [];
 changelog: string[] = [];
 
 
-//filtros
+//FILTROS
 formFilter = new FormGroup({
   start: new FormControl(),
   end: new FormControl(),
@@ -78,7 +78,7 @@ ngOnInit(): void {
   this.aplicarfiltros();
 }
 
-// ? refresh when form is ready.
+// ACTUALIZAR CUANDO EL FORMULARIO ESTE CARGADO.
 
 ngOnChanges(changes: SimpleChanges): void {  
   for (const propName of Object.keys(changes)) {    
@@ -106,7 +106,7 @@ recuperarArchivos(listArchivos: any) {
   });
 }
 
-//Metodo exportar excel
+//METODO QUE PERMITE EXPORTA A EXCEL
 exportAsXLSX(): void {
   this.selectedRows = [];
   this.selection.selected.forEach((x) => this.selectedRows.push(x));
@@ -146,7 +146,7 @@ aplicarfiltros() {
 }
 
 
-// ? filters
+// LIMPIANDO LOS FILTROS
 limpiarFiltros() {
   this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null })
   this.dataSource = new MatTableDataSource(this.dataEgresos);
@@ -157,8 +157,7 @@ limpiarFiltros() {
 
 
 
-// ? selection rows
-// *  INFO this.selection.selected : return array with all selected objects(rows) into table
+// SELECTOR DE FILAS
 isAllSelected() {
   const numSelected = this.selection.selected.length;
   const numRows = this.dataSource.data.length;
@@ -166,7 +165,6 @@ isAllSelected() {
 }
 
 masterToggle() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   this.isAllSelected() ?
     this.selection.clear() :
     this.dataSource.filteredData.forEach(row => {

@@ -1,3 +1,4 @@
+<!-- LISTADO EGRESOS ABOGADOS -->
 <mat-toolbar color="primary">
     <button mat-raised-button (click)="limpiarFiltros()" color="accent">
         Limpiar filtros
@@ -10,10 +11,6 @@
         Revelar total
     </button>
     
-    <!-- <button mat-raised-button color="accent" (click)="exporter.exportTable('xlsx', {fileName:'table'})" style="margin: 10px">
-        Exportar a excel
-    </button> -->
-    
     <button mat-raised-button color="accent" (click)="exportAsXLSX()" style="margin: 10px">
         Exportar a excel
     </button>
@@ -21,9 +18,8 @@
 </mat-toolbar>
 
 <div class="table-responsive">
-    <!-- <table mat-table [dataSource]="dataSource" class="mat-elevation-z10"> -->
     <table  matTableExporter mat-table [dataSource]="dataSource" class="mat-elevation-z10" #exporter="matTableExporter">
-        <!-- check column -->
+    
         <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>
                 <mat-checkbox (change)="$event ? masterToggle() : null"
@@ -37,12 +33,12 @@
                 </mat-checkbox>
             </td>
         </ng-container>
-        <!-- ID with checkbox -->
+        <!-- ID CON LA VERIFICACION -->
         <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef>ID</th>
             <td mat-cell *matCellDef="let element">{{ element.id }}</td>
         </ng-container>
-        <!-- date with datapicker -->
+        <!-- SELECTOR DE FECHA -->
         <ng-container matColumnDef="fecha" class="mat-column-date">
             <th mat-header-cell *matHeaderCellDef>
                 <mat-form-field appearance="fill">
@@ -62,7 +58,7 @@
             </th>
             <td mat-cell *matCellDef="let element">{{ element.fecha | date: 'dd/MM/yyyy' }}</td>
         </ng-container>
-        <!-- sucursal with text input -->
+        <!-- INPUT DE LA SUCURSAL -->
         <ng-container matColumnDef="sucursal">
             <th mat-header-cell *matHeaderCellDef>
                 <div [formGroup]="formFilter">
@@ -77,15 +73,15 @@
             </th>
             <td mat-cell *matCellDef="let element">{{ element.sucursal }}</td>
         </ng-container>
-        <!-- tipo egreso with select -->
-        <!-- monto currency fomrat -->
+        
+        <!-- FORMATO DEL MONTO -->
         <ng-container matColumnDef="monto">
             <th mat-header-cell *matHeaderCellDef>Monto</th>
             <td mat-cell *matCellDef="let element">
                 {{ element.monto | currency: "$":"symbol":"1.0-0" }}
             </td>
         </ng-container>
-        <!-- TODO repair source ts -->
+        
         <ng-container matColumnDef="tipoEgreso">
             <th mat-header-cell *matHeaderCellDef>
                 <div [formGroup]="formFilter">
@@ -101,13 +97,13 @@
             <td mat-cell *matCellDef="let element">{{ element.tipoEgreso }}</td>
         </ng-container>
 
-        <!-- usuario with select filter -->
-        <!-- TODO add filter rule un types and here -->
+        <!-- FILTRO DEL USUARIO -->
+        
         <ng-container matColumnDef="usuario">
             <th mat-header-cell *matHeaderCellDef>Usuario</th>
             <td mat-cell *matCellDef="let element">{{ element.usuario }}</td>
         </ng-container>
-        <!-- respaldos with button download -->
+        <!-- BOTON DE DESCARGA -->
         <ng-container style="  text-align: center;" matColumnDef="respaldos">
             <th mat-header-cell *matHeaderCellDef>Respaldos</th>
             <td mat-cell *matCellDef="let element">
@@ -120,7 +116,7 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
-        <!-- Row shown when there is no matching data. -->
+        <!-- MOSTRAR CUANDO NO HAY DATOS QUE COINCIDAN -->
         <tr class="mat-row" *matNoDataRow>
             <td class="mat-cell" colspan="4">No existen coincidencias</td>
         </tr>

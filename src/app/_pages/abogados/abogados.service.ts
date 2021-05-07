@@ -4,8 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { RegistroEgresoFirma } from '@app/_models/registros/egresosFirma';
 
-import { EgresoHostal } from '@app/_models/hostal/egresoHostal';
-import { IngresosHostal } from '@app/_models/hostal/ingresoHostal';
 import { environment } from '@environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 

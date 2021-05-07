@@ -11,6 +11,8 @@ import { Sucursal } from '@app/_models/shared/sucursal';
 import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuentas-bancarias.service';
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 import { AbogadosService } from '@app/_pages/abogados/abogados.service';
+import { AgGridAngular } from 'ag-grid-angular';
+import { ViewChild } from '@angular/core'
 
 
 @Component({
@@ -23,13 +25,11 @@ export class AbogadosEgresosListComponent implements OnInit, OnChanges {
 
 // ? childrens
 @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
+@ViewChild('agGrid') agGrid!: AgGridAngular;
 
 // ? Inputs & Outputs
 @Input()
 refrescar = '';
-
-//selectedRows: any[];
-
 
 // ? table definitions.
 displayedColumns: string[] = [
@@ -62,6 +62,7 @@ sucursales: Sucursal[] = [];
 selection = new SelectionModel<RegistroEgresoFirma>(true, []);
 tiposEgresos: string[] = [];
 totalSeleccion = 0;
+selectedRows!: any[];
 cuentasRegistradas: any[] = [];
 constructor(
   private abogadosService: AbogadosService,
@@ -106,51 +107,20 @@ recuperarArchivos(listArchivos: any) {
 }
 
 //Metodo exportar excel
-// exportAsXLSX(): void {
-//   this.selectedRows = [];
-//   this.selection.selected.forEach((x) => this.selectedRows.push(x));
-//   this.abogadosService.exportAsExcelFile(this.selectedRows, 'Lista-Cuotas');
-// }
+exportAsXLSX(): void {
+  this.selectedRows = [];
+  this.selection.selected.forEach((x) => this.selectedRows.push(x));
+  this.abogadosService.exportAsExcelFile(this.selectedRows, 'Egresos-Abogados');
+}
 
 
 revelarTotal() {
   this.totalSeleccion = 0;  
   this.selection.selected.forEach(data => {
-    console.log("LO QUE LLEVA LA LISTA",this.selection.selected)
     this.totalSeleccion += data.monto;
   });
 }
 
-
-exportTable() {
-  this.totalSeleccion = 0;  
-  this.selection.selected.forEach(data => {
-    console.log("LO QUE LLEVA LA LISTA EN EXCEL",this.selection.selected)
-    //this.totalSeleccion += data.monto;
-  });
-}
-
-// exporter(): void {
-//   this.selectedRows = [];
-//   this.agGrid.api.getSelectedRows().forEach((x) => this.selectedRows.push(x));
-//   this.selectedRows.forEach((x) => {
-//     const fechaF = new Date(x.createdAt);
-//     const fechaG = new Date(x.updatedAt);
-//     const formato = {
-//       weekday: 'long',
-//       year: 'numeric',
-//       month: 'numeric',
-//       day: 'numeric',
-//       hour: 'numeric',
-//       minute: 'numeric',
-//       second: 'numeric',
-//     };
-//     x.createdAt = fechaF.toLocaleDateString('es-GB', formato);
-//     x.updatedAt = fechaF.toLocaleDateString('es-GB', formato);
-//   });
-//   console.log(this.selectedRows);
-//   this.excelService.exportAsExcelFile(this.selectedRows, 'sample');
-// }
 
 aplicarfiltros() {
   this.formFilter.valueChanges.subscribe(res => {

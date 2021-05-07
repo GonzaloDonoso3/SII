@@ -10,7 +10,11 @@
         Revelar total
     </button>
     
-    <button mat-raised-button color="accent" (click)="exporter.exportTable('xlsx', {fileName:'table'})" style="margin: 10px">
+    <!-- <button mat-raised-button color="accent" (click)="exporter.exportTable('xlsx', {fileName:'table'})" style="margin: 10px">
+        Exportar a excel
+    </button> -->
+    
+    <button mat-raised-button color="accent" (click)="exportAsXLSX()" style="margin: 10px">
         Exportar a excel
     </button>
 

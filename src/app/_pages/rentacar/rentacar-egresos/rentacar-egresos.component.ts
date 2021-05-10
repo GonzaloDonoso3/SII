@@ -7,9 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RentacarEgresosComponent implements OnInit {
 
+  refrescar = '';
   constructor() { }
 
   ngOnInit(): void {
   }
+
+  //Definir que el formulario esta listo
+  formularioListo(e: string): void {
+
+    this.ngOnInit();
+    this.refrescar = e;
+  }
+
 
 }

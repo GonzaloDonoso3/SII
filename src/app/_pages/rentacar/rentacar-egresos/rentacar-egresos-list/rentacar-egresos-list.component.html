@@ -92,6 +92,12 @@
                             <mat-option value="Inversiones">
                                 Inversiones
                             </mat-option>
+                            <mat-option value="Prestamos Bancarios">
+                                Prestamos Bancarios
+                            </mat-option>
+                            <mat-option value="Prestamos Automotriz">
+                                Prestamos Automotriz
+                            </mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -150,6 +156,15 @@
                 </div>
             </th>
             <td mat-cell *matCellDef="let element">{{ element.responsable }}</td>
+        </ng-container>
+
+        <!-- Campo Numero de cuotas -->
+        <!-- *ngIf="" -->
+        <ng-container matColumnDef="numeroCuota">
+            <th mat-header-cell *matHeaderCellDef> Numero de cuotas </th>                                    
+            <td mat-cell *matCellDef="let element">
+                {{ element.numeroCuota }}
+            </td>
         </ng-container>
 
         <!-- Campo Respaldos-->

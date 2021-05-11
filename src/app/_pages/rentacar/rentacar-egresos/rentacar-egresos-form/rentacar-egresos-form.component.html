@@ -72,10 +72,10 @@
                 </div>
 
                 <!-- numero de cuotas -->
-                <div class="col" class="numerodecuotas" *ngIf="!mostrarDatos" >
+                <div class="col" *ngIf="!mostrarDatos" >
                     <mat-form-field class="full-width">
                         <input matInput placeholder="Numero de cuotas" formControlName="numeroCuota" type="number" />
-                        <mat-error *ngIf="addressForm.controls['monto'].hasError('required')">
+                        <mat-error *ngIf="addressForm.controls['numeroCuota'].hasError('required')">
                             cliente es <strong>requerido</strong>
                         </mat-error>
                     </mat-form-field>

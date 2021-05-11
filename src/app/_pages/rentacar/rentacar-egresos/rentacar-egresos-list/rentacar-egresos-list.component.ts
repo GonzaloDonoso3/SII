@@ -42,8 +42,12 @@ export class RentacarEgresosListComponent implements OnInit {
     'sucursal',
     'usuario',
     'responsable',
-    //'numeroCuota'
+    'numeroCuota'
   ];
+
+  result = "N/A";
+  resultAsNumber = parseFloat(this.result); 
+  
 
   //Creación de variables y asignación de datos
   dataSource: MatTableDataSource<EgresosRentacar> = new MatTableDataSource();
@@ -59,7 +63,7 @@ export class RentacarEgresosListComponent implements OnInit {
     tipoEgreso: new FormControl(),
     usuario: new FormControl(),
     responsable: new FormControl(),
-    //numeroCuota: new FormControl(),
+    numeroCuota: new FormControl(),
   })
 
 
@@ -93,12 +97,21 @@ export class RentacarEgresosListComponent implements OnInit {
     this.aplicarfiltros();
   }
 
-  getEgresos() {
-    this.rentacarService.getAllEgresos().subscribe((egresos: EgresosRentacar[]) => {
+  getEgresos() {    
+    this.rentacarService.getAllEgresos().subscribe((egresos: EgresosRentacar[]) => {            
       this.dataEgresos = egresos.map(Egresos => {
         Egresos.sucursal = Egresos.Sucursal.razonSocial;
         Egresos.usuario = Egresos.Usuario.nombreUsuario;
         return Egresos;
+      });
+      //Conviertiendo los numeros de cuotas Nulos en N/A
+      this.dataEgresos.forEach(data => {
+        if (data['numeroCuota']== null) {
+          data.numeroCuota = this.resultAsNumber;          
+        }
+        else {
+          console.log(this.resultAsNumber)
+        }
       });
       this.dataSource = new MatTableDataSource(this.dataEgresos);
       this.dataSource.paginator = this.paginator.toArray()[0];
@@ -184,7 +197,7 @@ export class RentacarEgresosListComponent implements OnInit {
 
   // Inicio Filtros
   limpiarFiltros() {
-    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null, responsable: null, descripcionEgreso: null, usuario: null })
+    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null, responsable: null, descripcionEgreso: null, usuario: null, numeroCuota: null })
     this.dataSource = new MatTableDataSource(this.dataEgresos);
     this.dataSource.paginator = this.paginator.toArray()[0];
     this.dataSource.sort = this.sort;
@@ -205,4 +218,5 @@ export class RentacarEgresosListComponent implements OnInit {
     this.selection.selected.forEach((x) => this.selectedRows.push(x));
     this.rentacarService.exportAsExcelFile(this.selectedRows, 'Lista-Egresos-Rentacar');
   }
+
 }

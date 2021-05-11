@@ -31,6 +31,7 @@ export class RentacarEgresosFormComponent implements OnInit {
   empresaRazonSocial = '';
   num: number = 0;
   mostrarDatos : boolean = true;
+  datoCuota = 'N/A';
   
   // ? Configuración de formulario
   addressForm = this.fb.group({
@@ -40,7 +41,7 @@ export class RentacarEgresosFormComponent implements OnInit {
     fecha: [null, Validators.required],
     monto: [null, Validators.required],
     responsable: [null, Validators.required],
-    numeroCuota: [null, Validators.required],
+    numeroCuota: [null],
     otraPropiedad: ['']
   });
 
@@ -57,11 +58,11 @@ export class RentacarEgresosFormComponent implements OnInit {
   ngOnInit(): void {
     this.getEmpresa(this.idEmpresa);
   }
-
+//Metodo para mostrar numero de cuotas
   activarEdicion(): void {
     this.mostrarDatos = false;
   }
-
+//Metodo para desabilitar los numeros de cuotas
   desactivarEdicion(): void {
     this.mostrarDatos = true;
   }
@@ -96,8 +97,7 @@ export class RentacarEgresosFormComponent implements OnInit {
           this.egreso.idSucursal = this.addressForm.value.idSucursal;
           this.egreso.tipoEgreso = this.addressForm.value.tipoEgreso;
           this.egreso.idArriendo = this.addressForm.value.idArriendo;
-          this.egreso.numeroCuota = this.addressForm.value.numeroCuota;
-          //console.log("cargando datos al objeto", this.addressForm.value.numeroCuota);
+          this.egreso.numeroCuota = this.addressForm.value.numeroCuota;    
 
 
           //Se le asigna la id del usuario logueado

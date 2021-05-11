@@ -11,8 +11,9 @@
                 <div class="col">
                     <mat-form-field class="full-width">
                         <mat-select placeholder="Sucursales" formControlName="idSucursal">
-                            <mat-option value="SUCURSAL TALCA"> SUCURSAL TALCA </mat-option>
-                            <mat-option value="SUCURSAL RANCAGUA"> SUCURSAL RANCAGUA </mat-option>
+                            <mat-option *ngFor="let s of empresa.Sucursals" value="{{ s.id }}">
+                                {{ s.razonSocial }}
+                            </mat-option>
                         </mat-select>
                         <mat-error *ngIf="addressForm.controls['idSucursal'].hasError('required')">
                             sucursal es <strong>requrido</strong>

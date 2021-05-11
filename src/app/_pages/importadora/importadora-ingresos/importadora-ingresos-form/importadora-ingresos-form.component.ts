@@ -12,6 +12,8 @@ import { AlertHelper } from '@app/_helpers/alert.helper';
 import { Observable } from 'rxjs';
 import { first, map,startWith } from 'rxjs/operators';
 import { UsuarioSharedService } from '@app/_pages/shared/shared-services/usuario-shared.service';
+import { EmpresaSharedService } from '../../../shared/shared-services/empresa-shared.service';
+import { Empresa } from '@app/_models/shared/empresa';
 
 @Component({
   selector: 'app-importadora-ingresos-form',
@@ -25,6 +27,8 @@ export class ImportadoraIngresosFormComponent implements OnInit {
 
   nameRespaldo = '';
   tiposIngresos: any[] = [];
+  idEmpresa = 13;
+  empresa = new Empresa();
 
 
   // ? Validar si es necesario importar modelos de datos
@@ -42,12 +46,7 @@ export class ImportadoraIngresosFormComponent implements OnInit {
     vendedor: ['']
   });
 
-  //Autocomplete
-  myControl = new FormControl();
-  options : string [] = ['Uno', 'Dos', 'Tres'];
-  filteredOptions!: Observable<string[]>;
  
-
 
   sucursales: Sucursal[];
   constructor(
@@ -56,26 +55,24 @@ export class ImportadoraIngresosFormComponent implements OnInit {
     private snackBar: MatSnackBar,
     private sucursalService: SucursalSharedService,
     private usuariosService: UsuarioSharedService,
+    private empresaService: EmpresaSharedService
   ) { 
     this.sucursales = this.sucursalService.sucursalListValue;
   }
 
   ngOnInit(): void {
-
-    this.filteredOptions = this.myControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this._filter(value))
-      );
-
-  }
-
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.options.filter((option: string) => option.toLowerCase().includes(filterValue));
-  }
-
+    this.getEmpresa(this.idEmpresa);
+   }
+ 
+   getEmpresa(id: number): any {
+     this.empresaService
+       .getByIdWithSucursales(id)
+       .pipe(first())
+       .subscribe((x) => {
+         x.Sucursals = Object.values(x.Sucursals);
+         this.empresa = x;
+       });
+   }
  
 
   onSubmit(){

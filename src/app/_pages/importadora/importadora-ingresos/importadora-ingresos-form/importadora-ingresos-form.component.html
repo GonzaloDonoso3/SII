@@ -36,7 +36,7 @@
                 <div class="col">
                     <mat-form-field class="full-width">
                         <mat-select placeholder="Tipo Ingreso" formControlName="tipoIngreso">
-
+                            <mat-option value="VENTA NEUMÁTICOS"> VENTA NEUMÁTICOS </mat-option>
                         </mat-select>
                         <mat-error *ngIf="addressForm.controls['tipoIngreso'].hasError('required')">
                             tipo ingreso es <strong>requerido</strong>
@@ -48,18 +48,18 @@
                 <!-- tipo ingreso -->
                 <div class="col">
                     <mat-form-field class="full-width">
-                        <mat-select placeholder="Medio de Pago" formControlName="tipoIngreso">
+                        <mat-select placeholder="Medio de Pago" formControlName="medioPago">
                             <mat-option value="REDCOMPRA"> REDCOMPRA </mat-option>
                             <mat-option value="TRANSFERENCIA"> TRANSFERENCIA </mat-option>
                             <mat-option value="EFECTIVO"> EFECTIVO </mat-option>
                             <mat-option value="CHEQUE"> CHEQUE </mat-option>
                         </mat-select>
-                        <mat-error *ngIf="addressForm.controls['tipoIngreso'].hasError('required')">
+                        <mat-error *ngIf="addressForm.controls['medioPago'].hasError('required')">
                             tipo ingreso es <strong>requerido</strong>
                         </mat-error>
                     </mat-form-field>
-                    <mat-form-field class="full-width" *ngIf="f.tipoIngreso.value == 'REDCOMPRA' || f.tipoIngreso.value == 'TRANSFERENCIA'">
-                        <input matInput placeholder="Código de autorización" formControlName="otraPropiedad" type="text" />
+                    <mat-form-field class="full-width" *ngIf="f.medioPago.value == 'REDCOMPRA' || f.medioPago.value == 'TRANSFERENCIA'">
+                        <input matInput placeholder="Código de autorización" formControlName="codigoAutorizacion" type="text" />
                     </mat-form-field>
                 </div>
                 <!-- fin -->

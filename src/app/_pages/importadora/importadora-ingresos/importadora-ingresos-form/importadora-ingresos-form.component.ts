@@ -1,7 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Usuario } from '@models/shared/usuario';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { MatCheckboxChange } from '@angular/material/checkbox';
 import { DialogRespaldosComponent } from 'src/app/_components/dialogs/dialog-respaldos/dialog-respaldos.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -14,6 +13,7 @@ import { first, map,startWith } from 'rxjs/operators';
 import { UsuarioSharedService } from '@app/_pages/shared/shared-services/usuario-shared.service';
 import { EmpresaSharedService } from '../../../shared/shared-services/empresa-shared.service';
 import { Empresa } from '@app/_models/shared/empresa';
+import { ImportadoraService } from '../../importadora.service';
 
 @Component({
   selector: 'app-importadora-ingresos-form',
@@ -36,14 +36,13 @@ export class ImportadoraIngresosFormComponent implements OnInit {
   // ? Configuración de formulario
   addressForm = this.fb.group({
     idSucursal: [null, Validators.required],
-    propiedad: [null, Validators.required],
     tipoIngreso: [null, Validators.required],
     descripcionIngreso: [null, Validators.required],
     fecha: [null, Validators.required],
     monto: [null, Validators.required],
-    otraPropiedad: [''],
-    otroTipoIngreso: [''],
-    vendedor: ['']
+    medioPago: [null, Validators.required],
+    vendedor: [''],
+    codigoAutorizacion: [''],
   });
 
  
@@ -54,7 +53,7 @@ export class ImportadoraIngresosFormComponent implements OnInit {
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
     private sucursalService: SucursalSharedService,
-    private usuariosService: UsuarioSharedService,
+    private importadoraService: ImportadoraService,
     private empresaService: EmpresaSharedService
   ) { 
     this.sucursales = this.sucursalService.sucursalListValue;
@@ -81,66 +80,69 @@ export class ImportadoraIngresosFormComponent implements OnInit {
       case 'VALID':
         const dialogRef = this.dialog.open(DialogRespaldosComponent, {
 
-          data: { url: 'ingresoInmobiliaria/upload' }
+          data: { url: 'ingresoImportadora/upload' }
+          
         });
         dialogRef.afterClosed().subscribe(result => {
-          //Se le asignan los datos del formulario al objeto EgresoInmobiliaria
+          //Se le asignan los datos del formulario al objeto ingresoImportadora
           this.nameRespaldo = result;
-          this.ingreso.RespaldoIngresoInmobiliaria = [];
+          this.ingreso.RespaldoIngresoImportadora = [];
           this.ingreso.idSucursal = this.addressForm.value.idSucursal;
-          this.ingreso.propiedad = this.addressForm.value.propiedad;
+          this.ingreso.vendedor = this.addressForm.value.vendedor;
           this.ingreso.tipoIngreso = this.addressForm.value.tipoIngreso;
+          this.ingreso.medioPago = this.addressForm.value.medioPago;
           this.ingreso.descripcionIngreso = this.addressForm.value.descripcionIngreso;
           this.ingreso.fecha = this.addressForm.value.fecha;
           this.ingreso.monto = this.addressForm.value.monto;
+          this.ingreso.codigoAutorizacion = this.addressForm.value.codigoAutorizacion;
 
           //Si el usuario elegio otra propiedad se le asigna el nombre ingresado
-          if (this.addressForm.value.propiedad == 'Otra') {
-            this.ingreso.propiedad = this.addressForm.value.otraPropiedad;
-          } else {
-            this.ingreso.propiedad = this.addressForm.value.propiedad;
-          }
+          if (this.addressForm.value.vendedor == "") {
+            this.ingreso.vendedor = this.usuario.nombreUsuario;
+          } 
           
           //Si el usuario elegio otro tipoIngreso se le asigna el nombre ingresado
-          if (this.addressForm.value.tipoIngreso == 'Otro') {
-            this.ingreso.tipoIngreso = this.addressForm.value.ingresoOtros;
-          } else {
-            this.ingreso.tipoIngreso = this.addressForm.value.tipoIngreso;
-          }
+          if (this.addressForm.value.codigoAutorizacion == "") {
+            this.ingreso.codigoAutorizacion = "NO POSEE";
+          } 
           
           //Se le asigna la id del usuario logueado
           this.ingreso.idUsuario = this.usuario.id;
 
           //Se le agrega los respaldos subidos
           for (const name of this.nameRespaldo) {
-            this.ingreso.RespaldoIngresoInmobiliaria.push({ url: name });
+            this.ingreso.RespaldoIngresoImportadora.push({ url: name });
           }
-          //Si todo esta correcto se ingresa el objeto
-          // if (result.length > 0) {
-          //   this.inmobiliariaService
-          //     .create(this.ingreso)
-          //     .pipe()
-          //     .subscribe(
-          //       (data) => {
-          //         this.alert.createAlert("Registro Creado con exito!");
-          //         this.formularioListo.emit('true');
-          //         this.addressForm.reset();
 
-          //       },
-          //       (error) => {
-          //         //Si es incorrecto se envía un mensaje de error
-          //         this.snackBar.open('Tenemos Problemas para realizar el registro, favor contactar al equipo de desarrollo', 'cerrar', {
-          //           duration: 2000,
-          //           verticalPosition: 'top',
-          //         });
-          //       }
-          //     );
-          // } else {
-          //   this.snackBar.open('Debemos Recibir sus respaldos para continuar !!', 'cerrar', {
-          //     duration: 5000,
-          //     verticalPosition: 'top',
-          //   });
-          // }
+          console.log(this.ingreso);
+          //Si todo esta correcto se ingresa el objeto
+          if (result.length > 0) {
+            this.importadoraService
+              .create(this.ingreso)
+              .pipe()
+              .subscribe(
+                (data) => {
+                  this.snackBar.open('Ingreso Registrado', 'cerrar', {
+                    duration: 2000,
+                    verticalPosition: 'top',
+                  });
+                  this.addressForm.reset();
+
+                },
+                (error) => {
+                  //Si es incorrecto se envía un mensaje de error
+                  this.snackBar.open('Tenemos Problemas para realizar el registro, favor contactar al equipo de desarrollo', 'cerrar', {
+                    duration: 2000,
+                    verticalPosition: 'top',
+                  });
+                }
+              );
+          } else {
+            this.snackBar.open('Debemos Recibir sus respaldos para continuar !!', 'cerrar', {
+              duration: 5000,
+              verticalPosition: 'top',
+            });
+          }
         });
         break;
 

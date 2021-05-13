@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { IngresosImportadora } from '@app/_models/importadora/ingresoImportadora';
+import { EgresosFijoImportadora } from '@app//_models/importadora/egresoFijoImportadora';
 import { environment } from '@environments/environment';
 
 /* Imports Excel */
@@ -69,6 +70,31 @@ export class ImportadoraService {
   }
 
   //*********** Fin Metodos Ingresos ************/
+
+  //*********** Inicio Metodos Egresos ************/
+ 
+  getAllEgresosFijo() {
+    return this.http.get<[]>(`${environment.apiUrl}/egresoFijoImportadora`);
+  }
+
+  createEgresosFijo(egresoFijoImportadora: EgresosFijoImportadora) {
+    console.log(egresoFijoImportadora);
+    return this.http.post(
+      `${environment.apiUrl}/egresoFijoImportadora/conRespaldo`,
+      egresoFijoImportadora
+    );
+  }
+
+  egresoFijoGetFiles(fileName: string): any {
+    return this.http
+      .get(`${environment.apiUrl}/egresoFijo${this.empresa}/download/${fileName}`, {
+        responseType: 'blob',
+      })
+      .subscribe((res) => {
+        window.open(window.URL.createObjectURL(res));
+      });
+  }
+  //*********** Fin Metodos Egresos ************/
 
   /* Metodo Excel */
   public exportAsExcelFile(json: any[], excelFileName: string): void {

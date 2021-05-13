@@ -86,7 +86,7 @@ export class ImportadoraIngresosFormComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
           //Se le asignan los datos del formulario al objeto ingresoImportadora
           this.nameRespaldo = result;
-          this.ingreso.RespaldoIngresoImportadora = [];
+          this.ingreso.RespaldoIngresoImportadoras = [];
           this.ingreso.idSucursal = this.addressForm.value.idSucursal;
           this.ingreso.vendedor = this.addressForm.value.vendedor;
           this.ingreso.tipoIngreso = this.addressForm.value.tipoIngreso;
@@ -111,7 +111,7 @@ export class ImportadoraIngresosFormComponent implements OnInit {
 
           //Se le agrega los respaldos subidos
           for (const name of this.nameRespaldo) {
-            this.ingreso.RespaldoIngresoImportadora.push({ url: name });
+            this.ingreso.RespaldoIngresoImportadoras.push({ url: name });
           }
 
           console.log(this.ingreso);

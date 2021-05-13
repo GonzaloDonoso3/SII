@@ -11,8 +11,8 @@
                 <div class="col">
                     <mat-form-field class="full-width">
                         <mat-select placeholder="Sucursales" formControlName="idSucursal">
-                            <mat-option *ngFor="let sucursal of sucursales" [value]="sucursal.id">
-                                {{ sucursal.razonSocial }}
+                            <mat-option *ngFor="let s of empresa.Sucursals" value="{{ s.id }}">
+                                {{ s.razonSocial }}
                             </mat-option>
                         </mat-select>
                         <mat-error *ngIf="addressForm.controls['idSucursal'].hasError('required')">
@@ -24,10 +24,27 @@
                 <!-- tipo egreso -->
                 <div class="col">
                     <mat-form-field class="full-width">
-                        <mat-select placeholder="Tipo Egreso" formControlName="tipoIngreso">
-
+                        <mat-select placeholder="Tipo Egreso" formControlName="tipoEgreso">
+                            <mat-option value="Gastos">
+                                Gastos
+                            </mat-option>
+                            <mat-option value="Costos">
+                                Costos
+                            </mat-option>
+                            <mat-option value="Remuneraciones">
+                                Remuneraciones
+                            </mat-option>
+                            <mat-option value="Bancarios">
+                                Bancarios
+                            </mat-option>
+                            <mat-option value="Impuestos">
+                                Impuestos
+                            </mat-option>
+                            <mat-option value="Inversiones">
+                                Inversiones
+                            </mat-option>
                         </mat-select>
-                        <mat-error *ngIf="addressForm.controls['tipoIngreso'].hasError('required')">
+                        <mat-error *ngIf="addressForm.controls['tipoEgreso'].hasError('required')">
                             tipo ingreso es <strong>requerido</strong>
                         </mat-error>
                     </mat-form-field>
@@ -53,8 +70,8 @@
                 <!-- Descripción Ingreso -->
                 <div class="col">
                     <mat-form-field class="full-width">
-                        <input matInput placeholder="Descripción Ingreso" formControlName="descripcionIngreso" />
-                        <mat-error *ngIf="addressForm.controls['descripcionIngreso'].hasError('required')">
+                        <input matInput placeholder="Descripción Ingreso" formControlName="descripcion" />
+                        <mat-error *ngIf="addressForm.controls['descripcion'].hasError('required')">
                             este campo es <strong>requerido</strong>
                         </mat-error>
                     </mat-form-field>

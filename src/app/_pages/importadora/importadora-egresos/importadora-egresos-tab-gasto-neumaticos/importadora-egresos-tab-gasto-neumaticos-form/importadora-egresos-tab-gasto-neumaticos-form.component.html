@@ -27,7 +27,7 @@
                         <!-- sucursales -->
                         <div class="col">
                             <mat-form-field class="full-width">
-                                <mat-select placeholder="Sucursales" formControlName="idSucursal">
+                                <mat-select placeholder="Sucursal" formControlName="idSucursal">
                                     <mat-option *ngFor="let s of empresa.Sucursals" value="{{ s.id }}">
                                         {{ s.razonSocial }}
                                     </mat-option>
@@ -40,6 +40,15 @@
                     </div>
 
                     <div class="row">
+                        <!-- Monto -->
+                        <div class="col">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="N° Container" formControlName="montoContrato" type="number" />
+                                <mat-error *ngIf="addressFormContrato.controls['montoContrato'].hasError('required')">
+                                    este campo es <strong>requerido</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
                         <!-- Monto -->
                         <div class="col">
                             <mat-form-field class="full-width">
@@ -117,7 +126,7 @@
                             <!-- Rut Cliente -->
                             <div class="col">
                                 <mat-form-field class="full-width">
-                                    <input matInput placeholder="Tipo Neumático" formControlName="montoCuota" type="number" />
+                                    <input matInput placeholder="Tipo Neumático" formControlName="montoCuota" />
                                     <mat-error *ngIf="addressFormCuotas.controls['montoCuota'].hasError('required')">
                                         este campo es <strong>requerido</strong>
                                     </mat-error>
@@ -154,7 +163,7 @@
                         <!-- Tabla -->
                         <div class="row">
                             <div class="col">
-                                <h1>Neumático Registradas</h1>
+                                <h1>Neumáticos Registrados</h1>
                                 <div class="table-responsive">
                                     <table mat-table [dataSource]="dataSource" class="mat-elevation-z10">
 

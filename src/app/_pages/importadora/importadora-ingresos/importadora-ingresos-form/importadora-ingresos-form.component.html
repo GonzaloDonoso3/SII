@@ -10,7 +10,7 @@
                 <!-- sucursales -->
                 <div class="col">
                     <mat-form-field class="full-width">
-                        <mat-select placeholder="Sucursales" formControlName="idSucursal">
+                        <mat-select placeholder="Sucursal" formControlName="idSucursal">
                             <mat-option *ngFor="let s of empresa.Sucursals" value="{{ s.id }}">
                                 {{ s.razonSocial }}
                             </mat-option>

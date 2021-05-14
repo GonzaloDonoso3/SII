@@ -17,5 +17,5 @@ export class EgresosRentacar {
     
     Sucursal!: Sucursal;
     Usuario!: Usuario;
-    numeroCuota!: number;
+    numeroCuota!: string;
   }

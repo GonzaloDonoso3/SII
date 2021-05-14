@@ -32,6 +32,11 @@ export class RentacarEgresosFormComponent implements OnInit {
   num: number = 0;
   mostrarDatos : boolean = true;
   datoCuota = 'N/A';
+  //Parametros que usan para los egresos de Prestamos bancarios y automotriz
+  montoTotal = '1000';
+  selected: any;
+  opcionSeleccionado: string = '0';
+  verSeleccion: string = '';
   
   // ? Configuración de formulario
   addressForm = this.fb.group({
@@ -61,11 +66,35 @@ export class RentacarEgresosFormComponent implements OnInit {
 //Metodo para mostrar numero de cuotas
   activarEdicion(): void {
     this.mostrarDatos = false;
+    //console.log("lo que trae el validador", this.addressForm)    
+    // this.addressForm = this.fb.group({ 
+    //   numeroCuota: [null, Validators.required],
+    // });
   }
-//Metodo para desabilitar los numeros de cuotas
+//Metodo para ocultar los numeros de cuotas
   desactivarEdicion(): void {
     this.mostrarDatos = true;
   }
+
+  capturar() {
+    //Pasamos el valor seleccionado a la variable verSeleccion
+    this.verSeleccion = this.opcionSeleccionado;
+    if(this.verSeleccion == "Prestamos Bancarios"  || this.verSeleccion == "Prestamos Automotriz"){
+      this.montoTotal == "1000"
+      //console.log("puden entrar a la funcion", this.montoTotal)
+    }        
+  }
+
+  //modelChangeFn() {
+    //if(this.verSeleccion == "Prestamos Bancarios"){
+    //console.log("valor que necesito")
+    //console.log("imprimiendo funcion", this.verSeleccion)
+    //this.montoTotal = e;
+    //return this.montoTotal
+    //console.log("lo que tiene e", e)
+    //console.log("lo que tiene monto total", this.montoTotal)
+  //}
+  //}
 
   getEmpresa(id: number): any {
     this.empresaService
@@ -149,6 +178,5 @@ export class RentacarEgresosFormComponent implements OnInit {
         break;
     }
   }
-
 
 }

@@ -21,6 +21,14 @@ import { RentacarIngresosList2Component } from './rentacar-ingresos/rentacar-ing
 import { RentacarModalSubirFilesComponent } from './rentacar-ingresos/rentacar-ingresos-form/rentacar-modal-subir-files/rentacar-modal-subir-files.component';
 import { RentacarModalVerFilesComponent } from './rentacar-ingresos/rentacar-ingresos-form/rentacar-modal-ver-files/rentacar-modal-ver-files.component';
 
+import { FullCalendarModule } from '@fullcalendar/angular'; 
+import dayGridPlugin from '@fullcalendar/daygrid'; 
+import interactionPlugin from '@fullcalendar/interaction'; 
+FullCalendarModule.registerPlugins([ 
+  dayGridPlugin,
+  interactionPlugin
+]);
+
 
 @NgModule({
   declarations: [RentacarEgresosComponent, RentacarIngresosComponent, RentacarHomeComponent, RentacarEgresosFormComponent, RentacarEgresosListComponent, RentacarIngresosListComponent, RentacarIngresosFormComponent, RentacarModalDetallePagosComponent, RentacarModalDetallePagosClientesComponent, RentacarModalDetallePagosReemplazosComponent, RentacarModalDetallePagosDaniosComponent, RentacarModalDetallePagosExtrasComponent, RentacarIngresosList2Component, RentacarModalSubirFilesComponent, RentacarModalVerFilesComponent],
@@ -29,7 +37,8 @@ import { RentacarModalVerFilesComponent } from './rentacar-ingresos/rentacar-ing
     RentacarRoutingModule,
     MaterialModule,
     ComponentsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FullCalendarModule
   ]
 })
 export class RentacarModule { }

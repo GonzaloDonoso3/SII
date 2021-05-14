@@ -14,11 +14,15 @@ import { EmpresaSharedService } from '@app/_pages/shared/shared-services/empresa
 import { first } from 'rxjs/operators';
 import { Empresa } from '@app/_models/shared/empresa';
 
+import { CalendarOptions } from '@fullcalendar/angular';
+import { DatePipe } from "@angular/common";
+
 
 @Component({
   selector: 'app-rentacar-egresos-list',
   templateUrl: './rentacar-egresos-list.component.html',
-  styleUrls: ['./rentacar-egresos-list.component.scss']
+  styleUrls: ['./rentacar-egresos-list.component.scss'],
+  providers: [DatePipe]
 })
 export class RentacarEgresosListComponent implements OnInit {
 
@@ -53,6 +57,7 @@ export class RentacarEgresosListComponent implements OnInit {
   dataSource: MatTableDataSource<EgresosRentacar> = new MatTableDataSource();
   dataEgresos: EgresosRentacar[] = [];
 
+
   changelog: string[] = [];
 
   formFilter = new FormGroup({
@@ -84,7 +89,8 @@ export class RentacarEgresosListComponent implements OnInit {
     private sucursalService: SucursalSharedService,
     private empresaService: EmpresaSharedService,
   ) { }
-
+  
+   
   ngOnInit(): void {
     this.getEgresos();
     this.getEmpresa(this.idEmpresa);
@@ -107,10 +113,7 @@ export class RentacarEgresosListComponent implements OnInit {
       //Conviertiendo los numeros de cuotas Nulos en N/A
       this.dataEgresos.forEach(data => {
         if (data['numeroCuota']== null) {
-          data.numeroCuota = this.resultAsNumber;          
-        }
-        else {
-          console.log(this.resultAsNumber)
+          data.numeroCuota = this.result;          
         }
       });
       this.dataSource = new MatTableDataSource(this.dataEgresos);
@@ -219,4 +222,4 @@ export class RentacarEgresosListComponent implements OnInit {
     this.rentacarService.exportAsExcelFile(this.selectedRows, 'Lista-Egresos-Rentacar');
   }
 
-}
+  }

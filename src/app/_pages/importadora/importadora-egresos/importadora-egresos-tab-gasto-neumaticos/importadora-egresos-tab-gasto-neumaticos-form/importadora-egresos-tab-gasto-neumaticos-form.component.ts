@@ -13,6 +13,8 @@ import { Usuario } from '@app/_models/shared/usuario';
 import { AbogadosTabsService } from '../../../../abogados/abogados-tabs.service';
 import { AbogadosService } from '../../../../abogados/abogados.service';
 import { Cuota } from '../../../../../_models/abogados/cuota';
+import { EgresosContainerImportadora } from '@app/_models/importadora/egresoContainerImportadora';
+import { EgresosNeumaticoImportadora } from '@app/_models/importadora/egresoNeumaticoImportadora';
 
 @Component({
   selector: 'app-importadora-egresos-tab-gasto-neumaticos-form',
@@ -21,13 +23,20 @@ import { Cuota } from '../../../../../_models/abogados/cuota';
 })
 export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit {
 
-  idEmpresa = 2;
+  idEmpresa = 13;
   sucursales!: Sucursal[];
   empresa = new Empresa();
   
   contrato = new nuevoContrato();
   cuota = new nuevaCuota();
+
+  container = new EgresosContainerImportadora();
+  neumatico = new EgresosNeumaticoImportadora();
+
+
   listaCuotas : nuevaCuota[] = [];
+  listaNeumatico: EgresosNeumaticoImportadora[] = [];
+
   dataSource: MatTableDataSource<nuevaCuota> = new MatTableDataSource();
   fechaCompromisoCuota : any;
 
@@ -39,10 +48,14 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
 
 // Variables que permiten realizar los filtros
   addressFormContrato = this.fb.group({
-    fechaContrato: ['', Validators.required],
+    fecha: ['', Validators.required],
     idSucursal: ['', Validators.required],
-    montoContrato: ['', Validators.required],
-    nContrato: ['', Validators.required],
+    nContainer: ['', Validators.required],
+    costoNeumatico: ['', Validators.required],
+    costoComision: ['', Validators.required],
+    costoInterior: ['', Validators.required],
+    costoMaritimo: ['', Validators.required],
+    impuestoProntuario: ['', Validators.required],
   });
 
 // Variables que permiten realizar los filtros
@@ -72,15 +85,6 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
   
   ngOnInit(): void {
     this.obtenerEmpresa(this.idEmpresa);
-    // this.cuota.id = 11111111;
-    // this.cuota.fechaPago = '123';
-    // this.cuota.montoCuota = 123;
-    // this.listaCuotas.push(this.cuota);
-    // this.listaCuotas.push(this.cuota);
-    // this.listaCuotas.push(this.cuota);
-    // this.listaCuotas.push(this.cuota);
-    // this.listaCuotas.push(this.cuota);
-    // this.dataSource = new MatTableDataSource(this.listaCuotas);
   }
 
   //Metodo que ayuda a obtener los valores del formulario

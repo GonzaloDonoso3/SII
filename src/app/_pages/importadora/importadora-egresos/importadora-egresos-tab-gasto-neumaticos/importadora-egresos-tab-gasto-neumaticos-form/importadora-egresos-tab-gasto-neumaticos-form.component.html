@@ -13,10 +13,10 @@
                         <div class="col">
                             <mat-form-field class="full-width">
                                 <mat-label>Seleccionar fecha</mat-label>
-                                <input matInput formControlName="fechaContrato" [matDatepicker]="picker" />
+                                <input matInput formControlName="fecha" [matDatepicker]="picker" />
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-datepicker #picker></mat-datepicker>
-                                <mat-error *ngIf="addressFormContrato.controls['fechaContrato'].hasError('required')">
+                                <mat-error *ngIf="addressFormContrato.controls['fecha'].hasError('required')">
                                     fecha es <strong>requerido</strong>
                                 </mat-error>
                             </mat-form-field>
@@ -43,8 +43,8 @@
                         <!-- Monto -->
                         <div class="col">
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="N° Container" formControlName="montoContrato" type="number" />
-                                <mat-error *ngIf="addressFormContrato.controls['montoContrato'].hasError('required')">
+                                <input matInput placeholder="N° Container" formControlName="nContainer" type="number" />
+                                <mat-error *ngIf="addressFormContrato.controls['nContainer'].hasError('required')">
                                     este campo es <strong>requerido</strong>
                                 </mat-error>
                             </mat-form-field>
@@ -52,8 +52,8 @@
                         <!-- Monto -->
                         <div class="col">
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="Costo Neumáticos" formControlName="montoContrato" type="number" />
-                                <mat-error *ngIf="addressFormContrato.controls['montoContrato'].hasError('required')">
+                                <input matInput placeholder="Costo Neumáticos" formControlName="costoNeumatico" type="number" />
+                                <mat-error *ngIf="addressFormContrato.controls['costoNeumatico'].hasError('required')">
                                     este campo es <strong>requerido</strong>
                                 </mat-error>
                             </mat-form-field>
@@ -64,8 +64,8 @@
                         <!-- Monto -->
                         <div class="col">
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="Costo Comisión" formControlName="montoContrato" type="number" />
-                                <mat-error *ngIf="addressFormContrato.controls['montoContrato'].hasError('required')">
+                                <input matInput placeholder="Costo Comisión" formControlName="costoComision" type="number" />
+                                <mat-error *ngIf="addressFormContrato.controls['costoComision'].hasError('required')">
                                     este campo es <strong>requerido</strong>
                                 </mat-error>
                             </mat-form-field>
@@ -73,8 +73,8 @@
                         <!-- N° contrato -->
                         <div class="col">
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="Costo Interior" formControlName="nContrato" type="number" />
-                                <mat-error *ngIf="addressFormContrato.controls['nContrato'].hasError('required')">
+                                <input matInput placeholder="Costo Interior" formControlName="costoInterior" type="number" />
+                                <mat-error *ngIf="addressFormContrato.controls['costoInterior'].hasError('required')">
                                     este campo es <strong>requerido</strong>
                                 </mat-error>
                             </mat-form-field>
@@ -85,8 +85,8 @@
                         <!-- Monto -->
                         <div class="col">
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="Costo Marítimo" formControlName="montoContrato" type="number" />
-                                <mat-error *ngIf="addressFormContrato.controls['montoContrato'].hasError('required')">
+                                <input matInput placeholder="Costo Marítimo" formControlName="costoMaritimo" type="number" />
+                                <mat-error *ngIf="addressFormContrato.controls['costoMaritimo'].hasError('required')">
                                     este campo es <strong>requerido</strong>
                                 </mat-error>
                             </mat-form-field>
@@ -94,8 +94,8 @@
                         <!-- N° contrato -->
                         <div class="col">
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="Impuesto Prontuario" formControlName="nContrato" type="number" />
-                                <mat-error *ngIf="addressFormContrato.controls['nContrato'].hasError('required')">
+                                <input matInput placeholder="Impuesto Prontuario" formControlName="impuestoProntuario" type="number" />
+                                <mat-error *ngIf="addressFormContrato.controls['impuestoProntuario'].hasError('required')">
                                     este campo es <strong>requerido</strong>
                                 </mat-error>
                             </mat-form-field>

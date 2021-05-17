@@ -61,7 +61,7 @@ export class UsuarioSharedService {
     return this.http.get<Usuario>(`${environment.apiUrl}/usuarios/${id}`);
   }
 
-  update(id: any, params: any[]) {
+  update(id: string, params: any[]) {
     return this.http.put(`${environment.apiUrl}/usuarios/${id}`, params).pipe(
       map((x) => {
         // update stored user if the logged in user updated their own record
@@ -79,7 +79,7 @@ export class UsuarioSharedService {
     );
   }
 
-  delete(id: any) {
+  delete(id: string) {
     return this.http.delete(`${environment.apiUrl}/usuarios/${id}`).pipe(
       map((x) => {
         // auto logout if the logged in user deleted their own record

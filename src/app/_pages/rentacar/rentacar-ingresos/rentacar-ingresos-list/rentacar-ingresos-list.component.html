@@ -10,16 +10,13 @@
     <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="revelarTotal()">
         Revelar total
     </button>
-    <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="exportAsXLSX()">
-        Exportar excel
-    </button>
 </mat-toolbar>
 
 
 <!-- tabla -->
 <div class="table-responsive">
 
-    <table mat-table [dataSource]="dataSource" matSort matSortActive="id" matSortDirection="desc">
+    <table mat-table matSort [dataSource]="dataSource" matSortActive="id" matSortDirection="desc">
 
 
         <ng-container matColumnDef="select">

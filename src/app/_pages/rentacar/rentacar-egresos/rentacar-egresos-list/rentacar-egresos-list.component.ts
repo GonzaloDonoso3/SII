@@ -14,11 +14,15 @@ import { EmpresaSharedService } from '@app/_pages/shared/shared-services/empresa
 import { first } from 'rxjs/operators';
 import { Empresa } from '@app/_models/shared/empresa';
 
+import { CalendarOptions } from '@fullcalendar/angular';
+import { DatePipe } from "@angular/common";
+
 
 @Component({
   selector: 'app-rentacar-egresos-list',
   templateUrl: './rentacar-egresos-list.component.html',
-  styleUrls: ['./rentacar-egresos-list.component.scss']
+  styleUrls: ['./rentacar-egresos-list.component.scss'],
+  providers: [DatePipe]
 })
 export class RentacarEgresosListComponent implements OnInit {
 
@@ -41,12 +45,18 @@ export class RentacarEgresosListComponent implements OnInit {
     'descripcionEgreso',
     'sucursal',
     'usuario',
-    'responsable'
+    'responsable',
+    'numeroCuota'
   ];
+
+  result = "N/A";
+  resultAsNumber = parseFloat(this.result); 
+  
 
   //Creación de variables y asignación de datos
   dataSource: MatTableDataSource<EgresosRentacar> = new MatTableDataSource();
   dataEgresos: EgresosRentacar[] = [];
+
 
   changelog: string[] = [];
 
@@ -58,6 +68,7 @@ export class RentacarEgresosListComponent implements OnInit {
     tipoEgreso: new FormControl(),
     usuario: new FormControl(),
     responsable: new FormControl(),
+    numeroCuota: new FormControl(),
   })
 
 
@@ -78,7 +89,8 @@ export class RentacarEgresosListComponent implements OnInit {
     private sucursalService: SucursalSharedService,
     private empresaService: EmpresaSharedService,
   ) { }
-
+  
+   
   ngOnInit(): void {
     this.getEgresos();
     this.getEmpresa(this.idEmpresa);
@@ -91,12 +103,18 @@ export class RentacarEgresosListComponent implements OnInit {
     this.aplicarfiltros();
   }
 
-  getEgresos() {
-    this.rentacarService.getAllEgresos().subscribe((egresos: EgresosRentacar[]) => {
+  getEgresos() {    
+    this.rentacarService.getAllEgresos().subscribe((egresos: EgresosRentacar[]) => {            
       this.dataEgresos = egresos.map(Egresos => {
         Egresos.sucursal = Egresos.Sucursal.razonSocial;
         Egresos.usuario = Egresos.Usuario.nombreUsuario;
         return Egresos;
+      });
+      //Conviertiendo los numeros de cuotas Nulos en N/A
+      this.dataEgresos.forEach(data => {
+        if (data['numeroCuota']== null) {
+          data.numeroCuota = this.result;          
+        }
       });
       this.dataSource = new MatTableDataSource(this.dataEgresos);
       this.dataSource.paginator = this.paginator.toArray()[0];
@@ -182,7 +200,7 @@ export class RentacarEgresosListComponent implements OnInit {
 
   // Inicio Filtros
   limpiarFiltros() {
-    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null, responsable: null, descripcionEgreso: null, usuario: null })
+    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null, responsable: null, descripcionEgreso: null, usuario: null, numeroCuota: null })
     this.dataSource = new MatTableDataSource(this.dataEgresos);
     this.dataSource.paginator = this.paginator.toArray()[0];
     this.dataSource.sort = this.sort;
@@ -203,4 +221,5 @@ export class RentacarEgresosListComponent implements OnInit {
     this.selection.selected.forEach((x) => this.selectedRows.push(x));
     this.rentacarService.exportAsExcelFile(this.selectedRows, 'Lista-Egresos-Rentacar');
   }
-}
+
+  }

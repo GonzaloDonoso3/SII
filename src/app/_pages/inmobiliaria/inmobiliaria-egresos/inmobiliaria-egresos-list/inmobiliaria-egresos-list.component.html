@@ -12,8 +12,7 @@
 </mat-toolbar>
 
 <div class="table-responsive">
-    <table mat-table [dataSource]="dataSource" matSort matSortActive="id" matSortDirection="desc"
-        class="mat-elevation-z10">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z10">
         <!-- check column -->
 
         <ng-container matColumnDef="select">
@@ -31,11 +30,10 @@
         </ng-container>
         <!-- data columns -->
         <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID </th>
+            <th mat-header-cell *matHeaderCellDef>ID </th>
             <td mat-cell *matCellDef="let element">{{ element.id }}</td>
         </ng-container>
 
-        <!-- Campo Propiedad-->
         <ng-container matColumnDef="propiedad">
             <th mat-header-cell *matHeaderCellDef>
                 <div [formGroup]="formFilter">
@@ -47,7 +45,6 @@
             <td mat-cell *matCellDef="let element">{{ element.propiedad }}</td>
         </ng-container>
 
-        <!-- Campo Fecha -->
         <ng-container matColumnDef="fecha" class="mat-column-date">
             <th mat-header-cell *matHeaderCellDef>
                 <mat-form-field appearance="fill">
@@ -68,7 +65,6 @@
             <td mat-cell *matCellDef="let element">{{ element.fecha | date: 'dd/MM/yyyy' }}</td>
         </ng-container>
 
-        <!-- Campo Monto -->
         <ng-container matColumnDef="monto">
             <th mat-header-cell *matHeaderCellDef> Monto </th>
             <td mat-cell *matCellDef="let element">
@@ -76,7 +72,6 @@
             </td>
         </ng-container>
 
-        <!-- Campo Tipo Egreso -->
         <ng-container matColumnDef="tipoEgreso">
             <th mat-header-cell *matHeaderCellDef>
                 <div [formGroup]="formFilter">
@@ -93,7 +88,6 @@
             <td mat-cell *matCellDef="let element">{{ element.tipoEgreso }}</td>
         </ng-container>
 
-        <!-- Campo Descripción Egreso-->
         <ng-container matColumnDef="descripcionEgreso">
             <th mat-header-cell *matHeaderCellDef>
                 <div [formGroup]="formFilter">
@@ -105,7 +99,6 @@
             <td mat-cell *matCellDef="let element">{{ element.descripcion }}</td>
         </ng-container>
 
-        <!-- Campo Sucursal-->
         <ng-container matColumnDef="sucursal">
             <th mat-header-cell *matHeaderCellDef>
                 <div [formGroup]="formFilter">
@@ -122,25 +115,17 @@
             <td mat-cell *matCellDef="let element">{{ element.sucursal }}</td>
         </ng-container>
 
-        <!-- Campo Usuario -->
+
         <ng-container matColumnDef="usuario">
             <th mat-header-cell *matHeaderCellDef>Usuario</th>
             <td mat-cell *matCellDef="let element">{{ element.usuario }}</td>
         </ng-container>
-
-        <!-- Campo Responsable-->
-        <ng-container matColumnDef="responsable">
-            <th mat-header-cell *matHeaderCellDef>
-                <div [formGroup]="formFilter">
-                    <mat-form-field class="fill">
-                        <input matInput placeholder="Responsable" formControlName="responsable" />
-                    </mat-form-field>
-                </div>
-            </th>
-            <td mat-cell *matCellDef="let element">{{ element.responsable }}</td>
-        </ng-container>
-
-        <!-- Campo Respaldos-->
+        <!--
+    <ng-container matColumnDef="responsable">
+        <th mat-header-cell *matHeaderCellDef>Responsable</th>
+        <td mat-cell *matCellDef="let element">{{ element.responsable }}</td>
+    </ng-container>
+-->
         <ng-container matColumnDef="respaldos">
             <th mat-header-cell *matHeaderCellDef>Respaldos</th>
             <td mat-cell *matCellDef="let element">

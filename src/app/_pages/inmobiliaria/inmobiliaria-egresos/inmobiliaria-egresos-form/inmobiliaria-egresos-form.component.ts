@@ -17,12 +17,18 @@ import { AlertHelper } from '@app/_helpers/alert.helper';
 })
 export class InmobiliariaEgresosFormComponent implements OnInit {
 
-  num: number = 0;
+  @Output()
   formularioListo = new EventEmitter<string>();
-  usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '');
-  nameRespaldo = '';
-  egreso: any = {};
+  // ? set checkbox
 
+  usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '');
+
+  nameRespaldo = '';
+  tiposEgresos: any[] = [];
+
+
+  // ? Validar si es necesario importar modelos de datos
+  egreso: any = {};
   // ? Configuración de formulario
   addressForm = this.fb.group({
     idSucursal: [null, Validators.required],
@@ -43,89 +49,88 @@ export class InmobiliariaEgresosFormComponent implements OnInit {
     private sucursalService: SucursalSharedService,
     private alert: AlertHelper,
     private inmobiliariaService: InmobiliariaService,
-  ) {
+  ) { 
     this.sucursales = this.sucursalService.sucursalListValue;
   }
 
   ngOnInit(): void {
   }
 
-  onSubmit() {
-    // $ consulta el estado del formulario antes de recibir los adjuntos
-    switch (this.addressForm.status) {
-      //Si el formulario esta correcto
-      case 'VALID':
-        const dialogRef = this.dialog.open(DialogRespaldosComponent, {
+  onSubmit(){
+  // $ consulta el estado del formulario antes de recibir los adjuntos
+  switch (this.addressForm.status) {
+    //Si el formulario esta correcto
+    case 'VALID':
+      const dialogRef = this.dialog.open(DialogRespaldosComponent, {
 
-          data: { url: 'egresoInmobiliaria/upload' }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          //Se le asignan los datos del formulario al objeto EgresoInmobiliaria
-          this.nameRespaldo = result;
-          this.egreso.RespaldoEgresoInmobiliaria = [];
-          this.egreso.idSucursal = this.addressForm.value.idSucursal;
+        data: { url: 'egresoInmobiliaria/upload' }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        //Se le asignan los datos del formulario al objeto EgresoInmobiliaria
+        this.nameRespaldo = result;
+        this.egreso.RespaldoEgresoInmobiliaria = [];
+        this.egreso.idSucursal = this.addressForm.value.idSucursal;
+        this.egreso.propiedad = this.addressForm.value.propiedad;
+        this.egreso.tipoEgreso = this.addressForm.value.tipoEgreso;
+        this.egreso.descripcion = this.addressForm.value.descripcionEgreso;
+        this.egreso.fecha = this.addressForm.value.fecha;
+        this.egreso.monto = this.addressForm.value.monto;
+        this.egreso.responsable = this.addressForm.value.responsable; 
+
+        //Si el usuario elegio otra propiedad se le asigna el nombre ingresado
+        if (this.addressForm.value.propiedad == 'Otra') {
+          this.egreso.propiedad = this.addressForm.value.otraPropiedad;
+        } else {
           this.egreso.propiedad = this.addressForm.value.propiedad;
-          this.egreso.tipoEgreso = this.addressForm.value.tipoEgreso;
-          this.egreso.descripcion = this.addressForm.value.descripcionEgreso;
-          this.egreso.fecha = this.addressForm.value.fecha;
-          this.egreso.monto = this.addressForm.value.monto;
-          this.egreso.responsable = this.addressForm.value.responsable;
+        }
+        
+        //Se le asigna la id del usuario logueado
+        this.egreso.idUsuario = this.usuario.id;
 
-          //Si el usuario elegio otra propiedad se le asigna el nombre ingresado
-          if (this.addressForm.value.propiedad == 'Otra') {
-            this.egreso.propiedad = this.addressForm.value.otraPropiedad;
-          } else {
-            this.egreso.propiedad = this.addressForm.value.propiedad;
-          }
+        //Se le agrega los respaldos subidos
+        for (const name of this.nameRespaldo) {
+          this.egreso.RespaldoEgresoInmobiliaria.push({ url: name });
+        }
+        //Si todo esta correcto se ingresa el objeto
+        if (result.length > 0) {
+          this.inmobiliariaService
+            .createEgresos(this.egreso)
+            .pipe()
+            .subscribe(
+              (data) => {
+                this.alert.createAlert("Registro Creado con exito!");
+                this.formularioListo.emit('true');
+                this.addressForm.reset();
 
-          //Se le asigna la id del usuario logueado
-          this.egreso.idUsuario = this.usuario.id;
-
-          //Se le agrega los respaldos subidos
-          for (const name of this.nameRespaldo) {
-            this.egreso.RespaldoEgresoInmobiliaria.push({ url: name });
-          }
-          //Si todo esta correcto se ingresa el objeto
-          if (result.length > 0) {
-            this.inmobiliariaService
-              .createEgresos(this.egreso)
-              .pipe()
-              .subscribe(
-                (data) => {
-                  this.alert.createAlert("Registro Creado con exito");
-                  this.formularioListo.emit(this.num + "");
-                  this.num++;
-                  this.addressForm.reset();
-
-                },
-                (error) => {
-                  this.snackBar.open('Tenemos Problemas para realizar el registro, favor contactar al equipo de desarrollo', 'cerrar', {
-                    duration: 2000,
-                    verticalPosition: 'top',
-                  });
-                }
-              );
-          } else {
-            //Si es incorrecto se envía un mensaje de error
-            this.snackBar.open('Debemos Recibir sus respaldos para continuar', 'cerrar', {
-              duration: 5000,
-              verticalPosition: 'top',
-            });
-          }
-        });
-        break;
-
+              },
+              (error) => {
+                this.snackBar.open('Tenemos Problemas para realizar el registro, favor contactar al equipo de desarrollo', 'cerrar', {
+                  duration: 2000,
+                  verticalPosition: 'top',
+                });
+              }
+            );
+        } else {
+          //Si es incorrecto se envía un mensaje de error
+          this.snackBar.open('Debemos Recibir sus respaldos para continuar !!', 'cerrar', {
+            duration: 5000,
+            verticalPosition: 'top',
+          });
+        }
+      });
+      break;
+    
       //Si el formulario es erroneo 
-      case 'INVALID':
-        this.snackBar.open('EL formulario debe ser Completado', 'cerrar', {
-          duration: 2000,
-          verticalPosition: 'top',
-        });
-        break;
-
-      default:
-        break;
-    }
+    case 'INVALID':
+      this.snackBar.open('EL formulario debe ser Completado !!', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+      break;
+    
+    default:
+      break;
+  }
   }
 
   //metodo que permite activar el input de otraPropiedad

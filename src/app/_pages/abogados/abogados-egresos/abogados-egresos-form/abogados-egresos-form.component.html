@@ -1,1 +1,90 @@
-<p>abogados-egresos-form works!</p>
+<!-- FORMULARIO EGRESOS ABOGADOS -->
+<form [formGroup]="egresosForm" novalidate (ngSubmit)="onSubmit()">
+    <mat-card class="shipping-card mat-elevation-z10">
+      <mat-card-header>
+        <h1> Egresos Firma Abogados </h1>
+      </mat-card-header>
+      <br><br>
+  
+      <mat-card-content>
+        <div class="row">
+          <!-- SUCURSALES -->
+          <div class="col">
+            <mat-form-field class="full-width">
+              <mat-select placeholder="Sucursales" formControlName="idSucursal">
+                <mat-option *ngFor="let sucursal of sucursales" [value]="sucursal.id">
+                  {{ sucursal.razonSocial }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="egresosForm.controls['idSucursal'].hasError('required')">
+                sucursal es <strong>requrido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <!-- TIPOS DE EGRESOS -->
+          <div class="col">
+            <mat-form-field class="full-width">
+              <mat-select placeholder="Tipos Egresos" formControlName="tipoEgreso">
+                <mat-option *ngFor="let tipo of tiposEgresos" [value]="tipo">
+                  {{ tipo | uppercase }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="egresosForm.controls['tipoEgreso'].hasError('required')">
+                este campo es <strong>requrido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          
+        </div>
+        <div class="row">
+          <!-- MONTO -->
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Monto" formControlName="monto" type="number" />
+              <mat-error *ngIf="egresosForm.controls['monto'].hasError('required')">
+                Monto es <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <!-- FECHA -->
+          <div class="col">
+            <mat-form-field class="full-width">
+              <mat-label>Seleccionar fecha</mat-label>
+              <input matInput formControlName="fecha" [matDatepicker]="picker" />
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngIf="egresosForm.controls['fecha'].hasError('required')">
+                fecha es <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <!-- RESPONSABLE -->
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="ingrese nombre responsable" formControlName="responsable" />
+              <mat-error *ngIf="egresosForm.controls['responsable'].hasError('required')">
+                este campo es <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <!-- DESCRIPCION -->
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="ingrese una descripcion del registro" formControlName="descripcion" />
+              <mat-error *ngIf="egresosForm.controls['descripcion'].hasError('required')">
+                descripcion es <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" type="submit">
+          <mat-icon>send</mat-icon> Enviar
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </form>

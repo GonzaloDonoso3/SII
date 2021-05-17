@@ -1,4 +1,3 @@
-import { MatSort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -20,8 +19,6 @@ export class InmobiliariaEgresosListComponent implements OnInit {
 
   // ? childrens
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
-  @ViewChild(MatSort) sort = null;
-
 
   // ? Inputs & Outputs
   @Input()
@@ -39,7 +36,7 @@ export class InmobiliariaEgresosListComponent implements OnInit {
     'descripcionEgreso',
     'sucursal',
     'usuario',
-    'responsable'
+    //  'responsable'
   ];
 
   //Creación de variables y asignación de datos
@@ -55,7 +52,6 @@ export class InmobiliariaEgresosListComponent implements OnInit {
     descripcionEgreso: new FormControl(),
     tipoEgreso: new FormControl(),
     Propiedad: new FormControl(),
-    responsable: new FormControl(),
   })
 
 
@@ -99,7 +95,6 @@ export class InmobiliariaEgresosListComponent implements OnInit {
         });
         this.dataSource = new MatTableDataSource(this.dataEgresos);
         this.dataSource.paginator = this.paginator.toArray()[0];
-        this.dataSource.sort = this.sort;
       });
     }
   }
@@ -142,6 +137,7 @@ export class InmobiliariaEgresosListComponent implements OnInit {
 
   aplicarfiltros() {
     this.formFilter.valueChanges.subscribe(res => {
+
       let dataFiltered = this.dataEgresos;
 
       if (res.Propiedad) {
@@ -159,9 +155,6 @@ export class InmobiliariaEgresosListComponent implements OnInit {
       if (res.idSucursal) {
         dataFiltered = dataFiltered.filter((data: EgresosInmobiliaria) => data.sucursal == res.idSucursal);
       }
-      if (res.responsable) {
-        dataFiltered = dataFiltered.filter((data: EgresosInmobiliaria) => data.responsable == res.responsable);
-      }
 
       if (res.start && res.end) {
         dataFiltered = dataFiltered.filter((data: EgresosInmobiliaria) => new Date(data.fecha) >= res.start && new Date(data.fecha) <= res.end);
@@ -170,9 +163,10 @@ export class InmobiliariaEgresosListComponent implements OnInit {
       this.dataSource = new MatTableDataSource(dataFiltered);
       this.dataSource.paginator = this.paginator.toArray()[0];
       this.totalSeleccion = 0;
-      this.dataSource.sort = this.sort;
       this.selection.clear();
     })
+
+
   }
 
 
@@ -181,10 +175,12 @@ export class InmobiliariaEgresosListComponent implements OnInit {
     this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null, Propiedad: null, descripcionEgreso: null, })
     this.dataSource = new MatTableDataSource(this.dataEgresos);
     this.dataSource.paginator = this.paginator.toArray()[0];
-    this.dataSource.sort = this.sort;
     this.selection.clear()
     this.totalSeleccion = 0;
   }
+
+
+
 
 
 }

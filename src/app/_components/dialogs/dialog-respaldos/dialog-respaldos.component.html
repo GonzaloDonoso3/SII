@@ -5,7 +5,7 @@
 </div>
 <input mat-input type="file" ng2FileSelect [uploader]="uploader" multiple />
 
-<button mat-fab color="accent" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+<button mat-fab color="accent" (click)="subirFiles()" [disabled]="!uploader.getNotUploadedItems().length">
   <mat-icon>add</mat-icon>
 </button>
 {{ responses }}

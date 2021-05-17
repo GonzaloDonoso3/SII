@@ -49,29 +49,22 @@ export class RentacarIngresosFormComponent implements OnInit {
   }
 
   onSubmit() {
-
     switch (this.ingresoForm.status) {
       case 'VALID':
-
         this.ingresoLicitacion.fecha_ingresoLicitacion = this.ingresoForm.value.fecha;
         this.ingresoLicitacion.descripcion_ingresoLicitacion = this.ingresoForm.value.descripcionIngreso;
         this.ingresoLicitacion.id_licitacion = this.ingresoForm.value.licitacion;
         this.ingresoLicitacion.monto_ingresoLicitacion = this.ingresoForm.value.monto;
         this.ingresoLicitacion.userAt = this.usuario.nombreUsuario;
-
         const dialogRef = this.dialog.open(RentacarModalSubirFilesComponent, {
           data: { ingresoLicitacion: this.ingresoLicitacion }
         });
-
         dialogRef.afterClosed().subscribe(result => {
-          console.log(result);
+          this.alert.createAlert("Registro Creado con exito!");
           this.formularioListo.emit(this.num + "");
           this.num++;
           this.ingresoForm.reset();
         });
-
-
-
         break;
       case 'INVALID':
         this.snackBar.open('EL formulario debe ser Completado !!', 'cerrar', {
@@ -79,7 +72,6 @@ export class RentacarIngresosFormComponent implements OnInit {
           verticalPosition: 'top',
         });
         break;
-
       default:
         break;
     }

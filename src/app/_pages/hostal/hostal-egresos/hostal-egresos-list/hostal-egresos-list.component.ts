@@ -1,5 +1,6 @@
+import { MatSort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
+import { Component, Input, ViewChild, OnChanges, OnInit, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -19,6 +20,7 @@ import { HostalService } from '../../hostal.service';
 export class HostalEgresosListComponent implements OnInit, OnChanges {
   // ? childrens
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
+  @ViewChild(MatSort) sort = null;
 
   // ? Inputs & Outputs
   @Input()
@@ -86,6 +88,7 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
         });
         this.dataSource = new MatTableDataSource(this.dataEgresos);
         this.dataSource.paginator = this.paginator.toArray()[0];
+        this.dataSource.sort = this.sort;
       });
     }
   }
@@ -127,6 +130,7 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
 
       this.dataSource = new MatTableDataSource(dataFiltered);
       this.dataSource.paginator = this.paginator.toArray()[0];
+      this.dataSource.sort = this.sort;
       this.selection.clear();
     })
   }
@@ -137,6 +141,7 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
     this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null })
     this.dataSource = new MatTableDataSource(this.dataEgresos);
     this.dataSource.paginator = this.paginator.toArray()[0];
+    this.dataSource.sort = this.sort;
     this.selection.clear()
     this.totalSeleccion = 0;
   }

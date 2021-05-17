@@ -20,14 +20,15 @@ import { EgresosRentacar } from '../../../../_models/rentacar/egresoRentacar';
 })
 export class RentacarEgresosFormComponent implements OnInit {
 
-  formularioListo = new EventEmitter<string>();
+  @Output() formularioListo = new EventEmitter<string>();
+
   usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '');
   nameRespaldo = '';
   empresa = new Empresa();
   idEmpresa = 4;
   egreso = new EgresosRentacar();
   empresaRazonSocial = '';
-  
+  num: number = 0;
   // ? Configuración de formulario
   addressForm = this.fb.group({
     idSucursal: [null, Validators.required],
@@ -50,7 +51,7 @@ export class RentacarEgresosFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-   this.getEmpresa(this.idEmpresa);
+    this.getEmpresa(this.idEmpresa);
   }
 
   getEmpresa(id: number): any {
@@ -63,13 +64,13 @@ export class RentacarEgresosFormComponent implements OnInit {
       });
   }
 
-  onSubmit(){
+  onSubmit() {
     // $ consulta el estado del formulario antes de recibir los adjuntos
     switch (this.addressForm.status) {
       //Si el formulario esta correcto
       case 'VALID':
         const dialogRef = this.dialog.open(DialogRespaldosComponent, {
-  
+
           data: { url: 'egresoRentacar/upload' }
         });
         dialogRef.afterClosed().subscribe(result => {
@@ -79,15 +80,15 @@ export class RentacarEgresosFormComponent implements OnInit {
           this.egreso.fecha = this.addressForm.value.fecha;
           this.egreso.monto = this.addressForm.value.monto;
           this.egreso.descripcion = this.addressForm.value.descripcionEgreso;
-          this.egreso.responsable = this.addressForm.value.responsable; 
+          this.egreso.responsable = this.addressForm.value.responsable;
           this.egreso.idSucursal = this.addressForm.value.idSucursal;
           this.egreso.tipoEgreso = this.addressForm.value.tipoEgreso;
           this.egreso.idArriendo = this.addressForm.value.idArriendo;
-          
-  
+
+
           //Se le asigna la id del usuario logueado
           this.egreso.idUsuario = this.usuario.id;
-  
+
           //Se le agrega los respaldos subidos
           for (const name of this.nameRespaldo) {
             this.egreso.RespaldoEgresos.push({ url: name });
@@ -100,9 +101,10 @@ export class RentacarEgresosFormComponent implements OnInit {
               .subscribe(
                 (data: any) => {
                   this.alert.createAlert("Registro Creado con exito");
-                  this.formularioListo.emit('true');
+                  this.formularioListo.emit(this.num + "");
+                  this.num++;
                   this.addressForm.reset();
-  
+
                 },
                 (error: any) => {
                   this.snackBar.open('Tenemos Problemas para realizar el registro, favor contactar al equipo de desarrollo', 'cerrar', {
@@ -120,19 +122,19 @@ export class RentacarEgresosFormComponent implements OnInit {
           }
         });
         break;
-      
-        //Si el formulario es erroneo 
+
+      //Si el formulario es erroneo 
       case 'INVALID':
         this.snackBar.open('EL formulario debe ser Completado', 'cerrar', {
           duration: 2000,
           verticalPosition: 'top',
         });
         break;
-      
+
       default:
         break;
     }
-    }
+  }
 
 
 }

@@ -38,6 +38,7 @@ export class RentacarModalSubirFilesComponent implements OnInit {
 
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
       if (!response) {
+        this.alert.errorAlert('tenemos problemas para procesar su solicitud, favor contactar equipo de desarrollo');
         this.snackBar.open(`tenemos problemas para procesar su solicitud, favor contactar equipo de desarrollo`, 'cerrar', {
           duration: 5000,
         });
@@ -82,6 +83,7 @@ export class RentacarModalSubirFilesComponent implements OnInit {
 
 
   guardarIngreso(): void {
+    this.alert.loadingAlert();
     this.rentacarService.postIngresoLicitacion(this.ingresoLicitacion).subscribe((response) => {
       this.id_ingresoLicitacion = response.data.id_ingresoLicitacion;
 
@@ -91,9 +93,7 @@ export class RentacarModalSubirFilesComponent implements OnInit {
           id_ingresoLicitacion: this.id_ingresoLicitacion,
         },
       })
-
       this.uploader.uploadAll();
-      this.alert.createAlert("Registro Creado con exito!");
     })
   };
 

@@ -38,7 +38,7 @@ export class HostalService {
   private tiposPagos = ['Efectivo', 'Debito', 'Credito', 'Transferencia', 'Cheque'];
   private estadosPagos = ['PENDIENTE', 'PAGADO'];
 
-  private tiposEgresos = ['Gastos', 'Costos', 'Remuneraciones', 'Impuestos', 'Bancarios'];
+  private tiposEgresos = ['Gastos', 'Costos', 'Remuneraciones', 'Impuestos', 'Bancarios', 'Inversiones'];
   private empresa = 'Hostal';
   constructor(private http: HttpClient, private router: Router) {
     //Init private Subjects;

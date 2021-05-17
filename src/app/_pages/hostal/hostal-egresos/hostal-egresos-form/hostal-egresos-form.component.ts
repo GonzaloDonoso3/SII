@@ -22,6 +22,8 @@ export class HostalEgresosFormComponent implements OnInit {
   @Output()
   formularioListo = new EventEmitter<string>();
 
+  num: number = 0;
+
   usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '');
   // ? set checkbox
   tiposEgresos: string[] = [];
@@ -95,12 +97,8 @@ export class HostalEgresosFormComponent implements OnInit {
               .subscribe(
                 (data: any) => {
                   this.alert.createAlert("Registro Creado con exito!");
-
-                  /*  this.snackBar.open('Regitro Exitoso !!', 'cerrar', {
-                     duration: 2000,
-                     verticalPosition: 'top',
-                   }); */
-                  this.formularioListo.emit('true');
+                  this.formularioListo.emit(this.num + "");
+                  this.num++;
                   this.egresosForm.reset();
                 },
                 (error: any) => {

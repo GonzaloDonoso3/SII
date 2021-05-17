@@ -1,5 +1,7 @@
 <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav mat-primary #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+    <mat-sidenav mat-primary #drawer class="sidenav" fixedInViewport
+        [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
+        [opened]="(isHandset$ | async) === false">
         <br>
         <mat-toolbar>
             <img src="assets/images/logo.png" alt="" width="187" height="50">
@@ -15,7 +17,8 @@
                     </mat-panel-title>
                 </mat-expansion-panel-header>
                 <mat-nav-list>
-                    <a *ngFor="let subitem of subMenuItems" mat-list-item [routerLink]="'/' + item.url + '/' + subitem.url">
+                    <a *ngFor="let subitem of subMenuItems" mat-list-item
+                        [routerLink]="'/' + item.url + '/' + subitem.url">
                         <mat-icon color="grey">{{ subitem.icon }}</mat-icon>
                         {{ subitem.name }}
                     </a>
@@ -26,16 +29,16 @@
     <mat-sidenav-content>
         <mat-toolbar color="primary">
             <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
-              <mat-icon aria-label="mostrar menu lateral">menu</mat-icon>
+                <mat-icon aria-label="mostrar menu lateral">menu</mat-icon>
             </button>
 
             <!-- ********** Inicio Menú Administación **********-->
-            <div *ngFor="let item of menuItemsAdmin" hideToggle class="select-nav">
+            <div *ngFor="let item of menuItemsAdmin" hideToggle class="select-nav" style='font-size: 0.8rem;'>
                 <mat-select placeholder="{{ item.name }}" class="select-nav2">
                     <mat-option *ngFor="let subitem of subMenuItemsAdmin">
                         <a mat-list-item [routerLink]="'/' + item.url + '/' + subitem.url">
-                                {{ subitem.name }} <mat-icon color="grey">{{ subitem.icon }}</mat-icon>
-                            </a>
+                            {{ subitem.name }} <mat-icon color="grey">{{ subitem.icon }}</mat-icon>
+                        </a>
                     </mat-option>
                 </mat-select>
             </div>

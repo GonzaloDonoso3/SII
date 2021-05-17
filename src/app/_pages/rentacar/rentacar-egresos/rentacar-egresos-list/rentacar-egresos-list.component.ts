@@ -1,3 +1,4 @@
+import { MatSort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -21,28 +22,29 @@ import { Empresa } from '@app/_models/shared/empresa';
 })
 export class RentacarEgresosListComponent implements OnInit {
 
-    // ? childrens
-    @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
+  // ? childrens
+  @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
+  @ViewChild(MatSort) sort = null;
 
-    // ? Inputs & Outputs
-    @Input()
-    refrescar = '';
-  
-    // ? table definitions.
-    displayedColumns: string[] = [
-      'select',
-      'id',
-      'respaldos',
-      'fecha',
-      'monto',
-      'tipoEgreso',
-      'descripcionEgreso',
-      'sucursal',
-      'usuario',
-      'responsable'
-    ];
 
-      //Creación de variables y asignación de datos
+  // ? Inputs & Outputs
+  @Input() refrescar = '';
+
+  // ? table definitions.
+  displayedColumns: string[] = [
+    'select',
+    'id',
+    'respaldos',
+    'fecha',
+    'monto',
+    'tipoEgreso',
+    'descripcionEgreso',
+    'sucursal',
+    'usuario',
+    'responsable'
+  ];
+
+  //Creación de variables y asignación de datos
   dataSource: MatTableDataSource<EgresosRentacar> = new MatTableDataSource();
   dataEgresos: EgresosRentacar[] = [];
 
@@ -83,8 +85,13 @@ export class RentacarEgresosListComponent implements OnInit {
     this.aplicarfiltros();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(this.refrescar);
+    this.getEgresos();
+    this.aplicarfiltros();
+  }
 
-  getEgresos(){
+  getEgresos() {
     this.rentacarService.getAllEgresos().subscribe((egresos: EgresosRentacar[]) => {
       this.dataEgresos = egresos.map(Egresos => {
         Egresos.sucursal = Egresos.Sucursal.razonSocial;
@@ -93,6 +100,7 @@ export class RentacarEgresosListComponent implements OnInit {
       });
       this.dataSource = new MatTableDataSource(this.dataEgresos);
       this.dataSource.paginator = this.paginator.toArray()[0];
+      this.dataSource.sort = this.sort;
     });
   }
 
@@ -139,7 +147,7 @@ export class RentacarEgresosListComponent implements OnInit {
       let dataFiltered = this.dataEgresos;
 
       if (res.descripcionEgreso) {
-        dataFiltered = dataFiltered.filter((data: EgresosRentacar) => data.descripcion == res.descripcionEgreso);
+        dataFiltered = dataFiltered.filter((data: EgresosRentacar) => data.descripcion.includes(res.descripcionEgreso));
       }
 
       if (res.tipoEgreso) {
@@ -165,16 +173,19 @@ export class RentacarEgresosListComponent implements OnInit {
       this.dataSource = new MatTableDataSource(dataFiltered);
       this.dataSource.paginator = this.paginator.toArray()[0];
       this.totalSeleccion = 0;
+      this.dataSource.sort = this.sort;
       this.selection.clear();
+
     })
   }
 
 
   // Inicio Filtros
   limpiarFiltros() {
-    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null, responsable: null, descripcionEgreso: null, usuario: null})
+    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null, responsable: null, descripcionEgreso: null, usuario: null })
     this.dataSource = new MatTableDataSource(this.dataEgresos);
     this.dataSource.paginator = this.paginator.toArray()[0];
+    this.dataSource.sort = this.sort;
     this.selection.clear()
     this.totalSeleccion = 0;
   }
@@ -187,9 +198,9 @@ export class RentacarEgresosListComponent implements OnInit {
   }
 
   //Metodo exportar excel
-exportAsXLSX(): void {
-  this.selectedRows = [];
-  this.selection.selected.forEach((x) => this.selectedRows.push(x));
-  this.rentacarService.exportAsExcelFile(this.selectedRows, 'Lista-Egresos-Rentacar');
-}
+  exportAsXLSX(): void {
+    this.selectedRows = [];
+    this.selection.selected.forEach((x) => this.selectedRows.push(x));
+    this.rentacarService.exportAsExcelFile(this.selectedRows, 'Lista-Egresos-Rentacar');
+  }
 }

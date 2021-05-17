@@ -1,5 +1,6 @@
+import { MatSort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, EventEmitter, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
+import { Component, EventEmitter, ViewChild, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatCalendarView, MatDatepickerInputEvent } from '@angular/material/datepicker';
@@ -21,6 +22,7 @@ import { HostalService } from '../../hostal.service';
 export class HostalIngresosListComponent implements OnInit, OnChanges {
   // ? childrens
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
+  @ViewChild(MatSort) sort = null;
 
   // ? Inputs & Outputs
   @Input()
@@ -98,6 +100,7 @@ export class HostalIngresosListComponent implements OnInit, OnChanges {
         });
         this.dataSource = new MatTableDataSource(this.dataIngresos);
         this.dataSource.paginator = this.paginator.toArray()[0];
+        this.dataSource.sort = this.sort;
 
       });
     }
@@ -153,6 +156,7 @@ export class HostalIngresosListComponent implements OnInit, OnChanges {
 
       this.dataSource = new MatTableDataSource(dataFiltered);
       this.dataSource.paginator = this.paginator.toArray()[0];
+      this.dataSource.sort = this.sort;
       this.totalSeleccion = 0;
       this.selection.clear();
     })
@@ -167,6 +171,7 @@ export class HostalIngresosListComponent implements OnInit, OnChanges {
     this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoIngreso: null, estadoPago: null, cliente: null, nDocumento: null })
     this.dataSource = new MatTableDataSource(this.dataIngresos);
     this.dataSource.paginator = this.paginator.toArray()[0];
+    this.dataSource.sort = this.sort;
     this.selection.clear()
     this.totalSeleccion = 0;
   }

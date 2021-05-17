@@ -53,7 +53,7 @@ export class AdministracionUsuariosListComponent implements OnInit {
   selection = new SelectionModel<Usuario>(true, []);
   totalSeleccion = 0;
   selectedRows!: any[];
-  sucursalesDelete!:any;
+  usuariosDelete!:any;
   rol !: Rol;
 
 constructor(
@@ -73,9 +73,11 @@ ngOnInit(): void {
   this.usuariosService
     .getAll()
     .pipe(first())
-    .subscribe((sucursalesDelete) => (this.sucursalesDelete = sucursalesDelete));
+    .subscribe((usuariosDelete) => (this.usuariosDelete = usuariosDelete));
 
-    this.getUsuarios();
+    setTimeout(() => {
+      this.getUsuarios()
+     }, 100);
 }
 
 // Obtener el listado de usuarios desde la BD
@@ -96,6 +98,7 @@ getUsuarios() {
     this.dataSource.paginator = this.paginator.toArray()[0];
   });
 }
+
 
 // Obtener los roles
 getRoles(){
@@ -171,22 +174,22 @@ limpiarFiltros() {
 exportAsXLSX(): void {
  this.selectedRows = [];
   this.selection.selected.forEach((x) => this.selectedRows.push(x));
-  this.administracionService.exportAsExcelFile(this.selectedRows, 'Lista-Sucursales');
+  this.administracionService.exportAsExcelFile(this.selectedRows, 'Lista-Usuarios');
 }
 
 //Abrir Modal Editar
 openDialogEdit(id: any, nombre: any){
   localStorage.setItem("idUsuarioEdit", id);
-  localStorage.setItem("nombreSucursalEdit", nombre);
+  localStorage.setItem("nombreUsuarioEdit", nombre);
   this.administracionService.openDialogEditUsuario();
 }
 
 //Metodo eliminar una sucursal
-deleteSucursal(id: any, razonSocial: any) {
-  const sucursal = this.sucursalesDelete.find((x: any) => x.id === id);
-  if (confirm('Esta seguro que desea eliminar el registro: ' + razonSocial)) {
+deleteUsuario(id: any, nombre: string, apellido: string) {
+  const sucursal = this.usuariosDelete.find((x: any) => x.id === id);
+  if (confirm('Esta seguro que desea eliminar el usuario: ' + nombre + " " + apellido)) {
     sucursal.isDeleting = true;
-    this.sucursalService
+    this.usuariosService
       .delete(id)
       .pipe(first())
       .subscribe(() => {
@@ -194,7 +197,7 @@ deleteSucursal(id: any, razonSocial: any) {
       });
     sucursal.isDeleting = false;
   }
-  this.snackBar.open('Sucursal eliminada', 'cerrar', {
+  this.snackBar.open('Usuario eliminado', 'cerrar', {
     duration: 2000,
     verticalPosition: 'top',
   });

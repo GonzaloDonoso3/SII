@@ -5,7 +5,7 @@ import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Sucursal } from '@app/_models/shared/sucursal';
 import { SucursalSharedService } from '../../../shared/shared-services/sucursal-shared.service';
-import { first } from 'rxjs/operators';
+import { first, delay } from 'rxjs/operators';
 import { EmpresaSharedService } from '../../../shared/shared-services/empresa-shared.service';
 import { AdministracionService } from '../../administracion.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -75,7 +75,19 @@ export class AdministracionSucursalesListComponent implements OnInit {
         (sucursalesDelete) => (this.sucursalesDelete = sucursalesDelete)
       );
 
-      this.getSucursales();
+      setTimeout(() => {
+        this.getSucursales()
+       }, 300);
+  }
+
+  // Obtener las empresas
+  getEmpresas() {
+    this.empresaService
+      .getAll()
+      .pipe(first())
+      .subscribe((empresas) => {
+        this.empresas = empresas;
+      });
   }
 
   // Obtener el listado de sucursales desde la BD
@@ -94,16 +106,6 @@ export class AdministracionSucursalesListComponent implements OnInit {
         });
         this.dataSource = new MatTableDataSource(this.dataSucursal);
         this.dataSource.paginator = this.paginator.toArray()[0];
-      });
-  }
-
-  // Obtener las empresas
-  getEmpresas() {
-    this.empresaService
-      .getAll()
-      .pipe(first())
-      .subscribe((empresas) => {
-        this.empresas = empresas;
       });
   }
 

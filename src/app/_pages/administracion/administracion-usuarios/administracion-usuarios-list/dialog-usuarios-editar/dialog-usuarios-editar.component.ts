@@ -46,7 +46,7 @@ export class DialogUsuariosEditarComponent implements OnInit {
 
   ngOnInit(): void {
     this.idUsuario = localStorage.getItem("idUsuarioEdit");
-    this.nombreUsuario = localStorage.getItem("nombreSucursalEdit");
+    this.nombreUsuario = localStorage.getItem("nombreUsuarioEdit");
     this.getUsuario();
     this.getRoles();
   }

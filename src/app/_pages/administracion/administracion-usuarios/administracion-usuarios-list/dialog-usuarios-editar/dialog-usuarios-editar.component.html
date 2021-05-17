@@ -55,7 +55,7 @@
                 <!-- Contraseña -->
                 <div class="col">
                     <mat-form-field class="full-width">
-                        <input matInput placeholder="Contraseña" formControlName="hash" />
+                        <input matInput placeholder="Contraseña" formControlName="hash" type="password" />
                         <mat-error *ngIf="addressForm.controls['hash'].hasError('required')">
                             este campo es <strong>requerido</strong>
                         </mat-error>

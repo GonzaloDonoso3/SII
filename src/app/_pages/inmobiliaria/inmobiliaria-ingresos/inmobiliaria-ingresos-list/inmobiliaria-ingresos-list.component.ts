@@ -131,11 +131,6 @@ export class InmobiliariaIngresosListComponent implements OnInit {
     });
   }
 
-
-
-
-
-
   aplicarfiltros() {
     this.formFilter.valueChanges.subscribe(res => {
 
@@ -181,6 +176,4 @@ export class InmobiliariaIngresosListComponent implements OnInit {
     this.selection.clear()
     this.totalSeleccion = 0;
   }
-
-
 }

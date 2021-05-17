@@ -19,7 +19,6 @@ import { first } from 'rxjs/operators';
 })
 export class AdministracionSucursalesFormComponent implements OnInit {
 
-  formularioListo = new EventEmitter<string>();
   usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '');
   empresas : any;
 

@@ -3,7 +3,6 @@
     Limpiar filtros
   </button>
     <span> Listado Usuario </span>
-    <!-- ***************************** cambiar metodo botón ********************************** -->
     <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="exportAsXLSX()">
         Exportar
     </button>
@@ -92,7 +91,7 @@
                         <mat-icon>mode_edit</mat-icon> Editar
                 </button>
                 <br>
-                <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="deleteSucursal(element.id, element.razonSocial)">
+                <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="deleteUsuario(element.id, element.nombre, element.apellido)">
                         <mat-icon>delete</mat-icon> Eliminar
                 </button>
             </td>

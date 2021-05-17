@@ -131,11 +131,6 @@ export class InmobiliariaIngresosListComponent implements OnInit {
     });
   }
 
-
-
-
-
-
   aplicarfiltros() {
     this.formFilter.valueChanges.subscribe(res => {
 

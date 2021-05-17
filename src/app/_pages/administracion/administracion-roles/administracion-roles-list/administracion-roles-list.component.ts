@@ -67,7 +67,7 @@ ngOnInit(): void {
   this.aplicarfiltros();
 }
 
-// Obtener el listado de cliente desde la BD
+// Obtener el listado de roles desde la BD
 getRoles() {
   //Carga Tabla 
   this.rolService.getAll().pipe(first()).subscribe((result: Rol[]) => {

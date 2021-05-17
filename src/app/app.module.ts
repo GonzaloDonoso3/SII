@@ -16,9 +16,12 @@ import { HostalModule } from './_pages/hostal/hostal.module';
 import { ComponentsModule } from './_components/components.module';
 import { AuthSharedService } from './_pages/shared/shared-services/auth-shared.service';
 
+
 /* Configurar Pipe español */
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
+
+
 registerLocaleData(localeEs, 'es');
 
 
@@ -28,7 +31,7 @@ registerLocaleData(localeEs, 'es');
   declarations: [
     AppComponent,
     HomeMainComponent,
-    NavComponent
+    NavComponent,
   ],
   imports: [
     ComponentsModule,

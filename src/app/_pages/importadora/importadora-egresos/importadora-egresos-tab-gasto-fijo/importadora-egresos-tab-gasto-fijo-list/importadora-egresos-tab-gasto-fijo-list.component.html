@@ -1,0 +1,163 @@
+<mat-toolbar color="primary">
+    <button mat-raised-button (click)="limpiarFiltros()" color="accent">
+        Limpiar filtros
+    </button>
+    <span> Egresos Fijos Importadora </span>
+    <span> Monto Registros Seleccionados:
+        {{ totalSeleccion | currency: "$":"symbol":"1.0-0" }}
+    </span>
+    <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="revelarTotal()">
+        Revelar total
+    </button>
+    <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="exportAsXLSX()">
+        Exportar
+    </button>
+    <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="getEgreso()">
+        <mat-icon>autorenew</mat-icon>
+    </button>
+</mat-toolbar>
+
+<div class="table-responsive">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z10">
+        <!-- check column -->
+
+        <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+                </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                </mat-checkbox>
+            </td>
+        </ng-container>
+        <!-- data columns -->
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>ID </th>
+            <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+        </ng-container>
+
+        <!-- Campo Fecha -->
+        <ng-container matColumnDef="fecha" class="mat-column-date">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-form-field appearance="fill">
+                    <mat-label>Fecha</mat-label>
+                    <mat-date-range-input [formGroup]="formFilter" [rangePicker]="picker">
+                        <input matStartDate formControlName="start" placeholder="Start date" />
+                        <input matEndDate formControlName="end" placeholder="End date" />
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+
+                    <mat-error *ngIf="formFilter.controls.start.hasError('matStartDateInvalid')">Invalid start date
+                    </mat-error>
+                    <mat-error *ngIf="formFilter.controls.end.hasError('matEndDateInvalid')">Invalid end date
+                    </mat-error>
+                </mat-form-field>
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.fecha | date: 'dd/MM/yyyy' }}</td>
+        </ng-container>
+
+        <!-- Campo Monto -->
+        <ng-container matColumnDef="monto">
+            <th mat-header-cell *matHeaderCellDef> Monto </th>
+            <td mat-cell *matCellDef="let element">
+                {{ element.monto | currency: "$":"symbol":"1.0-0" }}
+            </td>
+        </ng-container>
+
+
+        <!-- Campo Tipo Egreso -->
+        <ng-container matColumnDef="tipoEgreso">
+            <th mat-header-cell *matHeaderCellDef>
+                <div [formGroup]="formFilter">
+                    <mat-form-field class="full-width">
+                        <mat-select placeholder="Tipo Egreso" formControlName="tipoEgreso">
+                            <mat-option value="0"> Seleccione una opción </mat-option>
+                            <mat-option value="Gastos">
+                                Gastos
+                            </mat-option>
+                            <mat-option value="Costos">
+                                Costos
+                            </mat-option>
+                            <mat-option value="Remuneraciones">
+                                Remuneraciones
+                            </mat-option>
+                            <mat-option value="Bancarios">
+                                Bancarios
+                            </mat-option>
+                            <mat-option value="Impuestos">
+                                Impuestos
+                            </mat-option>
+                            <mat-option value="Inversiones">
+                                Inversiones
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.tipoEgreso }}</td>
+        </ng-container>
+
+        <!-- Campo Descripción Ingreso-->
+        <ng-container matColumnDef="descripcion">
+            <th mat-header-cell *matHeaderCellDef>
+                <div [formGroup]="formFilter">
+                    <mat-form-field class="fill">
+                        <input matInput placeholder="Descripción Egreso" formControlName="descripcion" />
+                    </mat-form-field>
+                </div>
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.descripcion }}</td>
+        </ng-container>
+
+
+        <!-- Campo Sucursal-->
+        <ng-container matColumnDef="sucursal">
+            <th mat-header-cell *matHeaderCellDef>
+                <div [formGroup]="formFilter">
+                    <mat-form-field class="full-width">
+                        <mat-select placeholder="Sucursal" formControlName="idSucursal">
+                            <mat-option value="0"> Seleccione una opción </mat-option>
+                            <mat-option *ngFor="let s of empresa.Sucursals" value="{{ s.razonSocial }}">
+                                {{ s.razonSocial }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.sucursal }}</td>
+        </ng-container>
+
+        <!-- Campo Usuario -->
+        <ng-container matColumnDef="usuario">
+            <th mat-header-cell *matHeaderCellDef>
+                <div [formGroup]="formFilter">
+                    <mat-form-field class="fill">
+                        <input matInput placeholder="Usuario" formControlName="usuario" />
+                    </mat-form-field>
+                </div>
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.usuario }}</td>
+        </ng-container>
+
+        <!-- Campo Respaldos-->
+        <ng-container matColumnDef="respaldos">
+            <th mat-header-cell *matHeaderCellDef>Respaldos</th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-mini-fab (click)="recuperarArchivos(element.RespaldoEgresoFijoImportadoras)">
+                    <mat-icon>get_app</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No existen coincidencias</td>
+        </tr>
+    </table>
+</div>
+<mat-paginator [pageSizeOptions]="[10, 30, 50, 100]"></mat-paginator>

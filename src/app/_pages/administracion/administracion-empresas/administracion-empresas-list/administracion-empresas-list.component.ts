@@ -70,18 +70,17 @@ ngOnInit(): void {
   this.aplicarfiltros();
   
   //Cargar una lista auxilar con las sucursales, que posteriormente nos ayudará a eliminar un registro
-  this.sucursalService
+  this.empresaService
     .getAll()
     .pipe(first())
     .subscribe((empresasDelete) => (this.empresasDelete = empresasDelete));
 }
 
-// Obtener el listado de cliente desde la BD
+// Obtener el listado de empresas desde la BD
 getEmpresas() {
   //Carga Tabla 
   this.empresaService.getAll().pipe(first()).subscribe((result: Empresa[]) => {
     this.dataEmpresa = result.map(Empresa => {
-      //Sucursal.empresa = Sucursal.Empresa.razonSocial;
       return Empresa;
     });
     this.dataSource = new MatTableDataSource(this.dataEmpresa);
@@ -140,6 +139,11 @@ aplicarfiltros() {
       dataFiltered = dataFiltered.filter((data: Empresa) => data.direccion == res.direccion);
     }
 
+    //Filtro Descripción
+    if (res.descripcion) {
+      dataFiltered = dataFiltered.filter((data: Empresa) => data.descripcion == res.descripcion);
+    }
+
     this.dataSource = new MatTableDataSource(dataFiltered);
     this.dataSource.paginator = this.paginator.toArray()[0];
     this.selection.clear()
@@ -149,7 +153,7 @@ aplicarfiltros() {
 
 //Limpiar los filtros
 limpiarFiltros() {
-  this.formFilter.patchValue({ rut: null, razonSocial: null, giro: null, actividad: null, direccion: null})
+  this.formFilter.patchValue({ rut: null, razonSocial: null, giro: null, actividad: null, direccion: null, descripcion: null})
   this.dataSource = new MatTableDataSource(this.dataEmpresa);
   this.dataSource.paginator = this.paginator.toArray()[0];
   this.selection.clear()

@@ -133,17 +133,17 @@ export class AbogadosService {
   }
 
   /* EGRESOS */
-  egresoRegistrar(egresosFirma: RegistroEgresoFirma) {
+  egresoRegistrar(egresosFirma: RegistroEgresoFirma) {    
     console.log(egresosFirma);
     return this.http.post(
       `${environment.apiUrl}/egresoFirma/conRespaldo`,
       egresosFirma
     );
   }
-  egresoGetAll(): any {        
+  egresoGetAll(): any {            
     return this.http.get<[]>(`${environment.apiUrl}/egresoFirma`);    
   }
-  egresoGetFiles(fileName: string): any {    
+  egresoGetFiles(fileName: string): any {       
     return this.http
       .get(`${environment.apiUrl}/egreso${this.empresa}/download/${fileName}`, {
         responseType: 'blob',
@@ -152,7 +152,7 @@ export class AbogadosService {
         window.open(window.URL.createObjectURL(res));
       });
   }
-  getById(id: string): any {    
+  getById(id: string): any {        
     return this.http.get<any>(
       `${environment.apiUrl}/egreso${this.empresa}/${id}`
     );

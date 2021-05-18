@@ -51,7 +51,7 @@ export class AbogadosEgresosFormComponent implements OnInit {
     private alert: AlertHelper
   ) {
     this.sucursales = this.sucursalService.sucursalListValue;
-
+  
   }
 
   ngOnInit(): void {

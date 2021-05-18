@@ -6,6 +6,7 @@ export class EgresosRentacar {
     tipoEgreso!: string;
     fecha!: string;
     monto!: number;
+    montoCuota!: number;
     responsable!: string;
     descripcion!: string;
     idSucursal!: number;

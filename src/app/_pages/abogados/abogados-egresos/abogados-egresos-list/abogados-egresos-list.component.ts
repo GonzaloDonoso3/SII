@@ -88,7 +88,7 @@ ngOnChanges(changes: SimpleChanges): void {
     const changeLog = `${propName}: changed from ${from} to ${to} `;
     this.changelog.push(changeLog);        
     this.abogadosService.egresoGetAll().subscribe((data: RegistroEgresoFirma[]) => {            
-      this.dataEgresos = data.map(egreso => {
+      this.dataEgresos = data.map(egreso => {        
         egreso.sucursal = egreso.Sucursal.razonSocial;
         egreso.usuario = egreso.Usuario.nombreUsuario;
         return egreso;

@@ -12,11 +12,15 @@ import { Empresa } from '@app/_models/shared/empresa';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EmpresaSharedService } from '../../../shared/shared-services/empresa-shared.service';
 import { EgresosRentacar } from '../../../../_models/rentacar/egresoRentacar';
+import { DatePipe } from "@angular/common";
+import * as moment from "moment";
+//import { SSL_OP_SINGLE_DH_USE } from 'node:constants';
 
 @Component({
   selector: 'app-rentacar-egresos-form',
   templateUrl: './rentacar-egresos-form.component.html',
-  styleUrls: ['./rentacar-egresos-form.component.scss']
+  styleUrls: ['./rentacar-egresos-form.component.scss'],
+  providers: [DatePipe]
 })
 export class RentacarEgresosFormComponent implements OnInit {
 
@@ -44,7 +48,8 @@ export class RentacarEgresosFormComponent implements OnInit {
     tipoEgreso: [null, Validators.required],
     descripcionEgreso: [null, Validators.required],
     fecha: [null, Validators.required],
-    monto: [null, Validators.required],
+    monto: [null],
+    montoCuota: [null],
     responsable: [null, Validators.required],
     numeroCuota: [null],
     otraPropiedad: ['']
@@ -58,6 +63,7 @@ export class RentacarEgresosFormComponent implements OnInit {
     private rentacarService: RentacarService,
     private route: ActivatedRoute,
     private empresaService: EmpresaSharedService,
+    private miDatePipe: DatePipe,
   ) { }
 
   ngOnInit(): void {
@@ -65,36 +71,20 @@ export class RentacarEgresosFormComponent implements OnInit {
   }
 //Metodo para mostrar numero de cuotas
   activarEdicion(): void {
-    this.mostrarDatos = false;
-    //console.log("lo que trae el validador", this.addressForm)    
-    // this.addressForm = this.fb.group({ 
-    //   numeroCuota: [null, Validators.required],
-    // });
+    this.mostrarDatos = false;    
   }
 //Metodo para ocultar los numeros de cuotas
   desactivarEdicion(): void {
     this.mostrarDatos = true;
   }
 
+//Capturamos los tipos de egresos
   capturar() {
-    //Pasamos el valor seleccionado a la variable verSeleccion
     this.verSeleccion = this.opcionSeleccionado;
     if(this.verSeleccion == "Prestamos Bancarios"  || this.verSeleccion == "Prestamos Automotriz"){
-      this.montoTotal == "1000"
-      //console.log("puden entrar a la funcion", this.montoTotal)
+      this.montoTotal == "1000";        
     }        
   }
-
-  //modelChangeFn() {
-    //if(this.verSeleccion == "Prestamos Bancarios"){
-    //console.log("valor que necesito")
-    //console.log("imprimiendo funcion", this.verSeleccion)
-    //this.montoTotal = e;
-    //return this.montoTotal
-    //console.log("lo que tiene e", e)
-    //console.log("lo que tiene monto total", this.montoTotal)
-  //}
-  //}
 
   getEmpresa(id: number): any {
     this.empresaService
@@ -119,14 +109,35 @@ export class RentacarEgresosFormComponent implements OnInit {
           //Se le asignan los datos del formulario al objeto EgresoInmobiliaria
           this.nameRespaldo = result;
           this.egreso.RespaldoEgresos = [];
-          this.egreso.fecha = this.addressForm.value.fecha;
-          this.egreso.monto = this.addressForm.value.monto;
+          this.egreso.fecha = this.addressForm.value.fecha;          
+          if(this.addressForm.value.monto == null) {                        
+            this.egreso.monto = this.addressForm.value.montoCuota;
+          } else {
+            this.egreso.monto = this.addressForm.value.monto;                    
+          }                        
           this.egreso.descripcion = this.addressForm.value.descripcionEgreso;
           this.egreso.responsable = this.addressForm.value.responsable;
           this.egreso.idSucursal = this.addressForm.value.idSucursal;
           this.egreso.tipoEgreso = this.addressForm.value.tipoEgreso;
           this.egreso.idArriendo = this.addressForm.value.idArriendo;
-          this.egreso.numeroCuota = this.addressForm.value.numeroCuota;    
+          this.egreso.numeroCuota = this.addressForm.value.numeroCuota; 
+          // if(this.addressForm.value.numeroCuota > 1){ 
+          //   let sumarDias = 0;  
+          //   let sumarMes= 0;                    
+          //     for (let i = 0; i < this.addressForm.value.numeroCuota; i++) {                                                                                       
+          //       let devolucion = new Date();
+          //       devolucion.setDate(this.addressForm.value.fecha.getDate() + sumarDias);                                                      
+          //       //devolucion.setMonth(this.addressForm.value.fecha.getDate() + sumarMes);                                                                                                                                      
+          //       this.addressForm.value.fecha = devolucion; 
+          //       this.egreso.fecha = this.addressForm.value.fecha;
+          //       //console.log("fechas con dias sumados", this.egreso.fecha); 
+          //       sumarMes = sumarMes + 1;  
+          //       sumarDias = sumarDias + 30;                                
+          //   }   
+          // }
+          // else {
+          //   this.egreso.fecha = this.addressForm.value.fecha;          
+          // }          
 
 
           //Se le asigna la id del usuario logueado
@@ -138,11 +149,12 @@ export class RentacarEgresosFormComponent implements OnInit {
           }
           //Si todo esta correcto se ingresa el objeto
           if (result.length > 0) {
+            //console.log("console 1", result);
             this.rentacarService
               .createEgresos(this.egreso)
               .pipe(first())
               .subscribe(
-                (data: any) => {
+                (data: any) => {                                                                 
                   this.alert.createAlert("Registro Creado con exito");
                   this.formularioListo.emit(this.num + "");
                   this.num++;
@@ -180,3 +192,4 @@ export class RentacarEgresosFormComponent implements OnInit {
   }
 
 }
+

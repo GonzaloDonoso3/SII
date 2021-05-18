@@ -30,6 +30,7 @@
     "ag-grid-community": "^25.2.1",
     "file-saver": "^2.0.5",
     "mat-table-exporter": "^10.2.3",
+    "moment": "^2.29.1",
     "ng2-file-upload": "^1.4.0",
     "rxjs": "~6.6.0",
     "sweetalert2": "^10.15.7",

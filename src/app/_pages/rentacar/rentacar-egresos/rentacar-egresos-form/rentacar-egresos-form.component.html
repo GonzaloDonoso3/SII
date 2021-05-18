@@ -83,10 +83,18 @@
                 </div>
 
                 <!-- monto -->
-                <div class="col">
+                <div class="col" *ngIf="mostrarDatos">
                     <mat-form-field class="full-width">
-                        <input matInput placeholder="Monto" formControlName="monto" type="number"/>                        
-                        <!-- <input matInput placeholder="Monto" formControlName="monto" type="number"/>      -->
+                        <input matInput placeholder="Monto" formControlName="monto" type="number"/>                                                
+                        <mat-error *ngIf="addressForm.controls['monto'].hasError('required')">
+                            monto es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col" *ngIf="!mostrarDatos">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Monto" formControlName="montoCuota" type="number" [ngModel]="montoTotal"/>
+                        Capital: 500 + Interes 500                        
                         <mat-error *ngIf="addressForm.controls['monto'].hasError('required')">
                             monto es <strong>requerido</strong>
                         </mat-error>

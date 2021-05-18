@@ -14,6 +14,7 @@ import { UsuarioSharedService } from '@app/_pages/shared/shared-services/usuario
 import { EmpresaSharedService } from '../../../shared/shared-services/empresa-shared.service';
 import { Empresa } from '@app/_models/shared/empresa';
 import { ImportadoraService } from '../../importadora.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-importadora-ingresos-form',
@@ -27,8 +28,10 @@ export class ImportadoraIngresosFormComponent implements OnInit {
 
   nameRespaldo = '';
   tiposIngresos: any[] = [];
-  idEmpresa = 13;
+  idEmpresa = 9;
   empresa = new Empresa();
+  rango = 0;
+  chequeList : any[] = [];
 
 
   // ? Validar si es necesario importar modelos de datos
@@ -45,7 +48,20 @@ export class ImportadoraIngresosFormComponent implements OnInit {
     codigoAutorizacion: [''],
   });
 
- 
+  addressFormCheque = this.fb.group({
+    descripcionIngreso: [null, Validators.required],
+    fecha: [null, Validators.required],
+    monto: [null, Validators.required],
+  });
+
+  displayedColumns: string[] = [
+    'fecha',
+    'descripcion',
+    'monto',
+    'respaldo'
+  ];
+
+  dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
   sucursales: Sucursal[];
   constructor(
@@ -162,5 +178,44 @@ export class ImportadoraIngresosFormComponent implements OnInit {
     //metodo que permite activar el input de otraPropiedad y otroTipo
     get f() {
       return this.addressForm.controls;
+    }
+    
+    onKeyupEvent(event: any){
+      this.rango = event.target.value;
+      this.chequeList = [];
+    }
+
+    onSubmitCheque(){
+      this.ingreso.monto = this.addressFormCheque.value.monto;
+      this.ingreso.descripcionIngreso = this.addressFormCheque.value.descripcionIngreso;
+      this.ingreso.fecha = this.addressFormCheque.value.fecha;
+
+      if(this.rango != 0){
+        const dialogRef = this.dialog.open(DialogRespaldosComponent, {
+
+          data: { url: 'ingresoImportadora/upload' }
+          
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          this.nameRespaldo = result;
+          this.ingreso.RespaldoIngresoImportadoras = [];
+
+          //Se le agrega los respaldos subidos
+          for (const name of this.nameRespaldo) {
+            this.ingreso.RespaldoIngresoImportadoras.push({ url: name });
+          }
+
+
+          this.chequeList.push(this.ingreso);
+          console.log(this.chequeList);
+          this.dataSource = new MatTableDataSource(this.chequeList);
+          this.rango = this.rango - 1; 
+        })
+      }else{
+        this.snackBar.open('Cheques ya asignados', 'cerrar', {
+          duration: 2000,
+          verticalPosition: 'top',
+        });
+      }
     }
 }

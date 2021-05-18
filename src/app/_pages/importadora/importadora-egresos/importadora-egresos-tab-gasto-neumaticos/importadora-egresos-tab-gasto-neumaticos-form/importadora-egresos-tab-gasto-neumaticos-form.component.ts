@@ -23,7 +23,7 @@ import { EgresosNeumaticoImportadora } from '@app/_models/importadora/egresoNeum
 })
 export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit {
 
-  idEmpresa = 13;
+  idEmpresa = 9;
   sucursales!: Sucursal[];
   empresa = new Empresa();
   

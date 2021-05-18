@@ -57,7 +57,7 @@ export class ImportadoraEgresosTabGastoFijoListComponent implements OnInit {
 
 
  empresa = new Empresa();
- idEmpresa = 13;
+ idEmpresa = 9;
  sucursales: Sucursal[] = [];
  selection = new SelectionModel<EgresosFijoImportadora>(true, []);
  tiposEgresos: string[] = [];

@@ -63,7 +63,7 @@ export class ImportadoraIngresosListComponent implements OnInit {
 
 
  empresa = new Empresa();
- idEmpresa = 13;
+ idEmpresa = 9;
  sucursales: Sucursal[] = [];
  selection = new SelectionModel<IngresosImportadora>(true, []);
  tiposEgresos: string[] = [];
@@ -92,7 +92,6 @@ export class ImportadoraIngresosListComponent implements OnInit {
        Ingresos.usuario = Ingresos.Usuario.nombreUsuario;
        return Ingresos;
      });
-     console.log(this.dataIngresos);
      this.dataSource = new MatTableDataSource(this.dataIngresos);
      this.dataSource.paginator = this.paginator.toArray()[0];
    });

@@ -43,7 +43,7 @@
                         <!-- Monto -->
                         <div class="col">
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="N° Container" formControlName="nContainer" type="number" />
+                                <input matInput placeholder="N° Conteiner" formControlName="nContainer" type="number" />
                                 <mat-error *ngIf="addressFormContrato.controls['nContainer'].hasError('required')">
                                     este campo es <strong>requerido</strong>
                                 </mat-error>
@@ -117,7 +117,7 @@
                 <mat-card class="shipping-card">
                     <mat-card-header>
                         <h1>
-                            Container : {{ contrato.id }} Monto total: {{ contrato.montoContrato }}
+                            Conteiner : {{ contrato.id }} Monto total: {{ contrato.montoContrato }}
                         </h1>
                     </mat-card-header>
                     <br><br>

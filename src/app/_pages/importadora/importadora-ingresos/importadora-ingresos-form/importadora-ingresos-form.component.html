@@ -1,4 +1,4 @@
-<form [formGroup]="addressForm" novalidate (ngSubmit)="onSubmit()" class="mat-elevation-z10">
+<form [formGroup]="addressForm" novalidate (ngSubmit)="onSubmit()" class="mat-elevation-z10" *ngIf="!confirmCheque">
     <mat-card class="shipping-card">
         <mat-card-header>
             <h1> Ingresos Importadora </h1>
@@ -48,7 +48,7 @@
                 <!-- tipo ingreso -->
                 <div class="col">
                     <mat-form-field class="full-width">
-                        <mat-select placeholder="Medio de Pago" formControlName="medioPago">
+                        <mat-select placeholder="Medio de Pago" formControlName="medioPago" (selectionChange)="onSelect()">
                             <mat-option value="REDCOMPRA"> REDCOMPRA </mat-option>
                             <mat-option value="TRANSFERENCIA"> TRANSFERENCIA </mat-option>
                             <mat-option value="EFECTIVO"> EFECTIVO </mat-option>
@@ -65,15 +65,7 @@
                 <!-- fin -->
             </div>
 
-            <div class="row" *ngIf="f.medioPago.value == 'CHEQUE'">
-                <div class="col">
-                    <mat-form-field class="full-width">
-                        <input matInput placeholder="Cantidad Cheque" (keyup)="onKeyupEvent($event)" />
-                    </mat-form-field>
-                </div>
-            </div>
-
-            <div class="row" *ngIf="f.medioPago.value != 'CHEQUE'">
+            <div class="row">
                 <!-- select fecha -->
                 <div class="col">
                     <mat-form-field class="full-width">
@@ -110,17 +102,17 @@
         </mat-card-content>
 
         <!-- botón enviar -->
-        <mat-card-actions *ngIf="f.medioPago.value != 'CHEQUE'">
+        <mat-card-actions>
             <button mat-raised-button color="primary" type="submit">
              <mat-icon>send</mat-icon> Enviar
             </button>
         </mat-card-actions>
     </mat-card>
 </form>
-<form [formGroup]="addressFormCheque" class="mat-elevation-z10" *ngIf="f.medioPago.value == 'CHEQUE'">
+<form [formGroup]="addressFormCheque" class="mat-elevation-z10" (ngSubmit)="onSubmitCheque()" *ngIf="confirmCheque">
     <mat-card>
         <mat-card-header>
-            <h1> Cantidad de cheques: {{ rango }} </h1>
+            <h1>Ingresar Cheques </h1>
         </mat-card-header>
         <mat-card-content>
             <div class="row">
@@ -158,7 +150,7 @@
                 </div>
 
                 <div class="col">
-                    <button mat-raised-button color="primary" (click)="onSubmitCheque()">
+                    <button mat-raised-button color="primary" type="submit">
                         <mat-icon>send</mat-icon> Enviar
                       </button>
                 </div>
@@ -166,7 +158,6 @@
             <!-- Tabla -->
             <div class="row">
                 <div class="col">
-                    <h1>Cheques Registrados</h1>
                     <div class="table-responsive">
                         <table mat-table [dataSource]="dataSource" class="mat-elevation-z10">
 
@@ -191,13 +182,6 @@
                                 </td>
                             </ng-container>
 
-                            <ng-container matColumnDef="respaldo">
-                                <th mat-header-cell *matHeaderCellDef> Respaldo </th>
-                                <td mat-cell *matCellDef="let element">
-                                    {{ element.RespaldoIngresoImportadoras[0].url }}
-                                </td>
-                            </ng-container>
-
                             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
@@ -210,5 +194,10 @@
                 </div>
             </div>
         </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button color="primary" (click)="onSubmitChequeFinal()">
+             <mat-icon>send</mat-icon> Finalizar
+            </button>
+        </mat-card-actions>
     </mat-card>
 </form>

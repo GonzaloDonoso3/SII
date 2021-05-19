@@ -32,6 +32,7 @@ export class ImportadoraIngresosFormComponent implements OnInit {
   empresa = new Empresa();
   rango = 0;
   chequeList : any[] = [];
+  confirmCheque: Boolean = false;
 
 
   // ? Validar si es necesario importar modelos de datos
@@ -58,7 +59,6 @@ export class ImportadoraIngresosFormComponent implements OnInit {
     'fecha',
     'descripcion',
     'monto',
-    'respaldo'
   ];
 
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
@@ -70,13 +70,14 @@ export class ImportadoraIngresosFormComponent implements OnInit {
     private snackBar: MatSnackBar,
     private sucursalService: SucursalSharedService,
     private importadoraService: ImportadoraService,
-    private empresaService: EmpresaSharedService
+    private empresaService: EmpresaSharedService,
   ) { 
     this.sucursales = this.sucursalService.sucursalListValue;
   }
 
   ngOnInit(): void {
     this.getEmpresa(this.idEmpresa);
+    this.confirmCheque = false;
    }
  
    getEmpresa(id: number): any {
@@ -179,18 +180,46 @@ export class ImportadoraIngresosFormComponent implements OnInit {
     get f() {
       return this.addressForm.controls;
     }
+
+    onSelect(){
+      if(this.addressForm.value.medioPago == "CHEQUE"){
+        this.clickMethod();
+      }
+    }
     
-    onKeyupEvent(event: any){
-      this.rango = event.target.value;
-      this.chequeList = [];
+    clickMethod() {
+      if(confirm("¿Estas segur@ de querer agregar cheques? (Una vez ingresado un cheque no se podrá eliminar)")) {
+        if(this.addressForm.value.idSucursal != null && this.addressForm.value.tipoIngreso != null){
+          this.confirmCheque = true;
+          this.chequeList = [];
+          this.dataSource = new MatTableDataSource(this.chequeList);
+        }else{
+          alert("Faltan datos (Sucursal o Tipo Ingreso)");
+          this.addressForm.reset();
+        }
+      }
     }
 
+
     onSubmitCheque(){
+      this.ingreso.idSucursal = this.addressForm.value.idSucursal;
+      this.ingreso.vendedor = this.addressForm.value.vendedor;
+      this.ingreso.tipoIngreso = this.addressForm.value.tipoIngreso;
+      this.ingreso.medioPago = this.addressForm.value.medioPago;
       this.ingreso.monto = this.addressFormCheque.value.monto;
       this.ingreso.descripcionIngreso = this.addressFormCheque.value.descripcionIngreso;
       this.ingreso.fecha = this.addressFormCheque.value.fecha;
+      this.ingreso.codigoAutorizacion = "NO POSEE";
 
-      if(this.rango != 0){
+      //Si el usuario elegio otra propiedad se le asigna el nombre ingresado
+      if (this.addressForm.value.vendedor == "") {
+        this.ingreso.vendedor = this.usuario.nombreUsuario;
+      } 
+      
+      //Se le asigna la id del usuario logueado
+      this.ingreso.idUsuario = this.usuario.id;
+
+      
         const dialogRef = this.dialog.open(DialogRespaldosComponent, {
 
           data: { url: 'ingresoImportadora/upload' }
@@ -205,17 +234,43 @@ export class ImportadoraIngresosFormComponent implements OnInit {
             this.ingreso.RespaldoIngresoImportadoras.push({ url: name });
           }
 
-
           this.chequeList.push(this.ingreso);
-          console.log(this.chequeList);
           this.dataSource = new MatTableDataSource(this.chequeList);
           this.rango = this.rango - 1; 
-        })
-      }else{
-        this.snackBar.open('Cheques ya asignados', 'cerrar', {
-          duration: 2000,
-          verticalPosition: 'top',
+
+          if (result.length > 0) {
+            this.importadoraService
+              .create(this.ingreso)
+              .pipe()
+              .subscribe(
+                (data) => {
+                  this.snackBar.open('Ingreso Registrado', 'cerrar', {
+                    duration: 2000,
+                    verticalPosition: 'top',
+                  });
+                  this.addressFormCheque.reset();
+
+                },
+                (error) => {
+                  //Si es incorrecto se envía un mensaje de error
+                  this.snackBar.open('Tenemos Problemas para realizar el registro, favor contactar al equipo de desarrollo', 'cerrar', {
+                    duration: 2000,
+                    verticalPosition: 'top',
+                  });
+                }
+              );
+          } else {
+            this.snackBar.open('Debemos Recibir sus respaldos para continuar !!', 'cerrar', {
+              duration: 5000,
+              verticalPosition: 'top',
+            });
+          }
         });
-      }
+    }
+
+    onSubmitChequeFinal(){
+      this.addressForm.reset();
+      this.addressFormCheque.reset();
+      this.confirmCheque = false;
     }
 }

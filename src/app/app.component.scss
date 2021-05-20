@@ -1,0 +1,52 @@
+.loginForm {
+    width: 80%;
+    margin: 0px auto;
+    margin-top: 10%;
+    background: transparent;
+}
+
+.imgLogin {
+    width: 50%;
+    height: 1%;
+    margin: 0px auto;
+}
+
+.full-width-login {
+    width: 100%;
+}
+
+.shipping-card-login {
+    min-width: 120px;
+    margin: 0rem;
+    padding: 3rem;
+    width: 80%;
+    margin: 0px auto;
+    border: none;
+}
+
+.row-login {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row;
+}
+
+.col-login {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.col-login:last-child {
+    margin-right: 0;
+}
+
+.example-section {
+    margin: 12px 0;
+}
+
+.example-margin {
+    margin: 0 12px;
+}
+
+.nav-index {
+    height: 100% !important;
+}

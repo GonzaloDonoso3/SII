@@ -1,45 +1,62 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav mat-primary #drawer class="sidenav" fixedInViewport
-    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
-    [opened]="(isHandset$ | async) === false">
-    <br>
-    <mat-toolbar>
-      <img src="assets/images/logo.png" alt="" width="187" height="50">
-    </mat-toolbar>
-    <br>
-    <mat-divider></mat-divider>
-    <mat-accordion>
-      <mat-expansion-panel *ngFor="let item of menuItems" hideToggle>
-        <mat-expansion-panel-header color="white" [routerLink]="item.url">
-          <mat-panel-title>
-            <mat-icon class="main-icon">{{ item.icon }} </mat-icon>
-            {{ item.name }}
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <mat-nav-list>
-          <a *ngFor="let subitem of subMenuItems" mat-list-item [routerLink]="'/' + item.url + '/' + subitem.url">          
-            <mat-icon color="grey">{{ subitem.icon }}</mat-icon>
-            {{ subitem.name }}
-          </a>                                          
-        </mat-nav-list>
-      </mat-expansion-panel>
-    </mat-accordion>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <mat-toolbar color="primary">
-      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
-        <mat-icon aria-label="mostrar menu lateral">menu</mat-icon>
-      </button>
-      <span class="example-spacer"></span>
-      <span>PLATAFORMA FINANZAS - GRUPO FIRMA</span>
-      <span class="example-spacer"></span>
-      <span style="font-size: 0.9rem;margin-right: 1rem;"> {{auth.usuario.nombreUsuario}} </span>
-      <button mat-raised-button color="accent" (click)="volverVistaAtigua()">
-        <mat-icon>reply</mat-icon> volver
-      </button>
-    </mat-toolbar>
-    <div class="container-page">
-      <router-outlet></router-outlet>
-    </div>
-  </mat-sidenav-content>
+    <mat-sidenav mat-primary #drawer class="sidenav" fixedInViewport
+        [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
+        [opened]="(isHandset$ | async) === false">
+        <br>
+        <mat-toolbar>
+            <img src="assets/images/logo.png" alt="" width="187" height="50">
+        </mat-toolbar>
+        <br>
+        <mat-divider></mat-divider>
+        <mat-accordion>
+            <mat-expansion-panel *ngFor="let item of menuItems" hideToggle>
+                <mat-expansion-panel-header color="white" [routerLink]="item.url">
+                    <mat-panel-title>
+                        <mat-icon class="main-icon">{{ item.icon }} </mat-icon>
+                        {{ item.name }}
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-nav-list>
+                    <a *ngFor="let subitem of subMenuItems" mat-list-item
+                        [routerLink]="'/' + item.url + '/' + subitem.url">
+                        <mat-icon color="grey">{{ subitem.icon }}</mat-icon>
+                        {{ subitem.name }}
+                    </a>
+                </mat-nav-list>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <mat-toolbar color="primary">
+            <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
+                <mat-icon aria-label="mostrar menu lateral">menu</mat-icon>
+            </button>
+
+            <!-- ********** Inicio Menú Administación **********-->
+            <div *ngFor="let item of menuItemsAdmin" hideToggle class="select-nav" style='font-size: 0.8rem;'>
+                <mat-select placeholder="{{ item.name }}" class="select-nav2">
+                    <mat-option *ngFor="let subitem of subMenuItemsAdmin">
+                        <a mat-list-item [routerLink]="'/' + item.url + '/' + subitem.url">
+                            {{ subitem.name }} <mat-icon color="grey">{{ subitem.icon }}</mat-icon>
+                        </a>
+                    </mat-option>
+                </mat-select>
+            </div>
+            <!-- ********** Fin Menú Administación **********-->
+
+            <span class="example-spacer"></span>
+            <span>PLATAFORMA FINANZAS - GRUPO FIRMA</span>
+            <span class="example-spacer"></span>
+            <span style="font-size: 0.9rem;margin-right: 1rem;"> {{auth.usuario.nombreUsuario}} </span>
+            <button mat-raised-button color="accent" style="margin-right: 1rem;" (click)="volverVistaAtigua()">
+                <mat-icon>reply</mat-icon> volver
+            </button>
+            <button mat-raised-button color="accent" (click)="cerrarSesion()">
+                <mat-icon>logout</mat-icon> Salir
+            </button>
+        </mat-toolbar>
+        <div class="container-page">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-sidenav-content>
 </mat-sidenav-container>

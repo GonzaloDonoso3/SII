@@ -132,16 +132,17 @@ export class RentacarEgresosFormComponent implements OnInit {
           this.egreso.idSucursal = this.addressForm.value.idSucursal;
           this.egreso.tipoEgreso = this.addressForm.value.tipoEgreso;
           this.egreso.idArriendo = this.addressForm.value.idArriendo;
-          this.egreso.numeroCuota = this.addressForm.value.numeroCuota; 
-          //console.log("voy en camino");
-          if(this.addressForm.value.numeroCuota > 1){              
-            //console.log("entre en el if")
+          this.egreso.numeroCuota = this.addressForm.value.numeroCuota;           
+          if(this.addressForm.value.numeroCuota > 1){                          
             let sumarMes= 0;
-            let restarMes= 0;                    
-              for (let i = 0; i < this.addressForm.value.numeroCuota; i++) {                                                                                                                                                                                                                                                                                                                             
+            let restarMes= 0;
+            let contadorCuota = 0;                                               
+              for (let i = 0; i < this.addressForm.value.numeroCuota; i++) {                     
                     this.addressForm.value.fecha.setMonth(this.addressForm.value.fecha.getMonth() + sumarMes);                                                                                                  
                     this.egreso.fecha = this.addressForm.value.fecha;
                     sumarMes = sumarMes + 1;
+                    contadorCuota = contadorCuota + 1;
+                    this.egreso.numeroCuota = contadorCuota.toString().concat("/").concat(this.addressForm.value.numeroCuota);                                                                                                                                                                                                                                                                                                                                                                                         
                     restarMes = (sumarMes + 1) - sumarMes;                                 
                     if(sumarMes >= 2){                                            
                       sumarMes = restarMes;                      
@@ -185,9 +186,9 @@ export class RentacarEgresosFormComponent implements OnInit {
             return;
           }
           else {
-            this.egreso.fecha = this.addressForm.value.fecha;             
-            let contadorCuota = "1/1";
-            //console.log("contador de cuota", contadorCuota);          
+            this.egreso.fecha = this.addressForm.value.fecha;                         
+            this.addressForm.value.numeroCuota = "1/1";             
+            this.egreso.numeroCuota = this.addressForm.value.numeroCuota;          
           }          
 
 

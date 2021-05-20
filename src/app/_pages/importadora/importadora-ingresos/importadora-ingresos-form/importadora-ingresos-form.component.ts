@@ -43,7 +43,7 @@ export class ImportadoraIngresosFormComponent implements OnInit {
     tipoIngreso: [null, Validators.required],
     descripcionIngreso: [null, Validators.required],
     fecha: [null, Validators.required],
-    monto: [null, Validators.required],
+    monto: [null, [Validators.required]],
     medioPago: [null, Validators.required],
     vendedor: [''],
     codigoAutorizacion: [''],

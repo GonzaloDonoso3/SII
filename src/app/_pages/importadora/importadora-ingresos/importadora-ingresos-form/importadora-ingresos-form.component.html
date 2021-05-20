@@ -142,7 +142,7 @@
                 <!-- monto -->
                 <div class="col">
                     <mat-form-field class="full-width">
-                        <input matInput placeholder="Monto" formControlName="monto" />
+                        <input matInput placeholder="Monto" formControlName="monto" type="number" />
                         <mat-error *ngIf="addressFormCheque.controls['monto'].hasError('required')">
                             monto es <strong>requerido</strong>
                         </mat-error>

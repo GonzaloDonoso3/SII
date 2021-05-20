@@ -85,6 +85,11 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
   
   ngOnInit(): void {
     this.obtenerEmpresa(this.idEmpresa);
+    // Sumar fechas
+    // var fecha = new Date();
+    // var dias = 15; // Número de días a agregar
+    // fecha.setDate(fecha.getDate() + dias);
+    // console.info("fecha: " + fecha)
   }
 
   //Metodo que ayuda a obtener los valores del formulario

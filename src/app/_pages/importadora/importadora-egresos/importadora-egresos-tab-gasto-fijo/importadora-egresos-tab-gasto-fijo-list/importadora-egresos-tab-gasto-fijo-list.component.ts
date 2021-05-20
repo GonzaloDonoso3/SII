@@ -86,7 +86,6 @@ export class ImportadoraEgresosTabGastoFijoListComponent implements OnInit {
        Egresos.usuario = Egresos.Usuario.nombreUsuario;
        return Egresos;
      });
-     console.log(this.dataEgresos);
      this.dataSource = new MatTableDataSource(this.dataEgresos);
      this.dataSource.paginator = this.paginator.toArray()[0];
    });

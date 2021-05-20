@@ -125,8 +125,11 @@
                 <div class="col">
                     <mat-form-field class="full-width">
                         <input matInput placeholder="Monto" formControlName="monto" type="number" />
+                        <mat-error *ngIf="addressForm.controls['monto'].hasError('pattern')">
+                            campo es <strong>requerido y numerico</strong>
+                        </mat-error>
                         <mat-error *ngIf="addressForm.controls['monto'].hasError('required')">
-                            campo es <strong>requerido</strong>
+                            campo es <strong>requerido y numerico</strong>
                         </mat-error>
                     </mat-form-field>
                 </div>

@@ -40,7 +40,7 @@ export class InmobiliariaIngresosFormComponent implements OnInit {
     tipoIngreso: [null, Validators.required],
     descripcionIngreso: [null, Validators.required],
     fecha: [null, Validators.required],
-    monto: [null, Validators.required],
+    monto: [null, [Validators.required, Validators.pattern(/^[0-9]{0,}$/)]],
     otraPropiedad: [''],
     otroTipoIngreso: [''],
   });
@@ -59,8 +59,9 @@ export class InmobiliariaIngresosFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+        
   }
+
 
   onSubmit() {
     // $ consulta el estado del formulario antes de recibir los adjuntos
@@ -80,7 +81,7 @@ export class InmobiliariaIngresosFormComponent implements OnInit {
           this.ingreso.descripcionIngreso = this.addressForm.value.descripcionIngreso;
           this.ingreso.fecha = this.addressForm.value.fecha;
           this.ingreso.monto = this.addressForm.value.monto;
-
+          
           //Si el usuario elegio otra propiedad se le asigna el nombre ingresado
           if (this.addressForm.value.propiedad == 'Otra') {
             this.ingreso.propiedad = this.addressForm.value.otraPropiedad;

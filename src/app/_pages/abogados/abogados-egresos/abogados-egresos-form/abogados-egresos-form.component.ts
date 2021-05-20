@@ -57,7 +57,7 @@ export class AbogadosEgresosFormComponent implements OnInit {
   ngOnInit(): void {
 
     
-    this.tiposEgresos = this.abogadosService.tiposEgresosListValue;
+    this.tiposEgresos = this.abogadosService.tiposEgresosListValue;    
     this.cuentasService.obtenerCuentas().subscribe(data => {
       this.cuentasRegistradas = data;
 

@@ -80,9 +80,7 @@ export class RentacarHomeComponent implements OnInit {
   }
 
   
-  handleDateClick(arg: any) {
-    //alert('Fechas de pagos! ' + arg.dateStr)
-    //console.log("evento", this.eventsCalendar)
+  handleDateClick(arg: any) {    
     this.rentacarService.getAllEgresos().subscribe((egresos: EgresosRentacar[]) => {            
       this.dataEgresos = egresos.map(Egresos => {        
         return Egresos;
@@ -100,10 +98,8 @@ export class RentacarHomeComponent implements OnInit {
           if(time3 >= time1 && time3 <= time2)
           {
           //Si la cuota esta por vencerse
-          //alert('Fechas de pagos! ' + data.tipoEgreso)
           console.log("si esta por vencer");
-          } else{
-            //alert('Fechas de pagos! ' + data.tipoEgreso)
+          } else{            
             console.log("si aun falta por vencerse");
           }
         });              

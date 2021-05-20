@@ -34,9 +34,9 @@ export class RentacarEgresosFormComponent implements OnInit {
   egreso = new EgresosRentacar();
   empresaRazonSocial = '';
   num: number = 0;
+  //Variables que usan para los egresos de Prestamos bancarios y automotriz
   mostrarDatos : boolean = true;
   datoCuota = 'N/A';
-  //Parametros que usan para los egresos de Prestamos bancarios y automotriz
   montoTotal = '1000';
   selected: any;
   opcionSeleccionado: string = '0';
@@ -133,7 +133,9 @@ export class RentacarEgresosFormComponent implements OnInit {
           this.egreso.tipoEgreso = this.addressForm.value.tipoEgreso;
           this.egreso.idArriendo = this.addressForm.value.idArriendo;
           this.egreso.numeroCuota = this.addressForm.value.numeroCuota; 
+          //console.log("voy en camino");
           if(this.addressForm.value.numeroCuota > 1){              
+            //console.log("entre en el if")
             let sumarMes= 0;
             let restarMes= 0;                    
               for (let i = 0; i < this.addressForm.value.numeroCuota; i++) {                                                                                                                                                                                                                                                                                                                             
@@ -183,7 +185,9 @@ export class RentacarEgresosFormComponent implements OnInit {
             return;
           }
           else {
-            this.egreso.fecha = this.addressForm.value.fecha;          
+            this.egreso.fecha = this.addressForm.value.fecha;             
+            let contadorCuota = "1/1";
+            //console.log("contador de cuota", contadorCuota);          
           }          
 
 

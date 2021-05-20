@@ -11,11 +11,13 @@ import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuen
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 //import { Console } from 'node:console';
 import { HostalService } from '../../hostal.service';
+import { DatePipe } from "@angular/common";
 
 @Component({
   selector: 'app-hostal-egresos-list',
   templateUrl: './hostal-egresos-list.component.html',
-  styleUrls: ['./hostal-egresos-list.component.scss']
+  styleUrls: ['./hostal-egresos-list.component.scss'],
+  providers: [DatePipe]
 })
 export class HostalEgresosListComponent implements OnInit, OnChanges {
   // ? childrens
@@ -35,7 +37,12 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
     'tipoEgreso',
     'sucursal',
     'usuario',
+    'numeroCuota',
   ];
+
+  result = "N/A";
+  resultAsNumber = parseFloat(this.result); 
+
   dataSource: MatTableDataSource<EgresoHostal> = new MatTableDataSource();
   dataEgresos: EgresoHostal[] = [];
 
@@ -48,6 +55,7 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
     end: new FormControl(),
     idSucursal: new FormControl(),
     tipoEgreso: new FormControl(),
+    numeroCuota: new FormControl(),
   })
 
 
@@ -84,6 +92,12 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
           egreso.sucursal = egreso.Sucursal.razonSocial;
           egreso.usuario = egreso.Usuario.nombreUsuario;
           return egreso;
+        });
+        //Conviertiendo los numeros de cuotas Nulos en N/A
+        this.dataEgresos.forEach(data => {
+        if (data['numeroCuota']== null) {
+          data.numeroCuota = this.result;          
+          }
         });
         this.dataSource = new MatTableDataSource(this.dataEgresos);
         this.dataSource.paginator = this.paginator.toArray()[0];

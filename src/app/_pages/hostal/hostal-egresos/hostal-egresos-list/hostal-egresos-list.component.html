@@ -67,6 +67,15 @@
             </th>
             <td mat-cell *matCellDef="let element">{{ element.sucursal }}</td>
         </ng-container>
+
+        <!-- Campo Numero de cuotas -->
+        <ng-container matColumnDef="numeroCuota">
+            <th mat-header-cell *matHeaderCellDef>Nº de cuotas</th>                                    
+            <td mat-cell *matCellDef="let element">
+                {{ element.numeroCuota }}
+            </td>
+        </ng-container>
+        
         <!-- tipo egreso with select -->
         <!-- monto currency fomrat -->
         <ng-container matColumnDef="monto">

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -84,15 +83,3 @@ export class AppComponent implements OnInit{
     }
   }
 }
-=======
-import { Component } from '@angular/core';
-
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
-})
-export class AppComponent {
-  title = 'new-finanzas-client';
-}
->>>>>>> bc39663724976ddcc33e546dc7c0393e95e390ee

@@ -20,7 +20,7 @@ export class EgresoHostal {
     usuario!: string;
     sucursal!: string;
     fechaf!: string;
-
+    numeroCuota!: string;
 
 
 }

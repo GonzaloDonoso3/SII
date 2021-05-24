@@ -11,9 +11,10 @@ export class EgresosContainerImportadora {
   impuestoProntuario!: number;
   montoTotal!: number;
   fecha!: Date;
+  seguros!:number;
 
   sucursal!: string;
-  usuario!: string;
+  usuario!: number;
   Sucursal!: Sucursal;
   Usuario!: Usuario;
   neumatico!: any[];

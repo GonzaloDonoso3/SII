@@ -1,32 +1,3 @@
-mat-grid-list {
-    width: 99.5% !important;
-    margin-bottom: 30px;
-}
-
-mat-card-header {
-    width: 100%;
-    height: 100%;
-    border: 1px solid black;
-}
-
-mat-grid-tile {
-    width: 50%;
-    border: 1px solid black;
-    overflow: auto !important;
-}
-
-form {
-    width: 100%;
-}
-
-h1 {
-    margin: 0px auto;
-}
-
-.cliente {
-    text-align: center;
-}
-
 .full-width {
     width: 100%;
 }
@@ -101,6 +72,7 @@ span {
 
 table {
     border: 1px solid black;
+    width: 100%;
 }
 
 .mat-column-neumatico {

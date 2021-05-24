@@ -13,8 +13,6 @@ import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downlo
 import { EmpresaSharedService } from '@app/_pages/shared/shared-services/empresa-shared.service';
 import { first } from 'rxjs/operators';
 import { Empresa } from '@app/_models/shared/empresa';
-
-import { CalendarOptions } from '@fullcalendar/angular';
 import { DatePipe } from "@angular/common";
 
 
@@ -49,8 +47,7 @@ export class RentacarEgresosListComponent implements OnInit {
     'numeroCuota'
   ];
 
-  result = "N/A";
-  resultAsNumber = parseFloat(this.result); 
+  result = "N/A"; 
   
 
   //Creación de variables y asignación de datos

@@ -119,6 +119,7 @@ export class HostalEgresosFormComponent implements OnInit {
           this.nameRespaldo = result;
           this.egreso.RespaldoEgresos = [];
           this.egreso.fecha = this.egresosForm.value.fecha;
+          // Si el usuario ingresa Egreso Bancario y Automotriz al monto se le asigna el numero de cuota
           if(this.egresosForm.value.monto == null) {                        
             this.egreso.monto = this.egresosForm.value.montoCuota;
           } else {

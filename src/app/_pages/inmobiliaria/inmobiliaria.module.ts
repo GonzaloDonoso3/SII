@@ -12,6 +12,14 @@ import { InmobiliariaEgresosFormComponent } from './inmobiliaria-egresos/inmobil
 import { InmobiliariaEgresosListComponent } from './inmobiliaria-egresos/inmobiliaria-egresos-list/inmobiliaria-egresos-list.component';
 import { InmobiliariaIngresosListComponent } from './inmobiliaria-ingresos/inmobiliaria-ingresos-list/inmobiliaria-ingresos-list.component';
 import { InmobiliariaIngresosFormComponent } from './inmobiliaria-ingresos/inmobiliaria-ingresos-form/inmobiliaria-ingresos-form.component';
+import { FullCalendarModule } from '@fullcalendar/angular'; 
+import dayGridPlugin from '@fullcalendar/daygrid'; 
+import interactionPlugin from '@fullcalendar/interaction'; 
+
+FullCalendarModule.registerPlugins([ 
+  dayGridPlugin,
+  interactionPlugin
+]);
 
 
 @NgModule({
@@ -21,7 +29,8 @@ import { InmobiliariaIngresosFormComponent } from './inmobiliaria-ingresos/inmob
     InmobiliariaRoutingModule,
     MaterialModule,
     ComponentsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FullCalendarModule
   ]
 })
 export class InmobiliariaModule { }

@@ -40,8 +40,7 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
     'numeroCuota',
   ];
 
-  result = "N/A";
-  resultAsNumber = parseFloat(this.result); 
+  result = "N/A"; 
 
   dataSource: MatTableDataSource<EgresoHostal> = new MatTableDataSource();
   dataEgresos: EgresoHostal[] = [];

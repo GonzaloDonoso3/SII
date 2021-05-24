@@ -5,10 +5,9 @@ import { Empresa } from '@app/_models/shared/empresa';
 import { Sucursal } from '@app/_models/shared/sucursal';
 import { EmpresaSharedService } from '@app/_pages/shared/shared-services/empresa-shared.service';
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
-
 import { EgresoHostal } from '@app/_models/hostal/egresoHostal';
 import { DatePipe } from "@angular/common";
-import { HostalService } from '../hostal.service';
+import { HostalService } from '@app/_pages/hostal/hostal.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import esLocale from '@fullcalendar/core/locales/es';

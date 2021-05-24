@@ -121,7 +121,8 @@ export class RentacarEgresosFormComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {                      
           //Se le asignan los datos del formulario al objeto EgresoInmobiliaria
           this.nameRespaldo = result;
-          this.egreso.RespaldoEgresos = [];                    
+          this.egreso.RespaldoEgresos = [];
+          // Si el usuario ingresa Egreso Bancario y Automotriz al monto se le asigna el numero de cuota                    
           if(this.addressForm.value.monto == null) {                        
             this.egreso.monto = this.addressForm.value.montoCuota;
           } else {

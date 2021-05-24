@@ -1,6 +1,6 @@
 <mat-grid-list cols="2" class="grid">
     <!-- ********************** Formulario Contratos ********************** -->
-    <mat-grid-tile class="grid-body">
+    <!-- <mat-grid-tile class="grid-body">
         <form [formGroup]="addressFormContrato" novalidate class="mat-elevation-z10">
             <mat-card class="shipping-card">
                 <mat-card-header>
@@ -9,7 +9,7 @@
                 <br><br>
                 <mat-card-content>
                     <div class="row">
-                        <!-- select fecha -->
+                        select fecha 
                         <div class="col">
                             <mat-form-field class="full-width">
                                 <mat-label>Seleccionar fecha</mat-label>
@@ -24,7 +24,7 @@
                     </div>
 
                     <div class="row">
-                        <!-- sucursales -->
+                         sucursales 
                         <div class="col">
                             <mat-form-field class="full-width">
                                 <mat-select placeholder="Sucursal" formControlName="idSucursal">
@@ -40,7 +40,7 @@
                     </div>
 
                     <div class="row">
-                        <!-- Monto -->
+                         Monto
                         <div class="col">
                             <mat-form-field class="full-width">
                                 <input matInput placeholder="N° Container" formControlName="montoContrato" type="number" />
@@ -49,7 +49,7 @@
                                 </mat-error>
                             </mat-form-field>
                         </div>
-                        <!-- Monto -->
+                        Monto
                         <div class="col">
                             <mat-form-field class="full-width">
                                 <input matInput placeholder="Costo Neumáticos" formControlName="montoContrato" type="number" />
@@ -61,7 +61,7 @@
                     </div>
 
                     <div class="row">
-                        <!-- Monto -->
+                         Monto 
                         <div class="col">
                             <mat-form-field class="full-width">
                                 <input matInput placeholder="Costo Comisión" formControlName="montoContrato" type="number" />
@@ -70,7 +70,7 @@
                                 </mat-error>
                             </mat-form-field>
                         </div>
-                        <!-- N° contrato -->
+                        N° contrato
                         <div class="col">
                             <mat-form-field class="full-width">
                                 <input matInput placeholder="Costo Interior" formControlName="nContrato" type="number" />
@@ -82,7 +82,7 @@
                     </div>
 
                     <div class="row">
-                        <!-- Monto -->
+                         Monto 
                         <div class="col">
                             <mat-form-field class="full-width">
                                 <input matInput placeholder="Costo Marítimo" formControlName="montoContrato" type="number" />
@@ -91,7 +91,7 @@
                                 </mat-error>
                             </mat-form-field>
                         </div>
-                        <!-- N° contrato -->
+                         N° contrato 
                         <div class="col">
                             <mat-form-field class="full-width">
                                 <input matInput placeholder="Impuesto Prontuario" formControlName="nContrato" type="number" />
@@ -102,15 +102,15 @@
                         </div>
                     </div>
                 </mat-card-content>
-                <!-- botón enviar -->
-                <button mat-raised-button color="primary" (click)="validarContrato()">
+                botón enviar 
+                 <button mat-raised-button color="primary" (click)="validarContrato()">
                             <mat-icon>send</mat-icon> Enviar
                     </button>
             </mat-card>
         </form>
-    </mat-grid-tile>
+    </mat-grid-tile> -->
 
-    <!-- ********************** Formulario Neumaticos ********************** -->
+     <!-- ********************** Formulario Neumaticos ********************** 
     <mat-grid-tile>
         <form [formGroup]="addressFormCuotas" novalidate class="mat-elevation-z10">
             <mat-dialog-content>
@@ -123,7 +123,7 @@
                     <br><br>
                     <mat-card-content>
                         <div class="row">
-                            <!-- Rut Cliente -->
+                             Rut Cliente 
                             <div class="col">
                                 <mat-form-field class="full-width">
                                     <input matInput placeholder="Tipo Neumático" formControlName="montoCuota" />
@@ -153,14 +153,14 @@
                             </div>
                             <div class="col">
                                 <div>
-                                    <!-- botón enviar -->
+                                     botón enviar 
                                     <button mat-raised-button color="primary" (click)="agregarCuotas()">
                                         <mat-icon>paid</mat-icon> Agregar
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        <!-- Tabla -->
+                         Tabla 
                         <div class="row">
                             <div class="col">
                                 <h1>Neumáticos Registrados</h1>
@@ -191,7 +191,7 @@
                                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                                         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
-                                        <!-- Row shown when there is no matching data. -->
+                                        
                                         <tr class="mat-row" *matNoDataRow>
                                             <td class="mat-cell" colspan="4">No existen coincidencias</td>
                                         </tr>
@@ -201,12 +201,12 @@
                             </div>
                         </div>
                     </mat-card-content>
-                    <!-- botón enviar -->
+                     botón enviar
                     <button mat-raised-button color="primary" (click)="guardarContrato()">
                         <mat-icon>send</mat-icon> Enviar
                 </button>
                 </mat-card>
             </mat-dialog-content>
         </form>
-    </mat-grid-tile>
+    </mat-grid-tile> -->
 </mat-grid-list>

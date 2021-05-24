@@ -3,7 +3,7 @@ import { Component, OnInit, QueryList, ViewChildren, ViewChild} from '@angular/c
 import { EgresosRentacar } from '@app/_models/rentacar/egresoRentacar';
 import { CalendarOptions, EventApi } from '@fullcalendar/angular';
 import { DatePipe } from "@angular/common";
-import { RentacarService } from '../rentacar.service';
+import { RentacarService } from '@app/_pages/rentacar/rentacar.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import esLocale from '@fullcalendar/core/locales/es';

@@ -5,20 +5,21 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
-import { EgresoHostal } from '@app/_models/hostal/egresoHostal';
-import { RegistroEgresoFirma } from '@app/_models/registros/egresosFirma';
+import { RegistroEgresoFirma } from '@app/_models/abogados/egresosFirma';
 import { Sucursal } from '@app/_models/shared/sucursal';
 import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuentas-bancarias.service';
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 import { AbogadosService } from '@app/_pages/abogados/abogados.service';
 import { AgGridAngular } from 'ag-grid-angular';
-import { ViewChild } from '@angular/core'
+import { ViewChild } from '@angular/core';
+import { DatePipe } from "@angular/common";
 
 
 @Component({
   selector: 'app-abogados-egresos-list',
   templateUrl: './abogados-egresos-list.component.html',
-  styleUrls: ['./abogados-egresos-list.component.scss']
+  styleUrls: ['./abogados-egresos-list.component.scss'],
+  providers: [DatePipe]
 })
 export class AbogadosEgresosListComponent implements OnInit, OnChanges {
 
@@ -41,7 +42,10 @@ displayedColumns: string[] = [
   'tipoEgreso',
   'sucursal',
   'usuario',
+  'numeroCuota'
 ];
+
+result = "N/A"; 
 
 dataSource: MatTableDataSource<RegistroEgresoFirma> = new MatTableDataSource();
 dataEgresos: RegistroEgresoFirma[] = [];
@@ -55,6 +59,7 @@ formFilter = new FormGroup({
   end: new FormControl(),
   idSucursal: new FormControl(),
   tipoEgreso: new FormControl(),
+  //numeroCuota: new FormControl(),
 })
 
 
@@ -92,6 +97,12 @@ ngOnChanges(changes: SimpleChanges): void {
         egreso.sucursal = egreso.Sucursal.razonSocial;
         egreso.usuario = egreso.Usuario.nombreUsuario;
         return egreso;
+      });
+      //Conviertiendo los numeros de cuotas Nulos en N/A
+      this.dataEgresos.forEach(data => {        
+        if (data.numeroCuota== null) {
+          data.numeroCuota = this.result;          
+        }
       });
       this.dataSource = new MatTableDataSource(this.dataEgresos);
       this.dataSource.paginator = this.paginator.toArray()[0];

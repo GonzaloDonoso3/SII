@@ -1,7 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Usuario } from '@models/shared/usuario';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { FormBuilder, Validators } from '@angular/forms';
 import { DialogRespaldosComponent } from 'src/app/_components/dialogs/dialog-respaldos/dialog-respaldos.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -13,7 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EmpresaSharedService } from '../../../shared/shared-services/empresa-shared.service';
 import { EgresosRentacar } from '../../../../_models/rentacar/egresoRentacar';
 import { DatePipe } from "@angular/common";
-import * as moment from "moment";
+
 //import { SSL_OP_SINGLE_DH_USE } from 'node:constants';
 
 @Component({
@@ -150,7 +149,7 @@ export class RentacarEgresosFormComponent implements OnInit {
                     }                                        
                 
                 //Se le asigna la id del usuario logueado
-          this.egreso.idUsuario = this.usuario.id;
+                this.egreso.idUsuario = this.usuario.id;
 
           //Se le agrega los respaldos subidos
           for (const name of this.nameRespaldo) {

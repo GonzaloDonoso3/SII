@@ -16,5 +16,6 @@ export class RegistroEgresoFirma {
   usuario!: string;
   sucursal!: string;
   fechaf!: string;
+  numeroCuota!: string;
   }
   

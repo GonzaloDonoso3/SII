@@ -9,11 +9,19 @@ import { AbogadosHomeComponent } from './abogados-home/abogados-home.component';
 import { AbogadosRoutingModule } from './abogados-routing.module';
 import { AbogadosEgresosFormComponent } from './abogados-egresos/abogados-egresos-form/abogados-egresos-form.component';
 import { AbogadosEgresosListComponent } from './abogados-egresos/abogados-egresos-list/abogados-egresos-list.component';
-
 import { HttpClientModule } from '@angular/common/http';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableExporterModule } from 'mat-table-exporter';
+import { FullCalendarModule } from '@fullcalendar/angular'; 
+import dayGridPlugin from '@fullcalendar/daygrid'; 
+import interactionPlugin from '@fullcalendar/interaction'; 
+
+FullCalendarModule.registerPlugins([ 
+  dayGridPlugin,
+  interactionPlugin
+]);
+
 
 @NgModule({
   declarations: [
@@ -29,11 +37,11 @@ import { MatTableExporterModule } from 'mat-table-exporter';
     MaterialModule,
     ComponentsModule,
     ReactiveFormsModule,
-
     HttpClientModule,
     MatTableModule,
     MatButtonModule,
-    MatTableExporterModule
+    MatTableExporterModule,
+    FullCalendarModule
   ],
   exports: [
     AbogadosRoutingModule,

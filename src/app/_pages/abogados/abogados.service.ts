@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { RegistroEgresoFirma } from '@app/_models/registros/egresosFirma';
+import { RegistroEgresoFirma } from '@app/_models/abogados/egresosFirma';
 import { environment } from '@environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 import * as FileSaver from 'file-saver';
@@ -133,8 +133,7 @@ export class AbogadosService {
   }
 
   /* EGRESOS */
-  egresoRegistrar(egresosFirma: RegistroEgresoFirma) {    
-    console.log(egresosFirma);
+  egresoRegistrar(egresosFirma: RegistroEgresoFirma) {        
     return this.http.post(
       `${environment.apiUrl}/egresoFirma/conRespaldo`,
       egresosFirma

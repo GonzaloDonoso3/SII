@@ -7,7 +7,7 @@ import { SucursalSharedService } from '../../../shared/shared-services/sucursal-
 import { first } from 'rxjs/operators';
 import { EmpresaSharedService } from '../../../shared/shared-services/empresa-shared.service';
 import { Empresa } from '@app/_models/shared/empresa';
-import { AdministracionService } from '../../administracion.service';
+//import { AdministracionService } from '../../administracion.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 
@@ -60,7 +60,7 @@ export class AdministracionEmpresasListComponent implements OnInit {
 constructor(
   private sucursalService: SucursalSharedService,
   private empresaService: EmpresaSharedService,
-  private administracionService: AdministracionService,
+  //private administracionService: AdministracionService,
   private snackBar: MatSnackBar,
 ) { }
 
@@ -164,14 +164,14 @@ limpiarFiltros() {
 exportAsXLSX(): void {
  this.selectedRows = [];
   this.selection.selected.forEach((x) => this.selectedRows.push(x));
-  this.administracionService.exportAsExcelFile(this.selectedRows, 'Lista-Empresas');
+  //this.administracionService.exportAsExcelFile(this.selectedRows, 'Lista-Empresas');
 }
 
 //Abrir Modal Editar
 openDialogEdit(id: any, razonSocial: any){
   localStorage.setItem("idEmpresaEdit", id);
   localStorage.setItem("razonSocialEmpresaEdit", razonSocial);
-  this.administracionService.openDialogEditEmpresa();
+  //this.administracionService.openDialogEditEmpresa();
 }
 
 //Metodo eliminar una sucursal

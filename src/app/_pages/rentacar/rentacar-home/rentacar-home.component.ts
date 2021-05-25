@@ -1,7 +1,7 @@
 import { MatTableDataSource } from '@angular/material/table';
 import { Component, OnInit, QueryList, ViewChildren, ViewChild} from '@angular/core';
 import { EgresosRentacar } from '@app/_models/rentacar/egresoRentacar';
-import { CalendarOptions, EventApi } from '@fullcalendar/angular';
+import { CalendarOptions } from '@fullcalendar/angular';
 import { DatePipe } from "@angular/common";
 import { RentacarService } from '@app/_pages/rentacar/rentacar.service';
 import { MatPaginator } from '@angular/material/paginator';

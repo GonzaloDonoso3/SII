@@ -11,6 +11,9 @@ import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuen
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 import { AbogadosService } from '@app/_pages/abogados/abogados.service';
 import { DatePipe } from "@angular/common";
+import { EmpresaSharedService } from '../../../shared/shared-services/empresa-shared.service';
+import { Empresa } from '@app/_models/shared/empresa';
+import { first } from 'rxjs/operators';
 
 
 @Component({
@@ -26,6 +29,8 @@ export class AbogadosEgresosFormComponent implements OnInit {
 
   usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '');
   
+  empresa = new Empresa();
+  idEmpresa = 2;
   tiposEgresos: string[] = [];
   cuentasRegistradas: any[] = [];
   //Variables que usan para los egresos de Prestamos bancarios y automotriz
@@ -52,7 +57,7 @@ export class AbogadosEgresosFormComponent implements OnInit {
   egreso: RegistroEgresoFirma = new RegistroEgresoFirma();
   nameRespaldo: string[] = [];
 
-  sucursales: Sucursal[];
+  //sucursales: Sucursal[];
   constructor(
     private fb: FormBuilder,
     public dialog: MatDialog,
@@ -60,22 +65,19 @@ export class AbogadosEgresosFormComponent implements OnInit {
     private abogadosService: AbogadosService,
     private sucursalService: SucursalSharedService,
     private cuentasService: CuentasBancariasService,
-    private alert: AlertHelper
+    private alert: AlertHelper,
+    private empresaService: EmpresaSharedService,
   ) {
-    this.sucursales = this.sucursalService.sucursalListValue;
+    //this.sucursales = this.sucursalService.sucursalListValue;
   
   }
 
   ngOnInit(): void {
-
-    
+    this.getEmpresa(this.idEmpresa);    
     this.tiposEgresos = this.abogadosService.tiposEgresosListValue;    
     this.cuentasService.obtenerCuentas().subscribe(data => {
       this.cuentasRegistradas = data;
-
     });
-
-
   }
 
   //Metodo para mostrar numero de cuotas
@@ -103,6 +105,16 @@ export class AbogadosEgresosFormComponent implements OnInit {
     if(this.verSeleccion == "Prestamos Bancarios"  || this.verSeleccion == "Prestamos Automotriz"){
       this.montoTotal == "1000";        
     }        
+  }
+
+  getEmpresa(id: number): any {
+    this.empresaService
+      .getByIdWithSucursales(id)
+      .pipe(first())
+      .subscribe((x) => {
+        x.Sucursals = Object.values(x.Sucursals);
+        this.empresa = x;        
+      });
   }
 
   onSubmit() {

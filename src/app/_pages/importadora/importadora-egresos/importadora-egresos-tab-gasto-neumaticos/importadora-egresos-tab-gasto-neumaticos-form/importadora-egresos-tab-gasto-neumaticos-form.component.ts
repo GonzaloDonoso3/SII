@@ -21,6 +21,7 @@ import { AbogadosService } from '../../../../abogados/abogados.service';
 })
 export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit {
 
+
 //   idEmpresa = 2;
 //   sucursales!: Sucursal[];
 //   empresa = new Empresa();
@@ -167,5 +168,3 @@ ngOnInit(): void {}
 //         this.empresa = x;
 //       });
 //   }
-
-}

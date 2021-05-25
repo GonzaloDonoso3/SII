@@ -80,7 +80,9 @@
                             </mat-form-field>
                         </div>
                     </div>
+                </div>
 
+<<<<<<< HEAD
                     <div class="row">
                          Monto 
                         <div class="col">
@@ -210,3 +212,74 @@
         </form>
     </mat-grid-tile> -->
 </mat-grid-list>
+=======
+                <div class="row">
+                    <div class="col">
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="% Container" formControlName="pContainer" type="number" />
+                            <mat-error *ngIf="addressFormNeumatico.controls['pContainer'].hasError('required')">
+                                este campo es <strong>requerido</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col">
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="% Ganancia" formControlName="pGanancia" type="number" />
+                            <mat-error *ngIf="addressFormNeumatico.controls['pGanancia'].hasError('required')">
+                                este campo es <strong>requerido</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+
+                <button mat-raised-button color="primary" (click)="agregarCuotas()">
+                    <mat-icon>paid</mat-icon> Agregar
+                </button>
+
+                <div class="row">
+                    <div class="col">
+                        <h1>Neumáticos Registrados</h1>
+                        <div class="table-responsive">
+                            <table mat-table [dataSource]="dataSource" class="mat-elevation-z10">
+
+                                <ng-container matColumnDef="neumatico">
+                                    <th mat-header-cell *matHeaderCellDef> Tipo Neumático </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        {{ element.fechaPago | date: 'dd/MM/yyyy' }}
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="cantidad">
+                                    <th mat-header-cell *matHeaderCellDef> Cantidad </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        {{ element.montoCuota }}
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="monto">
+                                    <th mat-header-cell *matHeaderCellDef> Valor Unitario </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        {{ element.fechaPago | date: 'dd/MM/yyyy' }}
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+                                <tr class="mat-row" *matNoDataRow>
+                                    <td class="mat-cell" colspan="4">No existen coincidencias</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <h1>Monto Por Asignar : {{ saldoPendiente }}</h1>
+                    </div>
+                </div>
+            </mat-card-content>
+            <button mat-raised-button color="primary" (click)="guardarContrato()">
+                <mat-icon>send</mat-icon> Enviar
+        </button>
+        </mat-card>
+    </mat-dialog-content>
+</form>
+>>>>>>> ac442edbf2f553aade7882a9e0b2b2543937fc9f

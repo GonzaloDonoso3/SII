@@ -122,7 +122,7 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
         this.container.costoNeumatico = this.f.costoNeumatico.value;
         this.container.impuestoProntuario = this.f.impuestoProntuario.value;
         this.container.seguros = this.f.seguros.value;
-        this.container.montoTotal = this.container.costoComision + this.container.costoInterior + this.container.costoMaritimo + this.container.costoNeumatico + this.container.impuestoProntuario + this.container.seguros;
+        this.container.montoTotal = this.f.costoComision.value + this.f.costoInterior.value + this.f.costoMaritimo.value + this.f.costoNeumatico.value + this.f.impuestoProntuario.value+ this.f.seguros.value;
         this.container.usuario = this.usuario.id;
         this.montoTotal = this.container.montoTotal;
         this.cantidadTipo = this.f.cantidadTipo.value;

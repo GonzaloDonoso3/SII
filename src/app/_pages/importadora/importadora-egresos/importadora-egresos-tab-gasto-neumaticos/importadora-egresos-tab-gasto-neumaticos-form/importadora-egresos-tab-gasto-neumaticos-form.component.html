@@ -201,6 +201,27 @@
                                     </td>
                                 </ng-container>
 
+                                <ng-container matColumnDef="neumatico">
+                                    <th mat-header-cell *matHeaderCellDef> % Container </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        {{ element.fechaPago | date: 'dd/MM/yyyy' }}
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="cantidad">
+                                    <th mat-header-cell *matHeaderCellDef> Costo Comision </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        {{ element.montoCuota }}
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="monto">
+                                    <th mat-header-cell *matHeaderCellDef> Costo interior </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        {{ element.fechaPago | date: 'dd/MM/yyyy' }}
+                                    </td>
+                                </ng-container>
+
                                 <ng-container matColumnDef="monto">
                                     <th mat-header-cell *matHeaderCellDef> Valor Unitario </th>
                                     <td mat-cell *matCellDef="let element">

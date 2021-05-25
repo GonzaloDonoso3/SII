@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { IngresosImportadora } from '@app/_models/importadora/ingresoImportadora';
 import { EgresosFijoImportadora } from '@app//_models/importadora/egresoFijoImportadora';
+import { EgresosContainerImportadora } from '../../_models/importadora/egresoContainerImportadora';
 import { environment } from '@environments/environment';
 
 /* Imports Excel */
@@ -71,7 +72,7 @@ export class ImportadoraService {
 
   //*********** Fin Metodos Ingresos ************/
 
-  //*********** Inicio Metodos Egresos ************/
+  //*********** Inicio Metodos Egresos Fijos ************/
  
   getAllEgresosFijo() {
     return this.http.get<[]>(`${environment.apiUrl}/egresoFijoImportadora`);
@@ -94,7 +95,21 @@ export class ImportadoraService {
         window.open(window.URL.createObjectURL(res));
       });
   }
-  //*********** Fin Metodos Egresos ************/
+ //*********** Fin Metodos Egresos Fijos ************/
+
+ //*********** Inicio Metodos Egresos Conteiner ************/
+  createEgresosConteiner(egresoConteinerImportadora: EgresosContainerImportadora) {
+    return this.http.post(
+      `${environment.apiUrl}/EgresoContainerImportadora/conRespaldo`,
+      egresoConteinerImportadora
+    );
+  }
+ 
+  guardarNeumaticos(neumaticos: any): any {
+    return this.http.post<[]>(`${environment.apiUrl}/EgresoNeumaticoImportadora/neumaticos`, neumaticos);
+  }
+
+ //*********** Fin Metodos Egresos Conteiner ************/
 
   /* Metodo Excel */
   public exportAsExcelFile(json: any[], excelFileName: string): void {

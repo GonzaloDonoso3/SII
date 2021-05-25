@@ -12,4 +12,5 @@ export class EgresosNeumaticoImportadora {
   costoMaritimo !: number;
   impuestoProntuario !: number;
   seguros !: number;
+  idContainer !: number;
   }

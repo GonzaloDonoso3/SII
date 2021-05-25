@@ -12,9 +12,10 @@ import { nuevaCuota } from '../../../../../_models/abogados/nuevaCuota';
 import { Usuario } from '@app/_models/shared/usuario';
 import { AbogadosTabsService } from '../../../../abogados/abogados-tabs.service';
 import { AbogadosService } from '../../../../abogados/abogados.service';
-import { Cuota } from '../../../../../_models/abogados/cuota';
 import { EgresosContainerImportadora } from '@app/_models/importadora/egresoContainerImportadora';
 import { EgresosNeumaticoImportadora } from '@app/_models/importadora/egresoNeumaticoImportadora';
+import { ImportadoraService } from '../../../importadora.service';
+import { Console } from 'node:console';
 
 @Component({
   selector: 'app-importadora-egresos-tab-gasto-neumaticos-form',
@@ -28,12 +29,18 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
   empresa = new Empresa();
   montoTotal !: number;
   cantidadTipo !:number;
+  costoComision  !: number;
+  costoInterior  !: number;
+  costoMaritimo !: number;
+  seguros !: number;
+  impuestoProntuario !: number;
   
   contrato = new nuevoContrato();
   cuota = new nuevaCuota();
 
   container = new EgresosContainerImportadora();
   neumatico = new EgresosNeumaticoImportadora();
+  respaldoNeumatico = '';
 
 
   listaCuotas : nuevaCuota[] = [];
@@ -73,7 +80,15 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
   displayedColumns: string[] = [
     'neumatico',
     'cantidad',
-    'monto'
+    'conteiner',
+    'comision',
+    'interior',
+    'maritimo',
+    'portuario',
+    'seguros',
+    'unitario',
+    'ganancia',
+    'total'
   ];
 
   
@@ -83,7 +98,7 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
     private empresaService: EmpresaSharedService,
     private abogadosTabService: AbogadosTabsService,
     private snackBar: MatSnackBar,
-    private abogadosService: AbogadosService,
+    private importadoraService: ImportadoraService,
   ) { 
     this.sucursales = this.sucursalService.sucursalListValue;
   }
@@ -114,7 +129,7 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
       case 'VALID':
         this.container.id;
         this.container.fecha = this.f.fecha.value;
-        this.container.sucursal = this.f.idSucursal.value;
+        this.container.idSucursal = this.f.idSucursal.value;
         this.container.nContainer = this.f.nContainer.value;
         this.container.costoComision = this.f.costoComision.value;
         this.container.costoInterior = this.f.costoInterior.value;
@@ -123,10 +138,29 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
         this.container.impuestoProntuario = this.f.impuestoProntuario.value;
         this.container.seguros = this.f.seguros.value;
         this.container.montoTotal = this.f.costoComision.value + this.f.costoInterior.value + this.f.costoMaritimo.value + this.f.costoNeumatico.value + this.f.impuestoProntuario.value+ this.f.seguros.value;
-        this.container.usuario = this.usuario.id;
+        this.container.idUsuario = this.usuario.id;
         this.montoTotal = this.container.montoTotal;
         this.cantidadTipo = this.f.cantidadTipo.value;
         
+          // this.importadoraService
+          //     .createEgresosConteiner(this.container)
+          //     .pipe()
+          //     .pipe()
+          //     .subscribe((x: any) => {
+          //                 this.snackBar.open('Egreso Registrado', 'cerrar', {
+          //                   duration: 2000,
+          //                   verticalPosition: 'top',
+          //                 });
+          //                 console.log(x.payload.id);
+          //               },
+          //       (error) => {
+          //         //Si es incorrecto se envía un mensaje de error
+          //         this.snackBar.open('Tenemos Problemas para realizar el registro, favor contactar al equipo de desarrollo', 'cerrar', {
+          //           duration: 2000,
+          //           verticalPosition: 'top',
+          //         });
+          //       }
+          //     );
         break;
       //Si el formulario es erroneo 
       case 'INVALID':
@@ -142,54 +176,61 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
   }
 
   //Metodo que permite agregar las cuotas a una tabla 
-  agregarCuotas(): any{
-    console.log(this.container);
-    this.cuota.montoCuota = this.c.montoCuota.value;
+  agregarNeumatico(): any{
     //Si el monto de las cuotas es menor al saldo pendiente 
-    if (this.montoTotal > 0) {
+    // if (this.montoTotal > 0) {
       this.neumatico.tipoNeumatico = this.c.tipoNeumatico.value;
       this.neumatico.cantidad = this.c.cantidad.value;
       this.neumatico.pContainer = this.c.pContainer.value;
 
       
-      this.neumatico.costoComision = (this.container.costoComision * (this.c.pContainer.value /100))/this.c.cantidad.value;
-      this.neumatico.costoInterior = (this.container.costoInterior * (this.c.pContainer.value /100))/this.c.cantidad.value;
+      this.neumatico.costoComision = (this.container.costoComision * (this.c.pContainer.value /100));
+      this.neumatico.costoInterior = (this.container.costoInterior * (this.c.pContainer.value /100));
       this.neumatico.costoMaritimo = this.container.costoMaritimo/this.cantidadTipo;
       this.neumatico.seguros = this.container.seguros/this.cantidadTipo;
-      this.neumatico.impuestoProntuario = (this.container.impuestoProntuario * (this.c.pContainer.value /100))/this.c.cantidad.value;
+      this.neumatico.impuestoProntuario = (this.container.impuestoProntuario * (this.c.pContainer.value /100));
+
+      //Valores Unitarios
+      this.costoComision  = (this.container.costoComision * (this.c.pContainer.value /100))/this.c.cantidad.value;
+      this.costoInterior  = (this.container.costoInterior * (this.c.pContainer.value /100))/this.c.cantidad.value;
+      this.costoMaritimo = this.container.costoMaritimo/this.cantidadTipo;
+      this.seguros = this.container.seguros/this.cantidadTipo;
+      this.impuestoProntuario = (this.container.impuestoProntuario * (this.c.pContainer.value /100))/this.c.cantidad.value;
 
       this.neumatico.montoTotal = this.neumatico.costoComision + this.neumatico.costoInterior + this.neumatico.costoMaritimo + this.neumatico.seguros + this.neumatico.impuestoProntuario;
       this.neumatico.valorUnitario = this.neumatico.montoTotal / this.c.cantidad.value;
-      this.neumatico.pGanancia = this.neumatico.valorUnitario + (this.c.pGanancia.id * (this.c.pGanancia.value/100));
-      this.listaNeumatico.push(this.neumatico);
+      this.neumatico.pGanancia = this.neumatico.valorUnitario + (this.neumatico.valorUnitario * (this.c.pGanancia.value/100));
+      this.neumatico.idContainer = 15;
       
+      this.listaNeumatico.push(this.neumatico);
       this.montoTotal = this.montoTotal - this.neumatico.montoTotal;
       this.saldoPendiente = this.saldoPendiente - this.cuota.montoCuota;
       this.neumatico = new EgresosNeumaticoImportadora();
       this.dataSource = new MatTableDataSource(this.listaNeumatico);
 
-      //TODO agregar elementos a la tabla de la vista
-      //Probar metodo insertar 
-    } 
-    //Si no se muestra el error
-    else {
-      alert('monto no coincide con saldo pendiente');
-    }
+      this.montoTotal = this.montoTotal - this.neumatico.montoTotal;
+      console.log(this.listaNeumatico);
+    // } 
+    // //Si no se muestra el error
+    // else {
+    //   alert('monto no coincide con saldo pendiente');
+    // }
   }
 
   //Metodo que permite guardar el contrato
   guardarContrato(){
-    this.abogadosTabService
-      .guardarCuotas(this.listaCuotas)
+   
+    this.importadoraService
+      .guardarNeumaticos(this.listaNeumatico)
       .pipe()
       .subscribe((x:any) => {
-        this.abogadosService.closeDialogModal();
-        this.listaCuotas = [];
         this.snackBar.open('Contato generado con exito', 'cerrar', {
           duration: 2000,
           verticalPosition: 'top',
         });
+        console.log(x);
       });
+  
   }
 
   obtenerEmpresa(id: number): any {

@@ -16,6 +16,7 @@ import { Empresa } from '@app/_models/shared/empresa';
 import { DatePipe } from "@angular/common";
 
 
+
 @Component({
   selector: 'app-rentacar-egresos-list',
   templateUrl: './rentacar-egresos-list.component.html',
@@ -25,8 +26,9 @@ import { DatePipe } from "@angular/common";
 export class RentacarEgresosListComponent implements OnInit {
 
   // ? childrens
-  @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
+  @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();     
   @ViewChild(MatSort) sort = null;
+  
 
 
   // ? Inputs & Outputs
@@ -68,8 +70,7 @@ export class RentacarEgresosListComponent implements OnInit {
     numeroCuota: new FormControl(),
   })
 
-
-
+  _pageIndex = 0;
   empresa = new Empresa();
   idEmpresa = 4;
   sucursales: Sucursal[] = [];
@@ -79,13 +80,16 @@ export class RentacarEgresosListComponent implements OnInit {
   totalSeleccion = 0;
   cuentasRegistradas: any[] = [];
   selectedRows!: any[];
+  
 
   constructor(
-    private rentacarService: RentacarService,
+    private rentacarService: RentacarService,    
     public dialog: MatDialog,
     private sucursalService: SucursalSharedService,
-    private empresaService: EmpresaSharedService,
-  ) { }
+    private empresaService: EmpresaSharedService,   
+  ) { 
+
+  }
   
    
   ngOnInit(): void {
@@ -95,7 +99,7 @@ export class RentacarEgresosListComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.refrescar);
+    //console.log(this.refrescar);
     this.getEgresos();
     this.aplicarfiltros();
   }
@@ -144,7 +148,7 @@ export class RentacarEgresosListComponent implements OnInit {
         this.selection.select(row);
 
       });
-    console.log(this.selection.selected);
+    //console.log(this.selection.selected);
   }
 
   //Sumar el total de las filas seleccionadas
@@ -155,6 +159,7 @@ export class RentacarEgresosListComponent implements OnInit {
       this.totalSeleccion += data.monto;
     });
   }
+
 
   aplicarfiltros() {
     this.formFilter.valueChanges.subscribe(res => {
@@ -199,9 +204,11 @@ export class RentacarEgresosListComponent implements OnInit {
   limpiarFiltros() {
     this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null, responsable: null, descripcionEgreso: null, usuario: null, numeroCuota: null })
     this.dataSource = new MatTableDataSource(this.dataEgresos);
-    this.dataSource.paginator = this.paginator.toArray()[0];
+    this.dataSource.paginator = this.paginator.toArray()[0];    
     this.dataSource.sort = this.sort;
-    this.selection.clear()
+    this.dataSource.paginator['_pageIndex'] = 0;
+    this.getEgresos();
+    this.selection.clear();
     this.totalSeleccion = 0;
   }
 

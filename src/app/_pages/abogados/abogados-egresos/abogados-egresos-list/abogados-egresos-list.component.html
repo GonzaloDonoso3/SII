@@ -1,7 +1,7 @@
 <!-- LISTADO EGRESOS ABOGADOS -->
 <mat-toolbar color="primary">
     <button mat-raised-button (click)="limpiarFiltros()" color="accent">
-        Limpiar filtros
+        Actualizar tabla
     </button>
     <span>Egresos Abogados</span>
     <span>Monto Registros Seleccionados:
@@ -9,16 +9,14 @@
     </span>
     <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="revelarTotal()">
         Revelar total
-    </button>
-    
+    </button>    
     <button mat-raised-button color="accent" (click)="exportAsXLSX()" style="margin: 10px">
         Exportar a excel
-    </button>
-
+    </button>    
 </mat-toolbar>
 
 <div class="table-responsive">
-    <table  matTableExporter mat-table [dataSource]="dataSource" class="mat-elevation-z10" #exporter="matTableExporter">
+    <table  matTableExporter mat-table [dataSource]="dataSource" matSort matSortActive="id" class="mat-elevation-z10" matSortDirection="desc" #exporter="matTableExporter">
     
         <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>
@@ -64,7 +62,7 @@
                 <div [formGroup]="formFilter">
                     <mat-form-field class="full-width">
                         <mat-select placeholder="Sucursal" formControlName="idSucursal">
-                            <mat-option *ngFor="let sucursal of sucursales" [value]="sucursal.razonSocial">
+                            <mat-option *ngFor="let sucursal of empresa.Sucursals" [value]="sucursal.razonSocial">
                                 {{ sucursal.razonSocial }}
                             </mat-option>
                         </mat-select>

@@ -6,6 +6,7 @@ import { environment } from '@environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
+import { Empresa } from '@models/shared/empresa';
 
 const EXCEL_TYPE =
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
@@ -141,6 +142,11 @@ export class AbogadosService {
   }
   egresoGetAll(): any {            
     return this.http.get<[]>(`${environment.apiUrl}/egresoFirma`);    
+  }
+  getByIdWithSucursales(id: number) {
+    return this.http.get<Empresa>(
+      `${environment.apiUrl}/empresa/empresaSucursales/${id}`
+    );
   }
   egresoGetFiles(fileName: string): any {       
     return this.http

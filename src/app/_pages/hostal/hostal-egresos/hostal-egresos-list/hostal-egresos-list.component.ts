@@ -1,5 +1,6 @@
+import { MatSort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChildren, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -22,6 +23,7 @@ import { DatePipe } from "@angular/common";
 export class HostalEgresosListComponent implements OnInit, OnChanges {
   // ? childrens
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
+  @ViewChild(MatSort) sort = null;
 
   // ? Inputs & Outputs
   @Input()
@@ -100,10 +102,29 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
         });
         this.dataSource = new MatTableDataSource(this.dataEgresos);
         this.dataSource.paginator = this.paginator.toArray()[0];
+        this.dataSource.sort = this.sort;
       });
     }
   }
 
+  actualizarTabla(){
+    this.hostalService.egresoGetAll().subscribe((data: EgresoHostal[]) => {        
+      this.dataEgresos = data.map(egreso => {
+        egreso.sucursal = egreso.Sucursal.razonSocial;
+        egreso.usuario = egreso.Usuario.nombreUsuario;
+        return egreso;
+      });
+      //Conviertiendo los numeros de cuotas Nulos en N/A
+      this.dataEgresos.forEach(data => {
+      if (data['numeroCuota']== null) {
+        data.numeroCuota = this.result;          
+        }
+      });
+      this.dataSource = new MatTableDataSource(this.dataEgresos);
+      this.dataSource.paginator = this.paginator.toArray()[0];
+      this.dataSource.sort = this.sort;
+    });
+  }
 
   recuperarArchivos(listArchivos: any) {    
     this.dialog.open(DialogDownloadsComponent, {
@@ -141,6 +162,7 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
 
       this.dataSource = new MatTableDataSource(dataFiltered);
       this.dataSource.paginator = this.paginator.toArray()[0];
+      this.dataSource.sort = this.sort;
       this.selection.clear();
     })
   }
@@ -151,6 +173,9 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
     this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null })
     this.dataSource = new MatTableDataSource(this.dataEgresos);
     this.dataSource.paginator = this.paginator.toArray()[0];
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator['_pageIndex'] = 0;
+    this.actualizarTabla();
     this.selection.clear()
     this.totalSeleccion = 0;
   }

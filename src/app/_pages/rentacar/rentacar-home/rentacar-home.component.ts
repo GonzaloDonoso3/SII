@@ -10,6 +10,8 @@ import esLocale from '@fullcalendar/core/locales/es';
 import * as moment from "moment";
 
 
+
+
 @Component({
   selector: 'app-rentacar-home',
   templateUrl: './rentacar-home.component.html',

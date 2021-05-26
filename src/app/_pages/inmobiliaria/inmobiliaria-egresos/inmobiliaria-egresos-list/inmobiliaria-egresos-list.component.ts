@@ -1,3 +1,4 @@
+import { MatSort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -21,6 +22,7 @@ export class InmobiliariaEgresosListComponent implements OnInit {
 
   // ? childrens
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
+  @ViewChild(MatSort) sort = null;
 
   // ? Inputs & Outputs
   @Input()
@@ -106,8 +108,28 @@ export class InmobiliariaEgresosListComponent implements OnInit {
           });
         this.dataSource = new MatTableDataSource(this.dataEgresos);
         this.dataSource.paginator = this.paginator.toArray()[0];
+        this.dataSource.sort = this.sort;
       });
     }
+  }
+
+  actualizarTabla(){
+    this.inmobiliariaService.getAllEgresos().subscribe((egresos: EgresosInmobiliaria[]) => {
+      this.dataEgresos = egresos.map(Egresos => {
+        Egresos.sucursal = Egresos.Sucursal.razonSocial;
+        Egresos.usuario = Egresos.Usuario.nombreUsuario;
+        return Egresos;
+      });
+      //Conviertiendo los numeros de cuotas Nulos en N/A
+      this.dataEgresos.forEach(data => {
+        if (data['numeroCuota']== null) {
+          data.numeroCuota = this.result;          
+          }
+        });
+      this.dataSource = new MatTableDataSource(this.dataEgresos);
+      this.dataSource.paginator = this.paginator.toArray()[0];
+      this.dataSource.sort = this.sort;
+    });
   }
 
   //Cargar los archivos de respaldo
@@ -174,6 +196,7 @@ export class InmobiliariaEgresosListComponent implements OnInit {
       this.dataSource = new MatTableDataSource(dataFiltered);
       this.dataSource.paginator = this.paginator.toArray()[0];
       this.totalSeleccion = 0;
+      this.dataSource.sort = this.sort;
       this.selection.clear();
     })
 
@@ -186,7 +209,10 @@ export class InmobiliariaEgresosListComponent implements OnInit {
     this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null, Propiedad: null, descripcionEgreso: null, })
     this.dataSource = new MatTableDataSource(this.dataEgresos);
     this.dataSource.paginator = this.paginator.toArray()[0];
-    this.selection.clear()
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator['_pageIndex'] = 0;
+    this.actualizarTabla();
+    this.selection.clear();
     this.totalSeleccion = 0;
   }
 

@@ -1,4 +1,4 @@
-<form [formGroup]="addressFormConteiner" novalidate class="mat-elevation-z10">
+<form [formGroup]="addressFormConteiner" novalidate class="mat-elevation-z10" *ngIf="!existeConteiner">
     <mat-card class="shipping-card">
         <mat-card-header>
             <h1> Agregar Conteiner</h1>
@@ -128,16 +128,19 @@
 </form>
 
 <!-- Formulario Neumaticos-->
-<form [formGroup]="addressFormNeumatico" novalidate class="mat-elevation-z10">
+<form [formGroup]="addressFormNeumatico" novalidate class="mat-elevation-z10" *ngIf="existeConteiner">
     <mat-dialog-content>
         <mat-card class="shipping-card">
             <mat-card-header>
                 <h1>
-                    Conteiner : {{ container.nContainer }} Monto total: {{ container.montoTotal }}
+                    Conteiner : {{ idConteiner }} | Monto Por Asignar: {{ montoTotal}}
                 </h1>
             </mat-card-header>
             <br><br>
             <mat-card-content>
+                <h1>
+                    Neumáticos por asignar : {{cantidadNeumaticos}} | Porcentaje Conteiner: {{porcentajeConteiner}}%
+                </h1>
                 <div class="row">
                     <div class="col">
                         <mat-form-field class="full-width">
@@ -190,77 +193,84 @@
                                 <ng-container matColumnDef="neumatico">
                                     <th mat-header-cell *matHeaderCellDef> Tipo Neumático </th>
                                     <td mat-cell *matCellDef="let element">
-                                        {{ element.fechaPago | date: 'dd/MM/yyyy' }}
+                                        {{ element.tipoNeumatico }}
                                     </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="cantidad">
                                     <th mat-header-cell *matHeaderCellDef> Cantidad </th>
                                     <td mat-cell *matCellDef="let element">
-                                        {{ element.montoCuota }}
+                                        {{ element.cantidad }}
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="costoNeumatico">
+                                    <th mat-header-cell *matHeaderCellDef> Costo Neumáticos </th>
+                                    <td mat-cell *matCellDef="let element ">
+                                        {{ element.costoNeumatico }}
                                     </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="conteiner">
                                     <th mat-header-cell *matHeaderCellDef> % Container </th>
                                     <td mat-cell *matCellDef="let element">
-                                        {{ element.fechaPago | date: 'dd/MM/yyyy' }}
+                                        {{ element.pContainer + '%'}}
                                     </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="comision">
                                     <th mat-header-cell *matHeaderCellDef> Costo Comision </th>
                                     <td mat-cell *matCellDef="let element">
-                                        {{ element.montoCuota }}
+                                        {{ element.costoComision }}
                                     </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="interior">
                                     <th mat-header-cell *matHeaderCellDef> Costo interior </th>
                                     <td mat-cell *matCellDef="let element">
-                                        {{ element.fechaPago | date: 'dd/MM/yyyy' }}
+                                        {{ element.costoInterior}}
                                     </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="maritimo">
                                     <th mat-header-cell *matHeaderCellDef> Costo Maritimo </th>
                                     <td mat-cell *matCellDef="let element">
-                                        {{ element.fechaPago | date: 'dd/MM/yyyy' }}
+                                        {{ element.costoMaritimo }}
                                     </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="portuario">
                                     <th mat-header-cell *matHeaderCellDef> Impuesto Portuario </th>
                                     <td mat-cell *matCellDef="let element">
-                                        {{ element.fechaPago | date: 'dd/MM/yyyy' }}
+                                        {{ element.impuestoProntuario }}
                                     </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="seguros">
                                     <th mat-header-cell *matHeaderCellDef> Seguros </th>
                                     <td mat-cell *matCellDef="let element">
-                                        {{ element.fechaPago | date: 'dd/MM/yyyy' }}
+                                        {{ element.seguros }}
                                     </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="unitario">
                                     <th mat-header-cell *matHeaderCellDef> Valor Unitario </th>
                                     <td mat-cell *matCellDef="let element">
-                                        {{ element.fechaPago | date: 'dd/MM/yyyy' }}
+                                        {{ element.valorUnitario }}
                                     </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="ganancia">
                                     <th mat-header-cell *matHeaderCellDef> Valor Venta </th>
                                     <td mat-cell *matCellDef="let element">
-                                        {{ element.fechaPago | date: 'dd/MM/yyyy' }}
+                                        {{ element.pGanancia }}
                                     </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="total">
                                     <th mat-header-cell *matHeaderCellDef> Total </th>
                                     <td mat-cell *matCellDef="let element">
-                                        {{ element.fechaPago | date: 'dd/MM/yyyy' }}
+                                        {{ element.montoTotal }}
                                     </td>
                                 </ng-container>
 
@@ -268,15 +278,14 @@
                                 <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
                                 <tr class="mat-row" *matNoDataRow>
-                                    <td class="mat-cell" colspan="12">No existen coincidencias</td>
+                                    <td class="mat-cell" colspan="13">No existen coincidencias</td>
                                 </tr>
                             </table>
                         </div>
-                        <h1>Monto Por Asignar : {{ saldoPendiente }}</h1>
                     </div>
                 </div>
             </mat-card-content>
-            <button mat-raised-button color="primary" (click)="guardarContrato()">
+            <button mat-raised-button color="primary" (click)="guardarConteiner()">
                 <mat-icon>send</mat-icon> Enviar
         </button>
         </mat-card>

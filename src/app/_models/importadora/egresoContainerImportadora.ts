@@ -15,9 +15,11 @@ export class EgresosContainerImportadora {
 
   idSucursal!: string;
   idUsuario!: number;
+  sucursal!: string;
+  usuario!: string;
   Sucursal!: Sucursal;
   Usuario!: Usuario;
   idContainer!: any[];
-  RespaldoEgresoContainerImportadora!: any[];
+  idEgresoContainerImportadora!: any[];
   
 }

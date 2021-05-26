@@ -1,3 +1,4 @@
+import { MatSort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -20,7 +21,7 @@ export class InmobiliariaIngresosListComponent implements OnInit {
 
   // ? childrens
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
-
+  @ViewChild(MatSort) sort = null;
   // ? Inputs & Outputs
   @Input()
   refrescar = '';
@@ -91,6 +92,7 @@ export class InmobiliariaIngresosListComponent implements OnInit {
         });
         this.dataSource = new MatTableDataSource(this.dataIngresos);
         this.dataSource.paginator = this.paginator.toArray()[0];
+        this.dataSource.sort = this.sort;
       });
     }
   }
@@ -157,6 +159,7 @@ export class InmobiliariaIngresosListComponent implements OnInit {
       this.dataSource = new MatTableDataSource(dataFiltered);
       this.dataSource.paginator = this.paginator.toArray()[0];
       this.totalSeleccion = 0;
+      this.dataSource.sort = this.sort;
       this.selection.clear();
     })
   }
@@ -169,6 +172,7 @@ export class InmobiliariaIngresosListComponent implements OnInit {
     this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoIngreso: null, estadoPago: null, cliente: null, nDocumento: null })
     this.dataSource = new MatTableDataSource(this.dataIngresos);
     this.dataSource.paginator = this.paginator.toArray()[0];
+    this.dataSource.sort = this.sort;
     this.selection.clear()
     this.totalSeleccion = 0;
   }

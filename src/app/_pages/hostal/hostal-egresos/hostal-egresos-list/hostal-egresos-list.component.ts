@@ -9,12 +9,15 @@ import { EgresoHostal } from '@app/_models/hostal/egresoHostal';
 import { Sucursal } from '@app/_models/shared/sucursal';
 import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuentas-bancarias.service';
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
+//import { Console } from 'node:console';
 import { HostalService } from '../../hostal.service';
+import { DatePipe } from "@angular/common";
 
 @Component({
   selector: 'app-hostal-egresos-list',
   templateUrl: './hostal-egresos-list.component.html',
-  styleUrls: ['./hostal-egresos-list.component.scss']
+  styleUrls: ['./hostal-egresos-list.component.scss'],
+  providers: [DatePipe]
 })
 export class HostalEgresosListComponent implements OnInit, OnChanges {
   // ? childrens
@@ -34,7 +37,11 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
     'tipoEgreso',
     'sucursal',
     'usuario',
+    'numeroCuota',
   ];
+
+  result = "N/A"; 
+
   dataSource: MatTableDataSource<EgresoHostal> = new MatTableDataSource();
   dataEgresos: EgresoHostal[] = [];
 
@@ -47,6 +54,7 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
     end: new FormControl(),
     idSucursal: new FormControl(),
     tipoEgreso: new FormControl(),
+    numeroCuota: new FormControl(),
   })
 
 
@@ -62,7 +70,7 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
     private cuentasService: CuentasBancariasService
   ) {
     this.sucursales = this.sucursalService.sucursalListValue;
-    this.tiposEgresos = this.hostalService.tiposEgresosListValue;
+    this.tiposEgresos = this.hostalService.tiposEgresosListValue;    
   }
 
   ngOnInit(): void {
@@ -72,17 +80,23 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
   // ? refresh when form is ready.
 
   ngOnChanges(changes: SimpleChanges): void {
-    for (const propName of Object.keys(changes)) {
+    for (const propName of Object.keys(changes)) {      
       const change = changes[propName];
       const to = JSON.stringify(change.currentValue);
       const from = JSON.stringify(change.previousValue);
       const changeLog = `${propName}: changed from ${from} to ${to} `;
       this.changelog.push(changeLog);
-      this.hostalService.egresoGetAll().subscribe((data: EgresoHostal[]) => {
+      this.hostalService.egresoGetAll().subscribe((data: EgresoHostal[]) => {        
         this.dataEgresos = data.map(egreso => {
           egreso.sucursal = egreso.Sucursal.razonSocial;
           egreso.usuario = egreso.Usuario.nombreUsuario;
           return egreso;
+        });
+        //Conviertiendo los numeros de cuotas Nulos en N/A
+        this.dataEgresos.forEach(data => {
+        if (data['numeroCuota']== null) {
+          data.numeroCuota = this.result;          
+          }
         });
         this.dataSource = new MatTableDataSource(this.dataEgresos);
         this.dataSource.paginator = this.paginator.toArray()[0];
@@ -91,7 +105,7 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
   }
 
 
-  recuperarArchivos(listArchivos: any) {
+  recuperarArchivos(listArchivos: any) {    
     this.dialog.open(DialogDownloadsComponent, {
       data: { archivos: listArchivos, servicio: 'hostal-egreso' },
     });
@@ -99,7 +113,7 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
 
 
 
-  revelarTotal() {
+  revelarTotal() {    
     this.totalSeleccion = 0;
     console.log(this.selection.selected.length);
     this.selection.selected.forEach(data => {
@@ -111,7 +125,7 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
   aplicarfiltros() {
     this.formFilter.valueChanges.subscribe(res => {
 
-      let dataFiltered = this.dataEgresos;
+      let dataFiltered = this.dataEgresos;      
 
       if (res.idSucursal) {
         dataFiltered = dataFiltered.filter((data: EgresoHostal) => data.sucursal == res.idSucursal);
@@ -122,7 +136,7 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
       }
 
       if (res.start && res.end) {
-        dataFiltered = dataFiltered.filter((data: EgresoHostal) => new Date(data.fecha) >= res.start && new Date(data.fecha) <= res.end);
+        dataFiltered = dataFiltered.filter((data: EgresoHostal) => new Date(data.fecha) >= res.start && new Date(data.fecha) <= res.end);        
       }
 
       this.dataSource = new MatTableDataSource(dataFiltered);
@@ -145,13 +159,13 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
 
   // ? selection rows
   // *  INFO this.selection.selected : return array with all selected objects(rows) into table
-  isAllSelected() {
+  isAllSelected() {  
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
 
-  masterToggle() {
+  masterToggle() {    
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     this.isAllSelected() ?
       this.selection.clear() :

@@ -11,7 +11,14 @@ import { LubricentroIngresosListComponent } from './lubricentro-ingresos/lubrice
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@app/material.module';
 import { ComponentsModule } from '@app/_components/components.module';
+import { FullCalendarModule } from '@fullcalendar/angular'; 
+import dayGridPlugin from '@fullcalendar/daygrid'; 
+import interactionPlugin from '@fullcalendar/interaction'; 
 
+FullCalendarModule.registerPlugins([ 
+  dayGridPlugin,
+  interactionPlugin
+]);
 
 @NgModule({
   declarations: [
@@ -29,7 +36,7 @@ import { ComponentsModule } from '@app/_components/components.module';
     MaterialModule,
     ComponentsModule,
     ReactiveFormsModule,
-
+    FullCalendarModule
   ],
   exports: [
     LubricentroRoutingModule,

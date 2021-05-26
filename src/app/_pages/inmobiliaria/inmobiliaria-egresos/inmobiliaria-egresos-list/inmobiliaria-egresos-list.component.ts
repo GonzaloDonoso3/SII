@@ -9,11 +9,13 @@ import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucurs
 import { FormControl, FormGroup } from '@angular/forms';
 import { Sucursal } from '@app/_models/shared/sucursal';
 import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
+import { DatePipe } from "@angular/common";
 
 @Component({
   selector: 'app-inmobiliaria-egresos-list',
   templateUrl: './inmobiliaria-egresos-list.component.html',
-  styleUrls: ['./inmobiliaria-egresos-list.component.scss']
+  styleUrls: ['./inmobiliaria-egresos-list.component.scss'],
+  providers: [DatePipe]
 })
 export class InmobiliariaEgresosListComponent implements OnInit {
 
@@ -36,8 +38,11 @@ export class InmobiliariaEgresosListComponent implements OnInit {
     'descripcionEgreso',
     'sucursal',
     'usuario',
-    'responsable'
+    'numeroCuota',
+    //  'responsable'
   ];
+
+  result = "N/A"; 
 
   //Creación de variables y asignación de datos
   dataSource: MatTableDataSource<EgresosInmobiliaria> = new MatTableDataSource();
@@ -52,7 +57,7 @@ export class InmobiliariaEgresosListComponent implements OnInit {
     descripcionEgreso: new FormControl(),
     tipoEgreso: new FormControl(),
     Propiedad: new FormControl(),
-    responsable: new FormControl(),
+    numeroCuota: new FormControl(),
   })
 
 
@@ -92,8 +97,13 @@ export class InmobiliariaEgresosListComponent implements OnInit {
           Egresos.sucursal = Egresos.Sucursal.razonSocial;
           Egresos.usuario = Egresos.Usuario.nombreUsuario;
           return Egresos;
-
         });
+        //Conviertiendo los numeros de cuotas Nulos en N/A
+        this.dataEgresos.forEach(data => {
+          if (data['numeroCuota']== null) {
+            data.numeroCuota = this.result;          
+            }
+          });
         this.dataSource = new MatTableDataSource(this.dataEgresos);
         this.dataSource.paginator = this.paginator.toArray()[0];
       });
@@ -138,6 +148,7 @@ export class InmobiliariaEgresosListComponent implements OnInit {
 
   aplicarfiltros() {
     this.formFilter.valueChanges.subscribe(res => {
+
       let dataFiltered = this.dataEgresos;
 
       if (res.Propiedad) {
@@ -155,9 +166,6 @@ export class InmobiliariaEgresosListComponent implements OnInit {
       if (res.idSucursal) {
         dataFiltered = dataFiltered.filter((data: EgresosInmobiliaria) => data.sucursal == res.idSucursal);
       }
-      if (res.responsable) {
-        dataFiltered = dataFiltered.filter((data: EgresosInmobiliaria) => data.responsable == res.responsable);
-      }
 
       if (res.start && res.end) {
         dataFiltered = dataFiltered.filter((data: EgresosInmobiliaria) => new Date(data.fecha) >= res.start && new Date(data.fecha) <= res.end);
@@ -168,8 +176,10 @@ export class InmobiliariaEgresosListComponent implements OnInit {
       this.totalSeleccion = 0;
       this.selection.clear();
     })
+
+
   }
-    
+
 
   // Inicio Filtros
   limpiarFiltros() {
@@ -179,6 +189,9 @@ export class InmobiliariaEgresosListComponent implements OnInit {
     this.selection.clear()
     this.totalSeleccion = 0;
   }
+
+
+
 
 
 }

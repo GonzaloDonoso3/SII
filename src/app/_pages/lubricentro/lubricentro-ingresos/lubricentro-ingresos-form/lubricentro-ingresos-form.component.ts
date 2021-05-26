@@ -129,7 +129,7 @@ export class LubricentroIngresosFormComponent {
             this.ingreso.RespaldoIngresoLubricentros.push({ url: name });
           }
           if (result.length > 0) {
-            console.log(this.ingreso);
+            //console.log(this.ingreso);
             this.lubricentroService
               .ingresoRegistrar(this.ingreso)
               .pipe()

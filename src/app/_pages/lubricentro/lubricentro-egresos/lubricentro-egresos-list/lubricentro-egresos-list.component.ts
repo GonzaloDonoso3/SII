@@ -6,17 +6,17 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
 import { EgresoLubricentro } from '@app/_models/lubricentro/egresoLubricentro';
-
 import { Sucursal } from '@app/_models/shared/sucursal';
-
 import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuentas-bancarias.service';
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 import { LubricentroService } from '../../lubricentro.service';
+import { DatePipe } from "@angular/common";
 
 @Component({
   selector: 'app-lubricentro-egresos-list',
   templateUrl: './lubricentro-egresos-list.component.html',
-  styleUrls: ['./lubricentro-egresos-list.component.scss']
+  styleUrls: ['./lubricentro-egresos-list.component.scss'],
+  providers: [DatePipe]
 })
 export class LubricentroEgresosListComponent implements OnInit, OnChanges {
 
@@ -37,8 +37,13 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
     'respaldos',
     'tipoEgreso',
     'sucursal',
-    'usuario'
+    'usuario',
+    'numeroCuota'
   ];
+
+  result = "N/A"; 
+
+  //Creación de variables y asignación de datos
   dataSource: MatTableDataSource<EgresoLubricentro> = new MatTableDataSource();
   dataEgresos: EgresoLubricentro[] = [];
 
@@ -50,6 +55,7 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
     end: new FormControl(),
     idSucursal: new FormControl(),
     tipoEgreso: new FormControl(),
+    numeroCuota: new FormControl(),
   })
 
   sucursales: Sucursal[] = [];
@@ -120,7 +126,7 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
 
   revelarTotal() {
     this.totalSeleccion = 0;
-    console.log(this.selection.selected.length);
+    //console.log(this.selection.selected.length);
     this.selection.selected.forEach(data => {
       this.totalSeleccion += data.monto;
     });
@@ -143,7 +149,12 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
           egreso.usuario = egreso.Usuario.nombreUsuario;
           return egreso;
         });
-        console.log(data);
+        //console.log(data);
+        this.dataEgresos.forEach(data => {
+          if (data['numeroCuota']== null) {
+            data.numeroCuota = this.result;          
+          }
+        });
         this.dataSource = new MatTableDataSource(this.dataEgresos);
         this.dataSource.paginator = this.paginator.toArray()[0];
 

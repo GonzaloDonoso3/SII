@@ -1,3 +1,4 @@
+import { MatSort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -12,39 +13,47 @@ import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downlo
 import { EmpresaSharedService } from '@app/_pages/shared/shared-services/empresa-shared.service';
 import { first } from 'rxjs/operators';
 import { Empresa } from '@app/_models/shared/empresa';
+import { DatePipe } from "@angular/common";
 
 
 @Component({
   selector: 'app-rentacar-egresos-list',
   templateUrl: './rentacar-egresos-list.component.html',
-  styleUrls: ['./rentacar-egresos-list.component.scss']
+  styleUrls: ['./rentacar-egresos-list.component.scss'],
+  providers: [DatePipe]
 })
 export class RentacarEgresosListComponent implements OnInit {
 
-    // ? childrens
-    @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
+  // ? childrens
+  @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
+  @ViewChild(MatSort) sort = null;
 
-    // ? Inputs & Outputs
-    @Input()
-    refrescar = '';
+
+  // ? Inputs & Outputs
+  @Input() refrescar = '';
+
+  // ? table definitions.
+  displayedColumns: string[] = [
+    'select',
+    'id',
+    'respaldos',
+    'fecha',
+    'monto',
+    'tipoEgreso',
+    'descripcionEgreso',
+    'sucursal',
+    'usuario',
+    'responsable',
+    'numeroCuota'
+  ];
+
+  result = "N/A"; 
   
-    // ? table definitions.
-    displayedColumns: string[] = [
-      'select',
-      'id',
-      'respaldos',
-      'fecha',
-      'monto',
-      'tipoEgreso',
-      'descripcionEgreso',
-      'sucursal',
-      'usuario',
-      'responsable'
-    ];
 
-      //Creación de variables y asignación de datos
+  //Creación de variables y asignación de datos
   dataSource: MatTableDataSource<EgresosRentacar> = new MatTableDataSource();
   dataEgresos: EgresosRentacar[] = [];
+
 
   changelog: string[] = [];
 
@@ -56,6 +65,7 @@ export class RentacarEgresosListComponent implements OnInit {
     tipoEgreso: new FormControl(),
     usuario: new FormControl(),
     responsable: new FormControl(),
+    numeroCuota: new FormControl(),
   })
 
 
@@ -76,23 +86,36 @@ export class RentacarEgresosListComponent implements OnInit {
     private sucursalService: SucursalSharedService,
     private empresaService: EmpresaSharedService,
   ) { }
-
+  
+   
   ngOnInit(): void {
     this.getEgresos();
     this.getEmpresa(this.idEmpresa);
     this.aplicarfiltros();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(this.refrescar);
+    this.getEgresos();
+    this.aplicarfiltros();
+  }
 
-  getEgresos(){
-    this.rentacarService.getAllEgresos().subscribe((egresos: EgresosRentacar[]) => {
+  getEgresos() {    
+    this.rentacarService.getAllEgresos().subscribe((egresos: EgresosRentacar[]) => {            
       this.dataEgresos = egresos.map(Egresos => {
         Egresos.sucursal = Egresos.Sucursal.razonSocial;
         Egresos.usuario = Egresos.Usuario.nombreUsuario;
         return Egresos;
       });
+      //Conviertiendo los numeros de cuotas Nulos en N/A
+      this.dataEgresos.forEach(data => {
+        if (data['numeroCuota']== null) {
+          data.numeroCuota = this.result;          
+        }
+      });
       this.dataSource = new MatTableDataSource(this.dataEgresos);
       this.dataSource.paginator = this.paginator.toArray()[0];
+      this.dataSource.sort = this.sort;
     });
   }
 
@@ -139,7 +162,7 @@ export class RentacarEgresosListComponent implements OnInit {
       let dataFiltered = this.dataEgresos;
 
       if (res.descripcionEgreso) {
-        dataFiltered = dataFiltered.filter((data: EgresosRentacar) => data.descripcion == res.descripcionEgreso);
+        dataFiltered = dataFiltered.filter((data: EgresosRentacar) => data.descripcion.includes(res.descripcionEgreso));
       }
 
       if (res.tipoEgreso) {
@@ -165,16 +188,19 @@ export class RentacarEgresosListComponent implements OnInit {
       this.dataSource = new MatTableDataSource(dataFiltered);
       this.dataSource.paginator = this.paginator.toArray()[0];
       this.totalSeleccion = 0;
+      this.dataSource.sort = this.sort;
       this.selection.clear();
+
     })
   }
 
 
   // Inicio Filtros
   limpiarFiltros() {
-    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null, responsable: null, descripcionEgreso: null, usuario: null})
+    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null, responsable: null, descripcionEgreso: null, usuario: null, numeroCuota: null })
     this.dataSource = new MatTableDataSource(this.dataEgresos);
     this.dataSource.paginator = this.paginator.toArray()[0];
+    this.dataSource.sort = this.sort;
     this.selection.clear()
     this.totalSeleccion = 0;
   }
@@ -187,9 +213,10 @@ export class RentacarEgresosListComponent implements OnInit {
   }
 
   //Metodo exportar excel
-exportAsXLSX(): void {
-  this.selectedRows = [];
-  this.selection.selected.forEach((x) => this.selectedRows.push(x));
-  this.rentacarService.exportAsExcelFile(this.selectedRows, 'Lista-Egresos-Rentacar');
-}
-}
+  exportAsXLSX(): void {
+    this.selectedRows = [];
+    this.selection.selected.forEach((x) => this.selectedRows.push(x));
+    this.rentacarService.exportAsExcelFile(this.selectedRows, 'Lista-Egresos-Rentacar');
+  }
+
+  }

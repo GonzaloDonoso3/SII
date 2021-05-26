@@ -10,13 +10,15 @@ import { Usuario } from '@app/_models/shared/usuario';
 import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuentas-bancarias.service';
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 import { HostalService } from '../../hostal.service';
+import { DatePipe } from "@angular/common";
 
 
 
 @Component({
   selector: 'app-hostal-egresos-form',
   templateUrl: './hostal-egresos-form.component.html',
-  styleUrls: ['./hostal-egresos-form.component.scss']
+  styleUrls: ['./hostal-egresos-form.component.scss'],
+  providers: [DatePipe]
 })
 export class HostalEgresosFormComponent implements OnInit {
   @Output()
@@ -26,16 +28,26 @@ export class HostalEgresosFormComponent implements OnInit {
   // ? set checkbox
   tiposEgresos: string[] = [];
   cuentasRegistradas: any[] = [];
+  //Variables que usan para los egresos de Prestamos bancarios y automotriz
+  mostrarDatos : boolean = true;
+  datoCuota = 'N/A';
+  montoTotal = '1000';
+  selected: any;
+  opcionSeleccionado: string = '0';
+  verSeleccion: string = '';
+  
   // ? construccion del formulario,
-
   egresosForm = this.fb.group({
     //agregar el detalle del formulario;
     fecha: [null, Validators.required],
-    monto: [null, Validators.required],
+    monto: [null],
     tipoEgreso: [null, Validators.required],
     descripcion: [null, Validators.required],
     responsable: [null, Validators.required],
     idSucursal: [null, Validators.required],
+    montoCuota: [null],
+    numeroCuota: [null],
+
     /* idCuentaAsignada: [null, Validators.required], */
   });
   egreso: EgresoHostal = new EgresoHostal();
@@ -49,7 +61,8 @@ export class HostalEgresosFormComponent implements OnInit {
     private hostalService: HostalService,
     private sucursalService: SucursalSharedService,
     private cuentasService: CuentasBancariasService,
-    private alert: AlertHelper
+    private alert: AlertHelper,
+    private miDatePipe: DatePipe,
   ) {
     this.sucursales = this.sucursalService.sucursalListValue;
 
@@ -66,6 +79,34 @@ export class HostalEgresosFormComponent implements OnInit {
 
 
   }
+
+  //Metodo para mostrar numero de cuotas
+  activarEdicion(): void {
+    this.mostrarDatos = false; 
+    this.egresosForm.controls["numeroCuota"].setValidators(Validators.required);
+    this.egresosForm.controls["numeroCuota"].updateValueAndValidity();  
+    this.egresosForm.controls["monto"].clearValidators();           
+    this.egresosForm.controls["monto"].updateValueAndValidity();
+                          
+  }
+//Metodo para ocultar los numeros de cuotas
+  desactivarEdicion(): void {
+    this.mostrarDatos = true;
+    this.egresosForm.controls["monto"].setValidators(Validators.required);
+    this.egresosForm.controls["monto"].updateValueAndValidity();                         
+    this.egresosForm.controls["numeroCuota"].clearValidators();           
+    this.egresosForm.controls["numeroCuota"].updateValueAndValidity();
+   
+  }
+
+//Capturamos los tipos de egresos
+  capturar() {
+    this.verSeleccion = this.opcionSeleccionado;
+    if(this.verSeleccion == "Prestamos Bancarios"  || this.verSeleccion == "Prestamos Automotriz"){
+      this.montoTotal == "1000";        
+    }        
+  }
+
   onSubmit() {
     switch (this.egresosForm.status) {
       case 'VALID':
@@ -78,17 +119,78 @@ export class HostalEgresosFormComponent implements OnInit {
           this.nameRespaldo = result;
           this.egreso.RespaldoEgresos = [];
           this.egreso.fecha = this.egresosForm.value.fecha;
-          this.egreso.monto = this.egresosForm.value.monto;
+          // Si el usuario ingresa Egreso Bancario y Automotriz al monto se le asigna el numero de cuota
+          if(this.egresosForm.value.monto == null) {                        
+            this.egreso.monto = this.egresosForm.value.montoCuota;
+          } else {
+            this.egreso.monto = this.egresosForm.value.monto;                    
+          }
           this.egreso.descripcion = this.egresosForm.value.descripcion;
           this.egreso.responsable = this.egresosForm.value.responsable;
           this.egreso.idSucursal = this.egresosForm.value.idSucursal;
           this.egreso.idUsuario = this.usuario.id;
           this.egreso.tipoEgreso = this.egresosForm.value.tipoEgreso;
+          this.egreso.numeroCuota = this.egresosForm.value.numeroCuota;          
+
+          if(this.egresosForm.value.numeroCuota > 1){              
+            let sumarMes= 0;
+            let restarMes= 0;
+            let contadorCuota = 0;                    
+              for (let i = 0; i < this.egresosForm.value.numeroCuota; i++) {                                                                                                                                                                                                                                                                                                                             
+                    this.egresosForm.value.fecha.setMonth(this.egresosForm.value.fecha.getMonth() + sumarMes);                                                                                                  
+                    this.egreso.fecha = this.egresosForm.value.fecha;
+                    sumarMes = sumarMes + 1;
+                    contadorCuota = contadorCuota + 1;
+                    this.egreso.numeroCuota = contadorCuota.toString().concat("/").concat(this.egresosForm.value.numeroCuota);                                                                                                                                                                                                                                                                                                                                                                                         
+                    restarMes = (sumarMes + 1) - sumarMes;                                 
+                    if(sumarMes >= 2){                                            
+                      sumarMes = restarMes;                      
+                    }    
+                    for (const respaldo of this.nameRespaldo) {
+                      this.egreso.RespaldoEgresos.push({ url: respaldo });
+                    }
+                    if (this.egreso.RespaldoEgresos.length > 0) {                        
+                      this.hostalService
+                        .egresoRegistrar(this.egreso)
+                        .pipe()
+                        .subscribe(
+                          (data: any) => {
+                            this.alert.createAlert("Registro Creado con exito!");
+          
+                            /*  this.snackBar.open('Regitro Exitoso !!', 'cerrar', {
+                               duration: 2000,
+                               verticalPosition: 'top',
+                             }); */
+                            this.formularioListo.emit('true');
+                            this.egresosForm.reset();
+                          },
+                          (error: any) => {
+                            this.snackBar.open('Tenemos Problemas para realizar el registro, porfavor contactar al equipo de desarrollo', 'cerrar', {
+                              duration: 2000,
+                              verticalPosition: 'top',
+                            });
+                            console.log(error);
+                          }
+                        );
+                    } else {
+                      this.snackBar.open('Debemos Recibir sus respaldos para continuar !!', 'cerrar', {
+                        duration: 5000,
+                        verticalPosition: 'top',
+                      });
+                    }                    
+              }
+              return;
+          }
+          else {
+            this.egreso.fecha = this.egresosForm.value.fecha;          
+            this.egresosForm.value.numeroCuota = "1/1";             
+            this.egreso.numeroCuota = this.egresosForm.value.numeroCuota;          
+          }
 
           for (const respaldo of this.nameRespaldo) {
             this.egreso.RespaldoEgresos.push({ url: respaldo });
           }
-          if (this.egreso.RespaldoEgresos.length > 0) {
+          if (this.egreso.RespaldoEgresos.length > 0) {                        
             this.hostalService
               .egresoRegistrar(this.egreso)
               .pipe()

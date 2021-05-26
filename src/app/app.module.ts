@@ -15,6 +15,15 @@ import { NavComponent } from './nav/nav.component';
 import { HostalModule } from './_pages/hostal/hostal.module';
 import { ComponentsModule } from './_components/components.module';
 import { AuthSharedService } from './_pages/shared/shared-services/auth-shared.service';
+import { FullCalendarModule } from '@fullcalendar/angular'; 
+import dayGridPlugin from '@fullcalendar/daygrid'; 
+import interactionPlugin from '@fullcalendar/interaction'; 
+
+FullCalendarModule.registerPlugins([ 
+  dayGridPlugin,
+  interactionPlugin
+]);
+
 
 
 /* Configurar Pipe español */
@@ -41,6 +50,7 @@ registerLocaleData(localeEs, 'es');
     BrowserAnimationsModule,
     LayoutModule,
     MaterialModule,
+    FullCalendarModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

@@ -21,6 +21,6 @@ export class EgresoLubricentro {
     sucursal!: string;
     fechaf!: string;
     idIngreso!: string;
-
+    numeroCuota!: string;
 
 }

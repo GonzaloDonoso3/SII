@@ -142,16 +142,16 @@ export class HostalService {
   /* /ingresos */
 
   /* egresos */
-  egresoRegistrar(egreso: EgresoHostal): any {
-    return this.http.post(
+  egresoRegistrar(egreso: EgresoHostal): any {    
+    return this.http.post(      
       `${environment.apiUrl}/egreso${this.empresa}/conRespaldo`,
-      egreso
+      egreso      
     );
   }
-  egresoGetAll(): any {
+  egresoGetAll(): any {    
     return this.http.get<[]>(`${environment.apiUrl}/egresoHostal`);
   }
-  egresoGetFiles(fileName: string): any {
+  egresoGetFiles(fileName: string): any {    
     return this.http
       .get(`${environment.apiUrl}/egreso${this.empresa}/download/${fileName}`, {
         responseType: 'blob',
@@ -160,10 +160,11 @@ export class HostalService {
         window.open(window.URL.createObjectURL(res));
       });
   }
-  getById(id: string): any {
+  getById(id: string): any {    
     return this.http.get<any>(
       `${environment.apiUrl}/egreso${this.empresa}/${id}`
     );
   }
   /* /egresos */
+  
 }

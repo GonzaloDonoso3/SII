@@ -21,7 +21,7 @@
           </mat-form-field>
         </div>
         <!-- select tipoEgreso -->
-        <div class="col">
+        <!-- <div class="col">
           <mat-form-field class="full-width">
             <mat-select placeholder="Tipos Egresos" formControlName="tipoEgreso">
               <mat-option *ngFor="let tipo of tiposEgresos" [value]="tipo">
@@ -32,19 +32,44 @@
               este campo es <strong>requrido</strong>
             </mat-error>
           </mat-form-field>
-        </div>
+        </div> -->
         <!-- fin -->
-      </div>
-      <div class="row">
-        <!-- monto -->
         <div class="col">
-          <mat-form-field class="full-width">
-            <input matInput placeholder="Monto" formControlName="monto" type="number" />
-            <mat-error *ngIf="egresosForm.controls['monto'].hasError('required')">
-              Monto es <strong>requerido</strong>
-            </mat-error>
+          <mat-form-field class="full-width">                        
+              <mat-select placeholder="Tipo Egreso" formControlName="tipoEgreso" (ngModelChange)="capturar()" [(ngModel)]="opcionSeleccionado">
+                  <mat-option value="Gastos" (click)="desactivarEdicion()">
+                      Gastos
+                  </mat-option>
+                  <mat-option value="Costos" (click)="desactivarEdicion()">
+                      Costos
+                  </mat-option>
+                  <mat-option value="Remuneraciones" (click)="desactivarEdicion()">
+                      Remuneraciones
+                  </mat-option>
+                  <mat-option value="Bancarios" (click)="desactivarEdicion()">
+                      Bancarios
+                  </mat-option>
+                  <mat-option value="Impuestos" (click)="desactivarEdicion()">
+                      Impuestos
+                  </mat-option>
+                  <mat-option value="Inversiones" (click)="desactivarEdicion()">
+                      Inversiones
+                  </mat-option>
+                  <mat-option value="Prestamos Bancarios" (click)="activarEdicion()">
+                      Prestamos Bancarios
+                  </mat-option>
+                  <mat-option value="Prestamos Automotriz" (click)="activarEdicion()">
+                      Prestamos Automotriz
+                  </mat-option>
+              </mat-select>
+              <mat-error *ngIf="egresosForm.controls['tipoEgreso'].hasError('required')">
+                  tipo ingreso es <strong>requerido</strong>
+              </mat-error>
           </mat-form-field>
-        </div>
+      </div>
+
+      </div>
+      <div class="row">        
         <!-- select fecha -->
         <div class="col">
           <mat-form-field class="full-width">
@@ -57,6 +82,39 @@
             </mat-error>
           </mat-form-field>
         </div>
+
+         <!-- numero de cuotas -->
+         <div class="col" *ngIf="!mostrarDatos" >
+          <mat-form-field class="full-width">
+              <input matInput placeholder="Numero de cuotas" formControlName="numeroCuota" type="number"/>
+              <mat-error *ngIf="egresosForm.controls['numeroCuota'].hasError('required')">
+                  numero de cuotas <strong>requerido</strong>
+              </mat-error>
+          </mat-form-field>
+      </div>
+
+        <!-- monto -->
+        <div class="col" *ngIf="mostrarDatos">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Monto" formControlName="monto" type="number" />
+            <mat-error *ngIf="egresosForm.controls['monto'].hasError('required')">
+              Monto es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+       
+
+      <!-- monto de las cuotas -->
+      <div class="col" *ngIf="!mostrarDatos">
+        <mat-form-field class="full-width">
+            <input matInput placeholder="Monto" formControlName="montoCuota" type="number" [ngModel]="montoTotal"/>
+            Capital: 500 + Interes 500                        
+            <mat-error *ngIf="egresosForm.controls['monto'].hasError('required')">
+                monto es <strong>requerido</strong>
+            </mat-error>
+        </mat-form-field>
+    </div>
+
         <!-- responsable -->
 
         <div class="col">

@@ -2,7 +2,7 @@
     <button mat-raised-button (click)="limpiarFiltros()" color="accent">
         Limpiar filtros
     </button>
-    <span> Egresos Rentacar </span>
+    <span> Egresos Inmobiliaria </span>
     <span> Monto Registros Seleccionados:
         {{ totalSeleccion | currency: "$":"symbol":"1.0-0" }}
     </span>
@@ -11,26 +11,30 @@
     </button>
     <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="exportAsXLSX()">
         Exportar
-      </button>
+    </button>
 </mat-toolbar>
 
 <div class="table-responsive">
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z10">
+    <table mat-table [dataSource]="dataSource" matSort matSortActive="id" matSortDirection="desc"
+        class="mat-elevation-z10">
         <!-- check column -->
 
         <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>
-                <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+                <mat-checkbox (change)="$event ? masterToggle() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()">
                 </mat-checkbox>
             </th>
             <td mat-cell *matCellDef="let row">
-                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)">
                 </mat-checkbox>
             </td>
         </ng-container>
         <!-- data columns -->
         <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>ID </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID </th>
             <td mat-cell *matCellDef="let element">{{ element.id }}</td>
         </ng-container>
 
@@ -84,6 +88,15 @@
                             </mat-option>
                             <mat-option value="Impuestos">
                                 Impuestos
+                            </mat-option>
+                            <mat-option value="Inversiones">
+                                Inversiones
+                            </mat-option>
+                            <mat-option value="Prestamos Bancarios">
+                                Prestamos Bancarios
+                            </mat-option>
+                            <mat-option value="Prestamos Automotriz">
+                                Prestamos Automotriz
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -143,6 +156,14 @@
                 </div>
             </th>
             <td mat-cell *matCellDef="let element">{{ element.responsable }}</td>
+        </ng-container>
+
+        <!-- Campo Numero de cuotas -->
+        <ng-container matColumnDef="numeroCuota">
+            <th mat-header-cell *matHeaderCellDef>Nº de cuotas</th>                                    
+            <td mat-cell *matCellDef="let element">
+                {{ element.numeroCuota }}
+            </td>
         </ng-container>
 
         <!-- Campo Respaldos-->

@@ -13,5 +13,6 @@ export class EgresosInmobiliaria {
   descripcion!: string;
   Sucursal!: Sucursal;
   Usuario!: Usuario;
+  numeroCuota!: string;
   RespaldoEgresoInmobiliaria!: any[];
 }

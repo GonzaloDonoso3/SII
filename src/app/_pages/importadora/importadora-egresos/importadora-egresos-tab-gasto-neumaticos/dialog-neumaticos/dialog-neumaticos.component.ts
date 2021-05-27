@@ -29,14 +29,23 @@ export class DialogNeumaticosComponent implements OnInit {
     displayedColumns: string[] = [
       'select',
       'id',
-      'fecha',
-      'monto',
-      'estadoPago'
+      'neumatico',
+      'cantidad',
+      'conteiner',
+      'costoNeumatico',
+      'comision',
+      'interior',
+      'maritimo',
+      'portuario',
+      'seguros',
+      'unitario',
+      'ganancia',
+      'total'
     ];
     dataSource: MatTableDataSource<Contrato> = new MatTableDataSource();
     dataContrato: Contrato[] = [];
 
-    idContrato = 0;
+    idConteiner = 0;
     nombreClienteLocal = localStorage.getItem("nombreCliente");
     idCuota : any;
     cuota: any;
@@ -66,16 +75,16 @@ export class DialogNeumaticosComponent implements OnInit {
 
 //obtener los contratos del cliente
   getConteiner(){
-    this.idContrato = Number(localStorage.getItem("idConteiner"));
+    this.idConteiner = Number(localStorage.getItem("idConteiner"));
     //Carga Tabla 
     this.importadoraService
-    .getConteinerById(this.idContrato)
+    .getConteinerById(this.idConteiner)
     .pipe()
     .subscribe((x: any) => {
      this.dataSource = new MatTableDataSource(x.EgresoNeumaticoImportadoras);
      this.dataSource.paginator = this.paginator.toArray()[0];
      this.dataContrato = x.EgresoNeumaticoImportadoras;
-     console.log(x.EgresoNeumaticoImportadoras);
+     console.log(x);
    });
   }
 
@@ -132,5 +141,12 @@ export class DialogNeumaticosComponent implements OnInit {
    closeDialog(){
     this.abogadosService.closeDialogModal();
    }
+
+    //Metodo exportar excel
+  exportAsXLSX(): void {
+    this.selectedRows = [];
+    this.selection.selected.forEach((x) => this.selectedRows.push(x));
+    this.importadoraService.exportAsExcelFile(this.selectedRows, 'Lista-Neumaticos-Conteiner-Importadora');
+    }
 
 }

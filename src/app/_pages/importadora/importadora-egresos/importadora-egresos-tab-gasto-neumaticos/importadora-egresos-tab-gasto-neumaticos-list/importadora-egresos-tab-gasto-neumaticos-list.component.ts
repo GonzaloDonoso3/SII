@@ -95,6 +95,7 @@ getEgreso(){
      Egresos.usuario = Egresos.Usuario.nombreUsuario;
      return Egresos;
    });
+   console.log(this.dataEgresos);
    this.dataSource = new MatTableDataSource(this.dataEgresos);
    this.dataSource.paginator = this.paginator.toArray()[0];
  });
@@ -138,40 +139,32 @@ revelarTotal() {
 }
 
 aplicarfiltros() {
-//  this.formFilter.valueChanges.subscribe((res) => {
-//    let dataFiltered = this.dataEgresos
+ this.formFilter.valueChanges.subscribe((res) => {
+   let dataFiltered = this.dataEgresos
 
-//    if (res.descripcion) {
-//      dataFiltered = dataFiltered.filter((data: EgresosContainerImportadora) => data.descripcion == res.descripcion)
-//    }
+   if (res.idSucursal) {
+     dataFiltered = dataFiltered.filter((data: EgresosContainerImportadora) => data.Sucursal.razonSocial == res.idSucursal)
+   }
 
-//    if (res.tipoEgreso) {
-//      dataFiltered = dataFiltered.filter((data: EgresosContainerImportadora) => data.tipoEgreso == res.tipoEgreso)
-//    }
+   if (res.usuario) {
+     dataFiltered = dataFiltered.filter((data: EgresosContainerImportadora) => data.usuario.trim() == res.usuario)
+   }
 
-//    if (res.idSucursal) {
-//      dataFiltered = dataFiltered.filter((data: EgresosContainerImportadora) => data.Sucursal.razonSocial == res.idSucursal)
-//    }
+   if (res.start && res.end) {
+     dataFiltered = dataFiltered.filter((data: EgresosContainerImportadora) => new Date(data.fecha) >= res.start && new Date(data.fecha) <= res.end)
+   }
 
-//    if (res.usuario) {
-//      dataFiltered = dataFiltered.filter((data: EgresosContainerImportadora) => data.usuario.trim() == res.usuario)
-//    }
-
-//    if (res.start && res.end) {
-//      dataFiltered = dataFiltered.filter((data: EgresosContainerImportadora) => new Date(data.fecha) >= res.start && new Date(data.fecha) <= res.end)
-//    }
-
-//    this.dataSource = new MatTableDataSource(dataFiltered)
-//    this.dataSource.paginator = this.paginator.toArray()[0]
-//    this.totalSeleccion = 0
-//    this.selection.clear()
-//  })
+   this.dataSource = new MatTableDataSource(dataFiltered)
+   this.dataSource.paginator = this.paginator.toArray()[0]
+   this.totalSeleccion = 0
+   this.selection.clear()
+ })
 }
 
 
   // Inicio Filtros
   limpiarFiltros() {
-   this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null, vendedor: null, descripcionEgreso: null, usuario: null, codigoAutorizacion: null, medioPago: null})
+   this.formFilter.patchValue({ start: null, end: null, idSucursal: null, usuario: null})
    this.dataSource = new MatTableDataSource(this.dataEgresos);
    this.dataSource.paginator = this.paginator.toArray()[0];
    this.selection.clear()

@@ -145,7 +145,7 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
         });
         dialogRef.afterClosed().subscribe(result => {
           this.nameRespaldo = result;
-          this.container.idEgresoContainerImportadora = [];
+          this.container.RespaldoEgresoContainerImportadoras = [];
           this.container.id;
           this.container.fecha = this.f.fecha.value;
           this.container.idSucursal = this.f.idSucursal.value;
@@ -164,7 +164,7 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
 
           //Se le agrega los respaldos subidos
           for (const name of this.nameRespaldo) {
-            this.container.idEgresoContainerImportadora.push({ url: name });
+            this.container.RespaldoEgresoContainerImportadoras.push({ url: name });
           }
           //Si todo esta correcto se ingresa el objeto
           if (result.length > 0) {

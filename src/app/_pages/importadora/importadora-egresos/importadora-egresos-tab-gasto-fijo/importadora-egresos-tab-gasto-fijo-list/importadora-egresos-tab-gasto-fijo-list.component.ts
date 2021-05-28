@@ -57,7 +57,7 @@ export class ImportadoraEgresosTabGastoFijoListComponent implements OnInit {
 
 
  empresa = new Empresa();
- idEmpresa = 13;
+ idEmpresa = 9;
  sucursales: Sucursal[] = [];
  selection = new SelectionModel<EgresosFijoImportadora>(true, []);
  tiposEgresos: string[] = [];
@@ -86,7 +86,6 @@ export class ImportadoraEgresosTabGastoFijoListComponent implements OnInit {
        Egresos.usuario = Egresos.Usuario.nombreUsuario;
        return Egresos;
      });
-     console.log(this.dataEgresos);
      this.dataSource = new MatTableDataSource(this.dataEgresos);
      this.dataSource.paginator = this.paginator.toArray()[0];
    });

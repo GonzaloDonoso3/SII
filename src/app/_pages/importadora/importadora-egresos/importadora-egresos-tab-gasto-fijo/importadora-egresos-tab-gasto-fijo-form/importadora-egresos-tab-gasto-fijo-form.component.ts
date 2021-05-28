@@ -27,7 +27,7 @@ export class ImportadoraEgresosTabGastoFijoFormComponent implements OnInit {
 
   nameRespaldo = '';
   tiposIngresos: any[] = [];
-  idEmpresa = 13;
+  idEmpresa = 9;
   empresa = new Empresa();
 
 

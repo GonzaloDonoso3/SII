@@ -39,8 +39,9 @@ export class DialogNeumaticosComponent implements OnInit {
       'portuario',
       'seguros',
       'unitario',
+      'total',
       'ganancia',
-      'total'
+      'totalVenta'
     ];
     dataSource: MatTableDataSource<Contrato> = new MatTableDataSource();
     dataContrato: Contrato[] = [];

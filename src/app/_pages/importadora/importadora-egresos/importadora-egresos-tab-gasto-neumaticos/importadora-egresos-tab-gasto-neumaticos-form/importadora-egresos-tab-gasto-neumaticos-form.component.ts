@@ -95,8 +95,9 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
     'portuario',
     'seguros',
     'unitario',
+    'total',
     'ganancia',
-    'total'
+    'totalVenta'
   ];
 
   
@@ -230,17 +231,17 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
               this.neumatico.impuestoProntuario = (this.container.impuestoProntuario * (this.c.pContainer.value /100));
         
               //Valores Unitarios
-              this.costoComision  = (this.container.costoComision * (this.c.pContainer.value /100))/this.c.cantidad.value;
-              this.costoInterior  = (this.container.costoInterior * (this.c.pContainer.value /100))/this.c.cantidad.value;
-              this.costoMaritimo = this.container.costoMaritimo/this.cantidadTipo;
-              this.seguros = this.container.seguros/this.cantidadTipo;
-              this.impuestoProntuario = (this.container.impuestoProntuario * (this.c.pContainer.value /100))/this.c.cantidad.value;
+              // this.costoComision  = (this.container.costoComision * (this.c.pContainer.value /100))/this.c.cantidad.value;
+              // this.costoInterior  = (this.container.costoInterior * (this.c.pContainer.value /100))/this.c.cantidad.value;
+              // this.costoMaritimo = this.container.costoMaritimo/this.cantidadTipo;
+              // this.seguros = this.container.seguros/this.cantidadTipo;
+              // this.impuestoProntuario = (this.container.impuestoProntuario * (this.c.pContainer.value /100))/this.c.cantidad.value;
         
               this.neumatico.montoTotal = this.neumatico.costoComision + this.neumatico.costoInterior + this.neumatico.costoMaritimo + this.neumatico.seguros + this.neumatico.impuestoProntuario + this.neumatico.costoNeumatico;
               this.neumatico.valorUnitario = this.neumatico.montoTotal / this.c.cantidad.value;
               this.neumatico.pGanancia = this.neumatico.valorUnitario + (this.neumatico.valorUnitario * (this.c.pGanancia.value/100));
-              this.montoTotalNeumatico = this.neumatico.costoComision + this.neumatico.costoInterior + this.neumatico.costoMaritimo + this.neumatico.seguros + this.neumatico.impuestoProntuario;
-
+              this.montoTotalNeumatico = this.neumatico.costoComision + this.neumatico.costoInterior + this.neumatico.costoMaritimo + this.neumatico.seguros + this.neumatico.impuestoProntuario + this.neumatico.costoNeumatico;
+              this.neumatico.totalVenta = this.neumatico.pGanancia * this.c.cantidad.value;
               
 
               this.listaNeumatico.push(this.neumatico);
@@ -277,7 +278,7 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
   //Metodo que permite guardar el contrato
   guardarConteiner(){
    
-    if(/*this.montoTotal == 0 && */this.listaNeumatico.length > 0 && this.porcentajeConteiner <= 1 && this.cantidadNeumaticos == 0){
+    if(this.montoTotal == 0 && this.listaNeumatico.length > 0 && this.porcentajeConteiner <= 1 && this.cantidadNeumaticos == 0){
         this.importadoraService
         .guardarNeumaticos(this.listaNeumatico)
         .pipe()

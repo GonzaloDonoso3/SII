@@ -93,7 +93,7 @@
                 <!-- Prontuario -->
                 <div class="col">
                     <mat-form-field class="full-width">
-                        <input matInput placeholder="Impuesto Prontuario" formControlName="impuestoProntuario" type="number" />
+                        <input matInput placeholder="Impuesto Portuario" formControlName="impuestoProntuario" type="number" />
                         <mat-error *ngIf="addressFormConteiner.controls['impuestoProntuario'].hasError('required')">
                             este campo es <strong>requerido</strong>
                         </mat-error>
@@ -274,11 +274,18 @@
                                     </td>
                                 </ng-container>
 
+                                <ng-container matColumnDef="total">
+                                    <th mat-header-cell *matHeaderCellDef> Total Venta</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        {{ element.totalVenta }}
+                                    </td>
+                                </ng-container>
+
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                                 <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
                                 <tr class="mat-row" *matNoDataRow>
-                                    <td class="mat-cell" colspan="13">No existen coincidencias</td>
+                                    <td class="mat-cell" colspan="14">No existen coincidencias</td>
                                 </tr>
                             </table>
                         </div>

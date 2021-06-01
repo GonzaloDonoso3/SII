@@ -1,0 +1,15 @@
+.row {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+  }
+  
+  .col {
+    flex: 1;
+    margin-right: 20px;
+  }
+
+//   #targed {
+//       display: -webkit-box;
+//   }

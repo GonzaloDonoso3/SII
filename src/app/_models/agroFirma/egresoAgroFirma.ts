@@ -17,5 +17,6 @@ export class EgresoAgroFirma {
   sucursal!: string;
   fechaf!: string;
   numeroCuota!: string;
+  idProyecto!: number;
   }
   

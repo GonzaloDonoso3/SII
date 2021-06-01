@@ -30,7 +30,7 @@ export class NavComponent {
       { name: 'RENTACAR', icon: 'directions_car', url: 'rentacar' },
       { name: 'INMOBILIARIA', icon: 'chair', url: 'inmobiliaria' },
       { name: 'FIRMA ABOGADOS', icon: 'account_balance', url: 'firmaAbogado' },
-      //{ name: 'AGROFIRMA', icon: 'agriculture', url: 'agrofirma' },
+      { name: 'AGROFIRMA', icon: 'agriculture', url: 'agrofirma' },
       { name: 'IMPORTADORA', icon: 'flight_land', url: 'importadora' },      
       
       /* { name: 'AGROFIRMA PROYECTOS', icon: 'agriculture', url: 'agrofirma' } */

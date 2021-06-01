@@ -1,6 +1,3 @@
-import { Sucursal } from '../shared/sucursal';
-import { Usuario } from '../shared/usuario';
-
 export class ProyectoAgrofirma {
     id!: string;
     nombre!: string;
@@ -12,8 +9,7 @@ export class ProyectoAgrofirma {
     capitalInicial!: number;
     idSucursal!: number;
     idUsuario!: number;
-    
-    Sucursal!: Sucursal;    
-    Usuario!: Usuario;    
+    createdAt!: string;
+    updatedAt!: string;
     }
   

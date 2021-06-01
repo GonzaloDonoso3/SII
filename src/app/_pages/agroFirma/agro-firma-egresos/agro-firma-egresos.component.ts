@@ -1,10 +1,14 @@
 import { MatTableDataSource } from '@angular/material/table';
 import { Component, OnInit } from '@angular/core';
 import { AgroFirmaService } from '@app/_pages/agroFirma/agro-firma.service';
-import { Empresa } from '@app/_models/shared/empresa';
-import { EmpresaSharedService } from '@app/_pages/shared/shared-services/empresa-shared.service';
 import { ProyectoAgrofirma } from '@app/_models/agroFirma/proyectoAgroFirma';
-import { EgresoHostal } from '@app/_models/hostal/egresoHostal';
+import { MatDialog } from '@angular/material/dialog';
+import { AgroFirmaEgresosFormComponent } from '@app/_pages/agroFirma/agro-firma-egresos/agro-firma-egresos-form/agro-firma-egresos-form.component';
+import { AgroFirmaEgresosListComponent } from '@app/_pages/agroFirma/agro-firma-egresos/agro-firma-egresos-list/agro-firma-egresos-list.component';
+import { first } from 'rxjs/operators';
+import { ModalService } from '@app/_components/_modal';
+import { ActivatedRoute, Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-agro-firma-egresos',
@@ -15,24 +19,38 @@ export class AgroFirmaEgresosComponent implements OnInit {
 
   //Creación de variables y asignación de datos
   dataSource: MatTableDataSource<ProyectoAgrofirma> = new MatTableDataSource();
-  dataEgresos: ProyectoAgrofirma[] = [];
-
-  proyectos: any[] = [];
-  empresa: Empresa = new Empresa();
+  proyectos: ProyectoAgrofirma[] = [];
+  idProyecto = null;
 
   constructor(
     private agroFirmaService:  AgroFirmaService,
-    private empresaService: EmpresaSharedService,
+    public dialog: MatDialog,
+    private modalService: ModalService,
+    private router: Router,    
   ) { }
 
   ngOnInit(): void {
-    //this.getproyectos();
-  }
-  
-  getproyectos(){
-    this.agroFirmaService.GetAllProyectos().subscribe((data: ProyectoAgrofirma[]) => {            
-       this.proyectos = data;
-       console.log("consultando a la api", this.proyectos)
+    this.agroFirmaService.GetAllProyectos()
+      .pipe(first())
+      .subscribe((proyectos: any) => {
+        this.proyectos = proyectos;        
       });
   }
+         
+  formulario(idModal: any, idProyecto: any): void {
+    this.modalService.open(idModal);
+    this.router.navigate(['agrofirma/egresos/add', idProyecto]);        
+    //const dialogRef = this.dialog.open(AgroFirmaEgresosFormComponent, {});          
+  }
+
+  listado(idModal: any, idProyecto: any): void {
+    this.modalService.open(idModal);
+    this.router.navigate(['agrofirma/egresos/list', idProyecto]);
+  }
+
+  closeModal(id: any): void {
+    this.modalService.close(id);
+    this.router.navigate(['agrofirma/egresos']);
+  }
+      
 }

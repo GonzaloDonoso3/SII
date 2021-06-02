@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, Input,  EventEmitter } from '@angular/core';
 import { DatePipe } from "@angular/common";
 import { Usuario } from '@app/_models/shared/usuario';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
@@ -24,7 +24,7 @@ import { AgroFirmaRoutingModule } from '@app/_pages/agroFirma/agro-firma-routing
 export class AgroFirmaEgresosFormComponent implements OnInit {
   @Output()
   formularioListo = new EventEmitter<string>();
-
+  // @Output() nombreHijo: string = "Sin nombre"
 
   usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '');
   // ? set checkbox
@@ -38,6 +38,7 @@ export class AgroFirmaEgresosFormComponent implements OnInit {
   mostrarDatos : boolean = true;
   datoCuota = 'N/A';
   montoTotal = '1000';
+  proyecto = '3';
   selected: any;
   opcionSeleccionado: string = '0';
   verSeleccion: string = '';
@@ -63,10 +64,13 @@ export class AgroFirmaEgresosFormComponent implements OnInit {
     this.sucursales = this.sucursalService.sucursalListValue;
   }
 
+  
+  
+
   ngOnInit(): void {
     this.idProyecto = this.route.snapshot.params.idProyecto;        
-    console.log("id del proyecto en el formulario", this.idProyecto)
-    console.log("tipo del dato", typeof(this.idProyecto))   
+    //console.log("id del proyecto en el formulario", this.idProyecto)
+    
     // ? construccion del formulario,
    this.egresosForm = this.fb.group({
     //agregar el detalle del formulario;
@@ -74,14 +78,11 @@ export class AgroFirmaEgresosFormComponent implements OnInit {
     monto: [null],
     tipoEgreso: [null, Validators.required],
     descripcion: [null, Validators.required],
-    responsable: [null, Validators.required],
-    // idSucursal: [null, Validators.required],
+    responsable: [null, Validators.required],    
     montoCuota: [null],
     numeroCuota: [null],
-    //idProyecto: [null],
-    //idProyecto: this.idProyecto,
-    RespaldoEgresos: this.respaldoEgresos,
-    /* idCuentaAsignada: [null, Validators.required], */
+    idProyecto: [null],    
+    RespaldoEgresos: this.respaldoEgresos,    
   });
     this.tiposEgresos = this.agroFirmaService.tiposEgresosListValue;
     this.cuentasService.obtenerCuentas().subscribe(data => {
@@ -136,15 +137,12 @@ export class AgroFirmaEgresosFormComponent implements OnInit {
             this.egreso.monto = this.egresosForm.value.monto;                    
           }
           this.egreso.descripcion = this.egresosForm.value.descripcion;
-          this.egreso.responsable = this.egresosForm.value.responsable;
-          // this.egreso.idSucursal = this.egresosForm.value.idSucursal;
+          this.egreso.responsable = this.egresosForm.value.responsable;          
           this.egreso.idUsuario = this.usuario.id;
           this.egreso.tipoEgreso = this.egresosForm.value.tipoEgreso;
           this.egreso.numeroCuota = this.egresosForm.value.numeroCuota;                  
-          //this.egreso.idProyecto = JSON.parse(this.idProyecto); 
-          // this.idProyecto = this.route.snapshot.params.idProyecto;    
-          // console.log("guardando", this.idProyecto)
-    
+          this.egreso.idProyecto = this.egresosForm.value.idProyecto;
+          
 
           if(this.egresosForm.value.numeroCuota > 1){              
             let sumarMes= 0;

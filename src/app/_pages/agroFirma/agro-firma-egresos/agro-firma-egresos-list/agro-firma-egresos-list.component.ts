@@ -72,6 +72,7 @@ export class AgroFirmaEgresosListComponent implements OnInit {
   proyectos: ProyectoAgrofirma[] = [];
   selection = new SelectionModel<EgresoAgroFirma>(true, []);
   tiposEgresos: string[] = [];
+  selectedRows!: any[];
   totalSeleccion = 0;
   cuentasRegistradas: any[] = [];
 
@@ -83,7 +84,8 @@ export class AgroFirmaEgresosListComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
   ) {
-    this.sucursales = this.sucursalService.sucursalListValue;
+    this.sucursales = this.sucursalService.sucursalListValue;    
+    //this.proyectos = this.agroFirmaService.proyectosListValue;  
     this.tiposEgresos = this.agroFirmaService.tiposEgresosListValue;         
   }
 
@@ -91,14 +93,13 @@ export class AgroFirmaEgresosListComponent implements OnInit {
     ///this.idProyecto = this.route.snapshot.params.idProyecto;    
     this.aplicarfiltros();
     this.actualizarTabla();
-    
-    
-    // this.agroFirmaService.GetAllProyectos()
-    //   .pipe(first())
-    //   .subscribe((proyectos: any) => {
-    //     this.proyectos = proyectos; 
-    //     // console.log("proyectos en el listado", this.proyectos);       
-    //   });
+
+    this.agroFirmaService.GetAllProyectos()
+      .pipe(first())
+      .subscribe((proyectos: any) => {
+        this.proyectos = proyectos; 
+        // console.log("proyectos en el listado", this.proyectos);       
+      });
   }
  
 
@@ -130,8 +131,14 @@ export class AgroFirmaEgresosListComponent implements OnInit {
         data: { archivos: listArchivos, servicio: 'agroFirma-egreso' },
       });
     }
-  
-  
+    
+    //METODO QUE PERMITE EXPORTA A EXCEL
+    exportAsXLSX(): void {
+    this.selectedRows = [];
+    this.selection.selected.forEach((x) => this.selectedRows.push(x));
+    this.agroFirmaService.exportAsExcelFile(this.selectedRows, 'Egresos-Abogados');
+    }
+
   
     revelarTotal() {    
       this.totalSeleccion = 0;

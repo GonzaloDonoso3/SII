@@ -2,13 +2,19 @@
     <button mat-raised-button (click)="limpiarFiltros()" color="accent">
         Actualizar tabla
     </button>
-    <span>Egresos Agro Firma</span>
-    <span>Monto Registros Seleccionados:
+    <span style="margin-left: 10px;">Egresos Agro Firma</span>
+    <span style="margin-left: 10px;">  Monto Registros Seleccionados:
         {{ totalSeleccion | currency: "$":"symbol":"1.0-0" }}
     </span>
     <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="revelarTotal()">
         Revelar total
-    </button>    
+    </button>
+    <button mat-raised-button color="accent" (click)="exportAsXLSX()" style="margin: 10px">
+        Exportar a excel
+    </button>        
+    <button mat-raised-button color="accent" style="margin: 10px">
+        Detalle Respaldos
+    </button>        
 </mat-toolbar>
 
 <div class="table-responsive">
@@ -81,7 +87,8 @@
                     </mat-form-field>
                 </div>
             </th>
-            <td mat-cell *matCellDef="let element">{{ element.proyecto }}</td>
+            <td mat-cell *matCellDef="let element"> venta cerezos 2020-2021 </td>
+            <!-- <td mat-cell *matCellDef="let element">{{ element.p }}</td>             -->
         </ng-container>
 
         <!-- descripcion -->

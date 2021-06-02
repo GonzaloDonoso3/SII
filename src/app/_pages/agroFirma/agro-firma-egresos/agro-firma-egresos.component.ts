@@ -1,5 +1,5 @@
 import { MatTableDataSource } from '@angular/material/table';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AgroFirmaService } from '@app/_pages/agroFirma/agro-firma.service';
 import { ProyectoAgrofirma } from '@app/_models/agroFirma/proyectoAgroFirma';
 import { MatDialog } from '@angular/material/dialog';
@@ -20,7 +20,7 @@ export class AgroFirmaEgresosComponent implements OnInit {
   //Creación de variables y asignación de datos
   dataSource: MatTableDataSource<ProyectoAgrofirma> = new MatTableDataSource();
   proyectos: ProyectoAgrofirma[] = [];
-  idProyecto = null;
+  idProyecto = null; 
 
   constructor(
     private agroFirmaService:  AgroFirmaService,

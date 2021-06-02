@@ -28,6 +28,9 @@ import { ModalModule } from '@app/_components/_modal';
     ComponentsModule,
     ReactiveFormsModule,
     ModalModule,
+  ],
+  exports: [
+    AgroFirmaEgresosFormComponent,    
   ]
 })
 export class AgroFirmaModule { }

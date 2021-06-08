@@ -20,6 +20,7 @@ import { AuthSharedService } from './_pages/shared/shared-services/auth-shared.s
 /* Configurar Pipe español */
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
+import {DecimalPipe} from '@angular/common';
 
 
 registerLocaleData(localeEs, 'es');
@@ -43,6 +44,7 @@ registerLocaleData(localeEs, 'es');
     MaterialModule,
   ],
   providers: [
+    DecimalPipe,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     /* Configurar Pipe español */

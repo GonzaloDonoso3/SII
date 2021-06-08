@@ -235,49 +235,50 @@
                                 <ng-container matColumnDef="maritimo">
                                     <th mat-header-cell *matHeaderCellDef> Costo Maritimo </th>
                                     <td mat-cell *matCellDef="let element">
-                                        {{ element.costoMaritimo }}
+                                        {{ element.costoMaritimo | number }}
                                     </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="portuario">
                                     <th mat-header-cell *matHeaderCellDef> Impuesto Portuario </th>
                                     <td mat-cell *matCellDef="let element">
-                                        {{ element.impuestoProntuario }}
+                                        {{ element.impuestoProntuario | number }}
                                     </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="seguros">
                                     <th mat-header-cell *matHeaderCellDef> Seguros </th>
                                     <td mat-cell *matCellDef="let element">
-                                        {{ element.seguros }}
+                                        {{ element.seguros | number }}
                                     </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="unitario">
                                     <th mat-header-cell *matHeaderCellDef> Valor Unitario </th>
                                     <td mat-cell *matCellDef="let element">
-                                        {{ element.valorUnitario }}
+                                        {{ element.valorUnitario | number }}
                                     </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="ganancia">
                                     <th mat-header-cell *matHeaderCellDef> Valor Venta </th>
                                     <td mat-cell *matCellDef="let element">
-                                        {{ element.pGanancia }}
+                                        {{ element.pGanancia | number }}
                                     </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="total">
-                                    <th mat-header-cell *matHeaderCellDef> Total </th>
+                                    <!-- <th mat-header-cell *matHeaderCellDef> Total </th> -->
+                                    <th mat-header-cell *matHeaderCellDef> Costo unitario total</th>
                                     <td mat-cell *matCellDef="let element">
-                                        {{ element.montoTotal }}
+                                        {{ element.montoTotal | number }}
                                     </td>
                                 </ng-container>
 
-                                <ng-container matColumnDef="total">
+                                <ng-container matColumnDef="totalVenta">
                                     <th mat-header-cell *matHeaderCellDef> Total Venta</th>
                                     <td mat-cell *matCellDef="let element">
-                                        {{ element.totalVenta }}
+                                        {{ element.totalVenta | number }}
                                     </td>
                                 </ng-container>
 

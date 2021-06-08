@@ -16,6 +16,7 @@ import { EgresosNeumaticoImportadora } from '@app/_models/importadora/egresoNeum
 import { ImportadoraService } from '../../../importadora.service';
 import { Console } from 'node:console';
 import { MatDialog } from '@angular/material/dialog';
+import {DecimalPipe} from '@angular/common';
 
 @Component({
   selector: 'app-importadora-egresos-tab-gasto-neumaticos-form',
@@ -37,6 +38,7 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
   impuestoProntuario !: number;
   idConteiner!: any;
   nameRespaldo = '';
+  //totalUnitario !: number;
 
   //Validadores
   existeConteiner !: Boolean;
@@ -95,9 +97,10 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
     'portuario',
     'seguros',
     'unitario',
+    //'totalUnitario',
     'total',
+    'totalVenta',
     'ganancia',
-    'totalVenta'
   ];
 
   
@@ -108,6 +111,7 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
     private snackBar: MatSnackBar,
     private importadoraService: ImportadoraService,
     public dialog: MatDialog,
+    private decimalPipe: DecimalPipe
   ) { 
     this.sucursales = this.sucursalService.sucursalListValue;
   }
@@ -242,6 +246,9 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
               this.neumatico.pGanancia = this.neumatico.valorUnitario + (this.neumatico.valorUnitario * (this.c.pGanancia.value/100));
               this.montoTotalNeumatico = this.neumatico.costoComision + this.neumatico.costoInterior + this.neumatico.costoMaritimo + this.neumatico.seguros + this.neumatico.impuestoProntuario + this.neumatico.costoNeumatico;
               this.neumatico.totalVenta = this.neumatico.pGanancia * this.c.cantidad.value;
+              console.log("valor unitario", this.neumatico.valorUnitario);
+              console.log("cantidad", this.c.cantidad.value);
+              console.log("precio unitaria por la cantidad", this.neumatico.valorUnitario * this.c.cantidad.value);
               
 
               this.listaNeumatico.push(this.neumatico);

@@ -19,12 +19,13 @@ import { ImportadoraEgresosTabGastoFijoListComponent } from './importadora-egres
 import { ImportadoraEgresosTabGastoNeumaticosFormComponent } from './importadora-egresos/importadora-egresos-tab-gasto-neumaticos/importadora-egresos-tab-gasto-neumaticos-form/importadora-egresos-tab-gasto-neumaticos-form.component';
 import { ImportadoraEgresosTabGastoNeumaticosListComponent } from './importadora-egresos/importadora-egresos-tab-gasto-neumaticos/importadora-egresos-tab-gasto-neumaticos-list/importadora-egresos-tab-gasto-neumaticos-list.component';
 import { DialogNeumaticosComponent } from './importadora-egresos/importadora-egresos-tab-gasto-neumaticos/dialog-neumaticos/dialog-neumaticos.component';
+import { DialogNeumaticosEditComponent } from './importadora-egresos/importadora-egresos-tab-gasto-neumaticos/dialog-neumaticos/dialog-neumaticos-edit/dialog-neumaticos-edit/dialog-neumaticos-edit.component';
 
 
 
 
 @NgModule({
-  declarations: [ImportadoraHomeComponent, ImportadoraIngresosComponent, ImportadoraEgresosComponent, ImportadoraIngresosFormComponent, ImportadoraIngresosListComponent, ImportadoraEgresosTabGastoFijoComponent, ImportadoraEgresosTabGastoNeumaticosComponent, ImportadoraEgresosTabGastoFijoFormComponent, ImportadoraEgresosTabGastoFijoListComponent, ImportadoraEgresosTabGastoNeumaticosFormComponent, ImportadoraEgresosTabGastoNeumaticosListComponent, DialogNeumaticosComponent],
+  declarations: [ImportadoraHomeComponent, ImportadoraIngresosComponent, ImportadoraEgresosComponent, ImportadoraIngresosFormComponent, ImportadoraIngresosListComponent, ImportadoraEgresosTabGastoFijoComponent, ImportadoraEgresosTabGastoNeumaticosComponent, ImportadoraEgresosTabGastoFijoFormComponent, ImportadoraEgresosTabGastoFijoListComponent, ImportadoraEgresosTabGastoNeumaticosFormComponent, ImportadoraEgresosTabGastoNeumaticosListComponent, DialogNeumaticosComponent, DialogNeumaticosEditComponent],
   imports: [
     CommonModule,
     ImportadoraRoutingModule,

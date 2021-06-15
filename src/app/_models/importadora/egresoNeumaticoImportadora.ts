@@ -2,7 +2,7 @@ export class EgresosNeumaticoImportadora {
   id !: number;
   tipoNeumatico !: string;
   cantidad !: number;
-  montoTotal !: number;
+  montoTotal !: number;  
   valorUnitario !: number;
   pContainer !: number;
   pGanancia !: number;
@@ -14,4 +14,7 @@ export class EgresosNeumaticoImportadora {
   seguros !: number;
   totalVenta !: number;
   idContainer !: number;
+  totalTipoNeumatico !: number;  
+  costoUnitarioN !: number;
+  unitarioNuevo !: number;
   }

@@ -23,9 +23,15 @@ export class ErrorInterceptor implements HttpInterceptor {
         this._auth.cerrarSesion();
       }
 
-      if (err.status === 404) {
+      if (err.status === 404) {        
         this.alert.errorAlert(err.error.message + " contacte con informatica");
+        //this.alert.errorAlert(" Recurso no encontrado");
+
       }
+
+      // if (err.status === 404) {
+      //   this.alert.updateAlert(err.error.message + " Neumaticos editados con exito");
+      // }
 
       const error = err.error.message || err.status;
       return throwError(error);

@@ -9,7 +9,7 @@ export class EgresosContainerImportadora {
   costoInterior!: number;
   costoMaritimo!: number;
   impuestoProntuario!: number;
-  montoTotal!: number;
+  montoTotal!: number;  
   fecha!: Date;
   seguros!:number;
 

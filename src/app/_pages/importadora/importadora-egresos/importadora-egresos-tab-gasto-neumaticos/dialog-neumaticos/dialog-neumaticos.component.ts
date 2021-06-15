@@ -28,6 +28,7 @@ export class DialogNeumaticosComponent implements OnInit {
     // ? table definitions.
     displayedColumns: string[] = [
       'select',
+      //'totalTipoNeumatico',
       'id',
       'neumatico',
       'cantidad',
@@ -40,8 +41,9 @@ export class DialogNeumaticosComponent implements OnInit {
       'seguros',
       'unitario',
       'total',
+      'totalVenta',
       'ganancia',
-      'totalVenta'
+      'botones'      
     ];
     dataSource: MatTableDataSource<Contrato> = new MatTableDataSource();
     dataContrato: Contrato[] = [];
@@ -84,8 +86,7 @@ export class DialogNeumaticosComponent implements OnInit {
     .subscribe((x: any) => {
      this.dataSource = new MatTableDataSource(x.EgresoNeumaticoImportadoras);
      this.dataSource.paginator = this.paginator.toArray()[0];
-     this.dataContrato = x.EgresoNeumaticoImportadoras;
-     console.log(x);
+     this.dataContrato = x.EgresoNeumaticoImportadoras;     
    });
   }
 
@@ -103,15 +104,13 @@ export class DialogNeumaticosComponent implements OnInit {
       this.dataSource.filteredData.forEach(row => {
         this.selection.select(row);
   
-      });
-    console.log(this.selection.selected);
+      });    
   }
 
   aplicarfiltros() {
     this.formFilter.valueChanges.subscribe(res => {
 
-      let dataFiltered = this.dataContrato;
-      console.log(this.dataContrato);
+      let dataFiltered = this.dataContrato;      
 
       //Filtro Fecha
       if (res.start && res.end) {
@@ -149,5 +148,50 @@ export class DialogNeumaticosComponent implements OnInit {
     this.selection.selected.forEach((x) => this.selectedRows.push(x));
     this.importadoraService.exportAsExcelFile(this.selectedRows, 'Lista-Neumaticos-Conteiner-Importadora');
     }
+    
+    //Abrir Modal Editar  
+  openDialogEdit(){      
+  //Selecciona los valores de la fila seleccionada
+  this.selectedRows = [];
+  this.selection.selected.forEach((x) => this.selectedRows.push(x));
+  this.selectedRows.forEach((x) => {
+    localStorage.setItem("idConteiner", x.id);
+  });
+  //Se ejecuta el metodo que abre el dialog, enviandole le id del contrato
+  let idConteiner = localStorage.getItem("idConteiner");  
+  this.importadoraService.openDialogEditContainerN(idConteiner);
+}
+
+openDialogEdit2
+  ( id: any, 
+    neumatico: any, 
+    cantidad: any,
+    conteiner: any,
+    costoNeumatico: any,
+    comision: any,
+    interior: any,
+    maritimo: any,
+    portuario: any,
+    seguros: any,
+    unitario: any,
+    total: any,
+    totalVenta: any,
+    ganancia: any){
+  localStorage.setItem("idContainerEdit", id);
+  localStorage.setItem("neumaticoEdit", neumatico);
+  localStorage.setItem("cantidadEdit", cantidad);
+  localStorage.setItem("conteinerEdit", conteiner);
+  localStorage.setItem("costoNeumaticoEdit", costoNeumatico);
+  localStorage.setItem("comisionEdit", comision);
+  localStorage.setItem("interiorEdit", interior);
+  localStorage.setItem("maritimoEdit", maritimo);
+  localStorage.setItem("portuarioEdit", portuario);
+  localStorage.setItem("segurosEdit", seguros);
+  localStorage.setItem("unitarioEdit", unitario);
+  localStorage.setItem("totalEdit", total);
+  localStorage.setItem("totalVentaEdit", totalVenta);
+  localStorage.setItem("gananciaEdit", ganancia);
+  this.importadoraService.openDialogEditContainer();
+}
 
 }

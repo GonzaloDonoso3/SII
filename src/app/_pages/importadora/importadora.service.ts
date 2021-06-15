@@ -6,6 +6,7 @@ import { EgresosFijoImportadora } from '@app/_models/importadora/egresoFijoImpor
 import { EgresosContainerImportadora } from '../../_models/importadora/egresoContainerImportadora';
 import { environment } from '@environments/environment';
 import { DialogNeumaticosComponent } from './importadora-egresos/importadora-egresos-tab-gasto-neumaticos/dialog-neumaticos/dialog-neumaticos.component';
+import { DialogNeumaticosEditComponent } from './importadora-egresos/importadora-egresos-tab-gasto-neumaticos/dialog-neumaticos/dialog-neumaticos-edit/dialog-neumaticos-edit/dialog-neumaticos-edit.component';
 
 /* Imports Excel */
 import * as FileSaver from 'file-saver'
@@ -103,17 +104,39 @@ export class ImportadoraService {
 
  //*********** Inicio Metodos Egresos Conteiner ************/
   createEgresosConteiner(egresoConteinerImportadora: EgresosContainerImportadora) {
-
-    console.log(egresoConteinerImportadora);
+    
     return this.http.post(
       `${environment.apiUrl}/EgresoContainerImportadora/conRespaldo`,
       egresoConteinerImportadora
     );
   }
  
+//*********** Inicio Metodos Egresos Neumaticos ************/
   guardarNeumaticos(neumaticos: any): any {
     return this.http.post<[]>(`${environment.apiUrl}/EgresoNeumaticoImportadora/neumaticos`, neumaticos);
   }
+  
+  updateNeumaticos(id: any, body: any[]) {
+    //console.log("id en el servicio", id);
+    //console.log("params en el servicio", body);
+      return this.http.put(`${environment.apiUrl}/EgresoNeumaticoImportadora/${id}`, body);                
+  }
+
+
+  getAllNeumaticos() {    
+    return this.http.get<[]>(`${environment.apiUrl}/EgresoNeumaticoImportadora`);    
+  }
+
+  getNeumaticosById(id: number) {
+    return this.http.get<[]>(`${environment.apiUrl}/EgresoNeumaticoImportadora/conteinerNumero/${'1'}`);
+  }
+  
+  // Cerrar dialog Repactar Cuota y Registrar Pago
+  closeDialogModal() {
+    this.dialog.closeAll()    
+  }
+
+//*********** fin Metodos Egresos Neumaticos ************/
 
   egresoConteinerGetFiles(fileName: string): any {
     return this.http
@@ -133,7 +156,10 @@ export class ImportadoraService {
     return this.http.get<[]>(`${environment.apiUrl}/EgresoContainerImportadora/conteinerNumero/${id}`);
   }
 
-
+  getConteinerByIdN(id: number) {
+    return this.http.get<EgresosContainerImportadora>(`${environment.apiUrl}/EgresoContainerImportadora/conteinerNumero/${id}`);
+  }
+  
   // Metodo que permite abrir un Dialog (Modal)
   openDialogNeumatico(idContrato: any):void{
    //Si el cliente selecciono un contrato se habre el modal
@@ -172,5 +198,28 @@ export class ImportadoraService {
       data,
       fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION
     )
+  }
+
+  // Metodo que permite abrir un Dialog (Modal)
+  openDialogEditContainer(): void {
+    const dialogRef = this.dialog.open(DialogNeumaticosEditComponent, {})
+    dialogRef.afterClosed().subscribe((res) => {})
+  }
+  
+  // Metodo que permite abrir un Dialog (Modal)
+  openDialogEditContainerN(idContrato: any):void{
+    //Si el cliente selecciono un contrato se habre el modal
+    if(idContrato != null){
+      const dialogRef = this.dialog.open(DialogNeumaticosEditComponent,{});
+      dialogRef.afterClosed().subscribe(res =>{
+        console.log(res);
+      });
+    }else{
+      //Si no, se muestra un error
+      this.snackBar.open('Por favor seleccione un conteiner', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+    } 
   }
 }

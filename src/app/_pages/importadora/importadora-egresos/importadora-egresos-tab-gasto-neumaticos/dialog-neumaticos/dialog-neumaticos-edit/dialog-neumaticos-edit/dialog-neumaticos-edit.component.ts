@@ -33,14 +33,14 @@ export class DialogNeumaticosEditComponent implements OnInit {
   cantidadEdit : any;
   conteinerEdit : any;
   costoNeumaticoEdit : any;
-  comisionEdit : any;
-  //comisionEdit2 : any;
+  comisionEdit : any;  
   interiorEdit : any;
   maritimoEdit : any;
   portuarioEdit : any;
   segurosEdit : any;
   unitarioEdit : any;
   totalEdit : any;
+  valorVentaEdit : any;
   totalVentaEdit : any;
   gananciaEdit : any;
   utilidadEdit : any;
@@ -83,18 +83,17 @@ export class DialogNeumaticosEditComponent implements OnInit {
     this.unitarioChinoEdit = localStorage.getItem("unitarioChinoEdit");
     this.totalTipoNeumaticoEdit = localStorage.getItem("totalTipoNeumaticoEdit");    
     this.cantidadEdit = localStorage.getItem("cantidadEdit");
-    this.conteinerEdit = localStorage.getItem("conteinerEdit");
-    this.costoNeumaticoEdit = localStorage.getItem("costoNeumaticoEdit");    
-    this.comisionEdit = localStorage.getItem("comisionEdit");
-    //this.comisionEdit = localStorage.getItem("comisionEdit2");    
-    this.interiorEdit = localStorage.getItem("interiorEdit");
-    this.maritimoEdit = localStorage.getItem("maritimoEdit");
-    this.portuarioEdit = localStorage.getItem("portuarioEdit");
-    this.segurosEdit = localStorage.getItem("segurosEdit");
-    this.unitarioEdit = localStorage.getItem("unitarioEdit");
-    this.totalEdit = localStorage.getItem("totalEdit");
+    this.conteinerEdit = localStorage.getItem("conteinerEdit");    
+    this.comisionEdit = localStorage.getItem("costoNeumaticoEdit");        
+    this.interiorEdit = localStorage.getItem("comisionEdit");            
+    this.maritimoEdit = localStorage.getItem("interiorEdit");    
+    this.portuarioEdit = localStorage.getItem("maritimoEdit");    
+    this.segurosEdit = localStorage.getItem("portuarioEdit");    
+    this.unitarioEdit = localStorage.getItem("segurosEdit");    
+    this.totalEdit = localStorage.getItem("unitarioEdit");    
+    this.costoNeumaticoEdit = localStorage.getItem("gananciaEdit");    
     this.totalVentaEdit = localStorage.getItem("totalVentaEdit");
-    this.gananciaEdit = localStorage.getItem("gananciaEdit");    
+    this.gananciaEdit = localStorage.getItem("totalEdit");    
     this.utilidadEdit = localStorage.getItem("utilidadEdit");
 
     this.getConteiner();
@@ -102,8 +101,8 @@ export class DialogNeumaticosEditComponent implements OnInit {
    
   onKeyUp(x: any) { // appending the updated value to the variable            
     //this.f.valorUnitario.value = "";
-    this.totalEdit = localStorage.getItem("totalEdit");
-    console.log("calculo", this.totalEdit)
+    this.unitarioEdit = localStorage.getItem("segurosEdit");
+    console.log("calculo", this.unitarioEdit)
     this.text = x.target.value * this.unitarioEdit;
   }
 

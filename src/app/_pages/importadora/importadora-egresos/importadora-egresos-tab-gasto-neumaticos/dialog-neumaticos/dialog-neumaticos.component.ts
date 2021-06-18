@@ -29,9 +29,9 @@ export class DialogNeumaticosComponent implements OnInit {
     displayedColumns: string[] = [
       'select',
       'id',
-      'unitarioChino',
-      'totalTipoNeumatico',      
       'neumatico',
+      'unitarioChino',
+      'totalTipoNeumatico',            
       'cantidad',
       'conteiner',      
       'comision',
@@ -183,41 +183,23 @@ openDialogEdit2
     totalVenta: any,
     ganancia: any,
     utilidad: any){
-  localStorage.setItem("idContainerEdit", id);
-  console.log("idContainerEdit", id)
-  localStorage.setItem("unitarioChinoEdit", unitarioChino);
-  console.log("unitarioChinoEdit", unitarioChino)
-  localStorage.setItem("totalTipoNeumaticoEdit", totalTipoNeumatico);
-  console.log("totalTipoNeumaticoEdit", totalTipoNeumatico)
-  localStorage.setItem("neumaticoEdit", neumatico);
-  console.log("neumaticoEdit", neumatico)
-  localStorage.setItem("cantidadEdit", cantidad);
-  console.log("cantidadEdit", cantidad)
-  localStorage.setItem("conteinerEdit", conteiner);
-  console.log("conteinerEdit", conteiner)
-  localStorage.setItem("costoNeumaticoEdit", costoNeumatico);
-  //localStorage.setItem("comisionEdit2", costoNeumatico);
-  console.log("costoNeumaticoEdit", costoNeumatico)
-  localStorage.setItem("comisionEdit", comision);
-  console.log("comisionEdit", comision)
-  localStorage.setItem("interiorEdit", interior);
-  console.log("interiorEdit", interior)
-  localStorage.setItem("maritimoEdit", maritimo);
-  console.log("maritimoEdit", maritimo)
-  localStorage.setItem("portuarioEdit", portuario);
-  console.log("portuarioEdit", portuario)
-  localStorage.setItem("segurosEdit", seguros);
-  console.log("segurosEdit", seguros)
-  localStorage.setItem("unitarioEdit", unitario);
-  console.log("unitarioEdit", unitario)
-  localStorage.setItem("totalEdit", total);
-  console.log("totalEdit", total)
-  localStorage.setItem("totalVentaEdit", totalVenta);
-  console.log("totalVentaEdit", totalVenta)
-  localStorage.setItem("gananciaEdit", ganancia);
-  console.log("gananciaEdit", ganancia)
-  localStorage.setItem("utilidadEdit", utilidad);
-  console.log("utilidadEdit", utilidad)
+  localStorage.setItem("idContainerEdit", id);  
+  localStorage.setItem("unitarioChinoEdit", unitarioChino);  
+  localStorage.setItem("totalTipoNeumaticoEdit", totalTipoNeumatico);  
+  localStorage.setItem("neumaticoEdit", neumatico);  
+  localStorage.setItem("cantidadEdit", cantidad);  
+  localStorage.setItem("conteinerEdit", conteiner);  
+  localStorage.setItem("costoNeumaticoEdit", costoNeumatico);    
+  localStorage.setItem("comisionEdit", comision);  
+  localStorage.setItem("interiorEdit", interior);  
+  localStorage.setItem("maritimoEdit", maritimo);  
+  localStorage.setItem("portuarioEdit", portuario);  
+  localStorage.setItem("segurosEdit", seguros);  
+  localStorage.setItem("unitarioEdit", unitario);  
+  localStorage.setItem("totalEdit", total);  
+  localStorage.setItem("totalVentaEdit", totalVenta);  
+  localStorage.setItem("gananciaEdit", ganancia);  
+  localStorage.setItem("utilidadEdit", utilidad);  
   this.importadoraService.openDialogEditContainer();
 }
 

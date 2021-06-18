@@ -117,9 +117,7 @@ export class ImportadoraService {
   }
   
   updateNeumaticos(id: any, body: any[]) {
-    //console.log("id en el servicio", id);
-    //console.log("params en el servicio", body);
-      return this.http.put(`${environment.apiUrl}/EgresoNeumaticoImportadora/${id}`, body);                
+    return this.http.put(`${environment.apiUrl}/EgresoNeumaticoImportadora/${id}`, body);                
   }
 
 

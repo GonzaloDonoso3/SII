@@ -49,8 +49,8 @@
                 <!-- Neumáticos -->
                 <div class="col">
                     <mat-form-field class="full-width">                        
-                        <!-- <input matInput placeholder="Costo Container" formControlName="costoNeumatico" type="number"  (keyup)="onKeyUp($event)"/>                         -->
-                        <input matInput placeholder="Costo Container" formControlName="costoNeumatico" type="number"/>
+                        <input matInput placeholder="Costo Container" formControlName="costoNeumatico" type="number" (keyup)="onKeyUp($event)"/>                        
+                        <!-- <input matInput placeholder="Costo Container" formControlName="costoNeumatico" type="number"/> -->
                         <mat-error *ngIf="addressFormConteiner.controls['costoNeumatico'].hasError('required')">
                             este campo es <strong>requerido</strong>
                         </mat-error>
@@ -63,8 +63,7 @@
                 <!-- Comisión -->
                 <div class="col">
                     <mat-form-field class="full-width">
-                        <input matInput placeholder="Costo Comisión" formControlName="costoComision" type="number"/>
-                        <!-- <p>{{text}}</p> -->
+                        <input value="{{text}}" matInput placeholder="Costo Comisión" formControlName="costoComision" type="number"/>                        
                         <mat-error *ngIf="addressFormConteiner.controls['costoComision'].hasError('required')">
                             este campo es <strong>requerido</strong>
                         </mat-error>
@@ -220,7 +219,8 @@
                                 <ng-container matColumnDef="costoNeumatico">
                                     <th mat-header-cell *matHeaderCellDef> Utilidad por lote </th>
                                     <td mat-cell *matCellDef="let element ">
-                                        {{ element.costoNeumatico | number }}
+                                        <!-- {{ element.costoNeumatico | number }} -->
+                                        {{ element.utilidad | number }}
                                     </td>
                                 </ng-container>
 
@@ -276,7 +276,8 @@
                                 <ng-container matColumnDef="ganancia">
                                     <th mat-header-cell *matHeaderCellDef> Valor Venta </th>
                                     <td mat-cell *matCellDef="let element">
-                                        {{ element.pGanancia | number }}
+                                        <!-- {{ element.pGanancia | number }} -->
+                                        {{ element.costoNeumatico | number }}
                                     </td>
                                 </ng-container>
 

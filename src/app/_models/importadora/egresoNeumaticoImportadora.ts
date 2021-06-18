@@ -15,6 +15,7 @@ export class EgresosNeumaticoImportadora {
   totalVenta !: number;
   idContainer !: number;
   totalTipoNeumatico !: number;  
-  costoUnitarioN !: number;
+  unitarioChino !: number;
   unitarioNuevo !: number;
+  utilidad !: number;
   }

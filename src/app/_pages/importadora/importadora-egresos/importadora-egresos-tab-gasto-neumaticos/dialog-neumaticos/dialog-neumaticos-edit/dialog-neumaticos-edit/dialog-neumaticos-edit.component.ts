@@ -23,15 +23,18 @@ export class DialogNeumaticosEditComponent implements OnInit {
   dataSource: MatTableDataSource<EgresosContainerImportadora> = new MatTableDataSource();   
   
   dataContainer: any;    
-  idConteiner = 0;
+  idConteiner = 0;  
   NombreNeumaticos: any;
   empresa = new Empresa();  
   idContainerEdit : any;
+  unitarioChinoEdit: any;
+  totalTipoNeumaticoEdit: any;
   neumaticoEdit : any;
   cantidadEdit : any;
   conteinerEdit : any;
   costoNeumaticoEdit : any;
   comisionEdit : any;
+  //comisionEdit2 : any;
   interiorEdit : any;
   maritimoEdit : any;
   portuarioEdit : any;
@@ -40,12 +43,16 @@ export class DialogNeumaticosEditComponent implements OnInit {
   totalEdit : any;
   totalVentaEdit : any;
   gananciaEdit : any;
+  utilidadEdit : any;
+  text = 0; //initialised the text variable 
   
   
 
   // ? Configuración de formulario
   addressForm = this.fb.group({    
     tipoNeumatico: ['', Validators.required],
+    unitarioChino: ['', Validators.required],
+    totalTipoNeumatico: ['', Validators.required],
     cantidad: ['', Validators.required],
     pContainer: ['', Validators.required],
     costoNeumatico: ['', Validators.required],    
@@ -58,6 +65,7 @@ export class DialogNeumaticosEditComponent implements OnInit {
     montoTotal: ['', Validators.required],
     totalVenta: ['', Validators.required],
     pGanancia: ['', Validators.required],
+    utilidad: ['', Validators.required],
   });
 
 
@@ -72,10 +80,13 @@ export class DialogNeumaticosEditComponent implements OnInit {
   ngOnInit(): void {
     this.idContainerEdit = localStorage.getItem("idContainerEdit");
     this.neumaticoEdit = localStorage.getItem("neumaticoEdit");
+    this.unitarioChinoEdit = localStorage.getItem("unitarioChinoEdit");
+    this.totalTipoNeumaticoEdit = localStorage.getItem("totalTipoNeumaticoEdit");    
     this.cantidadEdit = localStorage.getItem("cantidadEdit");
     this.conteinerEdit = localStorage.getItem("conteinerEdit");
-    this.costoNeumaticoEdit = localStorage.getItem("costoNeumaticoEdit");
+    this.costoNeumaticoEdit = localStorage.getItem("costoNeumaticoEdit");    
     this.comisionEdit = localStorage.getItem("comisionEdit");
+    //this.comisionEdit = localStorage.getItem("comisionEdit2");    
     this.interiorEdit = localStorage.getItem("interiorEdit");
     this.maritimoEdit = localStorage.getItem("maritimoEdit");
     this.portuarioEdit = localStorage.getItem("portuarioEdit");
@@ -83,14 +94,23 @@ export class DialogNeumaticosEditComponent implements OnInit {
     this.unitarioEdit = localStorage.getItem("unitarioEdit");
     this.totalEdit = localStorage.getItem("totalEdit");
     this.totalVentaEdit = localStorage.getItem("totalVentaEdit");
-    this.gananciaEdit = localStorage.getItem("gananciaEdit");
+    this.gananciaEdit = localStorage.getItem("gananciaEdit");    
+    this.utilidadEdit = localStorage.getItem("utilidadEdit");
 
     this.getConteiner();
   }
    
+  onKeyUp(x: any) { // appending the updated value to the variable            
+    //this.f.valorUnitario.value = "";
+    this.totalEdit = localStorage.getItem("totalEdit");
+    console.log("calculo", this.totalEdit)
+    this.text = x.target.value * this.unitarioEdit;
+  }
 
   getConteiner(){    
         this.f.tipoNeumatico.setValue(this.neumaticoEdit);
+        this.f.unitarioChino.setValue(this.unitarioChinoEdit);
+        this.f.totalTipoNeumatico.setValue(this.totalTipoNeumaticoEdit);
         this.f.cantidad.setValue(this.cantidadEdit);
         this.f.pContainer.setValue(this.conteinerEdit);
         this.f.costoNeumatico.setValue(this.costoNeumaticoEdit);
@@ -103,6 +123,7 @@ export class DialogNeumaticosEditComponent implements OnInit {
         this.f.montoTotal.setValue(this.totalEdit);
         this.f.totalVenta.setValue(this.totalVentaEdit);
         this.f.pGanancia.setValue(this.gananciaEdit);
+        this.f.utilidad.setValue(this.utilidadEdit);
         //localStorage.clear();
   }
 

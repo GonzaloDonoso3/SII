@@ -44,7 +44,7 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
   costoNeumatico2 !: number;
   montoTotalLote !: number;
   impuestoLote !: number;
-  text = ''; //initialised the text variable 
+  text = 0; //initialised the text variable 
 
   //Validadores
   existeConteiner !: Boolean;
@@ -133,8 +133,8 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
     this.cantidadNeumaticos = 0;          
   }
 
-  onKeyUp(x: any) { // appending the updated value to the variable
-    this.text += x.target.value * 0.03;
+  onKeyUp(x: any) { // appending the updated value to the variable            
+    this.text = x.target.value * 0.03;
   }
 
   //Metodo que ayuda a obtener los valores del formulario
@@ -237,8 +237,8 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
               this.neumatico.idContainer = this.idConteiner;
               this.neumatico.tipoNeumatico = this.c.tipoNeumatico.value;
               this.neumatico.cantidad = this.c.cantidad.value;
-              this.neumatico.pContainer = this.c.pContainer.value;
-              this.neumatico.costoUnitarioN = this.c.costoUnitarioN.value;
+              this.neumatico.pContainer = this.c.pContainer.value;              
+              this.neumatico.unitarioChino = this.c.costoUnitarioN.value;
         
               this.neumatico.costoNeumatico = (this.container.costoNeumatico * (this.c.pContainer.value /100));
               this.neumatico.costoComision = (this.container.costoComision * (this.c.pContainer.value /100));              
@@ -254,8 +254,8 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
               this.montoTotalNeumatico = this.neumatico.costoComision + this.neumatico.costoInterior + this.neumatico.costoMaritimo + this.neumatico.seguros + this.neumatico.impuestoProntuario + this.neumatico.costoNeumatico;
               //this.neumatico.totalVenta = this.neumatico.pGanancia * this.c.cantidad.value;                          
               
-              this.neumatico.unitarioNuevo = this.neumatico.costoUnitarioN;
-              this.neumatico.totalTipoNeumatico = this.neumatico.costoUnitarioN * this.c.cantidad.value;
+              this.neumatico.unitarioNuevo = this.neumatico.unitarioChino;
+              this.neumatico.totalTipoNeumatico = this.neumatico.unitarioChino * this.c.cantidad.value;
               this.neumatico.costoComision = this.neumatico.totalTipoNeumatico * 0.03;               
               this.neumatico.impuestoProntuario = (this.impuestoProntuario2 /this.costoNeumatico2) * this.neumatico.totalTipoNeumatico;
               this.montoTotal2 = this.neumatico.costoComision + this.neumatico.costoInterior + this.neumatico.costoMaritimo + this.neumatico.impuestoProntuario + this.neumatico.seguros;              
@@ -264,10 +264,12 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
               this.montoTotalLote = this.neumatico.valorUnitario * this.c.cantidad.value;
               this.neumatico.montoTotal = this.neumatico.valorUnitario * this.c.cantidad.value;
               
-              this.neumatico.pGanancia = this.neumatico.valorUnitario + (this.neumatico.valorUnitario * (this.c.pGanancia.value/100));              
-              this.neumatico.totalVenta = this.neumatico.pGanancia * this.c.cantidad.value;                          
-              this.impuestoLote = ((this.neumatico.totalVenta - this.montoTotalLote) * 0.19) - this.neumatico.impuestoProntuario;
-              this.neumatico.costoNeumatico = (this.neumatico.totalVenta - this.montoTotalLote) - this.impuestoLote;              
+              this.neumatico.pGanancia = this.c.pGanancia.value;              
+              this.neumatico.costoNeumatico = this.neumatico.valorUnitario + (this.neumatico.valorUnitario * (this.c.pGanancia.value/100));              
+              this.neumatico.totalVenta = this.neumatico.costoNeumatico * this.c.cantidad.value;                                        
+              this.impuestoLote = ((this.neumatico.totalVenta / 1.19) * 0.19) - this.neumatico.impuestoProntuario;                                          
+              this.neumatico.utilidad = (this.neumatico.totalVenta - this.montoTotalLote) - this.impuestoLote;              
+
               
               
 

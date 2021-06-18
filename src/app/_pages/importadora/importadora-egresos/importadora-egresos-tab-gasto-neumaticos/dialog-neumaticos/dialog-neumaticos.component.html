@@ -7,7 +7,7 @@
         <span> Registro Neumáticos</span>
         <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="exportAsXLSX()">
             Exportar
-        </button>                        
+        </button>            
     </mat-toolbar>
 
     <div class="table-responsive">
@@ -28,6 +28,16 @@
                 <th mat-header-cell *matHeaderCellDef>ID </th>
                 <td mat-cell *matCellDef="let element">{{ element.id }}</td>                
             </ng-container>
+
+            <ng-container matColumnDef="unitarioChino">
+                <th mat-header-cell *matHeaderCellDef>Unitario Chino </th>
+                <td mat-cell *matCellDef="let element">{{ element.unitarioChino | number }}</td>                
+            </ng-container>
+
+            <ng-container matColumnDef="totalTipoNeumatico">
+                <th mat-header-cell *matHeaderCellDef>Total del tipo de neumatico </th>
+                <td mat-cell *matCellDef="let element">{{ element.totalTipoNeumatico | number }}</td>                
+            </ng-container>
                         
             <ng-container matColumnDef="neumatico">
                 <th mat-header-cell *matHeaderCellDef> Tipo Neumático </th>
@@ -43,10 +53,10 @@
                 </td>
             </ng-container>
 
-            <ng-container matColumnDef="costoNeumatico">
-                <th mat-header-cell *matHeaderCellDef> Costo Neumáticos </th>
+            <ng-container matColumnDef="ganancia">
+                <th mat-header-cell *matHeaderCellDef> Ganancia </th>
                 <td mat-cell *matCellDef="let element ">
-                    {{ element.costoNeumatico }}
+                    {{ element.pGanancia + '%'  }}                    
                 </td>
             </ng-container>
 
@@ -60,72 +70,72 @@
             <ng-container matColumnDef="comision">
                 <th mat-header-cell *matHeaderCellDef> Costo Comision </th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.costoComision }}
+                    {{ element.costoComision | number }}
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="interior">
                 <th mat-header-cell *matHeaderCellDef> Costo interior </th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.costoInterior}}
+                    {{ element.costoInterior | number}}
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="maritimo">
                 <th mat-header-cell *matHeaderCellDef> Costo Maritimo </th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.costoMaritimo }}
+                    {{ element.costoMaritimo | number }}
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="portuario">
                 <th mat-header-cell *matHeaderCellDef> Impuesto Portuario </th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.impuestoProntuario }}
+                    {{ element.impuestoProntuario | number }}
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="seguros">
                 <th mat-header-cell *matHeaderCellDef> Seguros </th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.seguros }}
+                    {{ element.seguros | number}}
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="unitario">
                 <th mat-header-cell *matHeaderCellDef> Valor Unitario </th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.valorUnitario }}
+                    {{ element.valorUnitario | number }}
                 </td>
             </ng-container>
 
-            <ng-container matColumnDef="ganancia">
+            <ng-container matColumnDef="costoNeumatico">
                 <th mat-header-cell *matHeaderCellDef> Valor Venta </th>
-                <td mat-cell *matCellDef="let element">
-                    {{ element.pGanancia }}
+                <td mat-cell *matCellDef="let element">                    
+                    {{ element.costoNeumatico | number}}
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="totalVenta">
                 <th mat-header-cell *matHeaderCellDef> Total Venta </th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.totalVenta }}
+                    {{ element.totalVenta | number }}
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="total">
                 <th mat-header-cell *matHeaderCellDef> Total Unitario </th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.montoTotal }}
+                    {{ element.montoTotal | number}}
                 </td>
             </ng-container>
 
-            <!-- <ng-container matColumnDef="totalTipoNeumatico">
-                <th mat-header-cell *matHeaderCellDef> Total del tipo de neumatico por container </th>
+            <ng-container matColumnDef="utilidad">
+                <th mat-header-cell *matHeaderCellDef> Utilidad por lote </th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.totalTipoNeumatico | number }}
+                    {{ element.utilidad | number}}
                 </td>
-            </ng-container> -->
+            </ng-container>
 
                 <!-- Botones -->
         <ng-container matColumnDef="botones">
@@ -134,19 +144,22 @@
                 <button mat-raised-button color="accent" style="margin-left: 1rem" 
                 (click)="openDialogEdit2(
                     element.id, 
+                    element.unitarioChino,
+                    element.totalTipoNeumatico,
                     element.tipoNeumatico, 
                     element.cantidad,
-                    element.pContainer,
-                    element.costoNeumatico,
+                    element.pContainer,                    
                     element.costoComision,
                     element.costoInterior,
                     element.costoMaritimo,
                     element.impuestoProntuario,
                     element.seguros,
                     element.valorUnitario,
-                    element.montoTotal,
+                    element.montoTotal,                    
+                    element.pGanancia,
                     element.totalVenta,
-                    element.pGanancia)">          
+                    element.costoNeumatico,
+                    element.utilidad)">          
                         <mat-icon>mode_edit</mat-icon> Editar
                 </button>
                 <br>                

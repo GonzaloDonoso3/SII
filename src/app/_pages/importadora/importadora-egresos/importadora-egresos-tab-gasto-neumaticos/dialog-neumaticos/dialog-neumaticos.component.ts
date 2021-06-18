@@ -28,12 +28,12 @@ export class DialogNeumaticosComponent implements OnInit {
     // ? table definitions.
     displayedColumns: string[] = [
       'select',
-      //'totalTipoNeumatico',
       'id',
+      'unitarioChino',
+      'totalTipoNeumatico',      
       'neumatico',
       'cantidad',
-      'conteiner',
-      'costoNeumatico',
+      'conteiner',      
       'comision',
       'interior',
       'maritimo',
@@ -41,8 +41,10 @@ export class DialogNeumaticosComponent implements OnInit {
       'seguros',
       'unitario',
       'total',
-      'totalVenta',
       'ganancia',
+      'costoNeumatico',
+      'totalVenta',      
+      'utilidad', 
       'botones'      
     ];
     dataSource: MatTableDataSource<Contrato> = new MatTableDataSource();
@@ -163,7 +165,10 @@ export class DialogNeumaticosComponent implements OnInit {
 }
 
 openDialogEdit2
-  ( id: any, 
+  ( 
+    id: any, 
+    unitarioChino: any,
+    totalTipoNeumatico: any,
     neumatico: any, 
     cantidad: any,
     conteiner: any,
@@ -176,21 +181,43 @@ openDialogEdit2
     unitario: any,
     total: any,
     totalVenta: any,
-    ganancia: any){
+    ganancia: any,
+    utilidad: any){
   localStorage.setItem("idContainerEdit", id);
+  console.log("idContainerEdit", id)
+  localStorage.setItem("unitarioChinoEdit", unitarioChino);
+  console.log("unitarioChinoEdit", unitarioChino)
+  localStorage.setItem("totalTipoNeumaticoEdit", totalTipoNeumatico);
+  console.log("totalTipoNeumaticoEdit", totalTipoNeumatico)
   localStorage.setItem("neumaticoEdit", neumatico);
+  console.log("neumaticoEdit", neumatico)
   localStorage.setItem("cantidadEdit", cantidad);
+  console.log("cantidadEdit", cantidad)
   localStorage.setItem("conteinerEdit", conteiner);
+  console.log("conteinerEdit", conteiner)
   localStorage.setItem("costoNeumaticoEdit", costoNeumatico);
+  //localStorage.setItem("comisionEdit2", costoNeumatico);
+  console.log("costoNeumaticoEdit", costoNeumatico)
   localStorage.setItem("comisionEdit", comision);
+  console.log("comisionEdit", comision)
   localStorage.setItem("interiorEdit", interior);
+  console.log("interiorEdit", interior)
   localStorage.setItem("maritimoEdit", maritimo);
+  console.log("maritimoEdit", maritimo)
   localStorage.setItem("portuarioEdit", portuario);
+  console.log("portuarioEdit", portuario)
   localStorage.setItem("segurosEdit", seguros);
+  console.log("segurosEdit", seguros)
   localStorage.setItem("unitarioEdit", unitario);
+  console.log("unitarioEdit", unitario)
   localStorage.setItem("totalEdit", total);
+  console.log("totalEdit", total)
   localStorage.setItem("totalVentaEdit", totalVenta);
+  console.log("totalVentaEdit", totalVenta)
   localStorage.setItem("gananciaEdit", ganancia);
+  console.log("gananciaEdit", ganancia)
+  localStorage.setItem("utilidadEdit", utilidad);
+  console.log("utilidadEdit", utilidad)
   this.importadoraService.openDialogEditContainer();
 }
 

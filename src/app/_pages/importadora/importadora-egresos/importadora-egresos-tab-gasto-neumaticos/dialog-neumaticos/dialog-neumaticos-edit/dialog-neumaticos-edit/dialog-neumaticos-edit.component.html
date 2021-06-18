@@ -16,6 +16,29 @@
                         </mat-error>
                     </mat-form-field>
                 </div>
+
+               <!-- Valor unitario Chino-->
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Valor unitario Chino" formControlName="unitarioChino" />
+                        <mat-error *ngIf="addressForm.controls['unitarioChino'].hasError('required')">
+                            este campo es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- Total de tipo de neumatico-->
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Total tipo de neumatico" formControlName="totalTipoNeumatico" />
+                        <mat-error *ngIf="addressForm.controls['totalTipoNeumatico'].hasError('required')">
+                            este campo es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row">
                 <!-- cantidad  -->
                 <div class="col">
                     <mat-form-field class="full-width">
@@ -35,109 +58,127 @@
                         </mat-error>
                     </mat-form-field>
                 </div>
-            </div>
-
-            <div class="row">
+            
                 
                 
-                <!-- Costo Neumatico -->
+                <!-- Costo comision -->
                 <div class="col">
                     <mat-form-field class="full-width">
-                        <input matInput placeholder="Costo neumatico" formControlName="costoNeumatico" />
+                        <input matInput placeholder="Costo comision" formControlName="costoNeumatico" />
                         <mat-error *ngIf="addressForm.controls['costoNeumatico'].hasError('required')">
                             este campo es <strong>requerido</strong>
                         </mat-error>
                     </mat-form-field>
                 </div>
 
-                <!-- Costo comision -->
+            </div>
+            <div class="row">
+
+                <!-- Costo interior -->
                 <div class="col">
                     <mat-form-field class="full-width">
-                        <input matInput placeholder="Costo comision" formControlName="costoComision" />
+                        <input matInput placeholder="Costo interior" formControlName="costoComision" />
                         <mat-error *ngIf="addressForm.controls['costoComision'].hasError('required')">
                             este campo es <strong>requerido</strong>
                         </mat-error>
                     </mat-form-field>
                 </div>
                 
-                <!-- Costo interior -->                
+                <!-- Costo maritimo -->                
                 <div class="col">
                     <mat-form-field class="full-width">
-                        <input matInput placeholder="Costo interior" formControlName="costoInterior" />
+                        <input matInput placeholder="Costo maritimo" formControlName="costoInterior" />
                         <mat-error *ngIf="addressForm.controls['costoInterior'].hasError('required')">
                             este campo es <strong>requerido</strong>
                         </mat-error>
                     </mat-form-field>
                 </div>
-            </div>
-            <div class="row">
-                    <!-- Costo maritimo -->                
+            
+                    <!-- Impuesto portuario -->                
                 <div class="col">
                     <mat-form-field class="full-width">
-                        <input matInput placeholder="Costo maritimo" formControlName="costoMaritimo" />
+                        <input matInput placeholder="Impuesto portuario" formControlName="costoMaritimo" />
                         <mat-error *ngIf="addressForm.controls['costoMaritimo'].hasError('required')">
                             este campo es <strong>requerido</strong>
                         </mat-error>
                     </mat-form-field>
                 </div>
-                    <!-- Impuesto portuario -->  
+
+            </div>
+
+            <div class="row">
+                    <!-- Seguro -->  
                 <div class="col">
                     <mat-form-field class="full-width">
-                        <input matInput placeholder="Impuesto portuario" formControlName="impuestoProntuario" />
+                        <input matInput placeholder="Seguro" formControlName="impuestoProntuario" />
                         <mat-error *ngIf="addressForm.controls['impuestoProntuario'].hasError('required')">
                             este campo es <strong>requerido</strong>
                         </mat-error>
                     </mat-form-field>
                 </div>
 
-                    <!-- Seguro -->  
+                    <!-- Valor unitario -->  
                     <div class="col">
                         <mat-form-field class="full-width">
-                            <input matInput placeholder="Seguro" formControlName="seguros" />
+                            <input matInput placeholder="Valor unitario" formControlName="seguros" />
                             <mat-error *ngIf="addressForm.controls['seguros'].hasError('required')">
                                 este campo es <strong>requerido</strong>
                             </mat-error>
                         </mat-form-field>
                     </div>
-            </div>
-
-                <div class="row">
-                    <!-- Valor unitario -->  
+            
+                    <!-- Total Unitario -->  
                     <div class="col">
                         <mat-form-field class="full-width">
-                            <input matInput placeholder="Valor unitario" formControlName="valorUnitario" />
+                            <input matInput placeholder="Total Unitario" formControlName="valorUnitario" />
                             <mat-error *ngIf="addressForm.controls['valorUnitario'].hasError('required')">
                                 este campo es <strong>requerido</strong>
                             </mat-error>
                         </mat-form-field>
                     </div>
 
-                    <!-- Total Unitario -->  
+                </div>
+                <div class="row">
+
+                    <!-- Ganancia -->  
                     <div class="col">
-                        <mat-form-field class="full-width">
-                            <input matInput placeholder="Total unitario" formControlName="montoTotal" />
+                        <mat-form-field class="full-width">                            
+                            <!-- <input matInput placeholder="Ganancia" formControlName="montoTotal" (keyup)="onKeyUp($event)"/> -->
+                            <input matInput placeholder="Ganancia" formControlName="montoTotal"/>
                             <mat-error *ngIf="addressForm.controls['montoTotal'].hasError('required')">
                                 este campo es <strong>requerido</strong>
                             </mat-error>
                         </mat-form-field>
                     </div>
 
-                    <!-- Total Venta -->  
+                    <!-- Valor Venta -->  
                     <div class="col">
                         <mat-form-field class="full-width">
-                            <input matInput placeholder="Total venta" formControlName="totalVenta" />
-                            <mat-error *ngIf="addressForm.controls['totalVenta'].hasError('required')">
+                            <!-- <input value="{{text}}" matInput placeholder="Valor venta" formControlName="pGanancia" /> -->
+                            <input matInput placeholder="Valor venta" formControlName="totalVenta" />
+                            <mat-error *ngIf="addressForm.controls['pGanancia'].hasError('required')">
                                 este campo es <strong>requerido</strong>
                             </mat-error>
                         </mat-form-field>
                     </div>
-            </div>
-            <div class="row">
-                <!-- Ganancia -->  
+            
+                <!-- Total venta -->  
                 <div class="col">
                     <mat-form-field class="full-width">
-                        <input matInput placeholder="Ganancia" formControlName="pGanancia" />
-                        <mat-error *ngIf="addressForm.controls['pGanancia'].hasError('required')">
+                        <input matInput placeholder="Total venta" formControlName="totalVenta" />
+                        <mat-error *ngIf="addressForm.controls['totalVenta'].hasError('required')">
+                            este campo es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Utilidad -->  
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Utilidad" formControlName="utilidad" />
+                        <mat-error *ngIf="addressForm.controls['utilidad'].hasError('required')">
                             este campo es <strong>requerido</strong>
                         </mat-error>
                     </mat-form-field>

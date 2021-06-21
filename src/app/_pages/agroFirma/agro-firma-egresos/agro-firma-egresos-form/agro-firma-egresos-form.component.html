@@ -130,8 +130,8 @@
     >
     <!-- id proyecto -->
     <div class="col" style="display:none">
-      <mat-form-field class="full-width" style="width:160%">
-          <input matInput placeholder="Id del proyecto" formControlName="idProyecto" type="number" [ngModel]="proyecto"/>                              
+      <mat-form-field class="full-width" style="width:160%">          
+          <input matInput placeholder="Id del proyecto" formControlName="idProyecto" type="number"/>
           <mat-error *ngIf="egresosForm.controls['idProyecto'].hasError('required')">
               Id es <strong>requerido</strong>
           </mat-error>

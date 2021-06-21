@@ -1,5 +1,6 @@
 import { Sucursal } from '../shared/sucursal';
 import { Usuario } from '../shared/usuario';
+import { ProyectoAgrofirma } from '../agroFirma/proyectoAgroFirma';
 
 export class EgresoAgroFirma {
   id!: string;
@@ -11,6 +12,8 @@ export class EgresoAgroFirma {
   descripcion!: string;
   Sucursal!: Sucursal;
   Usuario!: Usuario;
+  ProyectoAgrofirma!: ProyectoAgrofirma;
+  proyecto!: string;
   RespaldoEgresos!: any[];
   responsable!: string;
   usuario!: string;

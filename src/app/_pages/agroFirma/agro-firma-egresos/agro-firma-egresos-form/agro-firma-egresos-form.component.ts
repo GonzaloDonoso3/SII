@@ -37,8 +37,8 @@ export class AgroFirmaEgresosFormComponent implements OnInit {
   //Variables que usan para los egresos de Prestamos bancarios y automotriz
   mostrarDatos : boolean = true;
   datoCuota = 'N/A';
-  montoTotal = '1000';
-  proyecto = '3';
+  montoTotal = '1000';  
+  proyecto : any = '0';
   selected: any;
   opcionSeleccionado: string = '0';
   verSeleccion: string = '';
@@ -53,7 +53,7 @@ export class AgroFirmaEgresosFormComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     public dialog: MatDialog,
-    private route: ActivatedRoute,
+    //private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private sucursalService: SucursalSharedService,
     private cuentasService: CuentasBancariasService,
@@ -68,8 +68,10 @@ export class AgroFirmaEgresosFormComponent implements OnInit {
   
 
   ngOnInit(): void {
-    this.idProyecto = this.route.snapshot.params.idProyecto;        
-    //console.log("id del proyecto en el formulario", this.idProyecto)
+    //this.idProyecto = this.route.snapshot.params.idProyecto;        
+    this.proyecto = localStorage.getItem("proyectoID");
+    //console.log("imprimiendo al inicio", this.proyecto)
+        
     
     // ? construccion del formulario,
    this.egresosForm = this.fb.group({
@@ -141,7 +143,11 @@ export class AgroFirmaEgresosFormComponent implements OnInit {
           this.egreso.idUsuario = this.usuario.id;
           this.egreso.tipoEgreso = this.egresosForm.value.tipoEgreso;
           this.egreso.numeroCuota = this.egresosForm.value.numeroCuota;                  
+          
+
           this.egreso.idProyecto = this.egresosForm.value.idProyecto;
+          this.egreso.idProyecto = this.proyecto;
+          //console.log("viendo id del proyecto", this.egreso.idProyecto)
           
 
           if(this.egresosForm.value.numeroCuota > 1){              

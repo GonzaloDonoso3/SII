@@ -106,7 +106,7 @@ export class RentacarEgresosListComponent implements OnInit {
 
   getEgresos() {    
     this.rentacarService.getAllEgresos().subscribe((egresos: EgresosRentacar[]) => {            
-      this.dataEgresos = egresos.map(Egresos => {
+      this.dataEgresos = egresos.map(Egresos => {        
         Egresos.sucursal = Egresos.Sucursal.razonSocial;
         Egresos.usuario = Egresos.Usuario.nombreUsuario;
         return Egresos;

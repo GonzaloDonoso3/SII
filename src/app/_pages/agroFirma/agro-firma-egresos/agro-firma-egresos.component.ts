@@ -40,7 +40,7 @@ export class AgroFirmaEgresosComponent implements OnInit {
   formulario(idModal: any, idProyecto: any): void {
     this.modalService.open(idModal);
     this.router.navigate(['agrofirma/egresos/add', idProyecto]);        
-    //const dialogRef = this.dialog.open(AgroFirmaEgresosFormComponent, {});          
+    localStorage.setItem("proyectoID", idProyecto);          
   }
 
   listado(idModal: any, idProyecto: any): void {

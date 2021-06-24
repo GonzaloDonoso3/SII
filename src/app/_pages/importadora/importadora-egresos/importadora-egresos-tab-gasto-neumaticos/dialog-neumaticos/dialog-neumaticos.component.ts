@@ -14,6 +14,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { PagoEstado } from '../../../../../_models/rentacar/responseListaArriendos';
 import { ImportadoraService } from '../../../importadora.service';
 
+
+
+
 @Component({
   selector: 'app-dialog-neumaticos',
   templateUrl: './dialog-neumaticos.component.html',
@@ -47,6 +50,9 @@ export class DialogNeumaticosComponent implements OnInit {
       'utilidad', 
       'botones'      
     ];
+
+    displayedTotalColumns: string[] = ['item', 'cost'];
+    
     dataSource: MatTableDataSource<Contrato> = new MatTableDataSource();
     dataContrato: Contrato[] = [];
 
@@ -54,6 +60,21 @@ export class DialogNeumaticosComponent implements OnInit {
     nombreClienteLocal = localStorage.getItem("nombreCliente");
     idCuota : any;
     cuota: any;
+    sumaUnitarioC: number = 0 ;
+    sumaUnitarioTC: number = 0 ;
+    sumaCantidad: number = 0 ;
+    sumaConteiner: number = 0 ;
+    sumaComision: number = 0 ;
+    sumaInterior: number = 0 ;
+    sumaMaritimo: number = 0 ;
+    sumaPortuario: number = 0 ;
+    sumaSeguros: number = 0 ;
+    sumaCostoU: number = 0 ;
+    sumaCostoTU: number = 0 ;
+    sumaGanancia: number = 0 ;
+    sumaUnitarioV: number = 0 ;
+    sumaUnitarioTV: number = 0 ;
+    sumaUtilidad: number = 0 ;
     
   // Variables que ayudan a aplicar los filtros
     formFilter = new FormGroup({
@@ -75,7 +96,60 @@ export class DialogNeumaticosComponent implements OnInit {
 
   ngOnInit(): void {
     this.getConteiner();
-    this.aplicarfiltros();
+    this.aplicarfiltros(); 
+    // (document.getElementById('prueba') as HTMLInputElement).value = "Johnny Bravo"     
+  }
+
+    calculation(e: any) {    
+    let sumCantidad: number = 0;
+    let sumUnitarioC: number = 0;
+    let sumUnitarioTC: number = 0;
+    let sumConteiner: number = 0;
+    let sumComisión: number = 0;
+    let sumInterior: number = 0;
+    let sumMaritimo: number = 0;
+    let sumPortuario: number = 0 ;
+    let sumSeguros: number = 0 ;
+    let sumCostoU: number = 0 ;
+    let sumCostoTU: number = 0 ;
+    let sumGanancia: number = 0 ;
+    let sumUnitarioV: number = 0 ;
+    let sumUnitarioTV: number = 0 ;
+    let sumUtilidad: number = 0 ;
+    if (e)
+      for (let row of e.data) {
+        if (row.id != 0) sumCantidad += row.cantidad;
+        if (row.id != 0) sumUnitarioC += row.unitarioChino;
+        if (row.id != 0) sumUnitarioTC += row.totalTipoNeumatico;
+        if (row.id != 0) sumConteiner += row.pContainer;
+        if (row.id != 0) sumComisión += row.costoComision;
+        if (row.id != 0) sumInterior += row.costoInterior;
+        if (row.id != 0) sumMaritimo += row.costoMaritimo;
+        if (row.id != 0) sumPortuario += row.impuestoProntuario;
+        if (row.id != 0) sumSeguros += row.seguros;
+        if (row.id != 0) sumCostoU += row.valorUnitario;
+        if (row.id != 0) sumCostoTU += row.montoTotal;
+        if (row.id != 0) sumGanancia += row.pGanancia;
+        if (row.id != 0) sumUnitarioV += row.costoNeumatico;
+        if (row.id != 0) sumUnitarioTV += row.totalVenta;
+        if (row.id != 0) sumUtilidad -= row.utilidad;        
+      }
+      this.sumaCantidad = sumCantidad;
+      this.sumaUnitarioC = sumUnitarioC;
+      this.sumaUnitarioTC = sumUnitarioTC;
+      this.sumaConteiner = sumConteiner;
+      this.sumaComision = sumComisión;
+      this.sumaInterior = sumInterior;
+      this.sumaMaritimo = sumMaritimo;
+      this.sumaPortuario = sumPortuario;
+      this.sumaSeguros = sumSeguros;
+      this.sumaCostoU = sumCostoU;
+      this.sumaCostoTU = sumCostoTU;
+      this.sumaGanancia = sumGanancia;
+      this.sumaUnitarioV = sumUnitarioV;
+      this.sumaUnitarioTV = sumUnitarioTV;
+      this.sumaUtilidad = sumUtilidad;
+    //return sum;
   }
 
 //obtener los contratos del cliente
@@ -86,7 +160,8 @@ export class DialogNeumaticosComponent implements OnInit {
     .getConteinerById(this.idConteiner)
     .pipe()
     .subscribe((x: any) => {
-     this.dataSource = new MatTableDataSource(x.EgresoNeumaticoImportadoras);
+     this.dataSource = new MatTableDataSource(x.EgresoNeumaticoImportadoras);     
+     this.calculation(this.dataSource);
      this.dataSource.paginator = this.paginator.toArray()[0];
      this.dataContrato = x.EgresoNeumaticoImportadoras;     
    });
@@ -152,17 +227,17 @@ export class DialogNeumaticosComponent implements OnInit {
     }
     
     //Abrir Modal Editar  
-  openDialogEdit(){      
-  //Selecciona los valores de la fila seleccionada
-  this.selectedRows = [];
-  this.selection.selected.forEach((x) => this.selectedRows.push(x));
-  this.selectedRows.forEach((x) => {
-    localStorage.setItem("idConteiner", x.id);
-  });
-  //Se ejecuta el metodo que abre el dialog, enviandole le id del contrato
-  let idConteiner = localStorage.getItem("idConteiner");  
-  this.importadoraService.openDialogEditContainerN(idConteiner);
-}
+//   openDialogEdit(){      
+//   //Selecciona los valores de la fila seleccionada
+//   this.selectedRows = [];
+//   this.selection.selected.forEach((x) => this.selectedRows.push(x));
+//   this.selectedRows.forEach((x) => {
+//     localStorage.setItem("idConteiner", x.id);
+//   });
+//   //Se ejecuta el metodo que abre el dialog, enviandole le id del contrato
+//   let idConteiner = localStorage.getItem("idConteiner");  
+//   this.importadoraService.openDialogEditContainerN(idConteiner);
+// }
 
 openDialogEdit2
   ( 

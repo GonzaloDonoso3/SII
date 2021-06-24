@@ -130,8 +130,7 @@ export class ImportadoraIngresosFormComponent implements OnInit {
           for (const name of this.nameRespaldo) {
             this.ingreso.RespaldoIngresoImportadoras.push({ url: name });
           }
-
-          console.log(this.ingreso);
+          
           //Si todo esta correcto se ingresa el objeto
           if (result.length > 0) {
             this.importadoraService

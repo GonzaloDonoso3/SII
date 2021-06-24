@@ -2,12 +2,17 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { IngresosImportadora } from '@app/_models/importadora/ingresoImportadora';
-import { EgresosFijoImportadora } from '@app//_models/importadora/egresoFijoImportadora';
+import { EgresosFijoImportadora } from '@app/_models/importadora/egresoFijoImportadora';
+import { EgresosContainerImportadora } from '../../_models/importadora/egresoContainerImportadora';
 import { environment } from '@environments/environment';
+import { DialogNeumaticosComponent } from './importadora-egresos/importadora-egresos-tab-gasto-neumaticos/dialog-neumaticos/dialog-neumaticos.component';
+import { DialogNeumaticosEditComponent } from './importadora-egresos/importadora-egresos-tab-gasto-neumaticos/dialog-neumaticos/dialog-neumaticos-edit/dialog-neumaticos-edit/dialog-neumaticos-edit.component';
 
 /* Imports Excel */
 import * as FileSaver from 'file-saver'
 import * as XLSX from 'xlsx'
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 const EXCEL_TYPE =
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
 const EXCEL_EXTENSION = '.xlsx'
@@ -22,7 +27,9 @@ export class ImportadoraService {
 
   constructor(
     private http: HttpClient, 
-    private router: Router
+    private router: Router,
+    public dialog:MatDialog,
+    private snackBar: MatSnackBar,
   ) { }
 
     //*********** Inicio Metodos Ingresos ************/
@@ -71,14 +78,13 @@ export class ImportadoraService {
 
   //*********** Fin Metodos Ingresos ************/
 
-  //*********** Inicio Metodos Egresos ************/
+  //*********** Inicio Metodos Egresos Fijos ************/
  
   getAllEgresosFijo() {
     return this.http.get<[]>(`${environment.apiUrl}/egresoFijoImportadora`);
   }
 
   createEgresosFijo(egresoFijoImportadora: EgresosFijoImportadora) {
-    console.log(egresoFijoImportadora);
     return this.http.post(
       `${environment.apiUrl}/egresoFijoImportadora/conRespaldo`,
       egresoFijoImportadora
@@ -94,7 +100,82 @@ export class ImportadoraService {
         window.open(window.URL.createObjectURL(res));
       });
   }
-  //*********** Fin Metodos Egresos ************/
+ //*********** Fin Metodos Egresos Fijos ************/
+
+ //*********** Inicio Metodos Egresos Conteiner ************/
+  createEgresosConteiner(egresoConteinerImportadora: EgresosContainerImportadora) {
+    
+    return this.http.post(
+      `${environment.apiUrl}/EgresoContainerImportadora/conRespaldo`,
+      egresoConteinerImportadora
+    );
+  }
+ 
+//*********** Inicio Metodos Egresos Neumaticos ************/
+  guardarNeumaticos(neumaticos: any): any {
+    return this.http.post<[]>(`${environment.apiUrl}/EgresoNeumaticoImportadora/neumaticos`, neumaticos);
+  }
+  
+  updateNeumaticos(id: any, body: any[]) {
+    return this.http.put(`${environment.apiUrl}/EgresoNeumaticoImportadora/${id}`, body);                
+  }
+
+
+  getAllNeumaticos() {    
+    return this.http.get<[]>(`${environment.apiUrl}/EgresoNeumaticoImportadora`);    
+  }
+
+  getNeumaticosById(id: number) {
+    return this.http.get<[]>(`${environment.apiUrl}/EgresoNeumaticoImportadora/conteinerNumero/${'1'}`);
+  }
+  
+  // Cerrar dialog Repactar Cuota y Registrar Pago
+  closeDialogModal() {
+    this.dialog.closeAll()    
+  }
+
+//*********** fin Metodos Egresos Neumaticos ************/
+
+  egresoConteinerGetFiles(fileName: string): any {
+    return this.http
+      .get(`${environment.apiUrl}/egresoContainer${this.empresa}/download/${fileName}`, {
+        responseType: 'blob',
+      })
+      .subscribe((res) => {
+        window.open(window.URL.createObjectURL(res));
+      });
+  }
+
+  getAllEgresosConteiner() {
+    return this.http.get<[]>(`${environment.apiUrl}/EgresoContainerImportadora`);
+  }
+
+  getConteinerById(id: number) {
+    return this.http.get<[]>(`${environment.apiUrl}/EgresoContainerImportadora/conteinerNumero/${id}`);
+  }
+
+  getConteinerByIdN(id: number) {
+    return this.http.get<EgresosContainerImportadora>(`${environment.apiUrl}/EgresoContainerImportadora/conteinerNumero/${id}`);
+  }
+  
+  // Metodo que permite abrir un Dialog (Modal)
+  openDialogNeumatico(idContrato: any):void{
+   //Si el cliente selecciono un contrato se habre el modal
+   if(idContrato != null){
+     const dialogRef = this.dialog.open(DialogNeumaticosComponent,{});
+     dialogRef.afterClosed().subscribe(res =>{
+       console.log(res);
+     });
+   }else{
+     //Si no, se muestra un error
+     this.snackBar.open('Por favor seleccione un conteiner', 'cerrar', {
+       duration: 2000,
+       verticalPosition: 'top',
+     });
+   } 
+ }
+
+ //*********** Fin Metodos Egresos Conteiner ************/
 
   /* Metodo Excel */
   public exportAsExcelFile(json: any[], excelFileName: string): void {
@@ -115,5 +196,28 @@ export class ImportadoraService {
       data,
       fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION
     )
+  }
+
+  // Metodo que permite abrir un Dialog (Modal)
+  openDialogEditContainer(): void {
+    const dialogRef = this.dialog.open(DialogNeumaticosEditComponent, {})
+    dialogRef.afterClosed().subscribe((res) => {})
+  }
+  
+  // Metodo que permite abrir un Dialog (Modal)
+  openDialogEditContainerN(idContrato: any):void{
+    //Si el cliente selecciono un contrato se habre el modal
+    if(idContrato != null){
+      const dialogRef = this.dialog.open(DialogNeumaticosEditComponent,{});
+      dialogRef.afterClosed().subscribe(res =>{
+        console.log(res);
+      });
+    }else{
+      //Si no, se muestra un error
+      this.snackBar.open('Por favor seleccione un conteiner', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+    } 
   }
 }

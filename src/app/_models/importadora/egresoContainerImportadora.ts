@@ -1,5 +1,5 @@
-import { Sucursal } from '../shared/sucursal'
-import { Usuario } from '../shared/usuario'
+import { Sucursal } from '../shared/sucursal';
+import { Usuario } from '../shared/usuario';
 
 export class EgresosContainerImportadora {
   id!: number;
@@ -9,15 +9,16 @@ export class EgresosContainerImportadora {
   costoInterior!: number;
   costoMaritimo!: number;
   impuestoProntuario!: number;
-  montoTotal!: number;
+  montoTotal!: number;  
   fecha!: Date;
   seguros!:number;
 
+  idSucursal!: string;
+  idUsuario!: number;
   sucursal!: string;
-  usuario!: number;
+  usuario!: string;
   Sucursal!: Sucursal;
   Usuario!: Usuario;
-  neumatico!: any[];
-  RespaldoEgresoContainerImportadora!: any[];
-  
+  idContainer!: any[];
+  RespaldoEgresoContainerImportadoras!: any[];
 }

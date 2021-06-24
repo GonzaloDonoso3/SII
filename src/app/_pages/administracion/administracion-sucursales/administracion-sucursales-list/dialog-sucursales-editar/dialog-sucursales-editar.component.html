@@ -1,0 +1,97 @@
+<button color="accent" class="cerrar" (click)="closeDialog()" title="Cerrar">
+    <mat-icon>highlight_off</mat-icon>
+</button>
+<form [formGroup]="addressForm" novalidate (ngSubmit)="onSubmit()" class="mat-elevation-z10">
+    <mat-card class="shipping-card">
+        <mat-card-header>
+            <h1>{{ razonSocial }}</h1>
+        </mat-card-header>
+        <br><br>
+        <mat-card-content>
+            <div class="row">
+                <!-- empresa -->
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <mat-select placeholder="Empresa" formControlName="idEmpresa">
+                            <mat-option *ngFor="let empresa of empresas" value="{{ empresa.id }}">
+                                {{ empresa.razonSocial }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="addressForm.controls['idEmpresa'].hasError('required')">
+                            sucursal es <strong>requrido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Razón Social-->
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Razón Social" formControlName="razonSocial" />
+                        <mat-error *ngIf="addressForm.controls['razonSocial'].hasError('required')">
+                            este campo es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <!-- RUT Sucursal -->
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="RUT Sucursal" formControlName="rut" />
+                        <mat-error *ngIf="addressForm.controls['rut'].hasError('required')">
+                            este campo es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Giro -->
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Giro" formControlName="giro" />
+                        <mat-error *ngIf="addressForm.controls['giro'].hasError('required')">
+                            este campo es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <!-- Dirección -->
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Actividad" formControlName="actividad" />
+                        <mat-error *ngIf="addressForm.controls['actividad'].hasError('required')">
+                            este campo es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Dirección -->
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Dirección" formControlName="direccion" />
+                        <mat-error *ngIf="addressForm.controls['direccion'].hasError('required')">
+                            este campo es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- Descripción -->
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Descripcion" formControlName="descripcion" />
+                        <mat-error *ngIf="addressForm.controls['descripcion'].hasError('required')">
+                            este campo es <strong>requerido</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-card-content>
+
+        <!-- botón enviar -->
+        <button mat-raised-button color="primary" type="submit">
+            <mat-icon>send</mat-icon> Enviar
+        </button>
+    </mat-card>
+</form>

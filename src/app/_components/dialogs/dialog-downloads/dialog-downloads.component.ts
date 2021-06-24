@@ -59,6 +59,9 @@ export class DialogDownloadsComponent implements OnInit {
         case 'importadora-egresoFijo':
         this.importadoraService.egresoFijoGetFiles(url);
         break;
+        case 'importadora-egresoConteiner':
+          this.importadoraService.egresoConteinerGetFiles(url);
+          break;
       default:
         break;
     }

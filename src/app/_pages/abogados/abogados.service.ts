@@ -6,6 +6,11 @@ import { environment } from '@environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DialogRegistrarPagoComponent } from './abogados-ingresos/abogados-ingresos-acciones/dialog-registrar-pago/dialog-registrar-pago.component';
+import { DialogRepactarCuotasComponent } from './abogados-ingresos/abogados-ingresos-acciones/dialog-repactar-cuotas/dialog-repactar-cuotas.component';
+import { DialogContratosComponent } from './abogados-ingresos/abogados-ingresos-acciones/dialog-contratos/dialog-contratos.component';
 
 const EXCEL_TYPE =
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
@@ -45,7 +50,11 @@ export class AbogadosService {
 
   private tiposEgresos = ['Gastos', 'Costos', 'Remuneraciones', 'Impuestos', 'Bancarios'];
   private empresa = 'FirmaAbogado';
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(
+    private http: HttpClient, 
+    private router: Router,
+    public dialog:MatDialog,
+    private snackBar: MatSnackBar) {
     
     //INGRESOS
 
@@ -88,6 +97,48 @@ export class AbogadosService {
     //EGRESOS
     this.tiposEgresosList = this.tiposEgresosListSubject.asObservable();
     localStorage.setItem('tiposEgresos', JSON.stringify(this.tiposEgresos));
+  }
+
+  // Metodo que permite abrir un Dialog (Modal)
+  openDialogRegistrarPago(idContrato: any):void{
+    //Si el cliente selecciono un contrato se habre el modal
+    if(idContrato != null){
+      const dialogRef = this.dialog.open(DialogRegistrarPagoComponent,{});
+      dialogRef.afterClosed().subscribe(res =>{
+        console.log(res);
+      });
+    }else{
+      //Si no, se muestra un error
+      this.snackBar.open('Por favor seleccione un contrato', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+    } 
+  }
+
+  // Metodo que permite abrir un Dialog (Modal)
+  openDialogContratos():void{
+    const dialogRef = this.dialog.open(DialogContratosComponent,{});
+    dialogRef.afterClosed().subscribe(res =>{
+      console.log(res);
+    });
+  }
+
+  // Metodo que permite abrir un Dialog (Modal)
+  openDialogRepactarCuotas(idContrato: any):void{
+    //Si el cliente selecciono un contrato se habre el modal
+    if(idContrato != null){
+      const dialogRef = this.dialog.open(DialogRepactarCuotasComponent,{});
+      dialogRef.afterClosed().subscribe(res =>{
+        console.log(res);
+      });
+    }else{
+      //Si no, se muestra un error
+      this.snackBar.open('Por favor seleccione un contrato', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+    }
   }
 
   // METODO PARA EXPORTAR EXCEL
@@ -155,6 +206,11 @@ export class AbogadosService {
     return this.http.get<any>(
       `${environment.apiUrl}/egreso${this.empresa}/${id}`
     );
+  }
+
+  closeDialogModal(){
+    this.dialog.closeAll();
+    localStorage.removeItem("idContratoPago");
   }
 
   } 

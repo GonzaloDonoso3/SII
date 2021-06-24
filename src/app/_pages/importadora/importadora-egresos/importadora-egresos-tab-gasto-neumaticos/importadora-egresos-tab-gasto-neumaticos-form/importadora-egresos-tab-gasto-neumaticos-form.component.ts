@@ -8,11 +8,8 @@ import { first } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Usuario } from '@app/_models/shared/usuario';
-<<<<<<< HEAD
 import { AbogadosService } from '../../../../abogados/abogados.service';
-=======
 import { DialogRespaldosComponent } from 'src/app/_components/dialogs/dialog-respaldos/dialog-respaldos.component';
->>>>>>> a39eea546d51dcd7ad258fb4ca8e6a665bf9dabf
 import { EgresosContainerImportadora } from '@app/_models/importadora/egresoContainerImportadora';
 import { EgresosNeumaticoImportadora } from '@app/_models/importadora/egresoNeumaticoImportadora';
 import { ImportadoraService } from '../../../importadora.service';
@@ -53,10 +50,6 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
   cantidadNeumaticos !:  number;
   porcentajeConteiner !: number;
   
-<<<<<<< HEAD
-=======
-
->>>>>>> a39eea546d51dcd7ad258fb4ca8e6a665bf9dabf
 
   container = new EgresosContainerImportadora();
   neumatico = new EgresosNeumaticoImportadora();
@@ -232,13 +225,8 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
   }
 
   //Metodo que permite agregar las cuotas a una tabla 
-<<<<<<< HEAD
-  agregarCuotas(): any{
-    console.log(this.container);
-=======
   agregarNeumatico(): any{
 
->>>>>>> a39eea546d51dcd7ad258fb4ca8e6a665bf9dabf
     //Si el monto de las cuotas es menor al saldo pendiente 
     if (this.montoTotal >= 0 && (this.porcentajeConteiner - this.c.pContainer.value)  >= 0 && (this.cantidadNeumaticos - 1) >= 0) {
       switch (this.addressFormNeumatico.status) {
@@ -277,24 +265,6 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
               this.impuestoLote = ((this.neumatico.totalVenta / 1.19) * 0.19) - this.neumatico.impuestoProntuario;                                          
               this.neumatico.utilidad = (this.neumatico.totalVenta - this.montoTotalLote) - this.impuestoLote;              
 
-<<<<<<< HEAD
-      
-      this.neumatico.costoComision = (this.container.costoComision * (this.c.pContainer.value /100))/this.c.cantidad.value;
-      this.neumatico.costoInterior = (this.container.costoInterior * (this.c.pContainer.value /100))/this.c.cantidad.value;
-      this.neumatico.costoMaritimo = this.container.costoMaritimo/this.cantidadTipo;
-      this.neumatico.seguros = this.container.seguros/this.cantidadTipo;
-      this.neumatico.impuestoProntuario = (this.container.impuestoProntuario * (this.c.pContainer.value /100))/this.c.cantidad.value;
-
-      this.neumatico.montoTotal = this.neumatico.costoComision + this.neumatico.costoInterior + this.neumatico.costoMaritimo + this.neumatico.seguros + this.neumatico.impuestoProntuario;
-      this.neumatico.valorUnitario = this.neumatico.montoTotal / this.c.cantidad.value;
-      this.neumatico.pGanancia = this.neumatico.valorUnitario + (this.c.pGanancia.id * (this.c.pGanancia.value/100));
-      this.listaNeumatico.push(this.neumatico);
-      
-      this.montoTotal = this.montoTotal - this.neumatico.montoTotal;
-      // this.saldoPendiente = this.saldoPendiente - this.cuota.montoCuota;
-      this.neumatico = new EgresosNeumaticoImportadora();
-      this.dataSource = new MatTableDataSource(this.listaNeumatico);
-=======
               
               
 
@@ -308,7 +278,6 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
               this.cantidadNeumaticos = this.cantidadNeumaticos - 1;
 
           break;
->>>>>>> a39eea546d51dcd7ad258fb4ca8e6a665bf9dabf
 
           //Si el formulario es erroneo 
           case 'INVALID':
@@ -331,20 +300,6 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
   }
 
   //Metodo que permite guardar el contrato
-<<<<<<< HEAD
-  guardarContrato(){
-    // this.abogadosTabService
-    //   .guardarCuotas(this.listaCuotas)
-    //   .pipe()
-    //   .subscribe((x:any) => {
-    //     this.abogadosService.closeDialogModal();
-    //     this.listaCuotas = [];
-    //     this.snackBar.open('Contato generado con exito', 'cerrar', {
-    //       duration: 2000,
-    //       verticalPosition: 'top',
-    //     });
-    //   });
-=======
   guardarConteiner(){
    
     if(this.montoTotal == 0 && this.listaNeumatico.length > 0 && this.porcentajeConteiner <= 1 && this.cantidadNeumaticos == 0){
@@ -367,7 +322,6 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
           verticalPosition: 'top',
         });
    }
->>>>>>> a39eea546d51dcd7ad258fb4ca8e6a665bf9dabf
   }
 
   obtenerEmpresa(id: number): any {

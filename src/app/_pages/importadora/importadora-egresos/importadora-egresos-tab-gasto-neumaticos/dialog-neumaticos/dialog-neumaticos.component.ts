@@ -216,7 +216,7 @@ export class DialogNeumaticosComponent implements OnInit {
 
    // Cerrar Dialog
    closeDialog(){
-    this.abogadosService.closeDialogModal();
+    this.importadoraService.closeDialogModal();
    }
 
     //Metodo exportar excel

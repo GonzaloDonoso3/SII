@@ -11,6 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DialogRegistrarPagoComponent } from './abogados-ingresos/abogados-ingresos-acciones/dialog-registrar-pago/dialog-registrar-pago.component';
 import { DialogRepactarCuotasComponent } from './abogados-ingresos/abogados-ingresos-acciones/dialog-repactar-cuotas/dialog-repactar-cuotas.component';
 import { DialogContratosComponent } from './abogados-ingresos/abogados-ingresos-acciones/dialog-contratos/dialog-contratos.component';
+import { Empresa } from '@models/shared/empresa';
 
 const EXCEL_TYPE =
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
@@ -192,6 +193,11 @@ export class AbogadosService {
   }
   egresoGetAll(): any {            
     return this.http.get<[]>(`${environment.apiUrl}/egresoFirma`);    
+  }
+  getByIdWithSucursales(id: number) {
+    return this.http.get<Empresa>(
+      `${environment.apiUrl}/empresa/empresaSucursales/${id}`
+    );
   }
   egresoGetFiles(fileName: string): any {       
     return this.http

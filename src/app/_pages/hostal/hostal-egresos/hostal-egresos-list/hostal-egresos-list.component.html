@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
     <button mat-raised-button (click)="limpiarFiltros()" color="accent">
-        Limpiar filtros
+        Actualizar tabla
     </button>
     <span>Egresos Hostal</span>
     <span>Monto Registros Seleccionados:
@@ -8,11 +8,11 @@
     </span>
     <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="revelarTotal()">
         Revelar total
-    </button>
+    </button>    
 </mat-toolbar>
 
 <div class="table-responsive">
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z10">
+    <table mat-table [dataSource]="dataSource" matSort matSortActive="id" matSortDirection="desc" class="mat-elevation-z10">
         <!-- check column -->
         <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>

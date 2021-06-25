@@ -1,5 +1,6 @@
+import { MatSort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChildren, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -23,6 +24,7 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
 
   // ? childrens
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
+  @ViewChild(MatSort) sort = null;
 
   // ? Inputs & Outputs
   @Input()
@@ -98,6 +100,7 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
 
       this.dataSource = new MatTableDataSource(dataFiltered);
       this.dataSource.paginator = this.paginator.toArray()[0];
+      this.dataSource.sort = this.sort;
       this.selection.clear();
     })
   }
@@ -108,6 +111,9 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
     this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null })
     this.dataSource = new MatTableDataSource(this.dataEgresos);
     this.dataSource.paginator = this.paginator.toArray()[0];
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator['_pageIndex'] = 0;
+    this.actualizarTabla();
     this.selection.clear()
     this.totalSeleccion = 0;
   }
@@ -131,9 +137,7 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
       this.totalSeleccion += data.monto;
     });
   }
-
-
-
+  
   // ? refresh when form is ready.
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -157,12 +161,29 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
         });
         this.dataSource = new MatTableDataSource(this.dataEgresos);
         this.dataSource.paginator = this.paginator.toArray()[0];
-
+        this.dataSource.sort = this.sort;
       });
     }
   }
 
-
+  actualizarTabla(){
+    this.lubricentroService.egresoGetAll().subscribe((data: EgresoLubricentro[]) => {
+      this.dataEgresos = data.map(egreso => {
+        egreso.sucursal = egreso.Sucursal.razonSocial;
+        egreso.usuario = egreso.Usuario.nombreUsuario;
+        return egreso;
+      });
+      //console.log(data);
+      this.dataEgresos.forEach(data => {
+        if (data['numeroCuota']== null) {
+          data.numeroCuota = this.result;          
+        }
+      });
+      this.dataSource = new MatTableDataSource(this.dataEgresos);
+      this.dataSource.paginator = this.paginator.toArray()[0];
+      this.dataSource.sort = this.sort;
+    });
+  }
 
   // ? selection rows
   // *  INFO this.selection.selected : return array with all selected objects(rows) into table

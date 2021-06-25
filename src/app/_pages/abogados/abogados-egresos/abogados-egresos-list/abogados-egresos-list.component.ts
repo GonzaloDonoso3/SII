@@ -1,3 +1,4 @@
+import { MatSort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -13,6 +14,8 @@ import { AbogadosService } from '@app/_pages/abogados/abogados.service';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ViewChild } from '@angular/core';
 import { DatePipe } from "@angular/common";
+import { Empresa } from '@app/_models/shared/empresa';
+import { first } from 'rxjs/operators';
 
 
 @Component({
@@ -27,6 +30,7 @@ export class AbogadosEgresosListComponent implements OnInit, OnChanges {
 // ? childrens
 @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
 @ViewChild('agGrid') agGrid!: AgGridAngular;
+@ViewChild(MatSort) sort = null;
 
 // ? Inputs & Outputs
 @Input()
@@ -59,11 +63,12 @@ formFilter = new FormGroup({
   end: new FormControl(),
   idSucursal: new FormControl(),
   tipoEgreso: new FormControl(),
-  //numeroCuota: new FormControl(),
+  numeroCuota: new FormControl(),
 })
 
-
+empresa = new Empresa();
 sucursales: Sucursal[] = [];
+idEmpresa = 2;
 selection = new SelectionModel<RegistroEgresoFirma>(true, []);
 tiposEgresos: string[] = [];
 totalSeleccion = 0;
@@ -80,36 +85,45 @@ constructor(
 }
 
 ngOnInit(): void {
+  this.getEgresos();
+  this.getEmpresa(this.idEmpresa);
   this.aplicarfiltros();
 }
 
-// ACTUALIZAR CUANDO EL FORMULARIO ESTE CARGADO.
-
-ngOnChanges(changes: SimpleChanges): void {  
-  for (const propName of Object.keys(changes)) {    
-    const change = changes[propName];
-    const to = JSON.stringify(change.currentValue);
-    const from = JSON.stringify(change.previousValue);
-    const changeLog = `${propName}: changed from ${from} to ${to} `;
-    this.changelog.push(changeLog);        
-    this.abogadosService.egresoGetAll().subscribe((data: RegistroEgresoFirma[]) => {            
-      this.dataEgresos = data.map(egreso => {        
-        egreso.sucursal = egreso.Sucursal.razonSocial;
-        egreso.usuario = egreso.Usuario.nombreUsuario;
-        return egreso;
-      });
-      //Conviertiendo los numeros de cuotas Nulos en N/A
-      this.dataEgresos.forEach(data => {        
-        if (data.numeroCuota== null) {
-          data.numeroCuota = this.result;          
-        }
-      });
-      this.dataSource = new MatTableDataSource(this.dataEgresos);
-      this.dataSource.paginator = this.paginator.toArray()[0];
-    });
-  }
+ngOnChanges(changes: SimpleChanges): void {
+  //console.log(this.refrescar);
+  this.getEgresos();
+  this.aplicarfiltros();
 }
 
+getEgresos() {
+  this.abogadosService.egresoGetAll().subscribe((data: RegistroEgresoFirma[]) => {            
+    this.dataEgresos = data.map(egreso => {        
+      egreso.sucursal = egreso.Sucursal.razonSocial;
+      egreso.usuario = egreso.Usuario.nombreUsuario;
+      return egreso;
+    });
+    //Conviertiendo los numeros de cuotas Nulos en N/A
+    this.dataEgresos.forEach(data => {        
+      if (data.numeroCuota== null) {
+        data.numeroCuota = this.result;          
+      }
+    });
+    this.dataSource = new MatTableDataSource(this.dataEgresos);
+    this.dataSource.paginator = this.paginator.toArray()[0];
+    this.dataSource.sort = this.sort;
+  });
+}
+
+getEmpresa(id: number): any {
+  this.abogadosService
+    .getByIdWithSucursales(id)
+    .pipe(first())
+    .subscribe((x) => {
+      x.Sucursals = Object.values(x.Sucursals);
+      this.empresa = x;
+    });
+}
 
 recuperarArchivos(listArchivos: any) {
   this.dialog.open(DialogDownloadsComponent, {    
@@ -152,6 +166,8 @@ aplicarfiltros() {
 
     this.dataSource = new MatTableDataSource(dataFiltered);
     this.dataSource.paginator = this.paginator.toArray()[0];
+    this.totalSeleccion = 0;
+    this.dataSource.sort = this.sort;
     this.selection.clear();
   })
 }
@@ -162,7 +178,10 @@ limpiarFiltros() {
   this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null })
   this.dataSource = new MatTableDataSource(this.dataEgresos);
   this.dataSource.paginator = this.paginator.toArray()[0];
-  this.selection.clear()
+  this.dataSource.sort = this.sort;
+  this.dataSource.paginator['_pageIndex'] = 0;
+  this.getEgresos();
+  this.selection.clear();
   this.totalSeleccion = 0;
 }
 
@@ -181,5 +200,6 @@ masterToggle() {
     this.dataSource.filteredData.forEach(row => {
       this.selection.select(row);
     });
+    console.log(this.selection.selected);
 }
 }

@@ -1,0 +1,150 @@
+<mat-card id="card" style="text-align: center;">
+
+  <form [formGroup]="egresosForm" novalidate (ngSubmit)="onSubmit()">
+  <mat-card class="shipping-card mat-elevation-z10">            
+    <mat-card-title class="shipping-card">
+      <h1> Egresos Agro Firma </h1>
+    </mat-card-title>  
+    <mat-grid-list cols = "3" rowHeight = "100px">        
+    <mat-grid-tile 
+    >
+    <!-- select tipoEgreso -->        
+    <div class="col">
+      <mat-form-field class="full-width" style="width:160%">                        
+          <mat-select placeholder="Tipo Egreso" formControlName="tipoEgreso" (ngModelChange)="capturar()" [(ngModel)]="opcionSeleccionado">
+              <mat-option value="Gastos" (click)="desactivarEdicion()">
+                  Gastos
+              </mat-option>
+              <mat-option value="Costos" (click)="desactivarEdicion()">
+                  Costos
+              </mat-option>
+              <mat-option value="Remuneraciones" (click)="desactivarEdicion()">
+                  Remuneraciones
+              </mat-option>
+              <mat-option value="Bancarios" (click)="desactivarEdicion()">
+                  Bancarios
+              </mat-option>
+              <mat-option value="Impuestos" (click)="desactivarEdicion()">
+                  Impuestos
+              </mat-option>
+              <mat-option value="Inversiones" (click)="desactivarEdicion()">
+                  Inversiones
+              </mat-option>
+              <mat-option value="Prestamos Bancarios" (click)="activarEdicion()">
+                  Prestamos Bancarios
+              </mat-option>
+              <mat-option value="Prestamos Automotriz" (click)="activarEdicion()">
+                  Prestamos Automotriz
+              </mat-option>
+          </mat-select>
+          <mat-error *ngIf="egresosForm.controls['tipoEgreso'].hasError('required')">
+              tipo ingreso es <strong>requerido</strong>
+          </mat-error>
+      </mat-form-field>
+  </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile 
+    >
+    <!-- select fecha -->
+    <div class="col">
+      <mat-form-field class="full-width" style="width:150%">
+        <mat-label>Seleccionar fecha</mat-label>
+        <input matInput formControlName="fecha" [matDatepicker]="picker" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="egresosForm.controls['fecha'].hasError('required')">
+          fecha es <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile 
+    >    
+   <!-- monto -->
+   <div class="col" *ngIf="mostrarDatos">
+    <mat-form-field class="full-width" style="width:160%">
+      <input matInput placeholder="Monto" formControlName="monto" type="number" />
+      <mat-error *ngIf="egresosForm.controls['monto'].hasError('required')">
+        Monto es <strong>requerido</strong>
+      </mat-error>
+    </mat-form-field>
+  </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile 
+    >    
+   <!-- responsable -->  
+   <div class="col">
+    <mat-form-field class="full-width" style="width:160%">
+      <input matInput placeholder="ingrese nombre responsable" formControlName="responsable" />
+      <mat-error *ngIf="egresosForm.controls['responsable'].hasError('required')">
+        este campo es <strong>requerido</strong>
+      </mat-error>
+    </mat-form-field>
+  </div>
+    </mat-grid-tile>
+    
+    <mat-grid-tile 
+    >
+    <!-- descripcion -->
+    <div class="col">
+      <mat-form-field class="full-width" style="width:160%">
+        <input matInput placeholder="ingrese una descripcion del registro" formControlName="descripcion" />
+        <mat-error *ngIf="egresosForm.controls['descripcion'].hasError('required')">
+          descripcion es <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile 
+    >
+    <!-- monto de las cuotas -->
+    <div class="col" *ngIf="!mostrarDatos">
+      <mat-form-field class="full-width" style="width:160%">
+          <input matInput placeholder="Monto" formControlName="montoCuota" type="number" [ngModel]="montoTotal"/>
+          Capital: 500 + Interes 500                        
+          <mat-error *ngIf="egresosForm.controls['monto'].hasError('required')">
+              monto es <strong>requerido</strong>
+          </mat-error>
+      </mat-form-field>
+  </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile 
+    >
+     <!-- numero de cuotas -->
+     <div class="col" *ngIf="!mostrarDatos" >
+      <mat-form-field class="full-width" style="width:160%">
+          <input matInput placeholder="Numero de cuotas" formControlName="numeroCuota" type="number"/>
+          <mat-error *ngIf="egresosForm.controls['numeroCuota'].hasError('required')">
+              numero de cuotas <strong>requerido</strong>
+          </mat-error>
+      </mat-form-field>
+    </div>
+    </mat-grid-tile>
+    
+    <mat-grid-tile 
+    >
+    <!-- id proyecto -->
+    <div class="col" style="display:none">
+      <mat-form-field class="full-width" style="width:160%">          
+          <input matInput placeholder="Id del proyecto" formControlName="idProyecto" type="number"/>
+          <mat-error *ngIf="egresosForm.controls['idProyecto'].hasError('required')">
+              Id es <strong>requerido</strong>
+          </mat-error>
+      </mat-form-field>
+    </div>
+    </mat-grid-tile>
+    
+ </mat-grid-list>
+ <mat-card-actions>
+  <button mat-raised-button color="primary" type="submit">
+    <mat-icon id="boton">send</mat-icon> Enviar
+  </button>
+</mat-card-actions>
+
+</mat-card>    
+</form>

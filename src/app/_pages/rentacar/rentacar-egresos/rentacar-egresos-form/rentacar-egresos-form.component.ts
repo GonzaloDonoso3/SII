@@ -114,9 +114,11 @@ export class RentacarEgresosFormComponent implements OnInit {
       //Si el formulario esta correcto
       case 'VALID':
         const dialogRef = this.dialog.open(DialogRespaldosComponent, {
+          
 
           data: { url: 'egresoRentacar/upload' }
         });
+        console.log("cargando el archivo", dialogRef )
         dialogRef.afterClosed().subscribe(result => {                      
           //Se le asignan los datos del formulario al objeto EgresoInmobiliaria
           this.nameRespaldo = result;

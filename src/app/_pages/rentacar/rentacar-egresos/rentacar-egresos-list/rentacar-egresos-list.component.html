@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
     <button mat-raised-button (click)="limpiarFiltros()" color="accent">
-        Limpiar filtros
+        Actualizar tabla
     </button>
     <span> Egresos Inmobiliaria </span>
     <span> Monto Registros Seleccionados:
@@ -11,7 +11,7 @@
     </button>
     <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="exportAsXLSX()">
         Exportar
-    </button>
+    </button>    
 </mat-toolbar>
 
 <div class="table-responsive">
@@ -186,3 +186,4 @@
     </table>
 </div>
 <mat-paginator [pageSizeOptions]="[10, 30, 50, 100]"></mat-paginator>
+<!-- <mat-paginator #paginator [length]="length" [pageSize]="pageSize"[pageSizeOptions]="pageSizeOptions" (page)="pageEvent = paginationClicked($event)"></mat-paginator> -->

@@ -1,0 +1,21 @@
+.row {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+  }
+  
+  .col {
+    flex: 1;
+    margin-right: 20px;
+  }
+.bg-indigo{
+  margin-left: 20px;
+  margin-top: -10px;
+}
+#boton{
+    background: #2a3f54;
+    color: #ffffff;
+    font-size: 15px;
+    border-radius: 14px;    
+}

@@ -50,7 +50,7 @@ export class AgroFirmaEgresosListComponent implements OnInit {
   result = "N/A"; 
   idProyecto = null;
   urlTree!: any;
-  proyecto : any = '0';
+  proyecto : any = '0';  
 
   dataSource: MatTableDataSource<EgresoAgroFirma> = new MatTableDataSource();
   dataEgresos: EgresoAgroFirma[] = [];
@@ -85,7 +85,7 @@ export class AgroFirmaEgresosListComponent implements OnInit {
     private sucursalService: SucursalSharedService,
     private cuentasService: CuentasBancariasService,
     private route: ActivatedRoute,
-    private router: Router,
+    private router: Router,    
   ) {
     this.sucursales = this.sucursalService.sucursalListValue;    
     //this.proyectos = this.agroFirmaService.proyectosListValue;  
@@ -101,8 +101,7 @@ export class AgroFirmaEgresosListComponent implements OnInit {
     this.agroFirmaService.GetAllProyectos()
       .pipe(first())
       .subscribe((proyectos: any) => {
-        this.proyectos = proyectos; 
-        console.log("proyectos en el listado", this.proyectos);       
+        this.proyectos = proyectos;               
       });
       
   }
@@ -110,11 +109,11 @@ export class AgroFirmaEgresosListComponent implements OnInit {
 
     ngOnChanges(){     
     }
-  
-    actualizarTabla(){      
+
+    actualizarTabla(){                                                      
       this.agroFirmaService.getAll(this.proyecto).subscribe((data: EgresoAgroFirma[]) => {        
-        this.dataEgresos = data.map(egreso => {
-          egreso.proyecto = egreso.ProyectoAgrofirma.nombre;          
+        this.dataEgresos = data.map(egreso => {                    
+          egreso.proyecto = egreso.ProyectoAgrofirma.nombre;                                          
           return egreso;
         });
         //Conviertiendo los numeros de cuotas Nulos en N/A
@@ -123,8 +122,7 @@ export class AgroFirmaEgresosListComponent implements OnInit {
           data.numeroCuota = this.result;          
           }
         });
-        this.dataSource = new MatTableDataSource(this.dataEgresos);
-        console.log("datos dle datasource", this.dataEgresos)
+        this.dataSource = new MatTableDataSource(this.dataEgresos);        
         this.dataSource.paginator = this.paginator.toArray()[0];
         this.dataSource.sort = this.sort;
       });

@@ -23,8 +23,9 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/new-finanzas-client",
+            "outputPath": "dist/new-finanzas-client",            
             "index": "src/index.html",
+            "showCircularDependencies": false,
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",

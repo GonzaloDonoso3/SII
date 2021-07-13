@@ -6,6 +6,7 @@ import { EgresoHostal } from '@app/_models/hostal/egresoHostal';
 import { IngresosHostal } from '@app/_models/hostal/ingresoHostal';
 import { environment } from '@environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { ConsolidadosHostal } from '@app/_models/hostal/consolidadosHostal';
 
 @Injectable({
   providedIn: 'root'
@@ -166,5 +167,15 @@ export class HostalService {
     );
   }
   /* /egresos */
+
+
+  /* CONSOLIDADOS */  
+  buscarConsolidado(consolidado: ConsolidadosHostal): any { 
+    //console.log("probando formulario", consolidado)   
+    return this.http.post(      
+      `${environment.apiUrl}/ingreso${this.empresa}/ingresosEgresos`,
+      consolidado      
+    );
+  }
   
 }

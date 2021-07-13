@@ -19,8 +19,8 @@
 
                <!-- Valor unitario Chino-->
                 <div class="col">
-                    <mat-form-field class="full-width">
-                        <input matInput placeholder="Valor unitario Chino" formControlName="unitarioChino" />
+                    <mat-form-field class="full-width">                        
+                        <input matInput placeholder="Valor unitario Chino" formControlName="unitarioChino" (keyup)="onKeyUp($event,1)"/>                        
                         <mat-error *ngIf="addressForm.controls['unitarioChino'].hasError('required')">
                             este campo es <strong>requerido</strong>
                         </mat-error>
@@ -30,7 +30,7 @@
                 <!-- Total de tipo de neumatico-->
                 <div class="col">
                     <mat-form-field class="full-width">
-                        <input matInput placeholder="Total tipo de neumatico" formControlName="totalTipoNeumatico" />
+                        <input value="{{text | number}}" matInput placeholder="Total tipo de neumatico" formControlName="totalTipoNeumatico" />
                         <mat-error *ngIf="addressForm.controls['totalTipoNeumatico'].hasError('required')">
                             este campo es <strong>requerido</strong>
                         </mat-error>
@@ -42,7 +42,7 @@
                 <!-- cantidad  -->
                 <div class="col">
                     <mat-form-field class="full-width">
-                        <input matInput placeholder="Cantidad Neumaticos" formControlName="cantidad" />
+                        <input matInput placeholder="Cantidad Neumaticos" formControlName="cantidad" (keyup)="onKeyUp($event,2)"/>                        
                         <mat-error *ngIf="addressForm.controls['cantidad'].hasError('required')">
                             este campo es <strong>requerido</strong>
                         </mat-error>
@@ -120,7 +120,7 @@
                     <!-- Valor unitario -->  
                     <div class="col">
                         <mat-form-field class="full-width">
-                            <input matInput placeholder="Valor unitario" formControlName="valorUnitario" />
+                            <input matInput placeholder="Valor unitario" formControlName="valorUnitario" (keyup)="onKeyUp($event,4)"/>
                             <mat-error *ngIf="addressForm.controls['valorUnitario'].hasError('required')">
                                 este campo es <strong>requerido</strong>
                             </mat-error>
@@ -130,7 +130,7 @@
                     <!-- Total Unitario -->  
                     <div class="col">
                         <mat-form-field class="full-width">
-                            <input matInput placeholder="Total Unitario" formControlName="montoTotal" />
+                            <input value="{{text4 | number}}" matInput placeholder="Total Unitario" formControlName="montoTotal" />
                             <mat-error *ngIf="addressForm.controls['montoTotal'].hasError('required')">
                                 este campo es <strong>requerido</strong>
                             </mat-error>
@@ -143,8 +143,7 @@
                     <!-- Ganancia -->  
                     <div class="col">
                         <mat-form-field class="full-width">                            
-                            <!-- <input matInput placeholder="Ganancia" formControlName="montoTotal" (keyup)="onKeyUp($event)"/> -->
-                            <input matInput placeholder="Ganancia" formControlName="pGanancia"/>
+                            <input matInput placeholder="Ganancia" formControlName="pGanancia" (keyup)="onKeyUp($event,3)"/>                            
                             <mat-error *ngIf="addressForm.controls['pGanancia'].hasError('required')">
                                 este campo es <strong>requerido</strong>
                             </mat-error>
@@ -153,9 +152,8 @@
 
                     <!-- Valor Venta -->  
                     <div class="col">
-                        <mat-form-field class="full-width">
-                            <!-- <input value="{{text}}" matInput placeholder="Valor venta" formControlName="pGanancia" /> -->
-                            <input matInput placeholder="Valor venta" formControlName="costoNeumatico" />                            
+                        <mat-form-field class="full-width">                            
+                            <input value="{{text2 | number}}" matInput placeholder="Valor venta" formControlName="costoNeumatico" (keyup)="onKeyUp($event,5)"/>                                                        
                             <mat-error *ngIf="addressForm.controls['costoNeumatico'].hasError('required')">
                                 este campo es <strong>requerido</strong>
                             </mat-error>
@@ -165,7 +163,7 @@
                 <!-- Total venta -->  
                 <div class="col">
                     <mat-form-field class="full-width">
-                        <input matInput placeholder="Total venta" formControlName="totalVenta" />
+                        <input value="{{text3 | number}}" matInput placeholder="Total venta" formControlName="totalVenta" />
                         <mat-error *ngIf="addressForm.controls['totalVenta'].hasError('required')">
                             este campo es <strong>requerido</strong>
                         </mat-error>
@@ -176,8 +174,8 @@
             <div class="row">
                 <!-- Utilidad -->  
                 <div class="col">
-                    <mat-form-field class="full-width">
-                        <input matInput placeholder="Utilidad" formControlName="utilidad" />
+                    <mat-form-field class="full-width">                        
+                        <input value="{{text5 | number}}" matInput placeholder="Utilidad" formControlName="utilidad" />
                         <mat-error *ngIf="addressForm.controls['utilidad'].hasError('required')">
                             este campo es <strong>requerido</strong>
                         </mat-error>

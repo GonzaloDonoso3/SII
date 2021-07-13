@@ -125,7 +125,7 @@ export class AgroFirmaEgresosFormComponent implements OnInit {
       case 'VALID':
         const dialogRef = this.dialog.open(DialogRespaldosComponent, {
 
-          data: { url: 'egresoHostal/upload' }
+          data: { url: 'egresoAgrofirma/upload' }
         });
 
         dialogRef.afterClosed().subscribe(result => {

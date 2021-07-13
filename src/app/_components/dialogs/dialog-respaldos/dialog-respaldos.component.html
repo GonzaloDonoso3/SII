@@ -7,6 +7,14 @@
   class="well my-drop-zone"
 >
   <mat-icon>add</mat-icon> arrastrar arquivos aqui
+  <tr *ngFor="let item of uploader.queue">
+    <td>
+      <strong>{{ item?.file?.name }}</strong>
+    </td>
+    <td *ngIf="uploader.options.isHTML5" nowrap>
+      {{ item?.file?.size / 1024 / 1024 | number: ".2" }} MB
+    </td>    
+  </tr>
 </div>
 <input mat-input type="file" ng2FileSelect [uploader]="uploader" multiple />
 

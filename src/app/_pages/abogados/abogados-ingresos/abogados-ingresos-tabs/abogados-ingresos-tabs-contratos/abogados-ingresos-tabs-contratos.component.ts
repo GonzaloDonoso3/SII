@@ -56,6 +56,7 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
     usuario: new FormControl(),
     start: new FormControl(),
     end: new FormControl(),
+    montoContrato: new FormControl(),
   })
 
   sucursales: Sucursal[] = [];
@@ -155,6 +156,10 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
         dataFiltered = dataFiltered.filter((data: Contrato) => data.usuario.includes(res.usuario));
       }
 
+      if(res.montoContrato){
+        dataFiltered = dataFiltered.filter((data: Contrato) => data.montoContrato == res.montoContrato);
+      }
+
 
       this.dataSource = new MatTableDataSource(dataFiltered);
       this.dataSource.paginator = this.paginator.toArray()[0];
@@ -165,7 +170,7 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
 
   //Limpiar los filtros
   limpiarFiltros() {
-    this.formFilter.patchValue({ start: null, end: null, rut: null, cliente: null, estadoPago: null, sucursal: null, usuario: null })
+    this.formFilter.patchValue({ start: null, end: null, rut: null, cliente: null, estadoPago: null, sucursal: null, usuario: null, montoContrato: null})
     this.dataSource = new MatTableDataSource(this.dataContrato);
     this.dataSource.paginator = this.paginator.toArray()[0];
     this.selection.clear()

@@ -6,6 +6,7 @@ import { EgresoAgroFirma } from '@app/_models/agroFirma/egresoAgroFirma';
 import { BehaviorSubject, Observable } from 'rxjs';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
+import { IngresoAgroFirma } from '@app/_models/agroFirma/ingresoAgroFirma';
 
 
 const EXCEL_TYPE =
@@ -16,6 +17,7 @@ const EXCEL_EXTENSION = '.xlsx';
   providedIn: 'root'
 })
 export class AgroFirmaService {
+
 
   private proyecto = 'obtenerProyecto';
 
@@ -32,36 +34,34 @@ export class AgroFirmaService {
   private tiposEgresos = ['Gastos', 'Costos', 'Remuneraciones', 'Impuestos', 'Bancarios', 'Prestamos Bancarios', 'Prestamos Automotriz'];
   private empresa = 'agroFirma';
 
-  constructor(
-    private http: HttpClient,
-    ) { 
-      //egresos;
-      this.tiposEgresosListSubject = new BehaviorSubject<string[]>(
+  constructor( private http: HttpClient ) {
+    //egresos;
+    this.tiposEgresosListSubject = new BehaviorSubject<string[]>(
       JSON.parse(localStorage.getItem('tiposEgresos')!)
-      );
+    );
 
-      this.proyectosListSubject = new BehaviorSubject<ProyectoAgrofirma[]>(
-        JSON.parse(localStorage.getItem('proyectos')!)
-      );
+    this.proyectosListSubject = new BehaviorSubject<ProyectoAgrofirma[]>(
+      JSON.parse(localStorage.getItem('proyectos')!)
+    );
 
-      //egresos;
+    //egresos;
     this.tiposEgresosList = this.tiposEgresosListSubject.asObservable();
     this.proyectosList = this.proyectosListSubject.asObservable();
     localStorage.setItem('tiposEgresos', JSON.stringify(this.tiposEgresos));
-    }
+  }
+  
+  //egresos values get methods:
+  public get tiposEgresosListValue(): string[] {
+  return this.tiposEgresosListSubject.value;
+  }
 
-    //egresos values get methods:
-    public get tiposEgresosListValue(): string[] {
-    return this.tiposEgresosListSubject.value;
-    }
+  //proyectos values methods:
+  public get proyectosListValue(): ProyectoAgrofirma[] {
+    return this.proyectosListSubject.value;
+  } 
 
-    //proyectos values methods:
-    public get proyectosListValue(): ProyectoAgrofirma[] {
-      return this.proyectosListSubject.value;
-    }
-
-    // METODO PARA EXPORTAR EXCEL
-    public exportAsExcelFile(json: any[], excelFileName: string): void {
+  // METODO PARA EXPORTAR EXCEL
+  public exportAsExcelFile(json: any[], excelFileName: string): void {
     const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
     const workbook: XLSX.WorkBook = {
       Sheets: { data: worksheet },
@@ -74,6 +74,7 @@ export class AgroFirmaService {
     this.saveAsExcelFile(excelBuffer, excelFileName);
   }
 
+
   private saveAsExcelFile(buffer: any, fileName: string): void {
     const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
     FileSaver.saveAs(
@@ -82,16 +83,18 @@ export class AgroFirmaService {
     );
   }
 
-    egresoGetAll(): any {    
-      return this.http.get<[]>(`${environment.apiUrl}/obtenerEgresos/:idProyecto`);
-    }
+  //----------Metodos Egresos------------
 
-    egresoRegistrar(egreso: EgresoAgroFirma): any {    
-      return this.http.post(      
-        `${environment.apiUrl}/egreso${this.empresa}/registrarEgreso`,
-        egreso      
-      );
-    }
+  egresoGetAll(): any {    
+    return this.http.get<[]>(`${environment.apiUrl}/obtenerEgresos/:idProyecto`);
+  }
+
+  egresoRegistrar(egreso: EgresoAgroFirma): any {    
+    return this.http.post(      
+      `${environment.apiUrl}/egreso${this.empresa}/registrarEgreso`,
+      egreso      
+    );
+  }
 
   GetAllProyectos(): any {                  
     return this.http.get<[]>(`${environment.apiUrl}/proyectoAgrofirma/obtenerProyectos`);    
@@ -107,5 +110,11 @@ export class AgroFirmaService {
     return this.http.get<[]>(
       `${environment.apiUrl}/egresoAgrofirma/obtenerEgresos/${id}`
     );
+  }
+
+  //-----------Metodos Ingresos---------------//
+
+  registrarIngreso(ingreso: IngresoAgroFirma): any {
+    return this.http.post(`${environment.apiUrl}/ingresoAgrofirma/registrarIngreso`, ingreso);
   }
 }

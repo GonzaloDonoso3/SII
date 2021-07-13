@@ -1,2 +1,74 @@
-<p>agro-firma-ingresos works!</p>
-<img src="assets/images/firmaabogadoschile.png" alt="" width="650" height="350">
+<div class="container">      
+    
+    <mat-grid-list cols = "3" rowHeight = "100px">
+      <mat-grid-tile 
+      [colspan] = "3"
+      [rowspan] = "1">
+      <h5 style="font-size: 20px;">Proyectos Disponibles</h5>                                
+                <button
+                  type="button" icon="refresh"
+                  class="btn bg-indigo text-white align-right"
+                  (click)="ngOnInit()">
+                  <i class="fa fa-refresh" aria-hidden="true"></i>
+                  <mat-icon>autorenew</mat-icon>
+                </button>
+      </mat-grid-tile>
+   </mat-grid-list>
+  
+
+
+    <div class="row" style="margin-top: 5rem;">        
+        <div class="col" *ngFor="let p of proyectos" style="border:1px solid rgb(196, 195, 195); height: 250px;">
+          <img style="width: 70%"
+            class="card-img-top"
+            src="assets/images/agrobanner.png"
+            alt="Card image cap"
+          />
+          <div class="card-body" style="margin-top: 30px;">                             
+            <h4 class="card-title" style="font-size: 25px;">{{ p.nombre }}</h4>
+            <p class="card-text" style="font-size: 25px;">{{ p.ubicacion }}</p>            
+          </div>
+          <div class="card-footer">
+            <div class="d-flex bd-highlight mb-3">
+              <div class="mr-auto p-2 bd-highlight">                                  
+                <button
+                  class="btn btn-secondary align-left" 
+                  (click)="formulario('apendice', p.id)"                                   
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  title="Registrar y ver Egresos"
+                  style="margin-top: 20px;">
+                  <i class="fas fa-file-invoice-dollar"></i>
+                  <mat-icon>description</mat-icon>                   
+                </button>
+              </div>
+              <div class="p-2 bd-highlight">                                
+              </div>
+            </div>
+    
+            <div class="p-2 bd-highlight"></div>
+          </div>
+        </div>
+    </div>
+</div>
+
+<jw-modal id="apendice"> 
+    <app-agro-firma-ingresos-form></app-agro-firma-ingresos-form>
+    <app-agro-firma-egresos-list></app-agro-firma-egresos-list>
+      <div class="card text-left">
+        <!-- <div class="card-body">        
+          <router-outlet></router-outlet>
+        </div> -->
+        <div class="card-footer">        
+          <button
+            id="boton" (click)="closeModal('apendice')"
+            type="button"
+            class="btn btn-danger" color="primary">
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </jw-modal>
+    
+  <br>
+  <br>

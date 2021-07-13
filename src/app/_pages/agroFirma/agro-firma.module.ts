@@ -11,6 +11,8 @@ import { AgroFirmaEgresosFormComponent } from './agro-firma-egresos/agro-firma-e
 import { HttpClientModule } from '@angular/common/http';
 import { AgroFirmaEgresosListComponent } from './agro-firma-egresos/agro-firma-egresos-list/agro-firma-egresos-list.component';
 import { ModalModule } from '@app/_components/_modal';
+import { AgroFirmaIngresosFormComponent } from './agro-firma-ingresos/agro-firma-ingresos-form/agro-firma-ingresos-form.component';
+
 
 
 
@@ -19,7 +21,10 @@ import { ModalModule } from '@app/_components/_modal';
   declarations: [
     AgroFirmaEgresosComponent, 
     AgroFirmaIngresosComponent, 
-    AgroFirmaHomeComponent, AgroFirmaEgresosFormComponent, AgroFirmaEgresosListComponent],
+    AgroFirmaHomeComponent,
+    AgroFirmaEgresosFormComponent,
+    AgroFirmaEgresosListComponent,
+    AgroFirmaIngresosFormComponent],
   imports: [
     HttpClientModule,
     CommonModule,
@@ -30,7 +35,8 @@ import { ModalModule } from '@app/_components/_modal';
     ModalModule,
   ],
   exports: [
-    AgroFirmaEgresosFormComponent,    
+    AgroFirmaEgresosFormComponent,
+    AgroFirmaIngresosFormComponent    
   ]
 })
 export class AgroFirmaModule { }

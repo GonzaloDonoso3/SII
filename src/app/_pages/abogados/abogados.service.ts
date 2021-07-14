@@ -201,7 +201,7 @@ export class AbogadosService {
   }
   egresoGetFiles(fileName: string): any {       
     return this.http
-      .get(`${environment.apiUrl}/egreso${this.empresa}/download/${fileName}`, {
+      .get(`${environment.apiUrl}/egresoFirma/download/${fileName}`, {
         responseType: 'blob',
       })
       .subscribe((res) => {

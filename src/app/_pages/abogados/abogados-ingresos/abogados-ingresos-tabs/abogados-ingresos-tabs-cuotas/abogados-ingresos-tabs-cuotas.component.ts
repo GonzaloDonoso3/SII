@@ -45,6 +45,7 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
     endActualizacion: new FormControl(),
     estadoPago: new FormControl(),
     numeroContrato: new FormControl(),
+    montoCuota: new FormControl(),
   })
 
   selection = new SelectionModel<any>(true, []);
@@ -131,6 +132,11 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
           data.updatedAt = new Date(data.updatedAt);
           return data;
         }).filter((comp: { updatedAt: Date; }) => comp.updatedAt >= res.startActualizacion && comp.updatedAt <= res.endActualizacion);
+      }
+
+      //Filtro montoCuota
+      if (res.montoCuota){
+        dataFiltered = dataFiltered.filter((data: Cuota) => data.montoCuota == res.montoCuota);
       }
 
       this.dataSource = new MatTableDataSource(dataFiltered);

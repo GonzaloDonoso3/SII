@@ -57,6 +57,7 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
     idSucursal: new FormControl(),
     tipoEgreso: new FormControl(),
     numeroCuota: new FormControl(),
+    monto: new FormControl(),
   })
 
 
@@ -65,6 +66,7 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
   tiposEgresos: string[] = [];
   totalSeleccion = 0;
   cuentasRegistradas: any[] = [];
+  selectedRows!: any[];
   constructor(
     private hostalService: HostalService,
     public dialog: MatDialog,
@@ -92,6 +94,7 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
         this.dataEgresos = data.map(egreso => {
           egreso.sucursal = egreso.Sucursal.razonSocial;
           egreso.usuario = egreso.Usuario.nombreUsuario;
+          egreso.monto = egreso.monto;
           return egreso;
         });
         //Conviertiendo los numeros de cuotas Nulos en N/A
@@ -160,6 +163,10 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
         dataFiltered = dataFiltered.filter((data: EgresoHostal) => new Date(data.fecha) >= res.start && new Date(data.fecha) <= res.end);        
       }
 
+      if (res.monto){
+        dataFiltered = dataFiltered.filter((data: EgresoHostal) => data.monto == res.monto);
+      }
+
       this.dataSource = new MatTableDataSource(dataFiltered);
       this.dataSource.paginator = this.paginator.toArray()[0];
       this.dataSource.sort = this.sort;
@@ -170,7 +177,7 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
 
   // ? filters
   limpiarFiltros() {
-    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null })
+    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null, monto:null })
     this.dataSource = new MatTableDataSource(this.dataEgresos);
     this.dataSource.paginator = this.paginator.toArray()[0];
     this.dataSource.sort = this.sort;
@@ -197,6 +204,13 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
       this.dataSource.filteredData.forEach(row => {
         this.selection.select(row);
       });
+  }
+
+  //Metodo exportar excel
+  exportAsXLSX(): void {
+    this.selectedRows = [];
+    this.selection.selected.forEach((x) => this.selectedRows.push(x));
+    this.hostalService.exportAsExcelFile(this.selectedRows, 'Ingresos-Hostal');
   }
 
 }

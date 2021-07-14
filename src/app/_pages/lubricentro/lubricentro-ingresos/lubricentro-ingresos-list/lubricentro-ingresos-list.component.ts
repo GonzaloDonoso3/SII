@@ -32,7 +32,8 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
     'estadoPago',
     'sucursal',
     'tipoIngreso',
-    'usuario'
+    'usuario',
+    'tipoPago'
   ];
   dataSource: MatTableDataSource<IngresosLubricentro> = new MatTableDataSource();
   dataIngresos: IngresosLubricentro[] = [];
@@ -45,6 +46,9 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
     idSucursal: new FormControl(),
     tipoIngreso: new FormControl(),
     estadoPago: new FormControl(),
+    tipoPago: new FormControl(),
+    monto: new FormControl(),
+
   })
 
 
@@ -54,6 +58,8 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
   totalSeleccion = 0;
   cuentasRegistradas: any[] = [];
   estadosPagos: string[] = [];
+  tipoPago: string[] = [];
+  selectedRows!: any[];
   constructor(
     private lubricentroService: LubricentroService,
     public dialog: MatDialog,
@@ -63,6 +69,7 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
     this.sucursales = this.sucursalService.sucursalListValue;
     this.tiposIngresos = this.lubricentroService.tiposIngresosListValue;
     this.estadosPagos = this.lubricentroService.estadosPagosListValue;
+    this.tipoPago = this.lubricentroService.tiposPagosListValue;
   }
 
 
@@ -111,6 +118,14 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
         dataFiltered = dataFiltered.filter((data: IngresosLubricentro) => new Date(data.fecha) >= res.start && new Date(data.fecha) <= res.end);
       }
 
+      if (res.tipoPago){
+        dataFiltered = dataFiltered.filter((data: IngresosLubricentro) => data.tipoPago == res.tipoPago)
+      }
+
+      if (res.monto){
+        dataFiltered = dataFiltered.filter((data: IngresosLubricentro) => data.monto == res.monto);
+      }
+
       this.dataSource = new MatTableDataSource(dataFiltered);
       this.dataSource.paginator = this.paginator.toArray()[0];
       this.totalSeleccion = 0;
@@ -120,7 +135,7 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
 
 
   limpiarFiltros() {
-    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoIngreso: null, estadoPago: null, })
+    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoIngreso: null, estadoPago: null, tipoPago: null, monto:null})
     this.dataSource = new MatTableDataSource(this.dataIngresos);
     this.dataSource.paginator = this.paginator.toArray()[0];
     this.selection.clear()
@@ -165,6 +180,13 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
       this.dataSource.filteredData.forEach(row => {
         this.selection.select(row);
       });
+  }
+
+  //Metodo exportar excel
+  exportAsXLSX(): void {
+    this.selectedRows = [];
+    this.selection.selected.forEach((x) => this.selectedRows.push(x));
+    this.lubricentroService.exportAsExcelFile(this.selectedRows, 'Ingresos-Lubricentro');
   }
 
 

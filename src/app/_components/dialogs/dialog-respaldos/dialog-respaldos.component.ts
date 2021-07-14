@@ -26,8 +26,7 @@ export class DialogRespaldosComponent implements OnInit {
     this.uploader = new FileUploader({
       url: `https://www.imlchile.cl:3000/api/${this.data.url}`,
       itemAlias: 'photo',
-    });
-    //console.log("this.uploader 1", this.uploader)
+    });    
     this.uploader.onCompleteItem = (
       item: any,
       response: any,
@@ -47,8 +46,7 @@ export class DialogRespaldosComponent implements OnInit {
       }
 
     };
-    this.uploader.onCompleteAll = () => {
-      console.log("this.uploader 2", this.uploader)
+    this.uploader.onCompleteAll = () => {      
       // ? la funcion envia al origen de la llamada la data
       // ? luego se debe subscribir a la data
       // ? metodo Mediante el metodo afterClose() del dialogComponent;

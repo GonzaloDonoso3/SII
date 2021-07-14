@@ -68,6 +68,7 @@ export class RentacarEgresosListComponent implements OnInit {
     usuario: new FormControl(),
     responsable: new FormControl(),
     numeroCuota: new FormControl(),
+    monto: new FormControl(),
   })
 
   _pageIndex = 0;
@@ -190,6 +191,10 @@ export class RentacarEgresosListComponent implements OnInit {
         dataFiltered = dataFiltered.filter((data: EgresosRentacar) => new Date(data.fecha) >= res.start && new Date(data.fecha) <= res.end);
       }
 
+      if (res.monto){
+        dataFiltered = dataFiltered.filter((data: EgresosRentacar) => data.monto == res.monto);
+      }
+
       this.dataSource = new MatTableDataSource(dataFiltered);
       this.dataSource.paginator = this.paginator.toArray()[0];
       this.totalSeleccion = 0;
@@ -202,7 +207,7 @@ export class RentacarEgresosListComponent implements OnInit {
 
   // Inicio Filtros
   limpiarFiltros() {
-    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null, responsable: null, descripcionEgreso: null, usuario: null, numeroCuota: null })
+    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null, responsable: null, descripcionEgreso: null, usuario: null, numeroCuota: null, monto: null })
     this.dataSource = new MatTableDataSource(this.dataEgresos);
     this.dataSource.paginator = this.paginator.toArray()[0];    
     this.dataSource.sort = this.sort;

@@ -5,6 +5,7 @@ import { LubricentroService } from '@app/_pages/lubricentro/lubricentro.service'
 import { InmobiliariaService } from '@app/_pages/inmobiliaria/inmobiliaria.service';
 import { RentacarService } from '@app/_pages/rentacar/rentacar.service';
 import { ImportadoraService } from '@app/_pages/importadora/importadora.service';
+import { AbogadosService } from '@app/_pages/abogados/abogados.service';
 
 
 export interface DialogData {
@@ -27,6 +28,7 @@ export class DialogDownloadsComponent implements OnInit {
     private inmobiliariaService: InmobiliariaService,
     private rentacarService: RentacarService,
     private importadoraService: ImportadoraService,
+    private abogadosService: AbogadosService
   ) {
     this.archivos = this.data.archivos;
   }
@@ -37,6 +39,9 @@ export class DialogDownloadsComponent implements OnInit {
         break;
       case 'hostal-egreso':
         this.hostalService.egresoGetFiles(url);
+        break;      
+      case 'abogados-egresos':
+        this.abogadosService.egresoGetFiles(url);
         break;
       case 'lubricentro-egreso':
         this.lubricentroService.egresoGetFiles(url);

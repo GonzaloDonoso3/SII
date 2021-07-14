@@ -64,6 +64,7 @@ formFilter = new FormGroup({
   idSucursal: new FormControl(),
   tipoEgreso: new FormControl(),
   numeroCuota: new FormControl(),
+  monto: new FormControl(),
 })
 
 empresa = new Empresa();
@@ -164,6 +165,10 @@ aplicarfiltros() {
       dataFiltered = dataFiltered.filter((data: RegistroEgresoFirma) => new Date(data.fecha) >= res.start && new Date(data.fecha) <= res.end);        
     }
 
+    if(res.monto){
+      dataFiltered = dataFiltered.filter((data: RegistroEgresoFirma) => data.monto == res.monto)
+    }
+
     this.dataSource = new MatTableDataSource(dataFiltered);
     this.dataSource.paginator = this.paginator.toArray()[0];
     this.totalSeleccion = 0;
@@ -175,7 +180,7 @@ aplicarfiltros() {
 
 // LIMPIANDO LOS FILTROS
 limpiarFiltros() {
-  this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null })
+  this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null, monto: null })
   this.dataSource = new MatTableDataSource(this.dataEgresos);
   this.dataSource.paginator = this.paginator.toArray()[0];
   this.dataSource.sort = this.sort;

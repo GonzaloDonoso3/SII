@@ -13,7 +13,8 @@ import { HostalIngresosListComponent } from './hostal-ingresos/hostal-ingresos-l
 import { HostalEgresosComponent } from './hostal-egresos/hostal-egresos.component';
 import { HostalEgresosFormComponent } from './hostal-egresos/hostal-egresos-form/hostal-egresos-form.component';
 import { HostalEgresosListComponent } from './hostal-egresos/hostal-egresos-list/hostal-egresos-list.component';
-import { FullCalendarModule } from '@fullcalendar/angular'; 
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { HostalConsolidadosComponent } from './hostal-consolidados/hostal-consolidados.component';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
     HostalEgresosComponent,
     HostalEgresosFormComponent,
     HostalEgresosListComponent,
+    HostalConsolidadosComponent    
   ],
   imports: [
     HttpClientModule,
@@ -33,13 +35,13 @@ import { FullCalendarModule } from '@fullcalendar/angular';
     MaterialModule,
     ComponentsModule,
     ReactiveFormsModule,
-    FullCalendarModule
+    FullCalendarModule,
   ],
   exports: [
     HostalRoutingModule,
     MaterialModule,
     ComponentsModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule,   
   ]
 })
 export class HostalModule { }

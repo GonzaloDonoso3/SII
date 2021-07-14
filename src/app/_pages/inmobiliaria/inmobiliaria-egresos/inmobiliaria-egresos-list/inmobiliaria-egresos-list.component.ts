@@ -60,6 +60,7 @@ export class InmobiliariaEgresosListComponent implements OnInit {
     tipoEgreso: new FormControl(),
     Propiedad: new FormControl(),
     numeroCuota: new FormControl(),
+    monto: new FormControl(),
   })
 
 
@@ -71,6 +72,7 @@ export class InmobiliariaEgresosListComponent implements OnInit {
   estadosPagos: string[] = [];
   totalSeleccion = 0;
   cuentasRegistradas: any[] = [];
+  selectedRows!: any[];
   constructor(
     private inmobiliariaService: InmobiliariaService,
     public dialog: MatDialog,
@@ -193,6 +195,11 @@ export class InmobiliariaEgresosListComponent implements OnInit {
         dataFiltered = dataFiltered.filter((data: EgresosInmobiliaria) => new Date(data.fecha) >= res.start && new Date(data.fecha) <= res.end);
       }
 
+      if (res.monto){
+        dataFiltered = dataFiltered.filter((data: EgresosInmobiliaria) => data.monto == res.monto);
+
+      }
+
       this.dataSource = new MatTableDataSource(dataFiltered);
       this.dataSource.paginator = this.paginator.toArray()[0];
       this.totalSeleccion = 0;
@@ -206,7 +213,7 @@ export class InmobiliariaEgresosListComponent implements OnInit {
 
   // Inicio Filtros
   limpiarFiltros() {
-    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null, Propiedad: null, descripcionEgreso: null, })
+    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null, Propiedad: null, descripcionEgreso: null, monto:null})
     this.dataSource = new MatTableDataSource(this.dataEgresos);
     this.dataSource.paginator = this.paginator.toArray()[0];
     this.dataSource.sort = this.sort;
@@ -217,7 +224,12 @@ export class InmobiliariaEgresosListComponent implements OnInit {
   }
 
 
-
+  //Metodo exportar excel
+  exportAsXLSX(): void {
+    this.selectedRows = [];
+    this.selection.selected.forEach((x) => this.selectedRows.push(x));
+    this.inmobiliariaService.exportAsExcelFile(this.selectedRows, 'Ingresos-Hostal');
+  }
 
 
 }

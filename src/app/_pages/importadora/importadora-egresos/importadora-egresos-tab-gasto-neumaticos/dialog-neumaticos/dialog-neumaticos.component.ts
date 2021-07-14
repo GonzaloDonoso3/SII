@@ -96,8 +96,7 @@ export class DialogNeumaticosComponent implements OnInit {
 
   ngOnInit(): void {
     this.getConteiner();
-    this.aplicarfiltros(); 
-    // (document.getElementById('prueba') as HTMLInputElement).value = "Johnny Bravo"     
+    this.aplicarfiltros();     
   }
 
     calculation(e: any) {    

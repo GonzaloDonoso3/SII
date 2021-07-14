@@ -52,6 +52,7 @@ export class InmobiliariaIngresosListComponent implements OnInit {
     tipoIngreso: new FormControl(),
     descripcionIngreso: new FormControl(),
     Propiedad: new FormControl(),
+    monto: new FormControl(),    
   })
 
   sucursales: Sucursal[] = [];
@@ -60,6 +61,7 @@ export class InmobiliariaIngresosListComponent implements OnInit {
   estadosPagos: string[] = [];
   totalSeleccion = 0;
   cuentasRegistradas: any[] = [];
+  selectedRows: any []= [];
   constructor(
     private inmobiliariaService: InmobiliariaService,
     public dialog: MatDialog,
@@ -88,6 +90,7 @@ export class InmobiliariaIngresosListComponent implements OnInit {
         this.dataIngresos = ingresos.map(ingresos => {
           ingresos.sucursal = ingresos.Sucursal.razonSocial;
           ingresos.usuario = ingresos.Usuario.nombreUsuario;
+          ingresos.monto = ingresos.monto;
           return ingresos;
         });
         this.dataSource = new MatTableDataSource(this.dataIngresos);
@@ -156,6 +159,10 @@ export class InmobiliariaIngresosListComponent implements OnInit {
         dataFiltered = dataFiltered.filter((data: IngresosInmobiliaria) => new Date(data.fecha) >= res.start && new Date(data.fecha) <= res.end);
       }
 
+      if(res.monto){
+        dataFiltered = dataFiltered.filter((data: IngresosInmobiliaria) => data.monto == res.monto)
+      }
+
       this.dataSource = new MatTableDataSource(dataFiltered);
       this.dataSource.paginator = this.paginator.toArray()[0];
       this.totalSeleccion = 0;
@@ -169,11 +176,18 @@ export class InmobiliariaIngresosListComponent implements OnInit {
 
   // Filtros
   limpiarFiltros() {
-    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoIngreso: null, estadoPago: null, cliente: null, nDocumento: null })
+    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoIngreso: null, estadoPago: null, cliente: null, nDocumento: null, monto: null })
     this.dataSource = new MatTableDataSource(this.dataIngresos);
     this.dataSource.paginator = this.paginator.toArray()[0];
     this.dataSource.sort = this.sort;
     this.selection.clear()
     this.totalSeleccion = 0;
+  }
+
+  //Metodo exportar excel
+  exportAsXLSX(): void {
+    this.selectedRows = [];
+    this.selection.selected.forEach((x) => this.selectedRows.push(x));
+    this.inmobiliariaService.exportAsExcelFile(this.selectedRows, 'Ingresos-Inmobiliaria');
   }
 }

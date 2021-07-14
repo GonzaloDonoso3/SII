@@ -44,7 +44,13 @@ export class DialogNeumaticosEditComponent implements OnInit {
   totalVentaEdit : any;
   gananciaEdit : any;
   utilidadEdit : any;
-  text = 0; //initialised the text variable 
+  text = 0; 
+  text2: number = 0; 
+  text3: number = 0; 
+  text4: number = 0;
+  text5: number = 0;
+  text6: number = 0;
+  text7: number = 0; 
   
   
 
@@ -99,11 +105,30 @@ export class DialogNeumaticosEditComponent implements OnInit {
     this.getConteiner();
   }
    
-  onKeyUp(x: any) { // appending the updated value to the variable            
-    //this.f.valorUnitario.value = "";
-    this.unitarioEdit = localStorage.getItem("segurosEdit");
-    console.log("calculo", this.unitarioEdit)
-    this.text = x.target.value * this.unitarioEdit;
+  //Se actualizan los campos antes de guardar
+  onKeyUp(x: any, i: number) { // appending the updated value to the variable                
+    if(i == 1){           
+    this.text = x.target.value * this.cantidadEdit;
+    }
+    if(i == 2){           
+      this.text = x.target.value * parseInt(this.unitarioChinoEdit);
+      this.text4 = x.target.value * parseInt(this.unitarioEdit);
+      this.text3 = x.target.value * parseInt(this.costoNeumaticoEdit);
+      this.text5 =  (this.text3 - this.text4) - (((this.text3 / 1.19) * 0.19) -  parseInt(this.portuarioEdit));      
+      }
+    if(i == 3){                       
+      this.f.costoNeumatico.setValue(0);
+      this.text2 =((x.target.value / 100) * parseInt(this.unitarioEdit) ) + parseInt(this.unitarioEdit);      
+      this.text3 = this.text2 * this.cantidadEdit;
+      this.text5 =  (this.text3 - parseInt(this.totalEdit)) - (((this.text3 / 1.19) * 0.19) -  parseInt(this.portuarioEdit));      
+    }
+    if(i == 4){           
+      this.text4 = x.target.value * this.cantidadEdit;
+      }
+    if(i == 5){           
+      this.text3 = x.target.value * this.cantidadEdit;
+    }
+    
   }
 
   getConteiner(){    

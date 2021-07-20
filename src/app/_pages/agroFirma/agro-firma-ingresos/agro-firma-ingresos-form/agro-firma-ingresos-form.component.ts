@@ -1,19 +1,17 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DatePipe } from "@angular/common";
 import { Usuario } from '@app/_models/shared/usuario';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EgresoAgroFirma } from '@app/_models/agroFirma/egresoAgroFirma';
-import { Sucursal } from '@app/_models/shared/sucursal';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DialogRespaldosComponent } from '@app/_components/dialogs/dialog-respaldos/dialog-respaldos.component';
 import { AlertHelper } from '@app/_helpers/alert.helper';
 import { AgroFirmaService } from '@app/_pages/agroFirma/agro-firma.service';
 import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuentas-bancarias.service';
-import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
-import { Router } from '@angular/router';
-import { empty } from 'rxjs';
 import { IngresoAgroFirma } from '@app/_models/agroFirma/ingresoAgroFirma';
+import { Observable } from 'rxjs';
+import { cuentaRegistrada } from '@app/_models/agroFirma/cuentaRegistrada';
+
 
 @Component({
   selector: 'app-agro-firma-ingresos-form',
@@ -21,50 +19,31 @@ import { IngresoAgroFirma } from '@app/_models/agroFirma/ingresoAgroFirma';
   styleUrls: ['./agro-firma-ingresos-form.component.scss'],
   providers: [DatePipe]
 })
-export class AgroFirmaIngresosFormComponent implements OnInit {
+export class AgroFirmaIngresosFormComponent implements OnInit, OnChanges {
   @Output()
   formularioListo = new EventEmitter<string>();
 
+  // Input Decorator para obtener el id del proyecto seleccionado desde el componente padre
+  @Input() idProyecto!: Observable<number>
+
   usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '');
-  // ? set checkbox
-  
-  cuentasRegistradas: any[] = [];
-  idProyecto = null;
-  isAddMode!: boolean;
-  respaldoEgresos: any[] = [];
-  
-  //Variables que usan para los egresos de Prestamos bancarios y automotriz
-  mostrarDatos : boolean = true;
-  datoCuota = 'N/A';
-  montoTotal = '1000';  
+  cuentasRegistradas: cuentaRegistrada[]=[]
   proyecto : any = '0';
-  selected: any;
-  
   ingresosForm!: FormGroup;
   ingreso: IngresoAgroFirma = new IngresoAgroFirma();
-
   nameRespaldo: string[] = [];
 
-  sucursales: Sucursal[];
-  
   constructor(
     private fb: FormBuilder,
-    private router: Router,
     public dialog: MatDialog,
-    //private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    private sucursalService: SucursalSharedService,
     private cuentasService: CuentasBancariasService,
     private alert: AlertHelper,
-    private miDatePipe: DatePipe,
     private agroFirmaService: AgroFirmaService,
-  ) { 
-    this.sucursales = this.sucursalService.sucursalListValue;
-  }
+  ) { }
 
   ngOnInit(): void {
-
-    this.proyecto = localStorage.getItem("proyectoID");
+    
     // construccion del formulario,
     this.ingresosForm = this.fb.group({
       fecha: [null, Validators.required],
@@ -73,27 +52,27 @@ export class AgroFirmaIngresosFormComponent implements OnInit {
       descripcionIngreso: [null, Validators.required],
       tipoIngreso: [null, Validators.required],
       estadoPago: [null, Validators.required],
-      nAutorizacion: [null, Validators.required]
+      idCuentaProyecto: [null, Validators.required],
+      nAutorizacion: [null, Validators.required],
+      idProyecto: this.idProyecto,
+      idUsuario: this.usuario.id
     });
-
-    this.cuentasService.obtenerCuentas().subscribe(data => {
-      this.cuentasRegistradas = data;
-    }); 
-    
+    this.renderSelectBankAccounts()
   }
 
+  //Metodo para cargar nuevamente el select de las cuentas bancarias cuando se selecciona otro proyecto
+  ngOnChanges(changes: SimpleChanges) {
+    this.renderSelectBankAccounts()
+  }
   
-
-
-
   onSubmit() {
+    this.ingresosForm.patchValue({idProyecto: this.idProyecto})
     switch (this.ingresosForm.status) {
       case 'VALID':
         const dialogRef = this.dialog.open(DialogRespaldosComponent, {
           data: { url: 'ingresoAgrofirma/upload' }
         });
-
-
+        
         dialogRef.afterClosed().subscribe(result => {
           this.ingreso = this.ingresosForm.getRawValue();
           this.agroFirmaService.registrarIngreso(this.ingreso)
@@ -121,10 +100,12 @@ export class AgroFirmaIngresosFormComponent implements OnInit {
       default:
         break;
     }
+  }
 
-
-
-
+  renderSelectBankAccounts = () => {
+    this.cuentasService.obtenerCuentasPorProyecto(Number(this.idProyecto)).subscribe(data => {
+      this.cuentasRegistradas = data;
+    })
   }
 
 }

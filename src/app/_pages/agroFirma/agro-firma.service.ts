@@ -117,4 +117,12 @@ export class AgroFirmaService {
   registrarIngreso(ingreso: IngresoAgroFirma): any {
     return this.http.post(`${environment.apiUrl}/ingresoAgrofirma/registrarIngreso`, ingreso);
   }
+
+  obtenerIngresos(): any {
+    return this.http.get(`${environment.apiUrl}/ingresoAgrofirma/obtenerIngresos`);
+  }
+
+  obtenerIngresosPorProyecto(idProyecto: number): any {
+    return this.http.get(`${environment.apiUrl}/ingresoAgrofirma/obtenerIngresosByProyecto/${idProyecto}`)
+  }
 }

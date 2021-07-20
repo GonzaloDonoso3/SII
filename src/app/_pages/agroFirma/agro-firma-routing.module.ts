@@ -5,11 +5,17 @@ import { AgroFirmaHomeComponent } from './agro-firma-home/agro-firma-home.compon
 import { AgroFirmaIngresosComponent } from './agro-firma-ingresos/agro-firma-ingresos.component';
 import { AgroFirmaEgresosFormComponent } from './agro-firma-egresos/agro-firma-egresos-form/agro-firma-egresos-form.component';
 import { AgroFirmaEgresosListComponent } from './agro-firma-egresos/agro-firma-egresos-list/agro-firma-egresos-list.component';
+import { AgroFirmaIngresosFormComponent } from './agro-firma-ingresos/agro-firma-ingresos-form/agro-firma-ingresos-form.component';
+import { AgroFirmaIngresosListComponent } from './agro-firma-ingresos/agro-firma-ingresos-list/agro-firma-ingresos-list.component';
 
 
 const routes: Routes = [
   { path: '', component: AgroFirmaHomeComponent },
-  { path: 'ingresos', component: AgroFirmaIngresosComponent },
+  { path: 'ingresos', component: AgroFirmaIngresosComponent,
+  children: [
+    { path: 'add/:idProyecto', component: AgroFirmaIngresosFormComponent },
+    { path: 'list/:idProyecto', component: AgroFirmaIngresosListComponent }
+  ] },
   { path: 'egresos', component: AgroFirmaEgresosComponent,
   children: [
     {
@@ -17,9 +23,9 @@ const routes: Routes = [
       component: AgroFirmaEgresosComponent,
       children: [
         { path: 'add/:idProyecto', component: AgroFirmaEgresosFormComponent },
-        { path: 'list/:idProyecto', component: AgroFirmaEgresosListComponent },
+        { path: 'list/:idProyecto', component: AgroFirmaEgresosListComponent }
       ],
-    },
+    }
   ],
   },
 ];

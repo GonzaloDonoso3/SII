@@ -14,6 +14,7 @@ import { AuthSharedService } from '@app/_pages/shared/shared-services/auth-share
 export class NavComponent {
   menuItems: MenusItems[];
   subMenuItems: MenusItems[];
+  subMenuItemsAgrofirma: MenusItems[];
   menuItemsAdmin: MenusItems[];
   subMenuItemsAdmin: MenusItems[];
 
@@ -37,13 +38,16 @@ export class NavComponent {
     ];
     this.subMenuItems = [
       { name: 'INGRESOS', icon: 'align_horizontal_right', url: 'ingresos' },
-      {
-        name: 'EGRESOS', icon: 'align_horizontal_right', url: 'egresos'
-      },
+      { name: 'EGRESOS', icon: 'align_horizontal_right', url: 'egresos' },
       /*    { name: 'ACTIVOS', icon: 'align_horizontal_right', url: '' },
          { name: 'PASIVOS', icon: 'align_horizontal_right', url: '' },
          { name: 'CONSOLIDADOS', icon: 'align_horizontal_right', url: '' } */
     ];
+    this.subMenuItemsAgrofirma = [
+      { name: 'INGRESOS', icon: 'align_horizontal_right', url: 'ingresos' },
+      {name: 'EGRESOS', icon: 'align_horizontal_right', url: 'egresos' },
+      {name: 'PROYECTOS', icon: 'align_horizontal_right', url: 'proyectos'}
+    ]
 
 
     this.menuItemsAdmin = [

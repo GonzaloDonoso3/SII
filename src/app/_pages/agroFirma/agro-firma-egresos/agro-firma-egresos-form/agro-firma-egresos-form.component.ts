@@ -89,7 +89,8 @@ export class AgroFirmaEgresosFormComponent implements OnInit {
     this.tiposEgresos = this.agroFirmaService.tiposEgresosListValue;
     this.cuentasService.obtenerCuentas().subscribe(data => {
       this.cuentasRegistradas = data;
-    }); 
+    });
+    
     
   }
 

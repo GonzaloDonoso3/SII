@@ -5,6 +5,7 @@ import { ProyectoAgrofirma } from '@app/_models/agroFirma/proyectoAgroFirma';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalService } from '@app/_components/_modal';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-agro-firma-ingresos',
@@ -13,6 +14,7 @@ import { Router } from '@angular/router';
 })
 export class AgroFirmaIngresosComponent implements OnInit {
 
+  idProyectoPadre!: Observable<number>
   dataSource: MatTableDataSource<ProyectoAgrofirma> = new MatTableDataSource();
   proyectos: ProyectoAgrofirma[] = [];
   idProyecto: null;
@@ -26,14 +28,15 @@ export class AgroFirmaIngresosComponent implements OnInit {
 
   ngOnInit(): void {
     this.agroFirmaService.GetAllProyectos()
-    .pipe()
     .subscribe((proyectos: any) => {
       this.proyectos = proyectos;
     });
   }
 
   formulario(idModal: any, idProyecto: any): void {
+    this.idProyectoPadre = idProyecto;
     this.modalService.open(idModal);
+
     this.router.navigate(['agrofirma/ingresos/add', idProyecto]);
     localStorage.setItem("proyectoID", idProyecto);
   }

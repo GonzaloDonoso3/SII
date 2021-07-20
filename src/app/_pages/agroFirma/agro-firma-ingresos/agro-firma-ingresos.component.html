@@ -28,7 +28,9 @@
             <h4 class="card-title" style="font-size: 25px;">{{ p.nombre }}</h4>
             <p class="card-text" style="font-size: 25px;">{{ p.ubicacion }}</p>            
           </div>
+
           <div class="card-footer">
+
             <div class="d-flex bd-highlight mb-3">
               <div class="mr-auto p-2 bd-highlight">                                  
                 <button
@@ -36,25 +38,36 @@
                   (click)="formulario('apendice', p.id)"                                   
                   data-bs-toggle="tooltip"
                   data-bs-placement="top"
-                  title="Registrar y ver Egresos"
-                  style="margin-top: 20px;">
+                  title="Registrar y ver Ingresos"
+                  style="margin-top: 20px; float: left; margin-left: 30%;">
                   <i class="fas fa-file-invoice-dollar"></i>
                   <mat-icon>description</mat-icon>                   
                 </button>
               </div>
-              <div class="p-2 bd-highlight">                                
+
+              <div class="mr-auto p-2 bd-highlight">                                  
+                <button
+                  class="btn btn-secondary align-left" 
+                                                   
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  title="Crear Proyecto"
+                  style="margin-top: 20px; float: right; margin-right: 30%; ">
+                  <i class="fas fa-file-invoice-dollar"></i>
+                  <mat-icon>account_balance</mat-icon>                   
+                </button>
               </div>
             </div>
-    
-            <div class="p-2 bd-highlight"></div>
+           
           </div>
+
         </div>
     </div>
 </div>
 
 <jw-modal id="apendice"> 
-    <app-agro-firma-ingresos-form></app-agro-firma-ingresos-form>
-    <app-agro-firma-egresos-list></app-agro-firma-egresos-list>
+  <app-agro-firma-ingresos-form [idProyecto]="idProyectoPadre"></app-agro-firma-ingresos-form>
+  <app-agro-firma-ingresos-list [idProyecto]="idProyectoPadre"></app-agro-firma-ingresos-list>
       <div class="card text-left">
         <!-- <div class="card-body">        
           <router-outlet></router-outlet>
@@ -68,7 +81,7 @@
           </button>
         </div>
       </div>
-    </jw-modal>
+</jw-modal>
     
   <br>
   <br>

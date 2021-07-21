@@ -32,6 +32,7 @@ export class AgroFirmaIngresosFormComponent implements OnInit, OnChanges {
   ingresosForm!: FormGroup;
   ingreso: IngresoAgroFirma = new IngresoAgroFirma();
   nameRespaldo: string[] = [];
+  submitted: boolean = false
 
   constructor(
     private fb: FormBuilder,
@@ -54,11 +55,12 @@ export class AgroFirmaIngresosFormComponent implements OnInit, OnChanges {
       estadoPago: [null, Validators.required],
       idCuentaProyecto: [null, Validators.required],
       nAutorizacion: [null, Validators.required],
-      idProyecto: this.idProyecto,
-      idUsuario: this.usuario.id
+      idProyecto: null,
+      idUsuario: null
     });
     this.renderSelectBankAccounts()
   }
+  
 
   //Metodo para cargar nuevamente el select de las cuentas bancarias cuando se selecciona otro proyecto
   ngOnChanges(changes: SimpleChanges) {
@@ -66,7 +68,7 @@ export class AgroFirmaIngresosFormComponent implements OnInit, OnChanges {
   }
   
   onSubmit() {
-    this.ingresosForm.patchValue({idProyecto: this.idProyecto})
+    this.ingresosForm.patchValue({idProyecto: this.idProyecto, idUsuario: this.usuario.id})
     switch (this.ingresosForm.status) {
       case 'VALID':
         const dialogRef = this.dialog.open(DialogRespaldosComponent, {
@@ -80,7 +82,13 @@ export class AgroFirmaIngresosFormComponent implements OnInit, OnChanges {
           .subscribe((data: any) => {
             this.alert.createAlert("Registro Creado con exito!");                                      
             this.formularioListo.emit('true');
+            
             this.ingresosForm.reset();
+            Object.keys(this.ingresosForm.controls).forEach(key => {
+              this.ingresosForm.get(key)?.clearValidators()
+              this.ingresosForm.get(key)?.updateValueAndValidity()
+            })
+            this.renderSelectBankAccounts()
           },
           (error: any) => {
             this.snackBar.open('Tenemos Problemas para realizar el registro, porfavor contactar al equipo de desarrollo', 'cerrar', {

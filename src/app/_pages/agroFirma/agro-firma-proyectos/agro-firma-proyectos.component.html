@@ -1,0 +1,70 @@
+<div class="container">      
+    <mat-grid-list cols = "3" rowHeight = "50px">
+      <mat-grid-tile [colspan] = "3" [rowspan] = "1">
+        <h1>Proyectos AgroFirma</h1> 
+      </mat-grid-tile>
+      <mat-grid-tile [colspan] = "3" [rowspan] = "1">
+        <button mat-raised-button color="primary" (click)="openCreateProject()">Registrar Proyecto</button>                           
+      </mat-grid-tile>
+    </mat-grid-list>
+        
+   <div class="row" id="projectBox">        
+        <div class="col" *ngFor="let p of proyectos" (click)="openProject(p)">
+          <img style="width: 70%" class="card-img-top" src="assets/images/agrobanner.png" alt="Card image cap" >
+          <div class="card-body">                             
+            <h2 class="card-title">{{ p.nombre }}</h2>
+            <h3 class="card-text">{{ p.ubicacion }}</h3>            
+          </div>
+          <div class="card-footer">
+            <!-- <div class="d-flex bd-highlight mb-3 projectButtonContainer">
+              <div class="projectButton">                                  
+                <button
+                  class="btn btn-secondary align-left" 
+                                              
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  title="Registrar y ver Ingresos"
+                  style="margin-top: 20px; float: left; margin-left: 30%;">
+                  <i class="fas fa-file-invoice-dollar"></i>
+                  <mat-icon>description</mat-icon>                   
+                </button>
+              </div>
+
+              <div class="projectButton">                                  
+                <button
+                  class="btn btn-secondary align-left" 
+                                                   
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  title="Crear Proyecto"
+                  style="margin-top: 20px; float: right; margin-right: 30%; ">
+                  <i class="fas fa-file-invoice-dollar"></i>
+                  <mat-icon>account_balance</mat-icon>                   
+                </button>
+              </div>
+            </div> -->
+          </div>
+        </div>
+    </div>
+</div>
+
+<jw-modal id="apendice"> 
+    <app-agro-firma-proyectos-form [project]="project" [flag]="flag"></app-agro-firma-proyectos-form>
+      <div class="card text-left">
+        <!-- <div class="card-body">        
+          <router-outlet></router-outlet>
+        </div> -->
+        <div class="card-footer">        
+          <button
+            (click)="closeModal()"
+            id="boton"
+            type="button"
+            class="btn btn-danger" color="primary">
+            Cerrar
+          </button>
+        </div>
+      </div>
+</jw-modal>
+
+  <br>
+  <br>

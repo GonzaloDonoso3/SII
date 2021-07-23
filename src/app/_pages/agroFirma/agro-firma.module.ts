@@ -13,6 +13,8 @@ import { AgroFirmaEgresosListComponent } from './agro-firma-egresos/agro-firma-e
 import { ModalModule } from '@app/_components/_modal';
 import { AgroFirmaIngresosFormComponent } from './agro-firma-ingresos/agro-firma-ingresos-form/agro-firma-ingresos-form.component';
 import { AgroFirmaIngresosListComponent } from './agro-firma-ingresos/agro-firma-ingresos-list/agro-firma-ingresos-list.component';
+import { AgroFirmaProyectosComponent } from './agro-firma-proyectos/agro-firma-proyectos.component';
+import { AgroFirmaProyectosFormComponent } from './agro-firma-proyectos/agro-firma-proyectos-form/agro-firma-proyectos-form.component';
 
 
 
@@ -26,7 +28,9 @@ import { AgroFirmaIngresosListComponent } from './agro-firma-ingresos/agro-firma
     AgroFirmaEgresosFormComponent,
     AgroFirmaEgresosListComponent,
     AgroFirmaIngresosFormComponent,
-    AgroFirmaIngresosListComponent],
+    AgroFirmaIngresosListComponent,
+    AgroFirmaProyectosComponent,
+    AgroFirmaProyectosFormComponent],
   imports: [
     HttpClientModule,
     CommonModule,

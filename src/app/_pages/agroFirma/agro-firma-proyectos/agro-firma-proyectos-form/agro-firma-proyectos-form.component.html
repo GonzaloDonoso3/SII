@@ -1,0 +1,111 @@
+<form [formGroup]="projectForm" novalidate (ngSubmit)="onSubmit()">
+    <mat-card class="shipping-card mat-elevation-z10">
+      <mat-card-title class="shipping-card">
+        <h1> Proyecto AgroFirma </h1>
+      </mat-card-title>
+      <mat-grid-list cols="2" rowHeight="100px">
+  
+        <!-- Nombre Proyecto -->
+        <mat-grid-tile>
+            <div class="col">
+              <mat-form-field class="full-width" style="width:160%">
+                <input matInput placeholder="Nombre del Proyecto" formControlName="nombre" type="text" />
+                <mat-error *ngIf="projectForm.controls['nombre'].hasError('required')">
+                  Nombre de Proyecto <strong>requerido</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+        </mat-grid-tile>
+
+        <!-- Ubicación -->
+        <mat-grid-tile>
+            <div class="col">
+              <mat-form-field class="full-width" style="width:160%">
+                <input matInput placeholder="Ubicación" formControlName="ubicacion" type="text" />
+                <mat-error *ngIf="projectForm.controls['ubicacion'].hasError('required')">
+                  Ubicación <strong>requerido</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+        </mat-grid-tile>
+
+        <!-- Localización GPS -->
+        <mat-grid-tile>
+            <div class="col">
+              <mat-form-field class="full-width" style="width:160%">
+                <input matInput placeholder="geoLocalizacion" formControlName="geoLocalizacion" type="number" />
+                <mat-error *ngIf="projectForm.controls['geoLocalizacion'].hasError('required')">
+                  geoLocalización <strong>requerido</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+        <!-- capital inicial -->
+        <mat-grid-tile>
+            <div class="col">
+              <mat-form-field class="full-width" style="width:160%">
+                <input matInput placeholder="Capital Inicial" formControlName="capitalInicial" type="text" />
+                <mat-error *ngIf="projectForm.controls['capitalInicial'].hasError('required')">
+                  Monto <strong>requerido</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+        <!-- Total inversion -->
+        <mat-grid-tile>
+            <div class="col">
+              <mat-form-field class="full-width" style="width:160%">
+                <input matInput placeholder="Total Inversión" formControlName="totalInversion" type="number" />
+                <mat-error *ngIf="projectForm.controls['totalInversion'].hasError('required')">
+                  Total inversión <strong>requerido</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+        </mat-grid-tile>
+  
+        <!-- Fecha de inicio -->
+        <mat-grid-tile>
+            <div class="col">
+              <mat-form-field class="full-width">
+                <mat-label>Seleccionar fecha</mat-label>
+                <input matInput formControlName="fechaInicio" [matDatepicker]="picker" />
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="projectForm.controls['fechaInicio'].hasError('required')">
+                  Fecha Inicio <strong>requerido</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+        <!-- select Estado del proyecto-->
+        <mat-grid-tile>
+          <div class="col">
+            <mat-form-field class="full-width" style="width:160%">
+              <mat-select placeholder="Estado" formControlName="estado">
+                <mat-option value="Activo">
+                  Activo
+                </mat-option>
+                <mat-option value="Inactivo">
+                  Inactivo
+                </mat-option>
+                <mat-option value="Terminado">
+                    Terminado
+                  </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+  
+    </mat-grid-list>
+      
+        <button mat-raised-button color="primary" type="submit">
+          <mat-icon id="boton">send</mat-icon> Crear Proyecto
+        </button>
+      
+  
+  
+    </mat-card>
+  </form>

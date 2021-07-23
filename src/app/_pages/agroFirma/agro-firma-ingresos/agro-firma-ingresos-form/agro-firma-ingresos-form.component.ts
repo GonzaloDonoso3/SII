@@ -77,6 +77,7 @@ export class AgroFirmaIngresosFormComponent implements OnInit, OnChanges {
         
         dialogRef.afterClosed().subscribe(result => {
           this.ingreso = this.ingresosForm.getRawValue();
+          console.log(this.ingreso.fecha)
           this.agroFirmaService.registrarIngreso(this.ingreso)
           .pipe()
           .subscribe((data: any) => {

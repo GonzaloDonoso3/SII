@@ -7,6 +7,7 @@ import { AgroFirmaEgresosFormComponent } from './agro-firma-egresos/agro-firma-e
 import { AgroFirmaEgresosListComponent } from './agro-firma-egresos/agro-firma-egresos-list/agro-firma-egresos-list.component';
 import { AgroFirmaIngresosFormComponent } from './agro-firma-ingresos/agro-firma-ingresos-form/agro-firma-ingresos-form.component';
 import { AgroFirmaIngresosListComponent } from './agro-firma-ingresos/agro-firma-ingresos-list/agro-firma-ingresos-list.component';
+import { AgroFirmaProyectosComponent } from './agro-firma-proyectos/agro-firma-proyectos.component';
 
 
 const routes: Routes = [
@@ -28,6 +29,7 @@ const routes: Routes = [
     }
   ],
   },
+  { path: 'proyectos', component: AgroFirmaProyectosComponent }
 ];
 
 @NgModule({

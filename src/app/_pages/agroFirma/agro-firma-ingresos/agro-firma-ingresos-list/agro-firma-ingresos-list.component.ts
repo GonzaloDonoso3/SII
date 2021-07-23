@@ -64,12 +64,7 @@ export class AgroFirmaIngresosListComponent implements OnInit {
   formFilter = new FormGroup({
     start: new FormControl(),
     end: new FormControl(),
-    idSucursal: new FormControl(),
-    idProyecto: new FormControl(),
-    proyecto: new FormControl(),
-    descripcionIngreso: new FormControl(),
-    tipoEgreso: new FormControl(),
-    numeroCuota: new FormControl(),
+    fecha: new FormControl()
   })
 
 
@@ -92,14 +87,17 @@ export class AgroFirmaIngresosListComponent implements OnInit {
     this.tipoIngreso = [{nombre: "EFECTIVO"}, {nombre: "CHEQUE"}, {nombre: "TRANSFERENCIA"}]       
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.aplicarfiltros()
+  }
  
     ngOnChanges(changes: SimpleChanges) {
       this.actualizarTabla()
     }
 
     actualizarTabla(){                                                   
-      this.agroFirmaService.obtenerIngresosPorProyecto(Number(this.idProyecto)).subscribe((data: IngresoAgroFirma[]) => {     
+      this.agroFirmaService.obtenerIngresosPorProyecto(Number(this.idProyecto)).subscribe((data: IngresoAgroFirma[]) => {
+        this.dataIngresos = data;
         this.dataSource = new MatTableDataSource(data);        
         this.dataSource.paginator = this.paginator.toArray()[0];
         this.dataSource.sort = this.sort;
@@ -120,28 +118,19 @@ export class AgroFirmaIngresosListComponent implements OnInit {
     this.agroFirmaService.exportAsExcelFile(this.selectedRows, 'Egresos-Abogados');
     }
 
-  
-    revelarTotal() {    
-      this.totalSeleccion = 0;
-      console.log(this.selection.selected.length);
-      this.selection.selected.forEach(data => {
-        this.totalSeleccion += data.monto;
-      });
-    }
-  
-  
     aplicarfiltros() {
-    /*   this.formFilter.valueChanges.subscribe(res => {
+  
+       this.formFilter.valueChanges.subscribe(res => {
 
-        let dataFiltered = this.dataEgresos;      
+        let dataFiltered = this.dataIngresos;      
 
-        if (res.idSucursal) {
-          dataFiltered = dataFiltered.filter((data: IngresoAgroFirma) => data.sucursal == res.idSucursal);
-        }
+        // if (res.idSucursal) {
+        //   dataFiltered = dataFiltered.filter((data: IngresoAgroFirma) => data.sucursal == res.idSucursal);
+        // }
 
-        if (res.tipoEgreso) {
-          dataFiltered = dataFiltered.filter((data: IngresoAgroFirma) => data.tipoEgreso == res.tipoEgreso);
-        }
+        // if (res.tipoEgreso) {
+        //   dataFiltered = dataFiltered.filter((data: IngresoAgroFirma) => data.tipoEgreso == res.tipoEgreso);
+        // }
 
         if (res.start && res.end) {
           dataFiltered = dataFiltered.filter((data: IngresoAgroFirma) => new Date(data.fecha) >= res.start && new Date(data.fecha) <= res.end);        
@@ -151,7 +140,7 @@ export class AgroFirmaIngresosListComponent implements OnInit {
         this.dataSource.paginator = this.paginator.toArray()[0];
         this.dataSource.sort = this.sort;
         this.selection.clear();
-      }) */
+      }) 
     }
   
   

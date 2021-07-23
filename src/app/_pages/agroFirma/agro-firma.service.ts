@@ -96,10 +96,6 @@ export class AgroFirmaService {
     );
   }
 
-  GetAllProyectos(): any {                  
-    return this.http.get<[]>(`${environment.apiUrl}/proyectoAgrofirma/obtenerProyectos`);    
-  }
-
   getById(id: string): any {    
     return this.http.get<any>(
       `${environment.apiUrl}/egreso${this.proyecto}/${id}`
@@ -125,4 +121,15 @@ export class AgroFirmaService {
   obtenerIngresosPorProyecto(idProyecto: number): any {
     return this.http.get(`${environment.apiUrl}/ingresoAgrofirma/obtenerIngresosByProyecto/${idProyecto}`)
   }
+
+  //----------Metodos Proyectos--------------//
+
+  GetAllProyectos(): any {                  
+    return this.http.get<[]>(`${environment.apiUrl}/proyectoAgrofirma/obtenerProyectos`);    
+  }
+
+  createProject(project: any): any {
+    return this.http.post<[]>(`${environment.apiUrl}/proyectoAgrofirma/registrarProyecto`, project)
+  }
+
 }

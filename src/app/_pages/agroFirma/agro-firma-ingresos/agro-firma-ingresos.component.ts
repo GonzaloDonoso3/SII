@@ -41,6 +41,11 @@ export class AgroFirmaIngresosComponent implements OnInit {
     localStorage.setItem("proyectoID", idProyecto);
   }
 
+  openCreateBankAccountModal(modalId: any, projectId: any) {
+    this.idProyectoPadre = projectId
+    this.modalService.open(modalId)
+  }
+
   closeModal(id: any): void{
     this.modalService.close(id);
     this.router.navigate(['agrofirma/ingresos']);

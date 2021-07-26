@@ -12,7 +12,7 @@ import { AgroFirmaService } from '../agro-firma.service';
 export class AgroFirmaProyectosComponent implements OnInit {
 
   proyectos: ProyectoAgrofirma[] = []
-  idProyecto!: Observable<number>
+  projectId!: Observable<number>
   project!: ProyectoAgrofirma
   flag: boolean = false
   
@@ -36,7 +36,7 @@ export class AgroFirmaProyectosComponent implements OnInit {
 
   openProject(project: any) {
     this.project = project
-    this.idProyecto = project.id
+    this.projectId = project.id
     this.modalService.open('apendice')
   }
 

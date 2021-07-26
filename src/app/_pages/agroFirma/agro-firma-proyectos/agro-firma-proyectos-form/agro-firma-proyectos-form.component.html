@@ -1,4 +1,4 @@
-<form [formGroup]="projectForm" novalidate (ngSubmit)="onSubmit()">
+<form [formGroup]="projectForm" (ngSubmit)="onSubmitProject()">
     <mat-card class="shipping-card mat-elevation-z10">
       <mat-card-title class="shipping-card">
         <h1> Proyecto AgroFirma </h1>
@@ -39,7 +39,7 @@
                 </mat-error>
               </mat-form-field>
             </div>
-          </mat-grid-tile>
+        </mat-grid-tile>
 
         <!-- capital inicial -->
         <mat-grid-tile>
@@ -99,13 +99,16 @@
           </div>
         </mat-grid-tile>
   
-    </mat-grid-list>
+      </mat-grid-list>
+      <button *ngIf="flagForm && !createProjectFlag" mat-raised-button color="primary" type="button" (click)="enableForm()" >
+          <mat-icon id="boton">description</mat-icon> Editar Proyecto
+      </button>
+      <button *ngIf="!flagForm && !createProjectFlag" mat-raised-button color="primary" type="submit" >
+        <mat-icon id="boton">send</mat-icon> Actualizar Proyecto
+      </button>
+      <button *ngIf="createProjectFlag" mat-raised-button color="primary" type="submit" >
+        <mat-icon id="boton">send</mat-icon> Crear Proyecto
+      </button>
       
-        <button mat-raised-button color="primary" type="submit">
-          <mat-icon id="boton">send</mat-icon> Crear Proyecto
-        </button>
-      
-  
-  
     </mat-card>
   </form>

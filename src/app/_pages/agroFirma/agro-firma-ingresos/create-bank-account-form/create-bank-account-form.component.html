@@ -1,0 +1,90 @@
+<form [formGroup]="bankAccountForm" novalidate (ngSubmit)="onSubmit()">
+    <mat-card class="mat-elevation-z2">
+      <mat-card-title class="shipping-card">
+        <h1> Crear cuenta bancaria </h1>
+      </mat-card-title>
+      <mat-grid-list cols="3" rowHeight="100px">
+  
+       <!-- select tipoIngreso -->
+        <mat-grid-tile>
+          <div class="col">
+            <mat-form-field class="full-width" style="width:160%">
+              <mat-select placeholder="Seleccione Banco" formControlName="idBanco">
+                <mat-option value="Transferencia">
+                  Transferencia
+                </mat-option>
+                <mat-option value="Cheque">
+                  Cheque
+                </mat-option>
+                <mat-option value="Efectivo">
+                  Efectivo
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+  
+        <mat-grid-tile>
+          <!-- Numero de cuenta bancaria -->
+          <div class="col">
+            <mat-form-field class="full-width" style="width:160%">
+              <input matInput placeholder="N° Cuenta bancaria" formControlName="numeroCuenta" type="number" />
+              <mat-error *ngIf="bankAccountForm.controls['numeroCuenta'].hasError('required')">
+                Monto <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+    
+        <!-- select Tipo de cuenta -->
+        <mat-grid-tile>
+            <div class="col">
+              <mat-form-field class="full-width" style="width:160%">
+                <mat-select placeholder="Tipo de cuenta" formControlName="tipoCuenta">
+                  <mat-option value="cuenta vista">
+                    Cuenta Vista
+                  </mat-option>
+                  <mat-option value="cuenta corriente">
+                    Cuenta Corriente
+                  </mat-option>
+                  <mat-option value="cuenta ahorro">
+                    Cuenta Ahorro
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+        </mat-grid-tile>
+        
+  
+      </mat-grid-list>
+      <mat-card-actions>
+          <button mat-raised-button color="primary" type="submit">
+            <mat-icon id="boton">send</mat-icon> Enviar
+          </button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+
+  <table class="mat-elevation-z8">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+  
+    <!-- Position Column -->
+    <ng-container >
+      <th> No. </th>
+      <td  > hghkjghjkhkjhkjh </td>
+    </ng-container>
+  
+    <!-- Name Column -->
+    <ng-container >
+      <th > Name </th>
+      <td > kjhkjhkjhkjhkjhkjh </td>
+    </ng-container>
+  
+    
+  
+    <tr ></tr>
+    <tr  ></tr>
+  </table>
+  

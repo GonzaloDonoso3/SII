@@ -48,7 +48,7 @@
               <div class="mr-auto p-2 bd-highlight">                                  
                 <button
                   class="btn btn-secondary align-left" 
-                                                   
+                  (click)="openCreateBankAccountModal('createBankAccountModal', p.id)"                          
                   data-bs-toggle="tooltip"
                   data-bs-placement="top"
                   title="Crear Proyecto"
@@ -81,6 +81,20 @@
           </button>
         </div>
       </div>
+</jw-modal>
+
+<jw-modal id="createBankAccountModal">
+  <app-create-bank-account-form></app-create-bank-account-form>
+  <div class="card text-left">
+    <div class="card-footer">        
+        <button
+          id="boton" (click)="closeModal('createBankAccountModal')"
+          type="button"
+          class="btn btn-danger" color="primary">
+          Cerrar
+        </button>
+    </div>
+  </div>
 </jw-modal>
     
   <br>

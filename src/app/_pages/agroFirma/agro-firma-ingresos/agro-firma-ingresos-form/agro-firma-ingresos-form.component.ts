@@ -33,7 +33,7 @@ export class AgroFirmaIngresosFormComponent implements OnInit, OnChanges {
   ingreso: IngresoAgroFirma = new IngresoAgroFirma();
   nameRespaldo: string[] = [];
   submitted: boolean = false
-
+  
   constructor(
     private fb: FormBuilder,
     public dialog: MatDialog,

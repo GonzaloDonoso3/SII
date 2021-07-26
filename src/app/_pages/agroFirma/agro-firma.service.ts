@@ -132,4 +132,8 @@ export class AgroFirmaService {
     return this.http.post<[]>(`${environment.apiUrl}/proyectoAgrofirma/registrarProyecto`, project)
   }
 
+  updateProject(projectId: any, project: any): any {
+    return this.http.put<[]>(`${environment.apiUrl}/proyectoAgrofirma/actualizarProyecto/${projectId}`, project)
+  }
+
 }

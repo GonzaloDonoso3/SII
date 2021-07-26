@@ -15,12 +15,23 @@ import { AgroFirmaService } from '../../agro-firma.service';
 })
 export class AgroFirmaProyectosFormComponent implements OnInit {
 
-  @Input() idProyecto!: Observable<number>
+  @Input() projectId!: Observable<number>
   @Input() project: ProyectoAgrofirma = new ProyectoAgrofirma()
   @Input() flag!: boolean
+  flagForm: boolean = true
+  createProjectFlag: boolean = false
+  // projectForm!: FormGroup
+  usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '');
 
-  projectForm!: FormGroup
-  usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '')
+  projectForm = this.fb.group({
+    nombre: [null, Validators.required],
+    ubicacion: [null, Validators.required],
+    geoLocalizacion: [null, Validators.required],
+    capitalInicial: [null, Validators.required],
+    totalInversion: [null, Validators.required],
+    fechaInicio: [null, Validators.required],
+    estado: [null, Validators.required]
+  });
 
   constructor(
     private fb: FormBuilder,
@@ -32,16 +43,8 @@ export class AgroFirmaProyectosFormComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.projectForm = this.fb.group({
-      nombre: [null, Validators.required],
-      ubicacion: [null, Validators.required],
-      geoLocalizacion: [null, Validators.required],
-      capitalInicial: [null, Validators.required],
-      totalInversion: [null, Validators.required],
-      fechaInicio: [null, Validators.required],
-      estado: [null, Validators.required]
-    })
-
+    
+    
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -56,11 +59,17 @@ export class AgroFirmaProyectosFormComponent implements OnInit {
           fechaInicio: this.project.fechaInicio,
           estado: this.project.estado
         })
+        Object.keys(this.projectForm.controls).forEach(key => {
+          this.projectForm.get(key)?.disable()
+        })
+        this.flagForm = true
+        this.createProjectFlag = false
       }
     }
     if(changes.flag !== undefined) {
       if(!changes.flag.firstChange) {
         this.clearForm()
+        this.createProjectFlag = true
       }
     }
 
@@ -68,25 +77,39 @@ export class AgroFirmaProyectosFormComponent implements OnInit {
   }
 
   clearForm() {
+
     if(this.projectForm !== undefined) {
       this.projectForm.reset()
       Object.keys(this.projectForm.controls).forEach(key => {
-        this.projectForm.get(key)?.clearValidators()
+        this.projectForm.get(key)?.enable()
         this.projectForm.get(key)?.updateValueAndValidity()
       })
     }
+
   }
 
-  onSubmit() {
+  enableForm() {
+    Object.keys(this.projectForm.controls).forEach(key => {
+      this.projectForm.get(key)?.enable()
+    })
+    this.flagForm = false
+    this.createProjectFlag = false
+  }
+  
+  onSubmitProject() {
+    this.createProjectFlag ? this.createProject() : this.updateProject()
+  }
 
-    this.projectForm.patchValue({idUsuario: this.usuario.id})
-    switch (this.projectForm.status) {
+  updateProject() {
+
+    this.projectForm.patchValue( { idUsuario: this.usuario.id } )
+    switch ( this.projectForm.status ) {
       case 'VALID':
         this.project = this.projectForm.getRawValue()
-        this.agroFirmaService.createProject(this.project)
+        this.agroFirmaService.updateProject(this.projectId, this.project)
         .pipe()
         .subscribe((data: any) => {
-          this.alert.createAlert("¡Proyecto registrado!")
+          this.alert.createAlert("¡Proyecto actualizado!")
           this.projectForm.reset()
           Object.keys(this.projectForm.controls).forEach(key => {
             this.projectForm.get(key)?.clearValidators()
@@ -102,8 +125,40 @@ export class AgroFirmaProyectosFormComponent implements OnInit {
         break
       default:
         break
-      }
-        
+
+    }
+
+  }
+
+  createProject() {
+    
+    if( this.createProjectFlag ) {
+    this.projectForm.patchValue({idUsuario: this.usuario.id})
+      switch (this.projectForm.status) {
+        case 'VALID':
+          this.project = this.projectForm.getRawValue()
+          this.agroFirmaService.createProject(this.project)
+          .pipe()
+          .subscribe((data: any) => {
+            this.alert.createAlert("¡Proyecto registrado!")
+            this.projectForm.reset()
+            Object.keys(this.projectForm.controls).forEach(key => {
+              this.projectForm.get(key)?.clearValidators()
+              this.projectForm.get(key)?.updateValueAndValidity()
+            })
+          })
+          break
+        case 'INVALID':
+          this.snackBar.open('Debe completar el Formulario', 'Cerrar', {
+            duration: 2000,
+            verticalPosition: 'top'
+          })
+          break
+        default:
+          break
+        }
+    }
+
   }
 
 }

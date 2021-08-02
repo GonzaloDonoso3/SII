@@ -6,12 +6,13 @@ import { MatCalendarView, MatDatepickerInputEvent } from '@angular/material/date
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
+import { DialogShow } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
 import { IngresosHostal } from '@app/_models/hostal/ingresoHostal';
 import { Sucursal } from '@app/_models/shared/sucursal';
 import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuentas-bancarias.service';
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 import { HostalService } from '../../hostal.service';
+
 
 @Component({
   selector: 'app-hostal-ingresos-list',
@@ -65,11 +66,13 @@ export class HostalIngresosListComponent implements OnInit, OnChanges {
   totalSeleccion = 0;
   cuentasRegistradas: any[] = [];
   selectedRows!: any[];
+  
+
   constructor(
     private hostalService: HostalService,
     public dialog: MatDialog,
     private sucursalService: SucursalSharedService,
-    private cuentasService: CuentasBancariasService
+    private cuentasService: CuentasBancariasService,    
   ) {
 
   }
@@ -107,12 +110,16 @@ export class HostalIngresosListComponent implements OnInit, OnChanges {
   }
 
 
-  recuperarArchivos(listArchivos: any) {
-    this.dialog.open(DialogDownloadsComponent, {
-      data: { archivos: listArchivos, servicio: 'hostal-ingreso' },
-    });
+  recuperarArchivos(listArchivos: any) {    
+    setTimeout(() => {
+      this.dialog.open(DialogShow, {    
+        data: { archivos: listArchivos, servicio: 'hostal-ingreso' },
+      });  
+     }, 1000);                                       
+    
   }
 
+  
 
   revelarTotal() {
     this.totalSeleccion = 0;

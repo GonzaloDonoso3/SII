@@ -5,7 +5,7 @@ import { Component, Input, OnInit, QueryList, SimpleChanges, ViewChild, ViewChil
 import { MatDialog } from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Sucursal } from '@app/_models/shared/sucursal';
-import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
+import { DialogShow } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
 import { EmpresaSharedService } from '@app/_pages/shared/shared-services/empresa-shared.service';
 import { first } from 'rxjs/operators';
 import { Empresa } from '@app/_models/shared/empresa';
@@ -172,9 +172,11 @@ aplicarfiltros() {
   
   //Cargar los archivos de respaldo
   recuperarArchivos(listArchivos: any) {
-   this.dialog.open(DialogDownloadsComponent, {
-     data: { archivos: listArchivos, servicio: 'importadora-egresoConteiner' },
+    setTimeout(() => {
+    this.dialog.open(DialogShow, {
+      data: { archivos: listArchivos, servicio: 'importadora-egresoConteiner' },
    });
+  }, 1000);
   }
   
   //Metodo exportar excel

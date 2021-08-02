@@ -9,7 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Sucursal } from '@app/_models/shared/sucursal';
-import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
+import { DialogShow } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
@@ -101,11 +101,11 @@ export class InmobiliariaIngresosListComponent implements OnInit {
   }
 
   recuperarArchivos(listArchivos: any) {
-    this.dialog.open(DialogDownloadsComponent, {
-
+    setTimeout(() => {
+    this.dialog.open(DialogShow, {
       data: { archivos: listArchivos, servicio: 'inmobiliaria-ingreso' },
-
     });
+  }, 1000);
   }
 
   // ? selection rows

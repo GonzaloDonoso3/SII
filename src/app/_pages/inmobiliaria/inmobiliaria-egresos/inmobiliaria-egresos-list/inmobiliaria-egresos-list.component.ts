@@ -9,7 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Sucursal } from '@app/_models/shared/sucursal';
-import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
+import { DialogShow } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
 import { DatePipe } from "@angular/common";
 
 @Component({
@@ -136,11 +136,14 @@ export class InmobiliariaEgresosListComponent implements OnInit {
 
   //Cargar los archivos de respaldo
   recuperarArchivos(listArchivos: any) {
-    this.dialog.open(DialogDownloadsComponent, {
+    setTimeout(() => {
+    this.dialog.open(DialogShow, {    
       data: { archivos: listArchivos, servicio: 'inmobiliaria-egreso' },
     });
+  }, 1000);
   }
 
+  
   // ? selection rows
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -228,7 +231,7 @@ export class InmobiliariaEgresosListComponent implements OnInit {
   exportAsXLSX(): void {
     this.selectedRows = [];
     this.selection.selected.forEach((x) => this.selectedRows.push(x));
-    this.inmobiliariaService.exportAsExcelFile(this.selectedRows, 'Ingresos-Hostal');
+    this.inmobiliariaService.exportAsExcelFile(this.selectedRows, 'Egresos-Inmobiliaria');
   }
 
 

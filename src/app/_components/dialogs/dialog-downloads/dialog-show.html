@@ -1,0 +1,7 @@
+<img style="width:100%" [src]="imagen" (load)="loaded($event)">
+
+<mat-dialog-actions align="end">  
+  <button mat-button [mat-dialog-close]="true" (click)="download()" cdkFocusInitial><mat-icon>get_app</mat-icon></button>
+  <button mat-button id="cerrarModal" mat-dialog-close>Cerrar</button>
+</mat-dialog-actions>
+

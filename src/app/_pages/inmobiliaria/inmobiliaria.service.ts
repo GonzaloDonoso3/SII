@@ -87,6 +87,14 @@ export class InmobiliariaService {
         window.open(window.URL.createObjectURL(res));
       });
   }
+  buscarImagen(url: string) {    
+    const extencion = url.split('.');
+    const extend = extencion[1];    
+    return this.http
+    .get(`${environment.apiUrl}/ingreso${this.empresa}/download/${url}`, {
+        responseType: 'blob',
+      })      
+  }
 
   getAllWithUsuario() {
     return this.http.get<IngresosInmobiliaria[]>(
@@ -139,6 +147,14 @@ export class InmobiliariaService {
       .subscribe((res) => {
         window.open(window.URL.createObjectURL(res));
       });
+  }
+  buscarImagenEgreso(url: string) {    
+    const extencion = url.split('.');
+    const extend = extencion[1];    
+    return this.http
+    .get(`${environment.apiUrl}/egreso${this.empresa}/download/${url}`, {
+        responseType: 'blob',
+      })      
   }
   
   // METODO PARA EXPORTAR EXCEL

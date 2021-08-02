@@ -138,7 +138,7 @@ export class AgroFirmaEgresosListComponent implements OnInit {
     exportAsXLSX(): void {
     this.selectedRows = [];
     this.selection.selected.forEach((x) => this.selectedRows.push(x));
-    this.agroFirmaService.exportAsExcelFile(this.selectedRows, 'Egresos-Abogados');
+    this.agroFirmaService.exportAsExcelFile(this.selectedRows, 'Egresos-Agrofirma');
     }
 
   

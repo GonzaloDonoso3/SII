@@ -67,6 +67,15 @@ export class RentacarService {
       });
   }
 
+  buscarImagenEgreso(url: string) {    
+    const extencion = url.split('.');
+    const extend = extencion[1];    
+    return this.http
+    .get(`${environment.apiUrl}/egresoRentacar/download/${url}`, {
+        responseType: 'blob',
+      })      
+  }
+
 
   public downloadEgresos(fileName: string): void {
     this.http

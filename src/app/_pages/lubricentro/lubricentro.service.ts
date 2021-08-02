@@ -149,6 +149,15 @@ export class LubricentroService {
       });
   }
 
+  buscarImagen(url: string) {    
+    const extencion = url.split('.');
+    const extend = extencion[1];    
+    return this.http
+    .get(`${environment.apiUrl}/ingreso${this.empresa}/download/${url}`, {
+        responseType: 'blob',
+      })      
+  }
+
   ingresoGetAllWithUsuario() {
     return this.http.get<[]>(
       `${environment.apiUrl}/ingreso${this.empresa}/conUsuario`
@@ -179,6 +188,14 @@ export class LubricentroService {
       .subscribe((res) => {
         window.open(window.URL.createObjectURL(res));
       });
+  }
+  buscarImagenEgreso(url: string) {    
+    const extencion = url.split('.');
+    const extend = extencion[1];    
+    return this.http
+    .get(`${environment.apiUrl}/egreso${this.empresa}/download/${url}`, {
+        responseType: 'blob',
+      })      
   }
   getById(id: string): any {
     return this.http.get<EgresoLubricentro>(

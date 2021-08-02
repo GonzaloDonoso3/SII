@@ -56,6 +56,14 @@ export class ImportadoraService {
         window.open(window.URL.createObjectURL(res));
       });
   }
+  buscarImagen(url: string) {    
+    const extencion = url.split('.');
+    const extend = extencion[1];    
+    return this.http
+    .get(`${environment.apiUrl}/ingreso${this.empresa}/download/${url}`, {
+        responseType: 'blob',
+      })      
+  }
 
   getAllWithUsuario() {
     return this.http.get<IngresosImportadora[]>(
@@ -99,6 +107,14 @@ export class ImportadoraService {
       .subscribe((res) => {
         window.open(window.URL.createObjectURL(res));
       });
+  }
+  buscarImagenEgreso(url: string) {    
+    const extencion = url.split('.');
+    const extend = extencion[1];    
+    return this.http
+    .get(`${environment.apiUrl}/egresoFijo${this.empresa}/download/${url}`, {
+        responseType: 'blob',
+      })      
   }
  //*********** Fin Metodos Egresos Fijos ************/
 
@@ -144,6 +160,14 @@ export class ImportadoraService {
       .subscribe((res) => {
         window.open(window.URL.createObjectURL(res));
       });
+  }
+  buscarImagenEgresoC(url: string) {    
+    const extencion = url.split('.');
+    const extend = extencion[1];    
+    return this.http
+    .get(`${environment.apiUrl}/egresoContainer${this.empresa}/download/${url}`, {
+        responseType: 'blob',
+      })      
   }
 
   getAllEgresosConteiner() {

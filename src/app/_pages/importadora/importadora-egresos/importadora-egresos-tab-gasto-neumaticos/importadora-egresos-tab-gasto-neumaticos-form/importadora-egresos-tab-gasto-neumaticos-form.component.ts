@@ -315,6 +315,7 @@ export class ImportadoraEgresosTabGastoNeumaticosFormComponent implements OnInit
           this.addressFormNeumatico.reset();
           this.existeConteiner = false;
           this.listaNeumatico = [];
+          window.location.reload();                    
         });
    }else{
         this.snackBar.open('Aun queda monto por asignar o no se ha ingresado ningún neumático', 'cerrar', {

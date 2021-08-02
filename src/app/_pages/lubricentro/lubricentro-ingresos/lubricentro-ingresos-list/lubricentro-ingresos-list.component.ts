@@ -5,7 +5,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
+import { DialogShow } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
 import { IngresosLubricentro } from '@app/_models/lubricentro/ingresoLubricentro';
 import { Sucursal } from '@app/_models/shared/sucursal';
 import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuentas-bancarias.service';
@@ -80,11 +80,11 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
 
 
   recuperarArchivos(listArchivos: any) {
-    this.dialog.open(DialogDownloadsComponent, {
-
+    setTimeout(() => {
+    this.dialog.open(DialogShow, {
       data: { archivos: listArchivos, servicio: 'lubricentro-ingreso' },
-
     });
+  }, 1000);
   }
 
 

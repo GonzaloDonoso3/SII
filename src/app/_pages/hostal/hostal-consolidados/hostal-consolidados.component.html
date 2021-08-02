@@ -1,4 +1,4 @@
-<form [formGroup]="consolidadosForm" novalidate (ngSubmit)="onSubmit()">
+<form [formGroup]="consolidadosForm" novalidate (ngSubmit)="onSubmit()" id="ocultar">
 <mat-card class="shipping-card mat-elevation-z10">
     <mat-card-header>   
     <h1> Consolidados Hostal Plaza Maule </h1>
@@ -10,51 +10,84 @@
        <!-- Consolidados -->
     <div class="col">
     <mat-form-field class="full-width">                        
-        <mat-select placeholder="Tipo de consolidado" formControlName="consolidados">
-            <mat-option value="1">
-                Resultados: Ingresos - Egresos
-            </mat-option>
+        <mat-select placeholder="Tipo de consolidado" formControlName="consolidados">            
+            <mat-option value="4">
+                Resultado: Ingresos y Egresos
+            </mat-option>            
             <mat-option value="2">
                 Ingresos
             </mat-option>
             <mat-option value="3">
                 Egresos
-            </mat-option>
-            <mat-option value="4">
-                Ingresos y Egresos
             </mat-option>            
+            <mat-option value="1">
+                Ingresos - Egresos
+            </mat-option>
+            <!-- <mat-option value="1">
+                Inversiones
+            </mat-option> -->
         </mat-select>
         <mat-error *ngIf="consolidadosForm.controls['consolidados'].hasError('required')">
-            tipo ingreso es <strong>requerido</strong>
+            tipo consolidado es <strong>requerido</strong>
         </mat-error>              
     </mat-form-field>
     </div>
 
-    <!-- Tramos de fechas -->
-    <div class="col">
-    <mat-form-field class="full-width">                        
-        <mat-select placeholder="Tramos de fechas" formControlName="tramos">
-            <mat-option value="Mensual">
-                Mensual
-            </mat-option>
-            <mat-option value="Trimestral">
-                Trimestral
-            </mat-option>
-            <mat-option value="Semestral">
-                Semestral
-            </mat-option>
-            <mat-option value="Añual">
-                Añual
-            </mat-option>            
-        </mat-select>  
-        <mat-error *ngIf="consolidadosForm.controls['tramos'].hasError('required')">
-            tipo ingreso es <strong>requerido</strong>
-        </mat-error>      
-    </mat-form-field>
-   </div>
+       <!-- Surcusales -->
+       <div class="col">
+        <mat-form-field class="full-width">                        
+            <mat-select placeholder="Sucursales" formControlName="sucursales">
+                <mat-option value="hostal1">
+                    HOSTAL 1
+                </mat-option>
+                <mat-option value="hostal2">
+                    HOSTAL 2
+                </mat-option>
+                <mat-option value="cabanna">
+                    CABAÑA
+                </mat-option>                
+                <mat-option value="Todas">
+                    TODAS LAS SUCURSALES
+                </mat-option>                
+            </mat-select>
+            <mat-error *ngIf="consolidadosForm.controls['sucursales'].hasError('required')">
+                la sucursal es <strong>requerida</strong>
+            </mat-error>              
+        </mat-form-field>
+        </div>           
+   
+</div>
 
-   <!-- Buscar por mes -->
-   <div class="col">
+<div class="row">
+
+     <!-- Tramos de fechas -->
+    <div class="col">
+        <mat-form-field class="full-width">                        
+            <mat-select placeholder="Tramos de fechas" formControlName="tramos">                
+                <mat-option value="Mensual" (click)="activarMes()">
+                    Mensual
+                </mat-option>                
+                <mat-option value="Trimestral" (click)="activarTrimestre()">
+                    Trimestral
+                </mat-option>
+                <mat-option value="Semestral" (click)="activarSemestre()">
+                    Semestral
+                </mat-option>
+                <mat-option value="Añual" (click)="activarAnno()">
+                    Añual
+                </mat-option> 
+                <mat-option value="DesdeHasta" (click)="activarFechaIF()">
+                    Desde - Hasta
+                </mat-option>           
+            </mat-select>  
+            <mat-error *ngIf="consolidadosForm.controls['tramos'].hasError('required')">
+                tramo fecha es <strong>requerido</strong>
+            </mat-error>      
+        </mat-form-field>
+       </div>
+
+       <!-- Buscar por mes -->
+   <div class="col" *ngIf="!mostrarMes">
     <mat-form-field class="full-width">                        
         <mat-select placeholder="Fechas por mes" formControlName="month">
             <mat-option value="January">
@@ -95,15 +128,55 @@
             </mat-option>            
         </mat-select>  
         <mat-error *ngIf="consolidadosForm.controls['tramos'].hasError('required')">
-            tipo ingreso es <strong>requerido</strong>
+            mes es <strong>requerido</strong>
         </mat-error>      
     </mat-form-field>
    </div>
 
-   <!-- Buscar por año -->
-   <div class="col">
+   <!-- Numero del trimestre -->
+   <div class="col" *ngIf="!mostrarTrimestre">
     <mat-form-field class="full-width">                        
-        <mat-select placeholder="Fechas por mes" formControlName="year">
+        <mat-select placeholder="¿Que trimestre desea?" formControlName="trimestre">
+            <mat-option value="1">
+                Enero - Marzo
+            </mat-option>
+            <mat-option value="2">
+                Abril - Junio
+            </mat-option>
+            <mat-option value="3">
+                Julio - Septiembre
+            </mat-option>
+            <mat-option value="4">
+                Octubre - Diciembre
+            </mat-option>             
+        </mat-select>  
+        <mat-error *ngIf="consolidadosForm.controls['trimestre'].hasError('required')">
+            trimestre es <strong>requerido</strong>
+        </mat-error>      
+    </mat-form-field>
+   </div>
+
+   <!-- Numero del Semestre -->
+   <div class="col" *ngIf="!mostrarSemestre">
+    <mat-form-field class="full-width">                        
+        <mat-select placeholder="¿Que semestre desea?" formControlName="semestre">
+            <mat-option value="1">
+                Enero - Junio
+            </mat-option>
+            <mat-option value="2">
+                Julio - Diciembre
+            </mat-option>            
+        </mat-select>  
+        <mat-error *ngIf="consolidadosForm.controls['semestre'].hasError('required')">
+            semestre es <strong>requerido</strong>
+        </mat-error>      
+    </mat-form-field>
+   </div>
+
+    <!-- Buscar por año -->
+   <div id="hola" class="col" *ngIf="!mostrarAnno">
+    <mat-form-field class="full-width">                        
+        <mat-select placeholder="Fechas por año" formControlName="year">
             <mat-option value="2017">
                 2017
             </mat-option>
@@ -148,20 +221,37 @@
             </mat-option>            
         </mat-select>  
         <mat-error *ngIf="consolidadosForm.controls['tramos'].hasError('required')">
-            tipo ingreso es <strong>requerido</strong>
+            año es <strong>requerido</strong>
         </mat-error>      
     </mat-form-field>
    </div>
 
-   <!-- Fecha -->
-   <div class="col">
+</div>
+
+<div class="row" *ngIf="!mostrarFechaIF">
+    
+    <!-- Fecha- desde -->
+<div class="col">
     <mat-form-field class="full-width">
-      <mat-label>Seleccionar fecha</mat-label>
-      <input matInput formControlName="fecha" [matDatepicker]="picker" />
+      <mat-label>Seleccionar fecha desde</mat-label>
+      <input matInput formControlName="fechaI" [matDatepicker]="picker" />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
-      <mat-error *ngIf="consolidadosForm.controls['fecha'].hasError('required')">
-        fecha es <strong>requerido</strong>
+      <mat-error *ngIf="consolidadosForm.controls['fechaI'].hasError('required')">
+        fecha inicio es <strong>requerido</strong>
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <!-- Fecha - hasta -->
+  <div class="col">
+    <mat-form-field class="full-width">
+      <mat-label>Seleccionar fecha hasta</mat-label>
+      <input matInput formControlName="fechaF" [matDatepicker]="picker1" />
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1></mat-datepicker>
+      <mat-error *ngIf="consolidadosForm.controls['fechaF'].hasError('required')">
+        fecha fin es <strong>requerido</strong>
       </mat-error>
     </mat-form-field>
   </div>
@@ -179,6 +269,7 @@
 
 <!-- MODAL QUE MUESTRA EL LISTADO Y LOS TOTALES -->
 <!-- *********** TABLE INGRESOS **************** -->
+<!-- <div *ngIf="montoIngreso.length > 0"> -->
 <mat-card class="shipping-card mat-elevation-z10">
 <mat-grid-list cols="2">    
     <div class="table-responsive">
@@ -235,10 +326,10 @@
 </mat-grid-list>
 </mat-card>
 <br><br>
-
+<!-- </div> -->
 <!-- *********** TABLE EGRESOS **************** -->
-
-<mat-card class="shipping-card mat-elevation-z10">
+<!-- <div *ngIf="montoEgreso.length > 0"> -->
+<mat-card class="shipping-card mat-elevation-z10" id="htmlData">
     <mat-grid-list cols="2">    
         <div class="table-responsive">
             <mat-toolbar color="primary">            
@@ -294,35 +385,89 @@
     </mat-grid-list>
     </mat-card>
     <br><br>
-    
+<!-- </div> -->
 <!-- -----------BOTONES DE TOTALES------------- -->
 <mat-card class="shipping-card mat-elevation-z10">
     <div class="row">
     <div class="col">  
     <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Total ingresos</mat-label>
-        <input matInput placeholder="Total ingresos" value={{sumIngresos}} readonly>
+        <input matInput placeholder="Total ingresos" readonly>
+        {{ sumIngresos | currency: "$":"symbol":"1.0-0" }}
       </mat-form-field>
     </div>
     <div class="col">  
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Total egresos</mat-label>
-        <input matInput placeholder="Total egresos" value={{sumEgresos}} readonly>
+        <input matInput placeholder="Total egresos" readonly>
+        {{ sumEgresos | currency: "$":"symbol":"1.0-0" }}
       </mat-form-field>
     </div>
     <div class="col">  
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Consolidado</mat-label>
-        <input matInput placeholder="Consolidado" value={{totalConsolidado}} readonly>
+        <input matInput placeholder="Consolidado" readonly>
+        {{ totalConsolidado | currency: "$":"symbol":"1.0-0" }}
       </mat-form-field>
     </div>
     </div>    
-</mat-card>
+
 
 <!-- -----------GRAFICOS------------- -->
-
+    
     <div *ngIf="montoIngreso.length > 0">
+    <!-- <div *ngIf="totalG.length > 0"> -->
     <canvas #barChart>
       {{chart}}
     </canvas>
     </div>
+
+    <div *ngIf="montoEgreso.length > 0">
+        <!-- <div *ngIf="totalG.length > 0"> -->
+        <canvas #barChart>
+          {{chart}}
+        </canvas>
+        </div>
+
+        <div class="row" *ngIf="montoIngreso.length > 0" id="ocultar">
+        <mat-card-actions>
+            <button mat-raised-button color="primary" (click)="openPDF('#ocultar', false)">
+              <mat-icon>send</mat-icon> PDF
+            </button>
+          </mat-card-actions>
+
+          <mat-card-actions>
+            <button id="margin" mat-raised-button color="primary" (click)="exportAsXLSX()">
+              <mat-icon>send</mat-icon> Excell
+            </button>
+          </mat-card-actions>
+        </div>
+</mat-card>
+
+
+<!-- <div class="container" >
+    <div class="row">
+  
+      <div class="col-md-8" >
+        <table class="table table-bordered">
+          <tr class="table-primary">
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+          </tr>
+          <tr *ngFor="let user of USERS">
+            <th>{{user.id}}</th>
+            <td>{{user.name}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.phone}}</td>
+          </tr>
+        </table>
+      </div>
+  
+      <div class="col-md-4 text-right">
+        <button class="btn btn-success btn-block" (click)="openPDF()">Download PDF</button>
+      </div>
+  
+    </div>
+  </div> -->

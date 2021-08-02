@@ -5,7 +5,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
+import { DialogShow } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
 import { RegistroEgresoFirma } from '@app/_models/abogados/egresosFirma';
 import { Sucursal } from '@app/_models/shared/sucursal';
 import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuentas-bancarias.service';
@@ -127,9 +127,11 @@ getEmpresa(id: number): any {
 }
 
 recuperarArchivos(listArchivos: any) {
-  this.dialog.open(DialogDownloadsComponent, {    
+  setTimeout(() => {
+  this.dialog.open(DialogShow, {  
     data: { archivos: listArchivos, servicio: 'abogados-egresos' },    
   });
+}, 1000);   
 }
 
 //METODO QUE PERMITE EXPORTA A EXCEL

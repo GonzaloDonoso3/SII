@@ -9,6 +9,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ConsolidadosHostal } from '@app/_models/hostal/consolidadosHostal';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
+import {MatDialog} from '@angular/material/dialog';
 
 const EXCEL_TYPE =
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
@@ -47,7 +48,7 @@ export class HostalService {
 
   private tiposEgresos = ['Gastos', 'Costos', 'Remuneraciones', 'Impuestos', 'Bancarios'];
   private empresa = 'Hostal';
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router, private dialog: MatDialog) {
     //Init private Subjects;
     //ingresos;
 
@@ -124,16 +125,24 @@ export class HostalService {
   ingresoGetAll(): any {
     return this.http.get<[]>(`${environment.apiUrl}/ingresoHostal`);
   }
-  ingresoGetFiles(fileName: string) {
+  ingresoGetFiles(fileName: string) {    
     const extencion = fileName.split('.');
-    const extend = extencion[1];
+    const extend = extencion[1];    
     return this.http
       .get(`${environment.apiUrl}/ingreso${this.empresa}/download/${fileName}`, {
         responseType: 'blob',
       })
-      .subscribe((res) => {
+      .subscribe((res) => {                
         window.open(window.URL.createObjectURL(res));
       });
+  }
+  buscarImagen(url: string) {    
+    const extencion = url.split('.');
+    const extend = extencion[1];    
+    return this.http
+      .get(`${environment.apiUrl}/ingreso${this.empresa}/download/${url}`, {
+        responseType: 'blob',
+      })      
   }
 
   ingresoGetAllWithUsuario() {
@@ -167,6 +176,14 @@ export class HostalService {
         window.open(window.URL.createObjectURL(res));
       });
   }
+  egresosBuscarImagen(url: string) {    
+    const extencion = url.split('.');
+    const extend = extencion[1];    
+    return this.http
+    .get(`${environment.apiUrl}/egreso${this.empresa}/download/${url}`, {
+        responseType: 'blob',
+      })      
+  }
   getById(id: string): any {    
     return this.http.get<any>(
       `${environment.apiUrl}/egreso${this.empresa}/${id}`
@@ -176,8 +193,7 @@ export class HostalService {
 
 
   /* CONSOLIDADOS */  
-  buscarConsolidado(consolidado: ConsolidadosHostal): any { 
-    //console.log("probando formulario", consolidado)   
+  buscarConsolidado(consolidado: ConsolidadosHostal): any {        
     return this.http.post(      
       `${environment.apiUrl}/ingreso${this.empresa}/ingresosEgresos`,
       consolidado      

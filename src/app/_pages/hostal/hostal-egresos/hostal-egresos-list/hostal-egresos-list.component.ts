@@ -5,12 +5,11 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
+import { DialogShow } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
 import { EgresoHostal } from '@app/_models/hostal/egresoHostal';
 import { Sucursal } from '@app/_models/shared/sucursal';
 import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuentas-bancarias.service';
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
-//import { Console } from 'node:console';
 import { HostalService } from '../../hostal.service';
 import { DatePipe } from "@angular/common";
 
@@ -81,7 +80,7 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
     this.aplicarfiltros();
   }
 
-  // ? refresh when form is ready.
+  
 
   ngOnChanges(changes: SimpleChanges): void {
     for (const propName of Object.keys(changes)) {      
@@ -93,7 +92,7 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
       this.hostalService.egresoGetAll().subscribe((data: EgresoHostal[]) => {        
         this.dataEgresos = data.map(egreso => {
           egreso.sucursal = egreso.Sucursal.razonSocial;
-          egreso.usuario = egreso.Usuario.nombreUsuario;
+          egreso.usuario = egreso.Usuario.nombreUsuario;          
           egreso.monto = egreso.monto;
           return egreso;
         });
@@ -130,9 +129,11 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
   }
 
   recuperarArchivos(listArchivos: any) {    
-    this.dialog.open(DialogDownloadsComponent, {
+    setTimeout(() => {
+    this.dialog.open(DialogShow, {
       data: { archivos: listArchivos, servicio: 'hostal-egreso' },
     });
+  }, 1000);    
   }
 
 
@@ -210,7 +211,7 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
   exportAsXLSX(): void {
     this.selectedRows = [];
     this.selection.selected.forEach((x) => this.selectedRows.push(x));
-    this.hostalService.exportAsExcelFile(this.selectedRows, 'Ingresos-Hostal');
+    this.hostalService.exportAsExcelFile(this.selectedRows, 'Egresos-Hostal');
   }
 
 }

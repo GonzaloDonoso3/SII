@@ -74,7 +74,7 @@ export class NavComponent {
 
   volverVistaAtigua() {
     window.location.href = `${environment.indexUrlAntigua}`;
-    // window.location.href = `${environment.indexUrl}`;
+     //window.location.href = `${environment.indexUrl}`;
   }
 
   cerrarSesion(){

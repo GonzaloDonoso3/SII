@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "prod": "ng serve --ssl --sslCert /etc/letsencrypt/archive/imlchile.cl/fullchain7.pem --sslKey /etc/letsencrypt/archive/imlchile.cl/privkey7.pem --host 0.0.0.0 --port 4201 --disableHostCheck --prod",
+    "prod": "ng serve --ssl --sslCert /etc/letsencrypt/archive/imlchile.cl/fullchain8.pem --sslKey /etc/letsencrypt/archive/imlchile.cl/privkey8.pem --host 0.0.0.0 --port 4201 --disableHostCheck --prod",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",

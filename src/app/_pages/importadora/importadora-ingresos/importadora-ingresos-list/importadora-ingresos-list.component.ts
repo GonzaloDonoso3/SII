@@ -11,6 +11,7 @@ import { first } from 'rxjs/operators';
 import { Empresa } from '@app/_models/shared/empresa';
 import { IngresosImportadora } from '@app/_models/importadora/ingresoImportadora';
 import { ImportadoraService } from '../../importadora.service';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-importadora-ingresos-list',
@@ -19,9 +20,10 @@ import { ImportadoraService } from '../../importadora.service';
 })
 export class ImportadoraIngresosListComponent implements OnInit {
 
-   // ? childrens
-   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
 
+  // ? childrens
+  @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
+  @ViewChild(MatSort) sort = null;
    // ? Inputs & Outputs
    @Input()
    refrescar = '';
@@ -94,6 +96,7 @@ export class ImportadoraIngresosListComponent implements OnInit {
      });
      this.dataSource = new MatTableDataSource(this.dataIngresos);
      this.dataSource.paginator = this.paginator.toArray()[0];
+     this.dataSource.sort = this.sort;
    });
  }
 
@@ -178,10 +181,12 @@ export class ImportadoraIngresosListComponent implements OnInit {
 
 
  // Inicio Filtros
- limpiarFiltros() {
+ resetTable() {
    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null, vendedor: null, descripcionEgreso: null, usuario: null, codigoAutorizacion: null, medioPago: null})
    this.dataSource = new MatTableDataSource(this.dataIngresos);
    this.dataSource.paginator = this.paginator.toArray()[0];
+   this.dataSource.paginator['_pageIndex'] = 0
+   this.getIngresos()
    this.selection.clear()
    this.totalSeleccion = 0;
  }

@@ -1,9 +1,10 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
 import { IngresosLubricentro } from '@app/_models/lubricentro/ingresoLubricentro';
@@ -19,6 +20,7 @@ import { LubricentroService } from '../../lubricentro.service';
 export class LubricentroIngresosListComponent implements OnInit, OnChanges {
   // ? childrens
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
+  @ViewChild(MatSort) sort = null;
   // ? Inputs & Outputs
   @Input()
   refrescar = '';
@@ -113,18 +115,36 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
 
       this.dataSource = new MatTableDataSource(dataFiltered);
       this.dataSource.paginator = this.paginator.toArray()[0];
+      this.dataSource.sort = this.sort
       this.totalSeleccion = 0;
       this.selection.clear();
     })
   }
 
 
-  limpiarFiltros() {
+  resetTable() {
     this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoIngreso: null, estadoPago: null, })
     this.dataSource = new MatTableDataSource(this.dataIngresos);
     this.dataSource.paginator = this.paginator.toArray()[0];
+    this.dataSource.paginator['_pageIndex'] = 0
+    this.updateTable()
     this.selection.clear()
     this.totalSeleccion = 0;
+  }
+
+  updateTable() {
+    this.lubricentroService.ingresoGetAll().subscribe((data: IngresosLubricentro[]) => {
+      this.dataIngresos = data.map((ingreso: IngresosLubricentro) => {
+        ingreso.sucursal = ingreso.Sucursal.razonSocial
+        ingreso.usuario = ingreso.Usuario.nombreUsuario
+        return ingreso
+      })
+      
+      this.dataSource = new MatTableDataSource(this.dataIngresos)
+      this.dataSource.paginator = this.paginator.toArray()[0]
+      this.dataSource.sort = this.sort
+
+    });
   }
 
 
@@ -142,10 +162,10 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
           ingreso.usuario = ingreso.Usuario.nombreUsuario;
           return ingreso;
         });
-        //console.log(data);
+        
         this.dataSource = new MatTableDataSource(this.dataIngresos);
         this.dataSource.paginator = this.paginator.toArray()[0];
-
+        this.dataSource.sort = this.sort
       });
     }
   }

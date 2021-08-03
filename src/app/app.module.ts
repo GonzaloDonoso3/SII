@@ -30,6 +30,7 @@ FullCalendarModule.registerPlugins([
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import {DecimalPipe} from '@angular/common';
+import { MatSortModule } from '@angular/material/sort';
 
 
 registerLocaleData(localeEs, 'es');
@@ -52,7 +53,8 @@ registerLocaleData(localeEs, 'es');
     LayoutModule,
     MaterialModule,
     FullCalendarModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSortModule
   ],
   providers: [
     DecimalPipe,

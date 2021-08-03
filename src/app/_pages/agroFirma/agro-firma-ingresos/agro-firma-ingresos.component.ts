@@ -14,10 +14,11 @@ import { Observable } from 'rxjs';
 })
 export class AgroFirmaIngresosComponent implements OnInit {
 
-  idProyectoPadre!: Observable<number>
+  projectId!: Observable<number>
   dataSource: MatTableDataSource<ProyectoAgrofirma> = new MatTableDataSource();
   proyectos: ProyectoAgrofirma[] = [];
-  idProyecto: null;
+  idProyecto: null
+  updateTime!: number
 
   constructor(
     private agroFirmaService: AgroFirmaService,
@@ -34,7 +35,7 @@ export class AgroFirmaIngresosComponent implements OnInit {
   }
 
   formulario(idModal: any, idProyecto: any): void {
-    this.idProyectoPadre = idProyecto;
+    this.projectId = idProyecto;
     this.modalService.open(idModal);
 
     this.router.navigate(['agrofirma/ingresos/add', idProyecto]);
@@ -42,13 +43,17 @@ export class AgroFirmaIngresosComponent implements OnInit {
   }
 
   openCreateBankAccountModal(modalId: any, projectId: any) {
-    this.idProyectoPadre = projectId
+    this.projectId = projectId
     this.modalService.open(modalId)
   }
 
   closeModal(id: any): void{
     this.modalService.close(id);
     this.router.navigate(['agrofirma/ingresos']);
+  }
+
+  formReady(datetime: number): void {
+    this.updateTime = datetime
   }
 
 }

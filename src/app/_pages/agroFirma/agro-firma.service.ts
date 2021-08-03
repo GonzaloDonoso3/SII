@@ -96,6 +96,11 @@ export class AgroFirmaService {
     );
   }
 
+  
+  getIncomeByProject(projectId: number): any {
+    return this.http.get(`${environment.apiUrl}/egresoAgrofirma/obtenerEgresos/${projectId}`)
+  }
+
   getById(id: string): any {    
     return this.http.get<any>(
       `${environment.apiUrl}/egreso${this.proyecto}/${id}`
@@ -134,6 +139,20 @@ export class AgroFirmaService {
 
   updateProject(projectId: any, project: any): any {
     return this.http.put<[]>(`${environment.apiUrl}/proyectoAgrofirma/actualizarProyecto/${projectId}`, project)
+  }
+
+  //----------Metodos Cuentas Bancarias-----------//
+
+  getBankAccountsById(id: any): any {
+    return this.http.get<[]>(`${environment.apiUrl}/banco/obtenerCuentasByEntity/${id}`)
+  }
+
+  createBankAccount(account: any): any {
+    return this.http.post<[]>(`${environment.apiUrl}/banco/registrarCuentasBancarias`, account)
+  }
+
+  getBanks(): any {
+    return this.http.get<[]>(`${environment.apiUrl}/banco/obtenerBancos`)
   }
 
 }

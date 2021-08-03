@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   apiUrl: 'http://localhost:3000/api',
   //apiUrl: 'https://www.imlchile.cl:3000/api',
-  apiRentacarUrl: 'http://localhost:3001/rentacar/',
+  apiRentacarUrl: 'http://localhost:3200/rentacar/',
   pathApiRent: 'http://localhost:3001/',
   indexUrl: "http://localhost:4201",
   //indexUrl: "https://www.imlchile.cl:4200",

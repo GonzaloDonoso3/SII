@@ -17,7 +17,7 @@
 </mat-toolbar>
 
 <div class="table-responsive">
-    <table mat-table [dataSource]="dataSource" matSort matSortActive="id" matSortDirection="desc" style="width: -webkit-fill-available" class="mat-elevation-z10">
+    <table mat-table [dataSource]="dataSource" matSort matSortActive="id" matSortDirection="desc" style="width: -webkit-fill-available" class="mat-elevation-z8">
         <!-- check column -->
         <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>
@@ -32,16 +32,17 @@
                 </mat-checkbox>
             </td>
         </ng-container>
+        
 
         <!-- ID with checkbox -->
         <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
             <td mat-cell *matCellDef="let element">{{ element.id }}</td>
         </ng-container>
 
         <!-- date with datapicker -->
         <ng-container matColumnDef="fecha" class="mat-column-date">
-            <th mat-header-cell *matHeaderCellDef>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
                 <mat-form-field appearance="fill">
                     <mat-label>Fecha</mat-label>
                     <mat-date-range-input [formGroup]="formFilter" [rangePicker]="picker">
@@ -57,34 +58,19 @@
                     </mat-error>
                 </mat-form-field>
             </th>
-            <td mat-cell *matCellDef="let element">{{ element.fecha }}</td>
+            <td mat-cell *matCellDef="let element">{{ element.fecha | date: 'shortDate' }}</td>
         </ng-container>
         
         <!-- proyecto -->
         <ng-container matColumnDef="proyecto">
-            <th mat-header-cell *matHeaderCellDef>Proyecto</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Proyecto</th>
             <div [formGroup]="formFilter">
-                <td mat-cell *matCellDef="let element">{{ element.proyecto }}</td>
+                <td mat-cell *matCellDef="let element">{{ element.ProyectoAgrofirma.nombre }}</td>
             </div>
         </ng-container>
 
-        <!-- Tipo de ingreso -->
-
-        <!-- <ng-container matColumnDef="tipoIngreso">
-            <th mat-header-cell *matHeaderCellDef>
-                <div [formGroup]="formFilter">
-                    <mat-form-field class="full-width">
-                        <mat-select placeholder="Tipo de ingreso" formControlName="tipoIngreso">
-                            <mat-option *ngFor="let t of tipoIngreso" [value]="t.nombre" >
-                                {{ t.nombre }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-            </th>            
-        </ng-container> -->
         <ng-container matColumnDef="tipoIngreso">
-            <th mat-header-cell *matHeaderCellDef>Tipo de Ingreso</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo de Ingreso</th>
             <div [formGroup]="formFilter">
                 <td mat-cell *matCellDef="let element">{{ element.tipoIngreso }}</td>
             </div>
@@ -93,7 +79,7 @@
 
         <!-- descripcion -->
         <ng-container matColumnDef="descripcionIngreso">
-            <th mat-header-cell *matHeaderCellDef>Descripción de ingreso</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripción de ingreso</th>
             <div [formGroup]="formFilter">
                 <td mat-cell *matCellDef="let element">{{ element.descripcionIngreso }}</td>
             </div>
@@ -102,7 +88,7 @@
 
         <!-- Estado de pago -->
         <ng-container matColumnDef="estadoPago">
-            <th mat-header-cell *matHeaderCellDef>Estado de pago</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado de pago</th>
             <div [formGroup]="formFilter">
                 <td mat-cell *matCellDef="let element">{{ element.estadoPago }}</td>
             </div>
@@ -111,7 +97,7 @@
 
         <!-- numero de autorizacion -->
         <ng-container matColumnDef="nAutorizacion">
-            <th mat-header-cell *matHeaderCellDef>Numero de autorización</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Numero de autorización</th>
             <div [formGroup]="formFilter">
                 <td mat-cell *matCellDef="let element">{{ element.nAutorizacion }}</td>
             </div>
@@ -120,7 +106,7 @@
 
         <!-- numero de documento -->
         <ng-container matColumnDef="nDocumento">
-            <th mat-header-cell *matHeaderCellDef>Numero de documento</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Numero de documento</th>
             <div [formGroup]="formFilter">
                 <td mat-cell *matCellDef="let element">{{ element.nDocumento }}</td>
             </div>
@@ -130,7 +116,7 @@
         
         <!-- monto currency format -->
         <ng-container matColumnDef="monto">
-            <th mat-header-cell *matHeaderCellDef>Monto</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Monto</th>
             <div [formGroup]="formFilter">
                 <td mat-cell *matCellDef="let element">
                     {{ element.monto | currency: "$":"symbol":"1.0-0" }}

@@ -10,11 +10,9 @@ import { Sucursal } from '@app/_models/shared/sucursal';
 import { ProyectoAgrofirma } from '@app/_models/agroFirma/proyectoAgroFirma';
 import { AgroFirmaService } from '@app/_pages/agroFirma/agro-firma.service';
 import { MatDialog } from '@angular/material/dialog';
-import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuentas-bancarias.service';
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
-import { ActivatedRoute, Router, RouterModule, Routes } from '@angular/router';
-import { first } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -29,20 +27,18 @@ export class AgroFirmaEgresosListComponent implements OnInit {
   @ViewChild(MatSort) sort = null;
 
   // ? Inputs & Outputs
-  @Input()
-  refrescar = '';
+  @Input() updateTable!: number
+  @Input() projectId!: Observable<number>
 
   // ? table definitions.
   displayedColumns: string[] = [
     'select',
     'id',
     'fecha',
-    'monto',
     'proyecto',
-    // 'respaldos',
+    'monto',
     'tipoEgreso',    
     'descripcion',    
-    'usuario',
     'numeroCuota',
   ];
 
@@ -83,37 +79,34 @@ export class AgroFirmaEgresosListComponent implements OnInit {
     private agroFirmaService: AgroFirmaService,
     public dialog: MatDialog,
     private sucursalService: SucursalSharedService,
-    private cuentasService: CuentasBancariasService,
-    private route: ActivatedRoute,
-    private router: Router,    
   ) {
     this.sucursales = this.sucursalService.sucursalListValue;    
-    //this.proyectos = this.agroFirmaService.proyectosListValue;  
     this.tiposEgresos = this.agroFirmaService.tiposEgresosListValue;         
   }
 
   ngOnInit(): void {
-    ///this.idProyecto = this.route.snapshot.params.idProyecto;    
     this.proyecto = localStorage.getItem("proyectoID");
     this.aplicarfiltros();
     this.actualizarTabla();
-
-    this.agroFirmaService.GetAllProyectos()
-      .pipe(first())
-      .subscribe((proyectos: any) => {
-        this.proyectos = proyectos;               
-      });
-      
   }
  
 
-    ngOnChanges(){     
+    ngOnChanges(changes: SimpleChanges){
+      if(changes.updateTable !== undefined) {
+        if(!changes.updateTable.firstChange) {
+          this.actualizarTabla()
+        }
+      }
+      if(changes.projectId !== undefined) {
+        if(!changes.projectId.firstChange) {
+          this.actualizarTabla()
+        }
+      }
     }
 
     actualizarTabla(){                                                      
-      this.agroFirmaService.getAll(this.proyecto).subscribe((data: EgresoAgroFirma[]) => {        
+      this.agroFirmaService.getIncomeByProject(Number(this.projectId)).subscribe((data: EgresoAgroFirma[]) => {        
         this.dataEgresos = data.map(egreso => {                    
-          egreso.proyecto = egreso.ProyectoAgrofirma.nombre;                                          
           return egreso;
         });
         //Conviertiendo los numeros de cuotas Nulos en N/A
@@ -138,7 +131,7 @@ export class AgroFirmaEgresosListComponent implements OnInit {
     exportAsXLSX(): void {
     this.selectedRows = [];
     this.selection.selected.forEach((x) => this.selectedRows.push(x));
-    this.agroFirmaService.exportAsExcelFile(this.selectedRows, 'Egresos-Abogados');
+    this.agroFirmaService.exportAsExcelFile(this.selectedRows, 'Egresos-Agrofirma');
     }
 
   

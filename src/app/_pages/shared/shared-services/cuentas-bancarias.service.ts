@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { cuentaRegistrada } from '@app/_models/agroFirma/cuentaRegistrada';
+import { CuentaRegistrada } from '@app/_models/agroFirma/CuentaRegistrada'
 import { environment } from '@environments/environment';
 import { Observable } from 'rxjs';
 
@@ -17,7 +17,7 @@ export class CuentasBancariasService {
   }
 
   obtenerCuentasPorProyecto(idProyecto: number) {
-    return this.http.get<cuentaRegistrada[]>(
+    return this.http.get<CuentaRegistrada[]>(
       `${environment.apiUrl}/banco/obtenerCuentasByEntity/${idProyecto}`
     );
   }

@@ -66,8 +66,8 @@
 </div>
 
 <jw-modal id="apendice"> 
-  <app-agro-firma-ingresos-form [idProyecto]="idProyectoPadre"></app-agro-firma-ingresos-form>
-  <app-agro-firma-ingresos-list [idProyecto]="idProyectoPadre"></app-agro-firma-ingresos-list>
+  <app-agro-firma-ingresos-form [idProyecto]="projectId" (formReady)="formReady($event)"></app-agro-firma-ingresos-form>
+  <app-agro-firma-ingresos-list [idProyecto]="projectId" [updateTime]="updateTime"></app-agro-firma-ingresos-list>
       <div class="card text-left">
         <!-- <div class="card-body">        
           <router-outlet></router-outlet>
@@ -84,7 +84,8 @@
 </jw-modal>
 
 <jw-modal id="createBankAccountModal">
-  <app-create-bank-account-form></app-create-bank-account-form>
+  <app-create-bank-account-form [projectId]="projectId" (formReady)="formReady($event)"></app-create-bank-account-form>
+  <app-bank-account-list [projectId]="projectId" [updateTime]="updateTime"></app-bank-account-list>
   <div class="card text-left">
     <div class="card-footer">        
         <button

@@ -10,7 +10,7 @@ import { AgroFirmaService } from '@app/_pages/agroFirma/agro-firma.service';
 import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuentas-bancarias.service';
 import { IngresoAgroFirma } from '@app/_models/agroFirma/ingresoAgroFirma';
 import { Observable } from 'rxjs';
-import { cuentaRegistrada } from '@app/_models/agroFirma/cuentaRegistrada';
+import { CuentaRegistrada } from '@app/_models/agroFirma/CuentaRegistrada';
 
 
 @Component({
@@ -20,14 +20,13 @@ import { cuentaRegistrada } from '@app/_models/agroFirma/cuentaRegistrada';
   providers: [DatePipe]
 })
 export class AgroFirmaIngresosFormComponent implements OnInit, OnChanges {
-  @Output()
-  formularioListo = new EventEmitter<string>();
+  @Output() formReady = new EventEmitter<number>()
 
   // Input Decorator para obtener el id del proyecto seleccionado desde el componente padre
   @Input() idProyecto!: Observable<number>
 
   usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '');
-  cuentasRegistradas: cuentaRegistrada[]=[]
+  cuentasRegistradas: CuentaRegistrada[]=[]
   proyecto : any = '0';
   ingresosForm!: FormGroup;
   ingreso: IngresoAgroFirma = new IngresoAgroFirma();
@@ -82,7 +81,7 @@ export class AgroFirmaIngresosFormComponent implements OnInit, OnChanges {
           .pipe()
           .subscribe((data: any) => {
             this.alert.createAlert("Registro Creado con exito!");                                      
-            this.formularioListo.emit('true');
+            this.formReady.emit(new Date().getTime());
             
             this.ingresosForm.reset();
             Object.keys(this.ingresosForm.controls).forEach(key => {

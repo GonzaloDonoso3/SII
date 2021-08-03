@@ -1,3 +1,4 @@
+import { ProyectoAgrofirma } from "./proyectoAgroFirma"
 
 export class IngresoAgroFirma {
     id!: number
@@ -8,4 +9,5 @@ export class IngresoAgroFirma {
     tipoIngreso!: string
     estadoPago!: string
     nAutorizacion!: string
+    proyecto!: ProyectoAgrofirma
 }

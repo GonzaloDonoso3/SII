@@ -1,8 +1,9 @@
 import { Banco } from "./Banco"
 
-export class cuentaRegistrada {
+export class CuentaRegistrada {
     id!: number
     tipoCuenta!: string
     numeroCuenta!: number
     Banco!: Banco
+    idProyecto!: number
 }

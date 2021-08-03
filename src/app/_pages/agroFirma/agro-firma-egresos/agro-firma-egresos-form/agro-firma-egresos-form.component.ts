@@ -13,6 +13,7 @@ import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuen
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 import { ActivatedRoute, Router, RouterModule, Routes } from '@angular/router';
 import { AgroFirmaRoutingModule } from '@app/_pages/agroFirma/agro-firma-routing.module';
+import { Observable, of } from 'rxjs';
 
 
 @Component({
@@ -22,9 +23,8 @@ import { AgroFirmaRoutingModule } from '@app/_pages/agroFirma/agro-firma-routing
   providers: [DatePipe]
 })
 export class AgroFirmaEgresosFormComponent implements OnInit {
-  @Output()
-  formularioListo = new EventEmitter<string>();
-  // @Output() nombreHijo: string = "Sin nombre"
+  @Output() formReady = new EventEmitter<number>()
+  @Input() projectId!: Observable<number>
 
   usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '');
   // ? set checkbox
@@ -51,14 +51,11 @@ export class AgroFirmaEgresosFormComponent implements OnInit {
   
   constructor(
     private fb: FormBuilder,
-    private router: Router,
     public dialog: MatDialog,
-    //private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private sucursalService: SucursalSharedService,
     private cuentasService: CuentasBancariasService,
     private alert: AlertHelper,
-    private miDatePipe: DatePipe,
     private agroFirmaService: AgroFirmaService,
   ) { 
     this.sucursales = this.sucursalService.sucursalListValue;
@@ -68,24 +65,20 @@ export class AgroFirmaEgresosFormComponent implements OnInit {
   
 
   ngOnInit(): void {
-    //this.idProyecto = this.route.snapshot.params.idProyecto;        
-    this.proyecto = localStorage.getItem("proyectoID");
-    //console.log("imprimiendo al inicio", this.proyecto)
-        
-    
+
     // ? construccion del formulario,
-   this.egresosForm = this.fb.group({
-    //agregar el detalle del formulario;
-    fecha: [null, Validators.required],
-    monto: [null],
-    tipoEgreso: [null, Validators.required],
-    descripcion: [null, Validators.required],
-    responsable: [null, Validators.required],    
-    montoCuota: [null],
-    numeroCuota: [null],
-    idProyecto: [null],    
-    RespaldoEgresos: this.respaldoEgresos,    
-  });
+    this.egresosForm = this.fb.group({
+      //agregar el detalle del formulario;
+      fecha: [null, Validators.required],
+      monto: [null],
+      tipoEgreso: [null, Validators.required],
+      descripcion: [null, Validators.required],
+      responsable: [null, Validators.required],    
+      montoCuota: [null],
+      numeroCuota: [null],
+      idProyecto: [null],    
+      RespaldoEgresos: this.respaldoEgresos   
+    });
     this.tiposEgresos = this.agroFirmaService.tiposEgresosListValue;
     this.cuentasService.obtenerCuentas().subscribe(data => {
       this.cuentasRegistradas = data;
@@ -144,11 +137,8 @@ export class AgroFirmaEgresosFormComponent implements OnInit {
           this.egreso.idUsuario = this.usuario.id;
           this.egreso.tipoEgreso = this.egresosForm.value.tipoEgreso;
           this.egreso.numeroCuota = this.egresosForm.value.numeroCuota;                  
+          this.egreso.idProyecto = Number(this.projectId);
           
-
-          this.egreso.idProyecto = this.egresosForm.value.idProyecto;
-          this.egreso.idProyecto = this.proyecto;
-          //console.log("viendo id del proyecto", this.egreso.idProyecto)
           
 
           if(this.egresosForm.value.numeroCuota > 1){              
@@ -175,7 +165,7 @@ export class AgroFirmaEgresosFormComponent implements OnInit {
                         .subscribe(
                           (data: any) => {
                             this.alert.createAlert("Registro Creado con exito!");                                      
-                            this.formularioListo.emit('true');
+                            this.formReady.emit(new Date().getTime());
                             this.egresosForm.reset();
                           },
                           (error: any) => {
@@ -216,7 +206,7 @@ export class AgroFirmaEgresosFormComponent implements OnInit {
                      duration: 2000,
                      verticalPosition: 'top',
                    }); */
-                  this.formularioListo.emit('true');
+                  this.formReady.emit(new Date().getTime());
                   this.egresosForm.reset();
                 },
                 (error: any) => {

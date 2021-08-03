@@ -58,7 +58,7 @@ export class InmobiliariaEgresosListComponent implements OnInit {
     idSucursal: new FormControl(),
     descripcionEgreso: new FormControl(),
     tipoEgreso: new FormControl(),
-    Propiedad: new FormControl(),
+    propiedad: new FormControl(),
     numeroCuota: new FormControl(),
   })
 

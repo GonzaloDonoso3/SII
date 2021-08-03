@@ -16,6 +16,7 @@ import { AgroFirmaIngresosListComponent } from './agro-firma-ingresos/agro-firma
 import { AgroFirmaProyectosComponent } from './agro-firma-proyectos/agro-firma-proyectos.component';
 import { AgroFirmaProyectosFormComponent } from './agro-firma-proyectos/agro-firma-proyectos-form/agro-firma-proyectos-form.component';
 import { CreateBankAccountFormComponent } from './agro-firma-ingresos/create-bank-account-form/create-bank-account-form.component';
+import { BankAccountListComponent } from './agro-firma-ingresos/bank-account-list/bank-account-list.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { CreateBankAccountFormComponent } from './agro-firma-ingresos/create-ban
     AgroFirmaProyectosComponent,
     AgroFirmaProyectosFormComponent,
     CreateBankAccountFormComponent,
+    BankAccountListComponent,
     ],
   imports: [
     HttpClientModule,

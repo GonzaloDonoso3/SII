@@ -13,6 +13,7 @@ import { EgresosFijoImportadora } from '@app/_models/importadora/egresoFijoImpor
 import { EgresosContainerImportadora } from '@app/_models/importadora/egresoContainerImportadora';
 import { ImportadoraService } from '../../../importadora.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-importadora-egresos-tab-gasto-neumaticos-list',
@@ -23,7 +24,7 @@ export class ImportadoraEgresosTabGastoNeumaticosListComponent implements OnInit
 
  // ? childrens
  @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
-
+ @ViewChild(MatSort) sort = null;
  // ? Inputs & Outputs
  @Input()
  refrescar = '';
@@ -97,6 +98,7 @@ getEgreso(){
    });   
    this.dataSource = new MatTableDataSource(this.dataEgresos);
    this.dataSource.paginator = this.paginator.toArray()[0];
+   this.dataSource.sort = this.sort
  });
 }
 
@@ -162,10 +164,12 @@ aplicarfiltros() {
 
 
   // Inicio Filtros
-  limpiarFiltros() {
+  resetTable() {
    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, usuario: null})
    this.dataSource = new MatTableDataSource(this.dataEgresos);
    this.dataSource.paginator = this.paginator.toArray()[0];
+   this.dataSource.paginator['_pageIndex'] = 0
+   this.getEgreso()
    this.selection.clear()
    this.totalSeleccion = 0;
   }

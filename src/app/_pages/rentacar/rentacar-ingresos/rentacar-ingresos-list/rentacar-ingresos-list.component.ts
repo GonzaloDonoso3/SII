@@ -4,7 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { RentacarService } from './../../rentacar.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { AlertHelper } from '@app/_helpers/alert.helper';
 import { ResponseListaArriendos, Arriendo } from '@app/_models/rentacar/responseListaArriendos';
 import { MatDialog } from '@angular/material/dialog'
@@ -39,7 +39,7 @@ export class RentacarIngresosListComponent implements OnInit {
   displayedColumns: string[] = ['select', 'id', 'fecha', 'ingreso', 'patente', 'dias', 'tipo', 'estado', 'sucursal', 'arriendo'];
   dataSource = new MatTableDataSource<ArriendoTabla>();
   selection = new SelectionModel<ArriendoTabla>(true, []);
-  @ViewChild(MatPaginator) paginator = null;
+  @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
   @ViewChild(MatSort) sort = null;
 
   //filtros
@@ -89,7 +89,7 @@ export class RentacarIngresosListComponent implements OnInit {
 
     });
     this.dataSource = new MatTableDataSource(this.arriendosTabla);
-    this.dataSource.paginator = this.paginator;
+    this.dataSource.paginator = this.paginator.toArray()[0];
     this.dataSource.sort = this.sort;
 
   }
@@ -131,7 +131,7 @@ export class RentacarIngresosListComponent implements OnInit {
       }
 
       this.dataSource = new MatTableDataSource(dataFiltered);
-      this.dataSource.paginator = this.paginator;
+      this.dataSource.paginator = this.paginator.toArray()[0];
       this.dataSource.sort = this.sort;
       this.selection.clear();
       this.totalEsperadoSeleccion = 0;
@@ -145,8 +145,9 @@ export class RentacarIngresosListComponent implements OnInit {
     this.formFilter.patchValue({ start: null, end: null, patente: null, sucursal: null, tipo: null, estado: null })
 
     this.dataSource = new MatTableDataSource(this.arriendosTabla);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator.toArray()[0];
+    this.dataSource.paginator['_pageIndex'] = 0
+    this.cargarListaPagosArriendos()
     this.selection.clear()
     this.totalPagadoSeleccion = 0;
     this.totalEsperadoSeleccion = 0;

@@ -48,5 +48,16 @@ export class AgroFirmaProyectosComponent implements OnInit {
     this.modalService.close('apendice')
   }
 
+  updateProjects() {
+    this.agroFirmaService.GetAllProyectos()
+    .subscribe((proyectos: any) => {
+      this.proyectos = proyectos
+    })
+  }
+
+  formReady(datetime: number) {
+    this.updateProjects()
+  }
+
 
 }

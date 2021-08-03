@@ -1,0 +1,56 @@
+<mat-toolbar color="primary">
+    
+    <span style="margin-left: 10px;">Cuentas Bancarias</span>
+    <span style="margin-left: 10px;">
+    </span>
+   
+            
+    
+</mat-toolbar>
+
+<div class="table-responsive">
+    <table mat-table [dataSource]="bankAccounts" matSort matSortActive="id" matSortDirection="desc" style="width: -webkit-fill-available" class="mat-elevation-z10">
+        
+        <!-- ID with checkbox -->
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+        </ng-container>
+
+        
+        
+        <!-- proyecto -->
+        <ng-container matColumnDef="nombreInstitucion">
+            <th mat-header-cell *matHeaderCellDef>Banco</th>
+            <div>
+                <td mat-cell *matCellDef="let element">{{ element.Banco.NombreInstitucion }}</td>
+            </div>
+        </ng-container>
+
+        
+        <ng-container matColumnDef="tipoCuenta">
+            <th mat-header-cell *matHeaderCellDef>Tipo de cuenta</th>
+            <div>
+                <td mat-cell *matCellDef="let element">{{ element.tipoCuenta }}</td>
+            </div>
+        </ng-container>
+
+
+        <!-- descripcion -->
+        <ng-container matColumnDef="numeroCuenta">
+            <th mat-header-cell *matHeaderCellDef>N° de Cuenta</th>
+            <div>
+                <td mat-cell *matCellDef="let element">{{ element.numeroCuenta }}</td>
+            </div>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No existen coincidencias</td>
+        </tr>
+    </table>
+</div>
+<mat-paginator [pageSizeOptions]="[10, 30, 50, 100]"></mat-paginator>

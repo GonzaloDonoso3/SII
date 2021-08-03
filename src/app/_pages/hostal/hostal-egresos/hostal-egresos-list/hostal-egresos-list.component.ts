@@ -10,7 +10,6 @@ import { EgresoHostal } from '@app/_models/hostal/egresoHostal';
 import { Sucursal } from '@app/_models/shared/sucursal';
 import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuentas-bancarias.service';
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
-//import { Console } from 'node:console';
 import { HostalService } from '../../hostal.service';
 import { DatePipe } from "@angular/common";
 
@@ -23,11 +22,10 @@ import { DatePipe } from "@angular/common";
 export class HostalEgresosListComponent implements OnInit, OnChanges {
   // ? childrens
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
-  @ViewChild(MatSort) sort = null;
+  @ViewChild(MatSort) sort = new MatSort;
 
   // ? Inputs & Outputs
-  @Input()
-  refrescar = '';
+  @Input() refrescar = '';
 
   // ? table definitions.
   displayedColumns: string[] = [

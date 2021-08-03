@@ -10,15 +10,13 @@
           <div class="col">
             <mat-form-field class="full-width" style="width:160%">
               <mat-select placeholder="Seleccione Banco" formControlName="idBanco">
-                <mat-option value="Transferencia">
-                  Transferencia
+                <mat-option value="">
+                  Seleccione..
                 </mat-option>
-                <mat-option value="Cheque">
-                  Cheque
+                <mat-option *ngFor="let bank of banks" [value]="bank.id">
+                  {{ bank.NombreInstitucion }}
                 </mat-option>
-                <mat-option value="Efectivo">
-                  Efectivo
-                </mat-option>
+                
               </mat-select>
             </mat-form-field>
           </div>
@@ -59,32 +57,10 @@
       </mat-grid-list>
       <mat-card-actions>
           <button mat-raised-button color="primary" type="submit">
-            <mat-icon id="boton">send</mat-icon> Enviar
+            <mat-icon id="boton">send</mat-icon> Guardar
           </button>
       </mat-card-actions>
     </mat-card>
   </form>
 
-  <table class="mat-elevation-z8">
-
-    <!--- Note that these columns can be defined in any order.
-          The actual rendered columns are set as a property on the row definition" -->
-  
-    <!-- Position Column -->
-    <ng-container >
-      <th> No. </th>
-      <td  > hghkjghjkhkjhkjh </td>
-    </ng-container>
-  
-    <!-- Name Column -->
-    <ng-container >
-      <th > Name </th>
-      <td > kjhkjhkjhkjhkjhkjh </td>
-    </ng-container>
-  
-    
-  
-    <tr ></tr>
-    <tr  ></tr>
-  </table>
   

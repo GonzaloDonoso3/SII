@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Sucursal } from '@app/_models/shared/sucursal';
 import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
+import { MatSort } from '@angular/material/sort';
 
 
 
@@ -20,7 +21,7 @@ export class AbogadosIngresosTabsClientesComponent implements OnInit {
 
   // ? childrens
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
-
+  @ViewChild(MatSort) sort = null;
   // ? Inputs & Outputs
   @Input()
   refrescar = '';
@@ -65,13 +66,13 @@ export class AbogadosIngresosTabsClientesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getClientes();
+    this.updateTable();
     this.aplicarfiltros();
   }
 
 
   // Obtener el listado de cliente desde la BD
-  getClientes() {
+  updateTable() {
     //Carga Tabla 
     this.abogadosTabsService.obtenerClientes().subscribe((Cliente: Cliente[]) => {
       this.dataCliente = Cliente.map(Cliente => {
@@ -79,6 +80,7 @@ export class AbogadosIngresosTabsClientesComponent implements OnInit {
       });
       this.dataSource = new MatTableDataSource(this.dataCliente);
       this.dataSource.paginator = this.paginator.toArray()[0];
+      this.dataSource.sort = this.sort
     });
   }
 
@@ -142,10 +144,12 @@ export class AbogadosIngresosTabsClientesComponent implements OnInit {
   }
 
   //Limpiar los filtros
-  limpiarFiltros() {
+  resetTable() {
     this.formFilter.patchValue({ rut: null, nombre: null, telefono: null, email: null, direccion: null })
     this.dataSource = new MatTableDataSource(this.dataCliente);
     this.dataSource.paginator = this.paginator.toArray()[0];
+    this.dataSource.paginator['_pageIndex'] = 0
+    this.updateTable()
     this.selection.clear()
     this.totalSeleccion = 0;
   }

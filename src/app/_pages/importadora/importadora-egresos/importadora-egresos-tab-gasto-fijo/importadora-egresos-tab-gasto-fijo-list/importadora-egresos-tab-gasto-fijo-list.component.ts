@@ -11,6 +11,7 @@ import { first } from 'rxjs/operators';
 import { Empresa } from '@app/_models/shared/empresa';
 import { EgresosFijoImportadora } from '@app/_models/importadora/egresoFijoImportadora';
 import { ImportadoraService } from '../../../importadora.service';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-importadora-egresos-tab-gasto-fijo-list',
@@ -21,7 +22,7 @@ export class ImportadoraEgresosTabGastoFijoListComponent implements OnInit {
 
    // ? childrens
    @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
-
+   @ViewChild(MatSort) sort = null;
    // ? Inputs & Outputs
    @Input()
    refrescar = '';
@@ -88,6 +89,7 @@ export class ImportadoraEgresosTabGastoFijoListComponent implements OnInit {
      });
      this.dataSource = new MatTableDataSource(this.dataEgresos);
      this.dataSource.paginator = this.paginator.toArray()[0];
+     this.dataSource.sort = this.sort;
    });
  }
 
@@ -161,10 +163,12 @@ export class ImportadoraEgresosTabGastoFijoListComponent implements OnInit {
 
 
  // Inicio Filtros
- limpiarFiltros() {
+ resetTable() {
    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null, vendedor: null, descripcionEgreso: null, usuario: null, codigoAutorizacion: null, medioPago: null})
    this.dataSource = new MatTableDataSource(this.dataEgresos);
    this.dataSource.paginator = this.paginator.toArray()[0];
+   this.dataSource.paginator['_pageIndex'] = 0
+   this.getEgreso()
    this.selection.clear()
    this.totalSeleccion = 0;
  }

@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
-  <button mat-raised-button (click)="limpiarFiltros()" color="accent">
-    Limpiar filtros
+  <button mat-raised-button (click)="resetTable()" color="accent">
+    Actualizar Tabla
   </button>
   <span>Ingresos Lubricentro</span>
   <span>Monto Registros Seleccionados:
@@ -10,8 +10,8 @@
     Revelar total
   </button>
 </mat-toolbar>
-
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z10">
+<div class="table-responsive">
+<table mat-table [dataSource]="dataSource" matSort matSortActive="id" matSortDirection="desc" class="mat-elevation-z8">
   <!-- check column -->
   <ng-container matColumnDef="select">
     <th mat-header-cell *matHeaderCellDef>
@@ -27,12 +27,12 @@
   </ng-container>
   <!-- ID with checkbox -->
   <ng-container matColumnDef="id">
-    <th mat-header-cell *matHeaderCellDef>ID</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
     <td mat-cell *matCellDef="let element">{{ element.id }}</td>
   </ng-container>
   <!-- date with datapicker -->
   <ng-container matColumnDef="fecha" class="mat-column-date">
-    <th mat-header-cell *matHeaderCellDef>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>
       <mat-form-field appearance="fill">
         <mat-label>Fecha</mat-label>
         <mat-date-range-input [formGroup]="formFilter" [rangePicker]="picker">
@@ -46,7 +46,7 @@
         <mat-error *ngIf="formFilter.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
       </mat-form-field>
     </th>
-    <td mat-cell *matCellDef="let element">{{ element.fecha | date: 'dd/MM/yyyy' }}</td>
+    <td mat-cell *matCellDef="let element">{{ element.fecha | date: 'shortDate' }}</td>
   </ng-container>
   <!-- sucursal with text input -->
   <ng-container matColumnDef="sucursal">
@@ -98,7 +98,7 @@
   </ng-container>
   <!-- monto currency fomrat -->
   <ng-container matColumnDef="monto">
-    <th mat-header-cell *matHeaderCellDef>Monto</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Monto</th>
     <td mat-cell *matCellDef="let element">
       {{ element.monto | currency: "$":"symbol":"1.0-0" }}
     </td>
@@ -127,4 +127,5 @@
     <td class="mat-cell" colspan="4">No existen coincidencias</td>
   </tr>
 </table>
+</div>
 <mat-paginator [pageSizeOptions]="[10, 30, 50, 100]"></mat-paginator>

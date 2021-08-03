@@ -1,5 +1,5 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertHelper } from '@app/_helpers/alert.helper';
@@ -18,6 +18,7 @@ export class AgroFirmaProyectosFormComponent implements OnInit {
   @Input() projectId!: Observable<number>
   @Input() project: ProyectoAgrofirma = new ProyectoAgrofirma()
   @Input() flag!: boolean
+  @Output() formReady = new EventEmitter<number>()
   flagForm: boolean = true
   createProjectFlag: boolean = false
   // projectForm!: FormGroup
@@ -110,6 +111,7 @@ export class AgroFirmaProyectosFormComponent implements OnInit {
         .pipe()
         .subscribe((data: any) => {
           this.alert.createAlert("¡Proyecto actualizado!")
+          this.formReady.emit(new Date().getTime())
           this.projectForm.reset()
           Object.keys(this.projectForm.controls).forEach(key => {
             this.projectForm.get(key)?.clearValidators()
@@ -141,6 +143,7 @@ export class AgroFirmaProyectosFormComponent implements OnInit {
           .pipe()
           .subscribe((data: any) => {
             this.alert.createAlert("¡Proyecto registrado!")
+            this.formReady.emit(new Date().getTime())
             this.projectForm.reset()
             Object.keys(this.projectForm.controls).forEach(key => {
               this.projectForm.get(key)?.clearValidators()

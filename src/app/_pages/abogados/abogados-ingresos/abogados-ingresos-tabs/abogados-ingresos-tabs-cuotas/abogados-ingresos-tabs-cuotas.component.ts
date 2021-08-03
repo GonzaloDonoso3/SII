@@ -6,6 +6,7 @@ import { AbogadosTabsService } from '../../../abogados-tabs.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Cuota } from '../../../../../_models/abogados/cuota';
+import { MatSort } from '@angular/material/sort';
 
 
 
@@ -19,17 +20,17 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
 
   // ? childrens
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
-
+  @ViewChild(MatSort) sort = null;
   // ? table definitions.
   displayedColumns: string[] = [
     'select',
     'id',
     'fechaPago',
-    'monto',
+    'montoCuota',
     'estadoPago',
-    'numeroContrato',
-    'fechaRegistro',
-    'fechaActualizacion',
+    'idContrato',
+    'createdAt',
+    'updatedAt',
   ];
 
   // Tabla en donde se almacenará los datos de la bd 
@@ -44,7 +45,7 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
     startActualizacion: new FormControl(),
     endActualizacion: new FormControl(),
     estadoPago: new FormControl(),
-    numeroContrato: new FormControl(),
+    idContrato: new FormControl(),
   })
 
   selection = new SelectionModel<any>(true, []);
@@ -73,6 +74,7 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
       });
       this.dataSource = new MatTableDataSource(this.dataCuotas);
       this.dataSource.paginator = this.paginator.toArray()[0];
+      this.dataSource.sort = this.sort
     });
   }
 
@@ -142,10 +144,12 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
 
 
   //Limpiar los filtros realizados
-  limpiarFiltros() {
+  resetTable() {
     this.formFilter.patchValue({ estadoPago: null, numeroContrato: null, startCompromiso: null, endCompromiso: null, startRegistro: null, endRegistro: null, startActualizacion: null, endActualizacion: null })
     this.dataSource = new MatTableDataSource(this.dataCuotas);
     this.dataSource.paginator = this.paginator.toArray()[0];
+    this.dataSource.paginator['_pageIndex'] = 0
+    this.getCuotas()
     this.selection.clear()
     this.totalSeleccion = 0;
   }

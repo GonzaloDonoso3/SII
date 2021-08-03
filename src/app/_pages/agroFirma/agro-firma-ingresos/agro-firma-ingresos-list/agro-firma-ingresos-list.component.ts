@@ -30,13 +30,15 @@ export class AgroFirmaIngresosListComponent implements OnInit {
   @ViewChild(MatSort) sort = null;
 
   // ? Inputs & Outputs
-  @Input()
-  refrescar = '';
+  @Input() refrescar = '';
+
+  @Input() updateTime!: number
   // Input Decorator para obtener el id del proyecto seleccionado desde el componente padre
   @Input() idProyecto!: Observable<number>
   
   // ? table definitions.
   displayedColumns: string[] = [
+    'select',
     'id',
     'fecha',
     'proyecto',
@@ -68,7 +70,7 @@ export class AgroFirmaIngresosListComponent implements OnInit {
   })
 
 
-  sucursales: Sucursal[] = [];
+  
   proyectos: ProyectoAgrofirma[] = [];
   selection = new SelectionModel<IngresoAgroFirma>(true, []);
   tipoIngreso: any[] = [];
@@ -79,25 +81,32 @@ export class AgroFirmaIngresosListComponent implements OnInit {
   constructor(
     private agroFirmaService: AgroFirmaService,
     public dialog: MatDialog,
-    private sucursalService: SucursalSharedService,
-    private cuentasService: CuentasBancariasService,
-  ) {
-    this.sucursales = this.sucursalService.sucursalListValue;    
-    //this.proyectos = this.agroFirmaService.proyectosListValue;  
+    ) {
     this.tipoIngreso = [{nombre: "EFECTIVO"}, {nombre: "CHEQUE"}, {nombre: "TRANSFERENCIA"}]       
   }
 
   ngOnInit(): void {
     this.aplicarfiltros()
   }
- 
-    ngOnChanges(changes: SimpleChanges) {
-      this.actualizarTabla()
+  
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes.updateTime !== undefined){
+      if(!changes.updateTime.firstChange) {
+        this.actualizarTabla()
+      }
     }
+    if(changes.projectId !== undefined) {
+      if(!changes.projectId.firstChange) {
+        this.actualizarTabla()
+      }
+    }
+  }
 
     actualizarTabla(){                                                   
       this.agroFirmaService.obtenerIngresosPorProyecto(Number(this.idProyecto)).subscribe((data: IngresoAgroFirma[]) => {
-        this.dataIngresos = data;
+        this.dataIngresos = data.map((value) => {
+          return value
+        })
         this.dataSource = new MatTableDataSource(data);        
         this.dataSource.paginator = this.paginator.toArray()[0];
         this.dataSource.sort = this.sort;
@@ -115,7 +124,7 @@ export class AgroFirmaIngresosListComponent implements OnInit {
     exportAsXLSX(): void {
     this.selectedRows = [];
     this.selection.selected.forEach((x) => this.selectedRows.push(x));
-    this.agroFirmaService.exportAsExcelFile(this.selectedRows, 'Egresos-Abogados');
+    this.agroFirmaService.exportAsExcelFile(this.selectedRows, 'ingresos-agrofirma');
     }
 
     aplicarfiltros() {
@@ -123,14 +132,6 @@ export class AgroFirmaIngresosListComponent implements OnInit {
        this.formFilter.valueChanges.subscribe(res => {
 
         let dataFiltered = this.dataIngresos;      
-
-        // if (res.idSucursal) {
-        //   dataFiltered = dataFiltered.filter((data: IngresoAgroFirma) => data.sucursal == res.idSucursal);
-        // }
-
-        // if (res.tipoEgreso) {
-        //   dataFiltered = dataFiltered.filter((data: IngresoAgroFirma) => data.tipoEgreso == res.tipoEgreso);
-        // }
 
         if (res.start && res.end) {
           dataFiltered = dataFiltered.filter((data: IngresoAgroFirma) => new Date(data.fecha) >= res.start && new Date(data.fecha) <= res.end);        
@@ -146,14 +147,14 @@ export class AgroFirmaIngresosListComponent implements OnInit {
   
     // ? filters
     limpiarFiltros() {
-      /* this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null })
-      this.dataSource = new MatTableDataSource(this.dataEgresos);
-      this.dataSource.paginator = this.paginator.toArray()[0];
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator['_pageIndex'] = 0;
-      this.actualizarTabla();
+      this.formFilter.patchValue({ start: null, end: null })
+      this.dataSource = new MatTableDataSource(this.dataIngresos);
+      this.dataSource.paginator = this.paginator.toArray()[0]
+      this.dataSource.sort = this.sort
+      this.dataSource.paginator['_pageIndex'] = 0
+      this.actualizarTabla()
       this.selection.clear()
-      this.totalSeleccion = 0; */
+      this.totalSeleccion = 0
     }
   
   

@@ -70,7 +70,8 @@ calendarOptions!: CalendarOptions;
           let fechaFormateada = this.miDatePipe.transform(data.fecha, "YYYY-MM-dd");                         
           var time1 = moment(fechaInicio).format('YYYY-MM-DD');
           var time2 = moment(fechaTermino).format('YYYY-MM-DD');
-          var time3 = moment(fechaFormateada).format('YYYY-MM-DD');
+          var time3 = moment(fechaFormateada).format('YYYY-MM-DD');          
+          if(data.tipoEgreso == "Prestamos Bancarios" || data.tipoEgreso == "Prestamos Automotriz"){
           if(time3 >= time1 && time3 <= time2)
           {
           //Si la cuota esta por vencerse
@@ -88,6 +89,7 @@ calendarOptions!: CalendarOptions;
               color: 'blue',        
             });
           }
+        }
         });        
         this.calendarOptions = {
           initialView: 'dayGridMonth',

@@ -114,6 +114,9 @@ export class HostalConsolidadosComponent implements OnInit {
   resultado: any[] = []
 
   uniqueArr: any[] = []
+  uniqueArr2: any[] = []
+  fechaUnica: any[] = []
+  
 
   constructor(
     private fb: FormBuilder,
@@ -346,9 +349,7 @@ export class HostalConsolidadosComponent implements OnInit {
                   this.dataIngresosTable = this.dataIngresos.map((ingreso) => {
                     return ingreso
                   })
-                  this.dataSource = new MatTableDataSource(
-                    this.dataIngresosTable
-                  )
+                  this.dataSource = new MatTableDataSource(this.dataIngresosTable)
                   this.dataSource.paginator = this.paginator.toArray()[0]
                   this.dataSource.sort = this.sort
 
@@ -361,37 +362,28 @@ export class HostalConsolidadosComponent implements OnInit {
                   )
                   this.dataSourceEgresos.paginator = this.paginator.toArray()[0]
                   this.dataSourceEgresos.sort = this.sort
-
-                  //*********************INGRESOS*********************
+                                  
+                  
+                  //*********************INGRESOS********************* 
+                  // Obteniendo fecha unica en los ingresos                                   
                   for (var i = 0; i < this.dataIngresos.length; i++) {
-                    if (this.totalIngresoG.length > 0) {
-                      for (var f = 0; f < this.totalIngresoG.length; f++) {
-                        if (
-                          this.dataIngresos[i]['fecha'] ==
-                          this.totalIngresoG[f]['fecha']
-                        ) {
-                          this.sumIngresosG =
-                            this.dataIngresos[i]['monto'] +
-                            this.totalIngresoG[f]['monto']
-                          this.totalIngresoC.push({
-                            fecha: this.totalIngresoG[f]['fecha'],
-                            monto: this.sumIngresosG
-                          })
-                        }
-                      }
-                    }
-                    this.totalIngreso = this.dataIngresos[i]['monto']
-                    // this.ingresoPorDia = this.dataIngresos[i]['fecha'].substring(10,8);
-                    this.ingresoPorDia = this.dataIngresos[i]['fecha']
-                    this.montoIngreso.push(this.totalIngreso)
-                    this.sumIngresos = this.sumIngresos + this.totalIngreso
-
-                    // Guardando en el array para recorrer
-                    this.totalIngresoG.push({
-                      fecha: this.ingresoPorDia,
-                      monto: this.totalIngreso
-                    })
+                    this.uniqueArr.push(this.dataIngresos[i]['fecha']) 
                   }
+                  this.fechaUnica = [...new Set(this.uniqueArr)]
+                  this.fechaUnica.sort()
+                  let sum = 0;
+                  this.fechaUnica.map((num) => {
+                    sum = 0;
+                    this.dataIngresos.filter((num2) => {
+                      if(num2.fecha == num){
+                        sum = sum + num2.monto;
+                      }                      
+                    })                                        
+                    this.totalIngresoG.push(sum)
+                  })                                                    
+                  this.totalIngresoG.map((monto)=>{
+                    this.sumIngresos = this.sumIngresos + monto;
+                  })
                   //*********************EGRESOS*********************
                   for (var i = 0; i < this.dataEgresos.length; i++) {
                     if (this.totalEgresoG.length > 0) {
@@ -431,8 +423,7 @@ export class HostalConsolidadosComponent implements OnInit {
                       this.resultado.push(this.resultadoIE);
                       if (this.totalIngresoC[i]['fecha'] == this.totalEgresoC[k]['fecha']) 
                       {
-                        this.sumG = this.totalIngresoC[i]['monto'] + this.totalEgresoC[k]['monto']
-                        //this.totalG.push({"fecha": this.totalEgresoC[k]['fecha'], "monto": this.sumG});
+                        this.sumG = this.totalIngresoC[i]['monto'] + this.totalEgresoC[k]['monto']                        
                         this.totalG.push(this.totalEgresoC[k]['monto'])
                         this.fechaG.push(this.totalEgresoC[k]['fecha'])
                       }
@@ -732,26 +723,26 @@ export class HostalConsolidadosComponent implements OnInit {
       this.chart = new Chart(this.chartRef.nativeElement, {
       type: 'line',
       data: {
-        labels: [
-          '2021-01-02',
-          '2021-01-03',
-          '2021-01-04',
-          '2021-01-05',
-          '2021-02-06',
-          '2021-02-09',
-          '2021-02-10',
-          '2021-02-11',
-          '2021-03-12',
-          '2021-03-13',
-          '2021-03-14',
-          '2021-03-15'
-        ],
-        //labels: this.fechaG,
+        // labels: [
+        //   '2021-01-02',
+        //   '2021-01-03',
+        //   '2021-01-04',
+        //   '2021-01-05',
+        //   '2021-02-06',
+        //   '2021-02-09',
+        //   '2021-02-10',
+        //   '2021-02-11',
+        //   '2021-03-12',
+        //   '2021-03-13',
+        //   '2021-03-14',
+        //   '2021-03-15'
+        // ],
+        labels: this.fechaUnica,
         datasets: [
           {
             label: 'Ingresos',
             //data: [65, 59, 80, 81, 56, 55, 40],
-            data: this.montoIngreso,
+            data: this.totalIngresoG,
             fill: false,
             borderColor: 'rgb(75, 192, 192)',
             tension: 0.1

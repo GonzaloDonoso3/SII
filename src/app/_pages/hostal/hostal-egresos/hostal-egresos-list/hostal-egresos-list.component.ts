@@ -22,11 +22,10 @@ import { DatePipe } from "@angular/common";
 export class HostalEgresosListComponent implements OnInit, OnChanges {
   // ? childrens
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
-  @ViewChild(MatSort) sort = null;
+  @ViewChild(MatSort) sort = new MatSort;
 
   // ? Inputs & Outputs
-  @Input()
-  refrescar = '';
+  @Input() refrescar = '';
 
   // ? table definitions.
   displayedColumns: string[] = [

@@ -175,13 +175,29 @@ export class InmobiliariaIngresosListComponent implements OnInit {
 
 
   // Filtros
-  limpiarFiltros() {
-    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoIngreso: null, estadoPago: null, cliente: null, nDocumento: null, monto: null })
-    this.dataSource = new MatTableDataSource(this.dataIngresos);
-    this.dataSource.paginator = this.paginator.toArray()[0];
-    this.dataSource.sort = this.sort;
+  resetTable() {
+    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoIngreso: null, estadoPago: null, cliente: null, nDocumento: null })
+    this.dataSource = new MatTableDataSource(this.dataIngresos)
+    this.dataSource.paginator = this.paginator.toArray()[0]
+    this.dataSource.sort = this.sort
+    this.dataSource.paginator['_pageIndex'] = 0
+    this.updateTable()
     this.selection.clear()
-    this.totalSeleccion = 0;
+    this.totalSeleccion = 0
+  }
+
+  updateTable(){
+    this.inmobiliariaService.getAll().subscribe((ingresos: IngresosInmobiliaria[]) => {
+      this.dataIngresos = ingresos.map(ingresos => {
+        ingresos.sucursal = ingresos.Sucursal.razonSocial
+        ingresos.usuario = ingresos.Usuario.nombreUsuario
+        return ingresos
+      });
+      
+      this.dataSource = new MatTableDataSource(this.dataIngresos)
+      this.dataSource.paginator = this.paginator.toArray()[0]
+      this.dataSource.sort = this.sort
+    });
   }
 
   //Metodo exportar excel

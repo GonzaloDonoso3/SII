@@ -11,15 +11,27 @@ import { AgroFirmaEgresosFormComponent } from './agro-firma-egresos/agro-firma-e
 import { HttpClientModule } from '@angular/common/http';
 import { AgroFirmaEgresosListComponent } from './agro-firma-egresos/agro-firma-egresos-list/agro-firma-egresos-list.component';
 import { ModalModule } from '@app/_components/_modal';
-
-
-
+import { AgroFirmaIngresosFormComponent } from './agro-firma-ingresos/agro-firma-ingresos-form/agro-firma-ingresos-form.component';
+import { AgroFirmaIngresosListComponent } from './agro-firma-ingresos/agro-firma-ingresos-list/agro-firma-ingresos-list.component';
+import { AgroFirmaProyectosComponent } from './agro-firma-proyectos/agro-firma-proyectos.component';
+import { AgroFirmaProyectosFormComponent } from './agro-firma-proyectos/agro-firma-proyectos-form/agro-firma-proyectos-form.component';
+import { CreateBankAccountFormComponent } from './agro-firma-ingresos/create-bank-account-form/create-bank-account-form.component';
+import { BankAccountListComponent } from './agro-firma-ingresos/bank-account-list/bank-account-list.component';
 
 @NgModule({
   declarations: [
     AgroFirmaEgresosComponent, 
     AgroFirmaIngresosComponent, 
-    AgroFirmaHomeComponent, AgroFirmaEgresosFormComponent, AgroFirmaEgresosListComponent],
+    AgroFirmaHomeComponent,
+    AgroFirmaEgresosFormComponent,
+    AgroFirmaEgresosListComponent,
+    AgroFirmaIngresosFormComponent,
+    AgroFirmaIngresosListComponent,
+    AgroFirmaProyectosComponent,
+    AgroFirmaProyectosFormComponent,
+    CreateBankAccountFormComponent,
+    BankAccountListComponent,
+    ],
   imports: [
     HttpClientModule,
     CommonModule,
@@ -30,7 +42,8 @@ import { ModalModule } from '@app/_components/_modal';
     ModalModule,
   ],
   exports: [
-    AgroFirmaEgresosFormComponent,    
+    AgroFirmaEgresosFormComponent,
+    AgroFirmaIngresosFormComponent    
   ]
 })
 export class AgroFirmaModule { }

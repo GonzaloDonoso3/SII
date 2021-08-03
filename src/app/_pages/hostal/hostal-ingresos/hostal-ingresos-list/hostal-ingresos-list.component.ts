@@ -1,10 +1,11 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, EventEmitter, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatCalendarView, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DialogShow } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
 import { IngresosHostal } from '@app/_models/hostal/ingresoHostal';
@@ -22,6 +23,7 @@ import { HostalService } from '../../hostal.service';
 export class HostalIngresosListComponent implements OnInit, OnChanges {
   // ? childrens
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
+  @ViewChild(MatSort) sort = new MatSort;
 
   // ? Inputs & Outputs
   @Input()
@@ -104,6 +106,7 @@ export class HostalIngresosListComponent implements OnInit, OnChanges {
         });
         this.dataSource = new MatTableDataSource(this.dataIngresos);
         this.dataSource.paginator = this.paginator.toArray()[0];
+        this.dataSource.sort = this.sort
 
       });
     }
@@ -167,6 +170,7 @@ export class HostalIngresosListComponent implements OnInit, OnChanges {
 
       this.dataSource = new MatTableDataSource(dataFiltered);
       this.dataSource.paginator = this.paginator.toArray()[0];
+      this.dataSource.sort = this.sort
       this.totalSeleccion = 0;
       this.selection.clear();
     })
@@ -178,11 +182,7 @@ export class HostalIngresosListComponent implements OnInit, OnChanges {
 
   // ? filters
   limpiarFiltros() {
-    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoIngreso: null, estadoPago: null, cliente: null, nDocumento: null, monto: null })
-    this.dataSource = new MatTableDataSource(this.dataIngresos);
-    this.dataSource.paginator = this.paginator.toArray()[0];
-    this.selection.clear()
-    this.totalSeleccion = 0;
+    
   }
 
 
@@ -204,13 +204,29 @@ export class HostalIngresosListComponent implements OnInit, OnChanges {
       });
   }
 
-  //Metodo exportar excel
-  exportAsXLSX(): void {
-    this.selectedRows = [];
-    this.selection.selected.forEach((x) => this.selectedRows.push(x));
-    this.hostalService.exportAsExcelFile(this.selectedRows, 'Ingresos-Hostal');
+  resetTable() {
+    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoIngreso: null, estadoPago: null, cliente: null, nDocumento: null })
+    this.dataSource = new MatTableDataSource(this.dataIngresos);
+    this.dataSource.paginator = this.paginator.toArray()[0];
+    this.dataSource.sort = this.sort
+    this.dataSource.paginator['_pageIndex'] = 0
+    this.updateTable()
+    this.selection.clear()
+    this.totalSeleccion = 0;
   }
 
+  updateTable(){
+    this.hostalService.ingresoGetAll().subscribe((ingresos: IngresosHostal[]) => {
+      this.dataIngresos = ingresos.map(ingreso => {
+        ingreso.sucursal = ingreso.Sucursal.razonSocial;
+        ingreso.usuario = ingreso.Usuario.nombreUsuario;
+        return ingreso;
+      });
+      this.dataSource = new MatTableDataSource(this.dataIngresos);
+      this.dataSource.paginator = this.paginator.toArray()[0];
+      this.dataSource.sort = this.sort
+    });
+  }
 
 
 

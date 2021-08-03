@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
     <button mat-raised-button (click)="limpiarFiltros()" color="accent">
-        Limpiar filtros
+        Actualizar Tabla
     </button>
     <span>Ingresos Arriendos Rent A Car</span>
     <span>Monto esperado/pagado:
@@ -39,7 +39,7 @@
         </ng-container>
 
         <ng-container matColumnDef="fecha">
-            <th mat-header-cell *matHeaderCellDef>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
                 <mat-form-field>
                     <mat-label>Fecha</mat-label>
                     <mat-date-range-input [formGroup]="formFilter" [rangePicker]="picker">

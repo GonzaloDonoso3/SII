@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
-    <button mat-raised-button (click)="limpiarFiltros()" color="accent">
-        Limpiar filtros
+    <button mat-raised-button (click)="resetTable()" color="accent">
+        Actualizar Tabla
     </button>
     <span> Ingresos Inmobiliaria </span>
     <span> Monto Registros Seleccionados:
@@ -15,7 +15,10 @@
 </mat-toolbar>
 
 <div class="table-responsive">
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z10">
+    <table mat-table [dataSource]="dataSource"
+        matSort matSortActive="id"
+        matSortDirection="desc"
+        class="mat-elevation-z10">
         <!-- check column -->
 
         <ng-container matColumnDef="select">
@@ -33,12 +36,12 @@
         </ng-container>
         <!-- data columns -->
         <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>ID </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID </th>
             <td mat-cell *matCellDef="let element">{{ element.id }}</td>
         </ng-container>
 
         <ng-container matColumnDef="propiedad">
-            <th mat-header-cell *matHeaderCellDef>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
                 <div [formGroup]="formFilter">
                     <mat-form-field class="fill">
                         <input matInput placeholder="Propiedad" formControlName="Propiedad" />
@@ -49,7 +52,7 @@
         </ng-container>
 
         <ng-container matColumnDef="fecha" class="mat-column-date">
-            <th mat-header-cell *matHeaderCellDef>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
                 <mat-form-field appearance="fill">
                     <mat-label>Fecha</mat-label>
                     <mat-date-range-input [formGroup]="formFilter" [rangePicker]="picker">
@@ -69,13 +72,7 @@
         </ng-container>
 
         <ng-container matColumnDef="monto">
-            <th mat-header-cell *matHeaderCellDef>
-             <div [formGroup]="formFilter">
-                <mat-form-field class="fill">
-                    <input matInput placeholder="Monto" formControlName="monto" />
-                </mat-form-field>
-            </div>
-             </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Monto </th>
             <td mat-cell *matCellDef="let element">
                 {{ element.monto | currency: "$":"symbol":"1.0-0" }}
             </td>

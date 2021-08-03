@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
-    <button mat-raised-button (click)="limpiarFiltros()" color="accent">
-        Limpiar filtros
+    <button mat-raised-button (click)="resetTable()" color="accent">
+        Actualizar Tabla
     </button>
     <span> Egresos Fijos Importadora </span>
     <span> Monto Registros Seleccionados:
@@ -18,7 +18,7 @@
 </mat-toolbar>
 
 <div class="table-responsive">
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z10">
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z10">
         <!-- check column -->
 
         <ng-container matColumnDef="select">
@@ -33,13 +33,13 @@
         </ng-container>
         <!-- data columns -->
         <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>ID </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID </th>
             <td mat-cell *matCellDef="let element">{{ element.id }}</td>
         </ng-container>
 
         <!-- Campo Fecha -->
         <ng-container matColumnDef="fecha" class="mat-column-date">
-            <th mat-header-cell *matHeaderCellDef>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
                 <mat-form-field appearance="fill">
                     <mat-label>Fecha</mat-label>
                     <mat-date-range-input [formGroup]="formFilter" [rangePicker]="picker">
@@ -60,7 +60,7 @@
 
         <!-- Campo Monto -->
         <ng-container matColumnDef="monto">
-            <th mat-header-cell *matHeaderCellDef> Monto </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Monto </th>
             <td mat-cell *matCellDef="let element">
                 {{ element.monto | currency: "$":"symbol":"1.0-0" }}
             </td>

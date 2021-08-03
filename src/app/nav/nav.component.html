@@ -17,11 +17,20 @@
                     </mat-panel-title>
                 </mat-expansion-panel-header>
                 <mat-nav-list>
-                    <a *ngFor="let subitem of subMenuItems" mat-list-item
-                        [routerLink]="'/' + item.url + '/' + subitem.url">
+                    <div *ngIf="item.name != 'AGROFIRMA'; else elseBlock" >
+                        <a *ngFor="let subitem of subMenuItems" mat-list-item
+                            [routerLink]="'/' + item.url + '/' + subitem.url">
                         <mat-icon color="grey">{{ subitem.icon }}</mat-icon>
-                        {{ subitem.name }}
-                    </a>
+                            {{ subitem.name }}
+                        </a>
+                    </div>
+                    <ng-template #elseBlock>
+                        <a *ngFor="let subitemTwo of subMenuItemsAgrofirma" mat-list-item
+                        [routerLink]="'/' + item.url + '/' + subitemTwo.url">
+                    <mat-icon color="grey">{{ subitemTwo.icon }}</mat-icon>
+                        {{ subitemTwo.name }}
+                    </a> 
+                    </ng-template>
                 </mat-nav-list>
             </mat-expansion-panel>
         </mat-accordion>

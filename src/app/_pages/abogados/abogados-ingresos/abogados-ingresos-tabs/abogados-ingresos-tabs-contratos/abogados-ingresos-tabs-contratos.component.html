@@ -5,7 +5,7 @@
     <span> Listado Contratos </span>
     <!-- ***************************** cambiar metodo botón ********************************** -->
     <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="exportAsXLSX()">
-        Exportar
+        Exportar a Excel
     </button>
 
     <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="getContratos()">
@@ -32,8 +32,14 @@
         </ng-container>
         <!-- data columns -->
         <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID </th>
-            <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="limit-width-40">
+                <div [formGroup]="formFilter" class="limit-width-40">
+                    <mat-form-field >
+                        <input matInput placeholder="ID" formControlName="id" />
+                    </mat-form-field>
+                </div>
+            </th>
+                <td mat-cell *matCellDef="let element">{{ element.id }}</td>
         </ng-container>
 
         <!-- Campo Rut -->
@@ -82,11 +88,18 @@
         </ng-container>
 
         <!-- Campo monto -->
+        
         <ng-container matColumnDef="montoContrato">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Monto </th>
-            <td mat-cell *matCellDef="let element">
-                {{ element.montoContrato | currency: "$":"symbol":"1.0-0" }}
-            </td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="limit-width-120">
+                <div [formGroup]="formFilter" class="limit-width-120">
+                    <mat-form-field class="fill">
+                        <input matInput placeholder="Monto Contrato" formControlName="montoContrato" />
+                    </mat-form-field>
+                </div>
+            </th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.montoContrato | currency: "$":"symbol":"1.0-0" }}
+                </td>
         </ng-container>
 
         <!-- Campo Estado Pago-->

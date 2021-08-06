@@ -12,6 +12,7 @@ import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuen
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 import { HostalService } from '../../hostal.service';
 import { DatePipe } from "@angular/common";
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-hostal-egresos-list',
@@ -50,6 +51,8 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
 
   //filtros
   formFilter = new FormGroup({
+    id: new FormControl(),
+    monto: new FormControl(),
     start: new FormControl(),
     end: new FormControl(),
     idSucursal: new FormControl(),
@@ -62,12 +65,13 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
   selection = new SelectionModel<EgresoHostal>(true, []);
   tiposEgresos: string[] = [];
   totalSeleccion = 0;
+  selectedRows!: any[];
   cuentasRegistradas: any[] = [];
   constructor(
     private hostalService: HostalService,
     public dialog: MatDialog,
     private sucursalService: SucursalSharedService,
-    private cuentasService: CuentasBancariasService
+    private snackBar: MatSnackBar
   ) {
     this.sucursales = this.sucursalService.sucursalListValue;
     this.tiposEgresos = this.hostalService.tiposEgresosListValue;    
@@ -143,8 +147,15 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
 
   aplicarfiltros() {
     this.formFilter.valueChanges.subscribe(res => {
-
+      const { id, monto } = res
       let dataFiltered = this.dataEgresos;      
+
+      if (id) {
+        dataFiltered = dataFiltered.filter((data: EgresoHostal) => (data.id).toString().includes(id))
+      }    
+      if (monto) {
+        dataFiltered = dataFiltered.filter((data: EgresoHostal) => (data.monto).toString().includes(monto))
+      }
 
       if (res.idSucursal) {
         dataFiltered = dataFiltered.filter((data: EgresoHostal) => data.sucursal == res.idSucursal);
@@ -195,6 +206,25 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
       this.dataSource.filteredData.forEach(row => {
         this.selection.select(row);
       });
+  }
+
+  exportAsXLSX(): void {
+    this.selectedRows = [];
+    if(this.selection.selected.length == 0) {
+      this.snackBar.open('!Seleccione algún registro!', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+    } else {
+      this.selection.selected.forEach((x) => this.selectedRows.push(x));
+        const newArray = this.selectedRows.map((item) => {
+        const { RespaldoEgresos, Usuario, Sucursal, ...newObject } = item
+        return newObject
+      })
+    
+    this.hostalService.exportAsExcelFile(newArray, 'Lista-Egresos-Rentacar');
+
+    }
   }
 
 }

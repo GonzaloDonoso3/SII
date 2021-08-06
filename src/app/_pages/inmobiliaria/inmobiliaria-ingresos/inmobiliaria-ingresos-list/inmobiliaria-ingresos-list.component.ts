@@ -11,6 +11,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Sucursal } from '@app/_models/shared/sucursal';
 import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-inmobiliaria-ingresos-list',
@@ -46,6 +47,8 @@ export class InmobiliariaIngresosListComponent implements OnInit {
 
 
   formFilter = new FormGroup({
+    id: new FormControl(),
+    monto: new FormControl(),
     start: new FormControl(),
     end: new FormControl(),
     idSucursal: new FormControl(),
@@ -59,11 +62,13 @@ export class InmobiliariaIngresosListComponent implements OnInit {
   tiposIngresos: string[] = [];
   estadosPagos: string[] = [];
   totalSeleccion = 0;
+  selectedRows!: any[]
   cuentasRegistradas: any[] = [];
   constructor(
     private inmobiliariaService: InmobiliariaService,
     public dialog: MatDialog,
-    private sucursalService: SucursalSharedService
+    private sucursalService: SucursalSharedService,
+    private snackBar: MatSnackBar
   ) {
 
   }
@@ -120,12 +125,11 @@ export class InmobiliariaIngresosListComponent implements OnInit {
         this.selection.select(row);
 
       });
-    console.log(this.selection.selected);
+    
   }
 
   revelarTotal() {
     this.totalSeleccion = 0;
-    console.log(this.selection.selected.length);
     this.selection.selected.forEach(data => {
       this.totalSeleccion += data.monto;
     });
@@ -133,9 +137,16 @@ export class InmobiliariaIngresosListComponent implements OnInit {
 
   aplicarfiltros() {
     this.formFilter.valueChanges.subscribe(res => {
+      const { id, monto } = res
 
       let dataFiltered = this.dataIngresos;
 
+      if (id) {
+        dataFiltered = dataFiltered.filter((data: IngresosInmobiliaria) => (data.id).toString().includes(id))
+      }    
+      if (monto) {
+        dataFiltered = dataFiltered.filter((data: IngresosInmobiliaria) => (data.monto).toString().includes(monto))
+      }
       if (res.Propiedad) {
         dataFiltered = dataFiltered.filter((data: IngresosInmobiliaria) => data.propiedad.includes(res.Propiedad));
       }
@@ -191,5 +202,24 @@ export class InmobiliariaIngresosListComponent implements OnInit {
       this.dataSource.paginator = this.paginator.toArray()[0]
       this.dataSource.sort = this.sort
     });
+  }
+
+  exportAsXLSX(): void {
+    this.selectedRows = [];
+    if(this.selection.selected.length == 0) {
+      this.snackBar.open('!Seleccione algún registro!', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+    } else {
+      this.selection.selected.forEach((x) => this.selectedRows.push(x));
+        const newArray = this.selectedRows.map((item) => {
+        const { Sucursal, Usuario, RespaldoIngresoInmobiliaria, ...newObject } = item
+        return newObject
+      })
+    
+    this.inmobiliariaService.exportAsExcelFile(newArray, 'Lista-Egresos-Rentacar');
+
+    }
   }
 }

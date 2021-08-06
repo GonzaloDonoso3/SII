@@ -16,6 +16,7 @@ import { ViewChild } from '@angular/core';
 import { DatePipe } from "@angular/common";
 import { Empresa } from '@app/_models/shared/empresa';
 import { first } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -78,7 +79,7 @@ constructor(
   private abogadosService: AbogadosService,
   public dialog: MatDialog,
   private sucursalService: SucursalSharedService,
-  private cuentasService: CuentasBancariasService
+  private snackBar: MatSnackBar
 ) {
   this.sucursales = this.sucursalService.sucursalListValue;
   this.tiposEgresos = this.abogadosService.tiposEgresosListValue;  
@@ -132,10 +133,24 @@ recuperarArchivos(listArchivos: any) {
 }
 
 //METODO QUE PERMITE EXPORTA A EXCEL
+
 exportAsXLSX(): void {
   this.selectedRows = [];
-  this.selection.selected.forEach((x) => this.selectedRows.push(x));
-  this.abogadosService.exportAsExcelFile(this.selectedRows, 'Egresos-Abogados');
+  if(this.selection.selected.length == 0) {
+    this.snackBar.open('!Seleccione algún registro!', 'cerrar', {
+      duration: 2000,
+      verticalPosition: 'top',
+    });
+  } else {
+    this.selection.selected.forEach((x) => this.selectedRows.push(x));
+      const newArray = this.selectedRows.map((item) => {
+      const { Cliente, Causas, Sucursal, Usuario, RespaldoEgresos, ...newObject } = item
+      return newObject
+    })
+  
+  this.abogadosService.exportAsExcelFile(newArray, 'Lista-Ingresos-Contratos-FirmaAbogados');
+
+  }
 }
 
 

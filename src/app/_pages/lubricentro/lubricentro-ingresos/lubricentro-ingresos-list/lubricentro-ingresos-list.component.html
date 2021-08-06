@@ -9,6 +9,9 @@
   <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="revelarTotal()">
     Revelar total
   </button>
+  <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="exportAsXLSX()">
+    Exportar
+</button>
 </mat-toolbar>
 <div class="table-responsive">
 <table mat-table [dataSource]="dataSource" matSort matSortActive="id" matSortDirection="desc" class="mat-elevation-z8">
@@ -27,13 +30,19 @@
   </ng-container>
   <!-- ID with checkbox -->
   <ng-container matColumnDef="id">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-    <td mat-cell *matCellDef="let element">{{ element.id }}</td>
-  </ng-container>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="limit-width-40">
+        <div [formGroup]="formFilter" class="limit-width-40">
+            <mat-form-field >
+                <input matInput placeholder="ID" formControlName="id" />
+            </mat-form-field>
+        </div>
+    </th>
+        <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+</ng-container>
   <!-- date with datapicker -->
   <ng-container matColumnDef="fecha" class="mat-column-date">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>
-      <mat-form-field appearance="fill">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="limit-width-180">
+      <mat-form-field appearance="fill" class="limit-width-180">
         <mat-label>Fecha</mat-label>
         <mat-date-range-input [formGroup]="formFilter" [rangePicker]="picker">
           <input matStartDate formControlName="start" placeholder="Start date" />
@@ -53,7 +62,7 @@
     <th mat-header-cell *matHeaderCellDef>
       <div [formGroup]="formFilter">
         <mat-form-field class="full-width">
-          <mat-select placeholder="Sucursal" formControlName="idSucursal">
+          <mat-select placeholder="Sucursal">
             <mat-option *ngFor="let sucursal of sucursales" [value]="sucursal.razonSocial">
               {{ sucursal.razonSocial }}
             </mat-option>
@@ -84,25 +93,102 @@
     <th mat-header-cell *matHeaderCellDef>
       <div [formGroup]="formFilter">
         <mat-form-field class="full-width">
-          <mat-select placeholder="Estado Pago" formControlName="estadoPago">
+          <mat-select placeholder="Tipo de Documento" formControlName="estadoPago">
             <mat-option *ngFor="let estado of estadosPagos" [value]="estado">
               {{ estado }}
             </mat-option>
-            <mat-option value="BOLETA"> BOLETA </mat-option>
-            <mat-option value="FACTURA"> FACTURA </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
     </th>
     <td mat-cell *matCellDef="let element">{{ element.estadoPago }}</td>
   </ng-container>
+
+  <ng-container matColumnDef="nDocumento">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>N° de documento</th>
+    <td mat-cell *matCellDef="let element">{{ element.nDocumento }}</td>
+  </ng-container>
+
   <!-- monto currency fomrat -->
   <ng-container matColumnDef="monto">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Monto</th>
-    <td mat-cell *matCellDef="let element">
-      {{ element.monto | currency: "$":"symbol":"1.0-0" }}
-    </td>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="limit-width-60">
+        <div [formGroup]="formFilter" class="limit-width-60">
+            <mat-form-field class="fill">
+                <input matInput placeholder="Monto" formControlName="monto" />
+            </mat-form-field>
+        </div>
+    </th>
+        <td mat-cell *matCellDef="let element">
+            {{ element.monto | currency: "$":"symbol":"1.0-0" }}
+        </td>
+</ng-container>
+
+  <!-- Cliente -->
+  <ng-container matColumnDef="cliente">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Cliente</th>
+    <td mat-cell *matCellDef="let element">{{ element.cliente }}</td>
   </ng-container>
+
+  <ng-container matColumnDef="telefono">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Telefono</th>
+    <td mat-cell *matCellDef="let element">{{ element.telefono }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="correo">
+    <th mat-header-cell *matHeaderCellDef>Correo</th>
+    <td mat-cell *matCellDef="let element">{{ element.correo }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="tipoVehiculo">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo de vehiculo</th>
+    <td mat-cell *matCellDef="let element">{{ element.tipoVehiculo }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="ppu">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>PPU</th>
+    <td mat-cell *matCellDef="let element">{{ element.ppu }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="marca">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>marca</th>
+    <td mat-cell *matCellDef="let element">{{ element.marca }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="modelo">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Modelo</th>
+    <td mat-cell *matCellDef="let element">{{ element.modelo }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="anio">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Año</th>
+    <td mat-cell *matCellDef="let element">{{ element.anio }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="kmActual">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Km Actual</th>
+    <td mat-cell *matCellDef="let element">{{ element.kmActual }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="kmProximo">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Km Próximo</th>
+    <td mat-cell *matCellDef="let element">{{ element.kmProximo }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="referenciaCliente">
+    <th mat-header-cell *matHeaderCellDef>Referencia Cliente</th>
+    <td mat-cell *matCellDef="let element">{{ element.referenciaCliente }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="descripcionIngreso">
+    <th mat-header-cell *matHeaderCellDef>Descripción de ingreso</th>
+    <td mat-cell *matCellDef="let element">{{ element.descripcionIngreso }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="nAutorizacion">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>N° de autorización</th>
+    <td mat-cell *matCellDef="let element">{{ element.nAutorizacion }}</td>
+  </ng-container>
+  
   <!-- usuario with select filter -->
   <!-- TODO add filter rule un types and here -->
   <ng-container matColumnDef="usuario">

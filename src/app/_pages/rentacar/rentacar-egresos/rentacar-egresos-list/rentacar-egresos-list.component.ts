@@ -14,6 +14,7 @@ import { EmpresaSharedService } from '@app/_pages/shared/shared-services/empresa
 import { first } from 'rxjs/operators';
 import { Empresa } from '@app/_models/shared/empresa';
 import { DatePipe } from "@angular/common";
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 
@@ -60,6 +61,8 @@ export class RentacarEgresosListComponent implements OnInit {
   changelog: string[] = [];
 
   formFilter = new FormGroup({
+    id: new FormControl(),
+    monto: new FormControl(),
     start: new FormControl(),
     end: new FormControl(),
     idSucursal: new FormControl(),
@@ -85,8 +88,8 @@ export class RentacarEgresosListComponent implements OnInit {
   constructor(
     private rentacarService: RentacarService,    
     public dialog: MatDialog,
-    private sucursalService: SucursalSharedService,
-    private empresaService: EmpresaSharedService,   
+    private empresaService: EmpresaSharedService,
+    private snackBar: MatSnackBar 
   ) { 
 
   }
@@ -164,8 +167,15 @@ export class RentacarEgresosListComponent implements OnInit {
   aplicarfiltros() {
     this.formFilter.valueChanges.subscribe(res => {
 
+      const { id, monto } = res
       let dataFiltered = this.dataEgresos;
 
+      if (id) {
+        dataFiltered = dataFiltered.filter((data: EgresosRentacar) => (data.id).toString().includes(id))
+      }    
+      if (monto) {
+        dataFiltered = dataFiltered.filter((data: EgresosRentacar) => (data.monto).toString().includes(monto))
+      }
       if (res.descripcionEgreso) {
         dataFiltered = dataFiltered.filter((data: EgresosRentacar) => data.descripcion.includes(res.descripcionEgreso));
       }
@@ -221,9 +231,22 @@ export class RentacarEgresosListComponent implements OnInit {
 
   //Metodo exportar excel
   exportAsXLSX(): void {
-    this.selectedRows = [];
-    this.selection.selected.forEach((x) => this.selectedRows.push(x));
-    this.rentacarService.exportAsExcelFile(this.selectedRows, 'Lista-Egresos-Rentacar');
+    this.selectedRows = []
+    if(this.selection.selected.length == 0) {
+      this.snackBar.open('!Seleccione algún registro!', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      })
+    } else {
+      this.selection.selected.forEach((x) => this.selectedRows.push(x))
+        const newArray = this.selectedRows.map((item) => {
+        const { RespaldoEgresos, Usuario, Sucursal, ...newObject } = item
+        return newObject
+      })
+    
+    this.rentacarService.exportAsExcelFile(newArray, 'Lista-Egresos-Rentacar')
+
+    }
   }
 
   }

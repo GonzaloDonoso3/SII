@@ -21,9 +21,24 @@ mat-toolbar > button {
 
 td,
 th {
-    text-align: center !important;
     padding: 5px !important;
 }
+
+.limit-width-40 {
+    max-width: 40px;
+  }
+
+  .limit-width-60 {
+    max-width: 60px;
+  }
+
+  .limit-width-120 {
+    max-width: 120px;
+  }
+
+  .limit-width-180 {
+    max-width: 180px;
+  }
 
 
 
@@ -32,7 +47,8 @@ th {
 }
 
 .mat-column-id {
-    padding-right: 20px !important;
+    padding-right: 30px !important;
+    max-width: 50px;
 }
 
 .mat-column-fechaContrato {
@@ -56,7 +72,7 @@ th {
 }
 
 .mat-column-montoContrato {
-    padding-right: 20px !important;
+    padding-right: 30px !important;
 }
 
 mat-form-field {

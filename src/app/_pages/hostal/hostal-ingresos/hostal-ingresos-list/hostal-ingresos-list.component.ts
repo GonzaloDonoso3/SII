@@ -1,16 +1,14 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, EventEmitter, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatCheckboxChange } from '@angular/material/checkbox';
-import { MatCalendarView, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
 import { IngresosHostal } from '@app/_models/hostal/ingresoHostal';
 import { Sucursal } from '@app/_models/shared/sucursal';
-import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuentas-bancarias.service';
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 import { HostalService } from '../../hostal.service';
 
@@ -49,6 +47,8 @@ export class HostalIngresosListComponent implements OnInit, OnChanges {
 
 
   formFilter = new FormGroup({
+    id: new FormControl(),
+    monto: new FormControl(),
     start: new FormControl(),
     end: new FormControl(),
     idSucursal: new FormControl(),
@@ -64,12 +64,13 @@ export class HostalIngresosListComponent implements OnInit, OnChanges {
   tiposIngresos: string[] = [];
   estadosPagos: string[] = [];
   totalSeleccion = 0;
+  selectedRows!: any[];
   cuentasRegistradas: any[] = [];
   constructor(
     private hostalService: HostalService,
     public dialog: MatDialog,
     private sucursalService: SucursalSharedService,
-    private cuentasService: CuentasBancariasService
+    private snackBar: MatSnackBar
   ) {
 
   }
@@ -127,8 +128,15 @@ export class HostalIngresosListComponent implements OnInit, OnChanges {
   aplicarfiltros() {
 
     this.formFilter.valueChanges.subscribe(res => {
-
+      const { id, monto } = res
       let dataFiltered = this.dataIngresos;
+
+      if (id) {
+        dataFiltered = dataFiltered.filter((data: IngresosHostal) => (data.id).toString().includes(id))
+      }    
+      if (monto) {
+        dataFiltered = dataFiltered.filter((data: IngresosHostal) => (data.monto).toString().includes(monto))
+      }
 
       if (res.cliente) {
         dataFiltered = dataFiltered.filter((data: IngresosHostal) => data.cliente.includes(res.cliente));
@@ -212,6 +220,25 @@ export class HostalIngresosListComponent implements OnInit, OnChanges {
       this.dataSource.paginator = this.paginator.toArray()[0];
       this.dataSource.sort = this.sort
     });
+  }
+
+  exportAsXLSX(): void {
+    this.selectedRows = [];
+    if(this.selection.selected.length == 0) {
+      this.snackBar.open('!Seleccione algún registro!', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+    } else {
+      this.selection.selected.forEach((x) => this.selectedRows.push(x));
+        const newArray = this.selectedRows.map((item) => {
+        const { RespaldoIngresos, Usuario, Sucursal, ...newObject } = item
+        return newObject
+      })
+    
+    this.hostalService.exportAsExcelFile(newArray, 'Lista-Egresos-Rentacar');
+
+    }
   }
 
 

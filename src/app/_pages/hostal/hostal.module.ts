@@ -16,6 +16,7 @@ import { HostalEgresosListComponent } from './hostal-egresos/hostal-egresos-list
 import { FullCalendarModule } from '@fullcalendar/angular'; 
 
 
+
 @NgModule({
   declarations: [
     HostalHomeComponent,

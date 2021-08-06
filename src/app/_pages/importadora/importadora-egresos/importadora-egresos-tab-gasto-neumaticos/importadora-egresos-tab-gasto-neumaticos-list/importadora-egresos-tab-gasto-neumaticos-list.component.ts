@@ -54,12 +54,14 @@ dataEgresos: EgresosContainerImportadora[] = [];
 changelog: string[] = [];
 
 formFilter = new FormGroup({
- start: new FormControl(),
- end: new FormControl(),
- idSucursal: new FormControl(),
- descripcion: new FormControl(),
- tipoEgreso: new FormControl(),
- usuario: new FormControl(),
+  id: new FormControl(),
+  montoTotal: new FormControl(),
+  start: new FormControl(),
+  end: new FormControl(),
+  idSucursal: new FormControl(),
+  descripcion: new FormControl(),
+  tipoEgreso: new FormControl(),
+  usuario: new FormControl(),
 })
 
 
@@ -142,6 +144,14 @@ revelarTotal() {
 aplicarfiltros() {
  this.formFilter.valueChanges.subscribe((res) => {
    let dataFiltered = this.dataEgresos
+   const { id, montoTotal } = res
+  
+   if (id) {
+    dataFiltered = dataFiltered.filter((data: EgresosContainerImportadora) => (data.id).toString().includes(id))
+  }    
+  if (montoTotal) {
+    dataFiltered = dataFiltered.filter((data: EgresosContainerImportadora) => (data.montoTotal).toString().includes(montoTotal))
+  }
 
    if (res.idSucursal) {
      dataFiltered = dataFiltered.filter((data: EgresosContainerImportadora) => data.Sucursal.razonSocial == res.idSucursal)
@@ -183,9 +193,22 @@ aplicarfiltros() {
   
   //Metodo exportar excel
   exportAsXLSX(): void {
-  this.selectedRows = [];
-  this.selection.selected.forEach((x) => this.selectedRows.push(x));
-  this.importadoraService.exportAsExcelFile(this.selectedRows, 'Lista-Egresos-Conteiner-Importadora');
+    this.selectedRows = [];
+    if(this.selection.selected.length == 0) {
+      this.snackBar.open('!Seleccione algún registro!', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+    } else {
+      this.selection.selected.forEach((x) => this.selectedRows.push(x));
+        const newArray = this.selectedRows.map((item) => {
+        const { Sucursal, Usuario, RespaldoIngresoImportadoras, idSucursal, idUsuario, ...newObject } = item
+        return newObject
+      })
+    
+    this.importadoraService.exportAsExcelFile(newArray, 'Lista-Egresos-Neumaticos-Importadora');
+  
+    }
   }
 
   // Abrir Ventana Modal Registrar Pago

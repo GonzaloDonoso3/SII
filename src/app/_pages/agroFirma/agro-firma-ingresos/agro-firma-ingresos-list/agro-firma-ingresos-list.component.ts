@@ -145,16 +145,13 @@ export class AgroFirmaIngresosListComponent implements OnInit {
     }
 
     aplicarfiltros() {
-
-      
-  
        this.formFilter.valueChanges.subscribe(res => {
         const { id, monto, start, end } = res
         let dataFiltered = this.dataIngresos;  
-        if (res.id) {
+        if (id) {
           dataFiltered = dataFiltered.filter((data: IngresoAgroFirma) => (data.id).toString().includes(id))
         }    
-        if (res.monto) {
+        if (monto) {
           dataFiltered = dataFiltered.filter((data: IngresoAgroFirma) => (data.monto).toString().includes(monto))
         }
         if (res.start && res.end) {

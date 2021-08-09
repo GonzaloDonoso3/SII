@@ -19,10 +19,7 @@
             </mat-option>
             <mat-option value="3">
                 Egresos
-            </mat-option>            
-            <mat-option value="1">
-                Ingresos - Egresos
-            </mat-option>
+            </mat-option>                        
             <!-- <mat-option value="1">
                 Inversiones
             </mat-option> -->
@@ -415,15 +412,15 @@
 
 <!-- -----------GRAFICOS------------- -->
     
-    <div *ngIf="montoIngreso.length > 0">
-    <!-- <div *ngIf="totalG.length > 0"> -->
+    <!-- <div *ngIf="montoIngreso.length > 0"> -->
+    <div *ngIf="totalIngresoG.length > 0">
     <canvas #barChart>
       {{chart}}
     </canvas>
     </div>
 
-    <div *ngIf="montoEgreso.length > 0">
-        <!-- <div *ngIf="totalG.length > 0"> -->
+    <!-- <div *ngIf="montoEgreso.length > 0"> -->
+        <div *ngIf="totalEgresoG.length > 0">
         <canvas #barChart>
           {{chart}}
         </canvas>

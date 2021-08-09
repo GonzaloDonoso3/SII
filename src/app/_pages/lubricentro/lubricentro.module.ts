@@ -13,7 +13,8 @@ import { MaterialModule } from '@app/material.module';
 import { ComponentsModule } from '@app/_components/components.module';
 import { FullCalendarModule } from '@fullcalendar/angular'; 
 import dayGridPlugin from '@fullcalendar/daygrid'; 
-import interactionPlugin from '@fullcalendar/interaction'; 
+import interactionPlugin from '@fullcalendar/interaction';
+import { LubricentroEgresosCuotasComponent } from './lubricentro-egresos/lubricentro-egresos-list/lubricentro-egresos-cuotas/lubricentro-egresos-cuotas.component'; 
 
 FullCalendarModule.registerPlugins([ 
   dayGridPlugin,
@@ -28,7 +29,8 @@ FullCalendarModule.registerPlugins([
     LubricentroEgresosListComponent,
     LubricentroEgresosFormComponent,
     LubricentroIngresosFormComponent,
-    LubricentroIngresosListComponent
+    LubricentroIngresosListComponent,    
+    LubricentroEgresosCuotasComponent
   ],
   imports: [
     CommonModule,

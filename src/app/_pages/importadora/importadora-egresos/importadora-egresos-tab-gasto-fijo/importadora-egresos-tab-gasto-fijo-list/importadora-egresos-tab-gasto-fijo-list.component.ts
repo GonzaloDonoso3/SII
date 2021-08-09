@@ -12,6 +12,7 @@ import { Empresa } from '@app/_models/shared/empresa';
 import { EgresosFijoImportadora } from '@app/_models/importadora/egresoFijoImportadora';
 import { ImportadoraService } from '../../../importadora.service';
 import { MatSort } from '@angular/material/sort';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-importadora-egresos-tab-gasto-fijo-list',
@@ -47,6 +48,8 @@ export class ImportadoraEgresosTabGastoFijoListComponent implements OnInit {
  changelog: string[] = [];
 
  formFilter = new FormGroup({
+   id: new FormControl(),
+   monto: new FormControl(),
    start: new FormControl(),
    end: new FormControl(),
    idSucursal: new FormControl(),
@@ -71,6 +74,7 @@ export class ImportadoraEgresosTabGastoFijoListComponent implements OnInit {
    public dialog: MatDialog,
    private empresaService: EmpresaSharedService,
    private importadoraService: ImportadoraService,
+   private snackBar: MatSnackBar
  ) { }
 
  ngOnInit(): void {
@@ -133,6 +137,13 @@ export class ImportadoraEgresosTabGastoFijoListComponent implements OnInit {
  aplicarfiltros() {
    this.formFilter.valueChanges.subscribe((res) => {
      let dataFiltered = this.dataEgresos
+    const { id, monto } = res
+     if (id) {
+      dataFiltered = dataFiltered.filter((data: EgresosFijoImportadora) => (data.id).toString().includes(id))
+    }    
+    if (monto) {
+      dataFiltered = dataFiltered.filter((data: EgresosFijoImportadora) => (data.monto).toString().includes(monto))
+    }
 
      if (res.descripcion) {
        dataFiltered = dataFiltered.filter((data: EgresosFijoImportadora) => data.descripcion == res.descripcion)
@@ -183,10 +194,24 @@ export class ImportadoraEgresosTabGastoFijoListComponent implements OnInit {
  }
 
  //Metodo exportar excel
+
 exportAsXLSX(): void {
- this.selectedRows = [];
- this.selection.selected.forEach((x) => this.selectedRows.push(x));
- this.importadoraService.exportAsExcelFile(this.selectedRows, 'Lista-Egresos-Fijos-Importadora');
+  this.selectedRows = [];
+  if(this.selection.selected.length == 0) {
+    this.snackBar.open('!Seleccione algún registro!', 'cerrar', {
+      duration: 2000,
+      verticalPosition: 'top',
+    });
+  } else {
+    this.selection.selected.forEach((x) => this.selectedRows.push(x));
+      const newArray = this.selectedRows.map((item) => {
+      const { Sucursal, Usuario, RespaldoIngresoImportadoras, idSucursal, idUsuario, ...newObject } = item
+      return newObject
+    })
+  
+  this.importadoraService.exportAsExcelFile(newArray, 'Lista-Egresos-Fijos-Importadora');
+
+  }
 }
 
 }

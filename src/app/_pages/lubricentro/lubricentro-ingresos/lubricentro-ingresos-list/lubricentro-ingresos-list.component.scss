@@ -17,14 +17,37 @@ mat-toolbar {
     overflow-x: auto !important;
 }
 
+.mat-column-id {
+  padding-right: 30px;
+  max-width: 50px;
+}
+
+.limit-width-40 {
+  max-width: 40px;
+}
+
+.limit-width-60 {
+  max-width: 60px;
+}
+
+.limit-width-80 {
+  max-width: 80px;
+}
+
+.limit-width-120 {
+  max-width: 120px;
+}
+
+.limit-width-180 {
+  max-width: 180px;
+}
+
 .mat-column-select {
   padding-right: 20px;
 }
-.mat-column-id {
-  padding-right: 20px;
-}
+
 .mat-column-fecha {
-  padding-right: 20px;
+  padding-right: 30px;
 }
 .mat-column-sucursal {
   padding-right: 20px;
@@ -36,7 +59,7 @@ mat-toolbar {
   padding-right: 20px;
 }
 .mat-column-monto {
-  padding-right: 20px;
+  padding-right: 30px;
 }
 .mat-column-tipoIngreso {
   padding-right: 20px;
@@ -50,6 +73,59 @@ mat-toolbar {
 .mat-column-nDocumento {
   padding-right: 20px;
 }
+
+.mat-column-telefono {
+  padding-right: 20px;
+}
+
+.mat-column-correo {
+  padding-right: 20px;
+}
+
+.mat-column-tipoVehiculo {
+  padding-right: 20px;
+}
+
+.mat-column-ppu {
+  padding-right: 20px;
+}
+
+.mat-column-marca {
+  padding-right: 20px;
+}
+
+.mat-column-modelo {
+  padding-right: 20px;
+}
+
+.mat-column-anio {
+  padding-right: 20px;
+}
+
+.mat-column-kmActual {
+  padding-right: 20px;
+}
+
+.mat-column-kmProximo {
+  padding-right: 20px;
+}
+
+.mat-column-referenciaCliente {
+  padding-right: 20px;
+}
+
+.mat-column-descripcionIngreso {
+  padding-right: 20px;
+}
+
+.mat-column-nDocumento {
+  padding-right: 20px;
+}
+
+.mat-column-nAutorizacion {
+  padding-right: 20px;
+}
+
 mat-form-field {
   width: 100%;
 }

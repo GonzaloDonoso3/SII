@@ -12,6 +12,7 @@ import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuen
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 import { LubricentroService } from '../../lubricentro.service';
 import { DatePipe } from "@angular/common";
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-lubricentro-egresos-list',
@@ -39,6 +40,8 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
     'respaldos',
     'tipoEgreso',
     'sucursal',
+    'responsable',
+    'descripcion',
     'usuario',
     'numeroCuota'
   ];
@@ -53,25 +56,27 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
 
   //filtros
   formFilter = new FormGroup({
+    id: new FormControl(),
+    monto: new FormControl(),
     start: new FormControl(),
     end: new FormControl(),
     idSucursal: new FormControl(),
     tipoEgreso: new FormControl(),
-    numeroCuota: new FormControl(),
-    monto: new FormControl(),
+    numeroCuota: new FormControl(),    
   })
 
   sucursales: Sucursal[] = [];
   selection = new SelectionModel<EgresoLubricentro>(true, []);
+  selectedRows!: any[];
   tiposEgresos: string[] = [];
   totalSeleccion = 0;
   cuentasRegistradas: any[] = [];
-  selectedRows!: any[];
+  
   constructor(
     private lubricentroService: LubricentroService,
     public dialog: MatDialog,
     private sucursalService: SucursalSharedService,
-    private cuentasService: CuentasBancariasService
+    private snackBar: MatSnackBar
   ) {
     this.sucursales = this.sucursalService.sucursalListValue;
     this.tiposEgresos = this.lubricentroService.tiposEgresosListValue;
@@ -79,15 +84,23 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.aplicarfiltros();
+    this.actualizarTabla()
   }
 
 
 
   aplicarfiltros() {
     this.formFilter.valueChanges.subscribe(res => {
+      const { id, monto } = res
 
       let dataFiltered = this.dataEgresos;
 
+      if (id) {
+        dataFiltered = dataFiltered.filter((data: EgresoLubricentro) => (data.id).toString().includes(id))
+      }    
+      if (monto) {
+        dataFiltered = dataFiltered.filter((data: EgresoLubricentro) => (data.monto).toString().includes(monto))
+      }
       if (res.idSucursal) {
         dataFiltered = dataFiltered.filter((data: EgresoLubricentro) => data.sucursal == res.idSucursal);
       }
@@ -215,8 +228,21 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
   //Metodo exportar excel
   exportAsXLSX(): void {
     this.selectedRows = [];
-    this.selection.selected.forEach((x) => this.selectedRows.push(x));
-    this.lubricentroService.exportAsExcelFile(this.selectedRows, 'Egresos-Lubricentro');
+    if(this.selection.selected.length == 0) {
+      this.snackBar.open('!Seleccione algún registro!', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+    } else {
+      this.selection.selected.forEach((x) => this.selectedRows.push(x));
+        const newArray = this.selectedRows.map((item) => {
+        const { RespaldoEgresoLubricentros, Usuario, Sucursal, ...newObject } = item
+        return newObject
+      })
+    
+    this.lubricentroService.exportAsExcelFile(newArray, 'Lista-Egresos-Rentacar');
+
+    }
   }
 
 

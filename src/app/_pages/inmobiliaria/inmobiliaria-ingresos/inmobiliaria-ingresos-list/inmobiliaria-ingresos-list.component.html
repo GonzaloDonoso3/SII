@@ -9,9 +9,9 @@
     <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="revelarTotal()">
         Revelar total
     </button>
-    <button mat-raised-button color="accent" (click)="exportAsXLSX()" style="margin: 10px">
-        Exportar a excel
-    </button>    
+    <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="exportAsXLSX()">
+        Exportar
+    </button>
 </mat-toolbar>
 
 <div class="table-responsive">
@@ -36,8 +36,14 @@
         </ng-container>
         <!-- data columns -->
         <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID </th>
-            <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="limit-width-40">
+                <div [formGroup]="formFilter" class="limit-width-40">
+                    <mat-form-field >
+                        <input matInput placeholder="ID" formControlName="id" />
+                    </mat-form-field>
+                </div>
+            </th>
+                <td mat-cell *matCellDef="let element">{{ element.id }}</td>
         </ng-container>
 
         <ng-container matColumnDef="propiedad">
@@ -72,10 +78,16 @@
         </ng-container>
 
         <ng-container matColumnDef="monto">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Monto </th>
-            <td mat-cell *matCellDef="let element">
-                {{ element.monto | currency: "$":"symbol":"1.0-0" }}
-            </td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="limit-width-60">
+                <div [formGroup]="formFilter" class="limit-width-60">
+                    <mat-form-field class="fill">
+                        <input matInput placeholder="Monto" formControlName="monto" />
+                    </mat-form-field>
+                </div>
+            </th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.monto | currency: "$":"symbol":"1.0-0" }}
+                </td>
         </ng-container>
 
         <ng-container matColumnDef="tipoIngreso">

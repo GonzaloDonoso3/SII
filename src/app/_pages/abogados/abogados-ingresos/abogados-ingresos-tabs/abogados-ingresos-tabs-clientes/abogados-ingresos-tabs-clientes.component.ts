@@ -9,6 +9,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Sucursal } from '@app/_models/shared/sucursal';
 import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
 import { MatSort } from '@angular/material/sort';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 
@@ -43,6 +44,7 @@ export class AbogadosIngresosTabsClientesComponent implements OnInit {
 
 
   formFilter = new FormGroup({
+    id: new FormControl(),
     rut: new FormControl(),
     nombre: new FormControl(),
     telefono: new FormControl(),
@@ -61,6 +63,7 @@ export class AbogadosIngresosTabsClientesComponent implements OnInit {
   constructor(
     private abogadosTabsService: AbogadosTabsService,
     public dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {
 
   }
@@ -107,9 +110,13 @@ export class AbogadosIngresosTabsClientesComponent implements OnInit {
   // Filtros
   aplicarfiltros() {
     this.formFilter.valueChanges.subscribe(res => {
-
+      const { id } = res
       let dataFiltered = this.dataCliente;
 
+      if (res.id) {
+        dataFiltered = dataFiltered.filter((data: Cliente) => (data.id).toString().includes(id))
+      }    
+      
       //Filtro Rut
       if (res.rut) {
         dataFiltered = dataFiltered.filter((data: Cliente) => data.rut.includes(res.rut));
@@ -164,7 +171,20 @@ export class AbogadosIngresosTabsClientesComponent implements OnInit {
   //Metodo exportar excel
   exportAsXLSX(): void {
     this.selectedRows = [];
-    this.selection.selected.forEach((x) => this.selectedRows.push(x));
-    this.abogadosTabsService.exportAsExcelFile(this.selectedRows, 'Lista-Clientes');
+    if(this.selection.selected.length == 0) {
+      this.snackBar.open('!Seleccione algún registro!', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+    } else {
+      this.selection.selected.forEach((x) => this.selectedRows.push(x));
+        const newArray = this.selectedRows.map((item) => {
+        const { Cliente, Causas, Sucursal, Usuario, idUsuario, ...newObject } = item
+        return newObject
+      })
+    
+    this.abogadosTabsService.exportAsExcelFile(newArray, 'Lista-Ingresos-Clientes-FirmaAbogados');
+
+    }
   }
 }

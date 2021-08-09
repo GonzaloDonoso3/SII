@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
 import { Observable } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -56,6 +57,8 @@ export class AgroFirmaEgresosListComponent implements OnInit {
 
   //filtros
   formFilter = new FormGroup({
+    id: new FormControl(),
+    monto: new FormControl(),
     start: new FormControl(),
     end: new FormControl(),
     idSucursal: new FormControl(),
@@ -79,6 +82,7 @@ export class AgroFirmaEgresosListComponent implements OnInit {
     private agroFirmaService: AgroFirmaService,
     public dialog: MatDialog,
     private sucursalService: SucursalSharedService,
+    private snackBar: MatSnackBar
   ) {
     this.sucursales = this.sucursalService.sucursalListValue;    
     this.tiposEgresos = this.agroFirmaService.tiposEgresosListValue;         
@@ -128,10 +132,24 @@ export class AgroFirmaEgresosListComponent implements OnInit {
     }
     
     //METODO QUE PERMITE EXPORTA A EXCEL
+    
     exportAsXLSX(): void {
-    this.selectedRows = [];
-    this.selection.selected.forEach((x) => this.selectedRows.push(x));
-    this.agroFirmaService.exportAsExcelFile(this.selectedRows, 'Egresos-Agrofirma');
+      this.selectedRows = [];
+      if(this.selection.selected.length == 0) {
+        this.snackBar.open('!Seleccione algún registro!', 'cerrar', {
+          duration: 2000,
+          verticalPosition: 'top',
+        });
+      } else {
+        this.selection.selected.forEach((x) => this.selectedRows.push(x));
+          const newArray = this.selectedRows.map((item) => {
+          const { idCuentaProyecto, idUsuario, idProyecto, ProyectoAgrofirma, RespaldoEgresos, ...newObject } = item
+          return newObject
+        })
+      
+      this.agroFirmaService.exportAsExcelFile(newArray, 'Lista-Ingresos-Contratos-FirmaAbogados');
+  
+      }
     }
 
   
@@ -146,8 +164,15 @@ export class AgroFirmaEgresosListComponent implements OnInit {
   
     aplicarfiltros() {
       this.formFilter.valueChanges.subscribe(res => {
-  
-        let dataFiltered = this.dataEgresos;      
+        const { id, monto, start, end } = res
+        let dataFiltered = this.dataEgresos;  
+        
+        if (res.id) {
+          dataFiltered = dataFiltered.filter((data: EgresoAgroFirma) => (data.id).toString().includes(id))
+        }    
+        if (res.monto) {
+          dataFiltered = dataFiltered.filter((data: EgresoAgroFirma) => (data.monto).toString().includes(monto))
+        }
   
         if (res.idSucursal) {
           dataFiltered = dataFiltered.filter((data: EgresoAgroFirma) => data.sucursal == res.idSucursal);
@@ -158,7 +183,7 @@ export class AgroFirmaEgresosListComponent implements OnInit {
         }
   
         if (res.start && res.end) {
-          dataFiltered = dataFiltered.filter((data: EgresoAgroFirma) => new Date(data.fecha) >= res.start && new Date(data.fecha) <= res.end);        
+          dataFiltered = dataFiltered.filter((data: EgresoAgroFirma) => new Date(data.fecha) >= start && new Date(data.fecha) <= end);        
         }
   
         this.dataSource = new MatTableDataSource(dataFiltered);

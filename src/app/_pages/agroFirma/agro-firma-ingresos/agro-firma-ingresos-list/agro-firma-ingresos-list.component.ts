@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChildren, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, QueryList, SimpleChanges, ViewChildren, ViewChild } from '@angular/core';
 import { DatePipe } from "@angular/common";
 import { MatPaginator } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -6,16 +6,16 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { IngresoAgroFirma } from '@app/_models/agroFirma/ingresoAgroFirma';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Sucursal } from '@app/_models/shared/sucursal';
+
 import { ProyectoAgrofirma } from '@app/_models/agroFirma/proyectoAgroFirma';
 import { AgroFirmaService } from '@app/_pages/agroFirma/agro-firma.service';
 import { MatDialog } from '@angular/material/dialog';
-import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuentas-bancarias.service';
-import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
+
+
 import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { first } from 'rxjs/operators';
+
 import { Observable } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-agro-firma-ingresos-list',
@@ -34,7 +34,7 @@ export class AgroFirmaIngresosListComponent implements OnInit {
 
   @Input() updateTime!: number
   // Input Decorator para obtener el id del proyecto seleccionado desde el componente padre
-  @Input() idProyecto!: Observable<number>
+  @Input() projectId!: Observable<number>
   
   // ? table definitions.
   displayedColumns: string[] = [
@@ -66,7 +66,9 @@ export class AgroFirmaIngresosListComponent implements OnInit {
   formFilter = new FormGroup({
     start: new FormControl(),
     end: new FormControl(),
-    fecha: new FormControl()
+    id: new FormControl(),
+    fecha: new FormControl(),
+    monto: new FormControl()
   })
 
 
@@ -81,6 +83,7 @@ export class AgroFirmaIngresosListComponent implements OnInit {
   constructor(
     private agroFirmaService: AgroFirmaService,
     public dialog: MatDialog,
+    private snackBar: MatSnackBar
     ) {
     this.tipoIngreso = [{nombre: "EFECTIVO"}, {nombre: "CHEQUE"}, {nombre: "TRANSFERENCIA"}]       
   }
@@ -103,7 +106,7 @@ export class AgroFirmaIngresosListComponent implements OnInit {
   }
 
     actualizarTabla(){                                                   
-      this.agroFirmaService.obtenerIngresosPorProyecto(Number(this.idProyecto)).subscribe((data: IngresoAgroFirma[]) => {
+      this.agroFirmaService.obtenerIngresosPorProyecto(Number(this.projectId)).subscribe((data: IngresoAgroFirma[]) => {
         this.dataIngresos = data.map((value) => {
           return value
         })
@@ -121,26 +124,44 @@ export class AgroFirmaIngresosListComponent implements OnInit {
     }
     
     //METODO QUE PERMITE EXPORTA A EXCEL
+    
     exportAsXLSX(): void {
-    this.selectedRows = [];
-    this.selection.selected.forEach((x) => this.selectedRows.push(x));
-    this.agroFirmaService.exportAsExcelFile(this.selectedRows, 'ingresos-agrofirma');
+      this.selectedRows = [];
+      if(this.selection.selected.length == 0) {
+        this.snackBar.open('!Seleccione algún registro!', 'cerrar', {
+          duration: 2000,
+          verticalPosition: 'top',
+        });
+      } else {
+        this.selection.selected.forEach((x) => this.selectedRows.push(x));
+          const newArray = this.selectedRows.map((item) => {
+          const { idCuentaProyecto, idUsuario, idProyecto, ProyectoAgrofirma, ...newObject } = item
+          return newObject
+        })
+      
+      this.agroFirmaService.exportAsExcelFile(newArray, 'Lista-Ingresos-Contratos-FirmaAbogados');
+  
+      }
     }
 
     aplicarfiltros() {
-  
        this.formFilter.valueChanges.subscribe(res => {
-
-        let dataFiltered = this.dataIngresos;      
-
+        const { id, monto, start, end } = res
+        let dataFiltered = this.dataIngresos;  
+        if (id) {
+          dataFiltered = dataFiltered.filter((data: IngresoAgroFirma) => (data.id).toString().includes(id))
+        }    
+        if (monto) {
+          dataFiltered = dataFiltered.filter((data: IngresoAgroFirma) => (data.monto).toString().includes(monto))
+        }
         if (res.start && res.end) {
-          dataFiltered = dataFiltered.filter((data: IngresoAgroFirma) => new Date(data.fecha) >= res.start && new Date(data.fecha) <= res.end);        
+          dataFiltered = dataFiltered.filter((data: IngresoAgroFirma) => new Date(data.fecha) >= res.start && new Date(data.fecha) <= res.end)        
         }
 
-        this.dataSource = new MatTableDataSource(dataFiltered);
-        this.dataSource.paginator = this.paginator.toArray()[0];
-        this.dataSource.sort = this.sort;
-        this.selection.clear();
+        this.dataSource = new MatTableDataSource(dataFiltered)
+        this.dataSource.paginator = this.paginator.toArray()[0]
+        this.dataSource.sort = this.sort
+        this.selection.clear()
       }) 
     }
   

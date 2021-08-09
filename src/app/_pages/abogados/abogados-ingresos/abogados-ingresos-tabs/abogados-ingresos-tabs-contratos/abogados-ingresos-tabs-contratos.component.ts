@@ -1,17 +1,18 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Component, Input, OnInit, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
+import { Component, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { AbogadosTabsService } from '../../../abogados-tabs.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Sucursal } from '@app/_models/shared/sucursal';
 import { Cliente } from '@app/_models/shared/cliente';
 import { Contrato } from '../../../../../_models/abogados/contrato';
-import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
+
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
-import { AgGridAngular } from 'ag-grid-angular';
+
 import { MatSort } from '@angular/material/sort';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 
@@ -50,14 +51,15 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
 
   // Definir el formulario que permitirá aplicar los filtros
   formFilter = new FormGroup({
+    id: new FormControl(),
+    montoContrato: new FormControl(),
     rut: new FormControl(),
     cliente: new FormControl(),
     estadoPago: new FormControl(),
     sucursal: new FormControl(),
     usuario: new FormControl(),
     start: new FormControl(),
-    end: new FormControl(),
-    montoContrato: new FormControl(),
+    end: new FormControl(),    
   })
 
   sucursales: Sucursal[] = [];
@@ -72,6 +74,7 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
     private abogadosTabsService: AbogadosTabsService,
     private sucursalService: SucursalSharedService,
     public dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {
 
   }
@@ -124,7 +127,7 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
   // Filtros
   aplicarfiltros() {
     this.formFilter.valueChanges.subscribe(res => {
-
+      const { id, montoContrato } = res
       let dataFiltered = this.dataContrato;
 
       //Filtro Rut
@@ -132,6 +135,12 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
         dataFiltered = dataFiltered.filter((data: any) => data.clienteRut == res.rut);
       }
 
+      if (id) {
+        dataFiltered = dataFiltered.filter((data: Contrato) => (data.id).toString().includes(id))
+      }    
+      if (montoContrato) {
+        dataFiltered = dataFiltered.filter((data: Contrato) => (data.montoContrato).toString().includes(montoContrato))
+      }
       //Filtro Cliente
       if (res.cliente) {
         dataFiltered = dataFiltered.filter((data: Contrato) => data.cliente == res.cliente);
@@ -198,7 +207,20 @@ export class AbogadosIngresosTabsContratosComponent implements OnInit {
   //Metodo exportar excel
   exportAsXLSX(): void {
     this.selectedRows = [];
-    this.selection.selected.forEach((x) => this.selectedRows.push(x));
-    this.abogadosTabsService.exportAsExcelFile(this.selectedRows, 'Lista-Contratos');
+    if(this.selection.selected.length == 0) {
+      this.snackBar.open('!Seleccione algún registro!', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+    } else {
+      this.selection.selected.forEach((x) => this.selectedRows.push(x));
+        const newArray = this.selectedRows.map((item) => {
+        const { Cliente, Causas, Sucursal, Usuario, ...newObject } = item
+        return newObject
+      })
+    
+    this.abogadosTabsService.exportAsExcelFile(newArray, 'Lista-Ingresos-Contratos-FirmaAbogados');
+
+    }
   }
 }

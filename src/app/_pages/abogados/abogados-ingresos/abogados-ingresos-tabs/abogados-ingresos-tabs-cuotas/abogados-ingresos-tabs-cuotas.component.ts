@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Cuota } from '../../../../../_models/abogados/cuota';
 import { MatSort } from '@angular/material/sort';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 
@@ -39,6 +40,8 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
 
   // Definir el formulario que permitirá aplicar los filtros
   formFilter = new FormGroup({
+    id: new FormControl(),
+    montoCuota: new FormControl(),
     fechaPago: new FormControl(),
     startRegistro: new FormControl(),
     endRegistro: new FormControl(),
@@ -56,6 +59,7 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
   constructor(
     private abogadosTabsService: AbogadosTabsService,
     public dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) { }
 
   //Metodo que se ejecuta al abrir la página
@@ -101,12 +105,20 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
   // Filtros
   aplicarfiltros() {
     this.formFilter.valueChanges.subscribe(res => {
-
+      const { id, montoCuota } = res
       let dataFiltered = this.dataCuotas;
 
       //Filtro Estado
       if (res.estadoPago) {
         dataFiltered = dataFiltered.filter((data: Cuota) => data.estado == res.estadoPago);
+      }
+
+      if ( id ) {
+        dataFiltered = dataFiltered.filter((data: Cuota) => (data.id).toString().includes(id))
+      }
+
+      if ( montoCuota ) {
+        dataFiltered = dataFiltered.filter((data: Cuota) => (data.montoCuota).toString().includes(montoCuota))
       }
 
       //Filtro Numero Contrato
@@ -162,7 +174,20 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
   //Metodo exportar excel
   exportAsXLSX(): void {
     this.selectedRows = [];
-    this.selection.selected.forEach((x) => this.selectedRows.push(x));
-    this.abogadosTabsService.exportAsExcelFile(this.selectedRows, 'Lista-Cuotas');
+    if(this.selection.selected.length == 0) {
+      this.snackBar.open('!Seleccione algún registro!', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+    } else {
+      this.selection.selected.forEach((x) => this.selectedRows.push(x));
+        const newArray = this.selectedRows.map((item) => {
+        const { Cliente, Causas, Sucursal, Usuario, idUsuario, ...newObject } = item
+        return newObject
+      })
+    
+    this.abogadosTabsService.exportAsExcelFile(newArray, 'Lista-Ingresos-Contratos-FirmaAbogados');
+
+    }
   }
 }

@@ -13,6 +13,8 @@ const EXCEL_TYPE =
 const EXCEL_EXTENSION = '.xlsx';
 
 
+/* Fin Import Excel */
+
 @Injectable({
   providedIn: 'root'
 })
@@ -174,7 +176,8 @@ export class InmobiliariaService {
     const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
     FileSaver.saveAs(
       data,
-      fileName + 'export' + new Date().getTime() + EXCEL_EXTENSION
+      fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION
     );
   }
+  //*********** Fin Metodos Egresos ************/
 }

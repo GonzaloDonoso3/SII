@@ -39,8 +39,7 @@ calendarOptions!: CalendarOptions;
       const empresa = data.filter(data => data.razonSocial.includes('LUBRICENTRO'));
 
       this.sucursalService.getByEmpresa(empresa[0].id).subscribe(data => {
-        const sucursales = data;
-        //console.log(data);
+        const sucursales = data;        
       });
 
     });

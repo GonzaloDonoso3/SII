@@ -97,7 +97,7 @@
         <!-- monto de las cuotas -->
         <div class="col" *ngIf="!mostrarDatos">
           <mat-form-field class="full-width">
-              <input matInput placeholder="Monto" formControlName="montoCuota" type="number" [ngModel]="montoTotal"/>
+              <input matInput placeholder="Monto por cuota" formControlName="montoCuota" type="number" [ngModel]="montoTotal"/>
               Capital: 500 + Interes 500                        
               <mat-error *ngIf="egresosForm.controls['monto'].hasError('required')">
                   monto es <strong>requerido</strong>

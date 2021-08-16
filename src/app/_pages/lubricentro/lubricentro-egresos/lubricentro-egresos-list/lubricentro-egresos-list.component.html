@@ -11,7 +11,10 @@
   </button>  
   <button mat-raised-button color="accent" (click)="exportAsXLSX()" style="margin: 10px">
     Exportar a excel
-</button>       
+  </button>
+  <button mat-raised-button color="accent"  (click)="openDialogRegistrarPago()">
+    Ver cuotas 
+  </button>       
 </mat-toolbar>
 
 <table mat-table [dataSource]="dataSource" matSort matSortActive="id" matSortDirection="desc" class="mat-elevation-z10">

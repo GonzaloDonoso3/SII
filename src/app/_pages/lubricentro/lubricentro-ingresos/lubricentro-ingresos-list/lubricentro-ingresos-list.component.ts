@@ -89,8 +89,7 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
 
 
   revelarTotal() {
-    this.totalSeleccion = 0;
-    //console.log(this.selection.selected.length);
+    this.totalSeleccion = 0;    
     this.selection.selected.forEach(data => {
       this.totalSeleccion += data.monto;
     });
@@ -156,8 +155,7 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
           ingreso.sucursal = ingreso.Sucursal.razonSocial;
           ingreso.usuario = ingreso.Usuario.nombreUsuario;
           return ingreso;
-        });
-        //console.log(data);
+        });        
         this.dataSource = new MatTableDataSource(this.dataIngresos);
         this.dataSource.paginator = this.paginator.toArray()[0];
 

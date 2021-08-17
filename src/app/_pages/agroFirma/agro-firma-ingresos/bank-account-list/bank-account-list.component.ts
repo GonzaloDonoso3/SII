@@ -5,7 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import {  } from '@app/_models/agroFirma/Banco';
-import { CuentaRegistrada } from '@app/_models/agroFirma/CuentaRegistrada';
+import { CuentaRegistrada } from '@app/_models/agroFirma/cuentaRegistrada';
 import { Observable } from 'rxjs';
 import { AgroFirmaService } from '../../agro-firma.service';
 

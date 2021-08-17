@@ -10,7 +10,7 @@ import { AgroFirmaService } from '@app/_pages/agroFirma/agro-firma.service';
 import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuentas-bancarias.service';
 import { IngresoAgroFirma } from '@app/_models/agroFirma/ingresoAgroFirma';
 import { Observable } from 'rxjs';
-import { CuentaRegistrada } from '@app/_models/agroFirma/CuentaRegistrada';
+import { CuentaRegistrada } from '@app/_models/agroFirma/cuentaRegistrada';
 
 
 @Component({

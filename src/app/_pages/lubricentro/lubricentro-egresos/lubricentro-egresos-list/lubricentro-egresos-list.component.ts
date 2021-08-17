@@ -76,6 +76,7 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
     private lubricentroService: LubricentroService,
     public dialog: MatDialog,
     private sucursalService: SucursalSharedService,
+    private cuentasService: CuentasBancariasService,
     private snackBar: MatSnackBar
   ) {
     this.sucursales = this.sucursalService.sucursalListValue;
@@ -140,7 +141,7 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
 
 
 
-  recuperarArchivos(listArchivos: any) {
+  recuperarArchivos(listArchivos: any) {       
     setTimeout(() => {
     this.dialog.open(DialogShow, {
       data: { archivos: listArchivos, servicio: 'lubricentro-egreso' },
@@ -152,8 +153,7 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
 
 
   revelarTotal() {
-    this.totalSeleccion = 0;
-    //console.log(this.selection.selected.length);
+    this.totalSeleccion = 0;    
     this.selection.selected.forEach(data => {
       this.totalSeleccion += data.monto;
     });
@@ -174,18 +174,39 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
           egreso.usuario = egreso.Usuario.nombreUsuario;
           egreso.monto = egreso.monto;
           return egreso;
-        });
-        //console.log(data);
+        });        
         this.dataEgresos.forEach(data => {
           if (data['numeroCuota']== null) {
             data.numeroCuota = this.result;          
           }
         });
-        this.dataSource = new MatTableDataSource(this.dataEgresos);
+        this.dataSource = new MatTableDataSource(this.dataEgresos);        
         this.dataSource.paginator = this.paginator.toArray()[0];
         this.dataSource.sort = this.sort;
       });
     }
+  }
+  // Abrir Ventana Modal Registrar Pago
+  openDialogRegistrarPago(){
+    //Selecciona los valores de la fila seleccionada    
+    this.selectedRows = [];
+    this.selection.selected.forEach((x) => {            
+      this.selectedRows.push(x)});
+    this.selectedRows.forEach((x) => {      
+      localStorage.setItem("idEgresoPago", x.id);
+      localStorage.setItem("numeroCuota", x.numeroCuota);
+    });
+    //Se ejecuta el metodo que abre el dialog, enviandole le id del Egreso por cuota
+    let idEgresoPagoCuota = localStorage.getItem("idEgresoPago");
+    let valorNumeroC = localStorage.getItem("numeroCuota");
+    if(valorNumeroC != "N/A"){
+      this.lubricentroService.openDialogRegistrarPago(idEgresoPagoCuota);
+    } else{    
+    this.snackBar.open('Por favor seleccione un egreso con cuotas sin pagar', 'cerrar', {
+      duration: 2000,
+      verticalPosition: 'top',
+    });
+  }
   }
 
   actualizarTabla(){
@@ -194,8 +215,7 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
         egreso.sucursal = egreso.Sucursal.razonSocial;
         egreso.usuario = egreso.Usuario.nombreUsuario;
         return egreso;
-      });
-      //console.log(data);
+      });      
       this.dataEgresos.forEach(data => {
         if (data['numeroCuota']== null) {
           data.numeroCuota = this.result;          

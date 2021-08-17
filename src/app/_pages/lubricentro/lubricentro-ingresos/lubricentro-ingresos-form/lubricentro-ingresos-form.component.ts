@@ -128,18 +128,13 @@ export class LubricentroIngresosFormComponent {
           for (const name of this.nameRespaldo) {
             this.ingreso.RespaldoIngresoLubricentros.push({ url: name });
           }
-          if (result.length > 0) {
-            //console.log(this.ingreso);
+          if (result.length > 0) {            
             this.lubricentroService
               .ingresoRegistrar(this.ingreso)
               .pipe()
               .subscribe(
                 (data) => {
-                  this.alert.createAlert("Registro Creado con exito!");
-                  /*   this.snackBar.open('Regitro Exitoso !!', 'cerrar', {
-                      duration: 2000,
-                      verticalPosition: 'top',
-                    }); */
+                  this.alert.createAlert("Registro Creado con exito!");                  
                   this.formularioListo.emit('true');
                   this.ingresosForm.reset();
 

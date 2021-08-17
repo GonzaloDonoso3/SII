@@ -133,62 +133,7 @@ export class LubricentroEgresosFormComponent implements OnInit {
 
           for (const respaldo of this.nameRespaldo) {
             this.egreso.RespaldoEgresoLubricentros.push({ url: respaldo });
-          }
-          if(this.egresosForm.value.numeroCuota > 1){                          
-            let sumarMes= 0;
-            let restarMes= 0;
-            let contadorCuota = 0;                                               
-              for (let i = 0; i < this.egresosForm.value.numeroCuota; i++) {                     
-                    this.egresosForm.value.fecha.setMonth(this.egresosForm.value.fecha.getMonth() + sumarMes);                                                                                                  
-                    this.egreso.fecha = this.egresosForm.value.fecha;
-                    sumarMes = sumarMes + 1;
-                    contadorCuota = contadorCuota + 1;
-                    this.egreso.numeroCuota = contadorCuota.toString().concat("/").concat(this.egresosForm.value.numeroCuota);                                                                                                                                                                                                                                                                                                                                                                                         
-                    restarMes = (sumarMes + 1) - sumarMes;                                 
-                    if(sumarMes >= 2){                                            
-                      sumarMes = restarMes;                      
-                    }
-                    
-                    //Se le asigna la id del usuario logueado
-                    this.egreso.idUsuario = this.usuario.id;
-
-                    if (this.egreso.RespaldoEgresoLubricentros.length > 0) {
-                      this.lubricentroService
-                        .egresoRegistrar(this.egreso)
-                        .pipe()
-                        .subscribe(
-                          (data: any) => {
-                            this.alert.createAlert("Registro Creado con exito!");
-          
-                            /*   this.snackBar.open('Regitro Exitoso !!', 'cerrar', {
-                                duration: 2000,
-                                verticalPosition: 'top',
-                              }); */
-                            this.formularioListo.emit('true');
-                            this.egresosForm.reset();
-                          },
-                          (error: any) => {
-                            this.snackBar.open('Tenemos Problemas para realizar el registro, favor contactar al equipo de desarrollo', 'cerrar', {
-                              duration: 2000,
-                              verticalPosition: 'top',
-                            });
-                            console.log(error);
-                          }
-                        );
-                    } else {
-                      this.snackBar.open('Debemos Recibir sus respaldos para continuar !!', 'cerrar', {
-                        duration: 5000,
-                        verticalPosition: 'top',
-                      });
-                    }
-              }
-              return;
-            }
-            else {
-              this.egreso.fecha = this.egresosForm.value.fecha;                         
-              this.egresosForm.value.numeroCuota = "1/1";             
-              this.egreso.numeroCuota = this.egresosForm.value.numeroCuota;          
-            }
+          }          
 
           //Se le asigna la id del usuario logueado
           this.egreso.idUsuario = this.usuario.id;
@@ -199,12 +144,7 @@ export class LubricentroEgresosFormComponent implements OnInit {
               .pipe()
               .subscribe(
                 (data: any) => {
-                  this.alert.createAlert("Registro Creado con exito!");
-
-                  /*   this.snackBar.open('Regitro Exitoso !!', 'cerrar', {
-                      duration: 2000,
-                      verticalPosition: 'top',
-                    }); */
+                  this.alert.createAlert("Registro Creado con exito!");                  
                   this.formularioListo.emit('true');
                   this.egresosForm.reset();
                 },

@@ -93,8 +93,6 @@ export class HostalConsolidadosComponent implements OnInit {
   egresoPorDia: string = ''
   base64I: any
   
-
-
   mostrarFechaIF: boolean = true
   mostrarTrimestre: boolean = true
   mostrarSemestre: boolean = true
@@ -112,10 +110,16 @@ export class HostalConsolidadosComponent implements OnInit {
   totalG: any[] = []
   fechaG: any[] = []
   resultado: any[] = []
+  ingresoN: any[] = []
+  egresoN: any[] = []
+
 
   uniqueArr: any[] = []
   uniqueArr2: any[] = []
   fechaUnica: any[] = []
+  fechaUnicaE: any[] = []
+  Arreglotrimestre: any[] = []
+  Arreglotrimestre2: any[] = []
   
 
   constructor(
@@ -286,20 +290,29 @@ export class HostalConsolidadosComponent implements OnInit {
                   this.dataSource.paginator = this.paginator.toArray()[0]
                   this.dataSource.sort = this.sort
 
+                  // Obteniendo fecha unica en los ingresos                                   
                   for (var i = 0; i < this.dataIngresos.length; i++) {
-                    this.totalIngreso = this.dataIngresos[i]['monto']
-                    // this.ingresoPorDia = this.dataIngresos[i]['fecha'].substring(10,8);
-                    this.ingresoPorDia = this.dataIngresos[i]['fecha']
-                    this.montoIngreso.push(this.totalIngreso)
-                    this.sumIngresos = this.sumIngresos + this.totalIngreso
-
-                    // Guardando en el array para recorrer
-                    this.totalIngresoG.push({
-                      fecha: this.ingresoPorDia,
-                      monto: this.totalIngreso
-                    })
+                    this.uniqueArr.push(this.dataIngresos[i]['fecha']) 
                   }
-                  //this.totalConsolidado = this.sumIngresos - this.sumEgresos;
+                  this.fechaUnica = [...new Set(this.uniqueArr)]
+                  this.fechaUnica.sort()
+                  let sum = 0;
+                  this.fechaUnica.map((num) => {
+                    sum = 0;
+                    this.dataIngresos.filter((num2) => {
+                      if(num2.fecha == num){
+                        sum = sum + num2.monto;
+                      }                      
+                    })                                        
+                    this.totalIngresoG.push(sum)
+                    this.ingresoN.push({
+                      fecha: num,
+                      monto: sum
+                    })
+                  })                   
+                  this.totalIngresoG.map((monto)=>{                    
+                    this.sumIngresos = this.sumIngresos + monto;
+                  })                  
                   this.mostrarGraficoI()
                   //this.chart.destroy();
                 }
@@ -310,35 +323,57 @@ export class HostalConsolidadosComponent implements OnInit {
                   this.formularioListo.emit('true')
                   this.consolidadosForm.reset()
 
-                  //llenando la tabla Ingresos
+                  //llenando la tabla Egresos
                   this.dataEgresosTable = this.dataEgresos.map((egreso) => {
                     return egreso
-                  })
-                  this.dataSource = new MatTableDataSource(
+                  })                  
+                  this.dataSourceEgresos = new MatTableDataSource(
                     this.dataEgresosTable
-                  )
-                  this.dataSource.paginator = this.paginator.toArray()[0]
-                  this.dataSource.sort = this.sort
-
+                  )                  
+                  this.dataSourceEgresos.paginator = this.paginator.toArray()[0]
+                  this.dataSourceEgresos.sort = this.sort
+                  
+                  // Obteniendo fecha unica en los egresos
                   for (var i = 0; i < this.dataEgresos.length; i++) {
-                    this.totalEgreso = this.dataEgresos[i]['monto']
-                    // this.egresoPorDia = this.dataEgresos[i]['fecha'].substring(10,8);
-                    this.egresoPorDia = this.dataEgresos[i]['fecha']
-                    this.montoEgreso.push(this.totalEgreso)
-                    this.sumEgresos = this.sumEgresos + this.totalEgreso
-
-                    // Guardando en el array para recorrer
-                    this.totalEgresoG.push({
-                      fecha: this.egresoPorDia,
-                      monto: this.totalIngreso
+                    this.uniqueArr2.push(this.dataEgresos[i]['fecha']) 
+                  }  
+                  this.fechaUnicaE = [...new Set(this.uniqueArr2)]
+                  this.fechaUnicaE.sort()
+                  let sumE = 0;
+                  this.fechaUnicaE.map((num) => {
+                    sumE = 0;
+                    this.dataEgresos.filter((num2) => {
+                      if(num2.fecha == num){
+                        sumE = sumE + num2.monto;
+                      }                      
+                    })                                        
+                    this.totalEgresoG.push(sumE)
+                    this.egresoN.push({
+                      fecha: num,
+                      monto: sumE
                     })
-                  }
-                  //this.totalConsolidado = this.sumIngresos - this.sumEgresos;
+                  })
+                  this.totalEgresoG.map((monto)=>{
+                    this.sumEgresos = this.sumEgresos + monto;
+                  })
+
+                  // for (var i = 0; i < this.dataEgresos.length; i++) {
+                  //   this.totalEgreso = this.dataEgresos[i]['monto']                    
+                  //   this.egresoPorDia = this.dataEgresos[i]['fecha']
+                  //   this.montoEgreso.push(this.totalEgreso)
+                  //   this.sumEgresos = this.sumEgresos + this.totalEgreso
+
+                  //   // Guardando en el array para recorrer
+                  //   this.totalEgresoG.push({
+                  //     fecha: this.egresoPorDia,
+                  //     monto: this.totalIngreso
+                  //   })
+                  // }                  
                   this.mostrarGraficoE()
                   //this.chart.destroy();
                 }
 
-                //*************OPCION 4 ************/
+                //*************OPCION 4 ************/ el resultado
                 if (this.dataConsolidados.valor == 4) {
                   this.dataIngresos = this.dataConsolidados.valor1
                   this.dataEgresos = this.dataConsolidados.valor2
@@ -367,10 +402,30 @@ export class HostalConsolidadosComponent implements OnInit {
                   //*********************INGRESOS********************* 
                   // Obteniendo fecha unica en los ingresos                                   
                   for (var i = 0; i < this.dataIngresos.length; i++) {
-                    this.uniqueArr.push(this.dataIngresos[i]['fecha']) 
+                    this.uniqueArr.push(this.dataIngresos[i]['fecha'])
+                     const fechaTrimestre = this.dataIngresos[i]['fecha'].substring(5, 7);                     
+                    this.Arreglotrimestre.push(fechaTrimestre);
+                    this.Arreglotrimestre2.push({fecha: fechaTrimestre, monto: this.dataIngresos[i]['monto']});
                   }
                   this.fechaUnica = [...new Set(this.uniqueArr)]
+                  this.Arreglotrimestre = [...new Set(this.Arreglotrimestre)]
                   this.fechaUnica.sort()
+                                 
+                  // console.log("verificando fechas", this.Arreglotrimestre2)
+                  // this.Arreglotrimestre.sort()
+                  // if(this.Arreglotrimestre.length > 2){
+                  // let sumMonto = 0;
+                  //   for (var i = 0; i < this.Arreglotrimestre.length; i++) {                      
+                  //     this.Arreglotrimestre2.filter((num2) => {
+                  //       if(num2 == this.Arreglotrimestre2[i]['fecha']){
+                  //         sumMonto = sumMonto + num2.monto;
+                  //       }                      
+                  //     })
+                  //   this.totalIngresoG.push(sumMonto)                    
+                  //   }                                                            
+                  // }
+                  
+
                   let sum = 0;
                   this.fechaUnica.map((num) => {
                     sum = 0;
@@ -380,55 +435,49 @@ export class HostalConsolidadosComponent implements OnInit {
                       }                      
                     })                                        
                     this.totalIngresoG.push(sum)
-                  })                                                    
-                  this.totalIngresoG.map((monto)=>{
+                    this.ingresoN.push({
+                      fecha: num,
+                      monto: sum
+                    })
+                  })                   
+                  this.totalIngresoG.map((monto)=>{                    
                     this.sumIngresos = this.sumIngresos + monto;
                   })
                   //*********************EGRESOS*********************
+                  // Obteniendo fecha unica en los egresos     
                   for (var i = 0; i < this.dataEgresos.length; i++) {
-                    if (this.totalEgresoG.length > 0) {
-                      for (var f = 0; f < this.totalEgresoG.length; f++) {
-                        if (
-                          this.dataEgresos[i]['fecha'] ==
-                          this.totalEgresoG[f]['fecha']
-                        ) {
-                          this.sumEgresosG =
-                            this.dataEgresos[i]['monto'] +
-                            this.totalEgresoG[f]['monto']
-                          this.totalEgresoC.push({
-                            fecha: this.dataEgresos[i]['fecha'],
-                            monto: this.sumEgresosG
-                          })
-                        }
-                      }
-                    }
-
-                    this.totalEgreso = this.dataEgresos[i]['monto']
-                    // this.egresoPorDia = this.dataEgresos[i]['fecha'].substring(10,8);
-                    this.egresoPorDia = this.dataEgresos[i]['fecha']
-                    this.montoEgreso.push(this.totalEgreso)
-                    this.sumEgresos = this.sumEgresos + this.totalEgreso
-
-                    // Guardando en el array para recorrer
-                    this.totalEgresoG.push({
-                      fecha: this.egresoPorDia,
-                      monto: this.totalEgreso
+                    this.uniqueArr2.push(this.dataEgresos[i]['fecha']) 
+                  }  
+                  this.fechaUnicaE = [...new Set(this.uniqueArr2)]
+                  this.fechaUnicaE.sort()
+                  let sumE = 0;
+                  this.fechaUnicaE.map((num) => {
+                    sumE = 0;
+                    this.dataEgresos.filter((num2) => {
+                      if(num2.fecha == num){
+                        sumE = sumE + num2.monto;
+                      }                      
+                    })                                        
+                    this.totalEgresoG.push(sumE)
+                    this.egresoN.push({
+                      fecha: num,
+                      monto: sumE
                     })
-                  }
+                  })
+                  this.totalEgresoG.map((monto)=>{
+                    this.sumEgresos = this.sumEgresos + monto;
+                  })                                                    
+                                    
 
                   //****************** INGRESOS - EGRESOS********************
-                  for (var i = 0; i < this.totalIngresoC.length; i++) {
-                    for (var k = 0; k < this.totalEgresoC.length; k++) {
-                      this.resultadoIE = this.totalIngresoC[i]['monto'] + this.totalEgresoC[k]['monto'];
-                      this.resultado.push(this.resultadoIE);
-                      if (this.totalIngresoC[i]['fecha'] == this.totalEgresoC[k]['fecha']) 
-                      {
-                        this.sumG = this.totalIngresoC[i]['monto'] + this.totalEgresoC[k]['monto']                        
-                        this.totalG.push(this.totalEgresoC[k]['monto'])
-                        this.fechaG.push(this.totalEgresoC[k]['fecha'])
+                  for (var i = 0; i < this.ingresoN.length; i++) {
+                    for (var f = 0; f < this.egresoN.length; f++) {
+                      if (this.ingresoN[i].fecha == this.egresoN[f].fecha) {
+                        this.resultadoIE = this.ingresoN[i].monto - this.egresoN[f].monto
+                        this.resultado.push(this.resultadoIE);
                       }
                     }
-                  }
+                  }                                    
                   this.totalConsolidado = this.sumIngresos - this.sumEgresos
                   this.mostrarGraficoIE();                  
                   //this.chart.destroy();
@@ -656,32 +705,23 @@ export class HostalConsolidadosComponent implements OnInit {
     this._cdref.detectChanges()
     this.chart = new Chart(this.chartRef.nativeElement, {
       type: 'bar',
-      data: {
-        labels: [
-          '2021-01-02',
-          '2021-01-03',
-          '2021-01-04',
-          '2021-01-05',
-          '2021-01-06',
-          '2021-01-09',
-          '2021-01-10',
-          '2021-01-11',
-          '2021-01-12',
-          '2021-01-13',
-          '2021-01-14',
-          '2021-01-15'
-        ],
-        //labels: this.fechaG,
+      data: {        
+        labels: this.fechaUnica,
         datasets: [
           {
             label: 'Ingresos',
-            backgroundColor: ['#f2829b'],
-            //data: [2478,5267,734,784,433]
-            data: this.montoIngreso
-            //data: this.totalG
+            backgroundColor: ['#f2829b'],            
+            data: this.totalIngresoG            
           }
         ]
-      }
+      },
+      options: {                        
+        animation : {
+           onComplete : () => {
+            this.base64I = this.chart.toBase64Image();
+           }
+        }      
+     }
     })
   }
 
@@ -689,32 +729,23 @@ export class HostalConsolidadosComponent implements OnInit {
     this._cdref.detectChanges()
     this.chart = new Chart(this.chartRef.nativeElement, {
       type: 'bar',
-      data: {
-        labels: [
-          '2021-01-02',
-          '2021-01-03',
-          '2021-01-04',
-          '2021-01-05',
-          '2021-01-06',
-          '2021-01-09',
-          '2021-01-10',
-          '2021-01-11',
-          '2021-01-12',
-          '2021-01-13',
-          '2021-01-14',
-          '2021-01-15'
-        ],
-        //labels: this.fechaG,
+      data: {        
+        labels: this.fechaUnicaE,
         datasets: [
           {
             label: 'Egresos',
-            backgroundColor: ['#ffe510'],
-            //data: [2478,5267,734,784,433]
-            data: this.montoEgreso
-            //data: this.totalG
+            backgroundColor: ['#ffe510'],            
+            data: this.totalEgresoG            
           }
         ]
-      }
+      },
+      options: {                      
+        animation : {
+           onComplete : () => {
+            this.base64I = this.chart.toBase64Image();
+           }
+        }      
+     }
     })
   }
 
@@ -722,42 +753,25 @@ export class HostalConsolidadosComponent implements OnInit {
       this._cdref.detectChanges()
       this.chart = new Chart(this.chartRef.nativeElement, {
       type: 'line',
-      data: {
-        // labels: [
-        //   '2021-01-02',
-        //   '2021-01-03',
-        //   '2021-01-04',
-        //   '2021-01-05',
-        //   '2021-02-06',
-        //   '2021-02-09',
-        //   '2021-02-10',
-        //   '2021-02-11',
-        //   '2021-03-12',
-        //   '2021-03-13',
-        //   '2021-03-14',
-        //   '2021-03-15'
-        // ],
+      data: {        
         labels: this.fechaUnica,
         datasets: [
           {
-            label: 'Ingresos',
-            //data: [65, 59, 80, 81, 56, 55, 40],
+            label: 'Ingresos',            
             data: this.totalIngresoG,
             fill: false,
             borderColor: 'rgb(75, 192, 192)',
             tension: 0.1
           },
           {
-            label: 'Egresos',
-            //data: [65, 59, 80, 81, 56, 55, 40],
-            data: this.montoEgreso,
+            label: 'Egresos',                        
+            data: this.totalEgresoG,
             fill: false,
             borderColor: '#64c04b',
             tension: 0.1
           },
           {
-            label: 'Resultado',
-            //data: [65, 59, 80, 81, 56, 55, 40],
+            label: 'Resultado',            
             data: this.resultado,
             fill: false,
             borderColor: '#a74bc0',

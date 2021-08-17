@@ -3,9 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { EgresoLubricentro } from '@app/_models/lubricentro/egresoLubricentro';
+import { EgresoLubricentroCuota } from '@app/_models/lubricentro/egresoLubricentroCuota';
 import { IngresosLubricentro } from '@app/_models/lubricentro/ingresoLubricentro';
 import { environment } from '@environments/environment';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { LubricentroEgresosCuotasComponent } from '@app/_pages/lubricentro/lubricentro-egresos/lubricentro-egresos-list/lubricentro-egresos-cuotas/lubricentro-egresos-cuotas.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 /* Imports Excel */
 import * as FileSaver from 'file-saver';
@@ -46,9 +50,9 @@ export class LubricentroService {
   private estadosPagos = ['BOLETA', 'FACTURA'];
 
   private tiposEgresos = ['Gastos', 'Costos', 'Remuneraciones', 'Impuestos', 'Bancarios'];
-  private empresa = 'Lubricentro';
+  private empresa = 'Lubricentro';  
   private tiposVehiculos = ['Automóvil', 'Camioneta'];
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router, public dialog:MatDialog, private snackBar: MatSnackBar) {
     //Init private Subjects;
     //ingresos;
 
@@ -198,12 +202,56 @@ export class LubricentroService {
         responseType: 'blob',
       })      
   }
+  buscarImagenCuota(url: string) {    
+    const extencion = url.split('.');
+    const extend = extencion[1];    
+    return this.http
+    .get(`${environment.apiUrl}/egresoLubricentroCuota/download/${url}`, {
+        responseType: 'blob',
+      })      
+  }
   getById(id: string): any {
     return this.http.get<EgresoLubricentro>(
       `${environment.apiUrl}/egreso${this.empresa}/${id}`
     );
   }
 
+  /* Egresos Por cuotas */
+  getCuotas(id: any) {    
+    return this.http.get<EgresoLubricentroCuota>(
+      `${environment.apiUrl}/egresoLubricentroCuota/${id}`
+    );
+  }
+  agregarRespaldos(arrayRespaldos: any): any {
+    return this.http.post(
+      `${environment.apiUrl}/egresoLubricentroCuota/agregarRespaldos/`,
+      arrayRespaldos
+    );
+  }
+  buscarImagenC(id: any): any {
+    return this.http.get<EgresoLubricentroCuota>(
+      `${environment.apiUrl}/respaldoEgresoLubricentroCuota/${id}`
+    );
+  }
+
+  // Metodo que permite abrir un Dialog (Modal)
+  openDialogRegistrarPago(idEgreso: any):void{
+    //Si el cliente selecciono un contrato se habre el modal    
+    if(idEgreso != null){
+      const dialogRef = this.dialog.open(LubricentroEgresosCuotasComponent,{});
+      dialogRef.afterClosed().subscribe(res =>{
+        console.log(res);
+      });
+    }else{
+      //Si no, se muestra un error
+      this.snackBar.open('Por favor seleccione un egreso con cuotas sin pagar', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+    } 
+  }
+
+  /* Metodo Excel */
   public exportAsExcelFile(json: any[], excelFileName: string): void {
     const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
     const workbook: XLSX.WorkBook = {
@@ -223,6 +271,11 @@ export class LubricentroService {
       data,
       fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION
     );
+  }
+
+  closeDialogModal(){
+    this.dialog.closeAll();
+    localStorage.removeItem("idEgresoPago");
   }
 
 }

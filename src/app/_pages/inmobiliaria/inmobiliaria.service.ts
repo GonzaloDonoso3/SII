@@ -13,6 +13,8 @@ const EXCEL_TYPE =
 const EXCEL_EXTENSION = '.xlsx';
 
 
+/* Fin Import Excel */
+
 @Injectable({
   providedIn: 'root'
 })
@@ -87,6 +89,14 @@ export class InmobiliariaService {
         window.open(window.URL.createObjectURL(res));
       });
   }
+  buscarImagen(url: string) {    
+    const extencion = url.split('.');
+    const extend = extencion[1];    
+    return this.http
+    .get(`${environment.apiUrl}/ingreso${this.empresa}/download/${url}`, {
+        responseType: 'blob',
+      })      
+  }
 
   getAllWithUsuario() {
     return this.http.get<IngresosInmobiliaria[]>(
@@ -140,6 +150,14 @@ export class InmobiliariaService {
         window.open(window.URL.createObjectURL(res));
       });
   }
+  buscarImagenEgreso(url: string) {    
+    const extencion = url.split('.');
+    const extend = extencion[1];    
+    return this.http
+    .get(`${environment.apiUrl}/egreso${this.empresa}/download/${url}`, {
+        responseType: 'blob',
+      })      
+  }
   
   // METODO PARA EXPORTAR EXCEL
   public exportAsExcelFile(json: any[], excelFileName: string): void {
@@ -158,7 +176,8 @@ export class InmobiliariaService {
     const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
     FileSaver.saveAs(
       data,
-      fileName + 'export' + new Date().getTime() + EXCEL_EXTENSION
+      fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION
     );
   }
+  //*********** Fin Metodos Egresos ************/
 }

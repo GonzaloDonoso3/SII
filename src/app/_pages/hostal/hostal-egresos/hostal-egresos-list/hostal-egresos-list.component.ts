@@ -5,14 +5,14 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
+import { DialogShow } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
 import { EgresoHostal } from '@app/_models/hostal/egresoHostal';
 import { Sucursal } from '@app/_models/shared/sucursal';
 import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuentas-bancarias.service';
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
-//import { Console } from 'node:console';
 import { HostalService } from '../../hostal.service';
 import { DatePipe } from "@angular/common";
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-hostal-egresos-list',
@@ -23,11 +23,10 @@ import { DatePipe } from "@angular/common";
 export class HostalEgresosListComponent implements OnInit, OnChanges {
   // ? childrens
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
-  @ViewChild(MatSort) sort = null;
+  @ViewChild(MatSort) sort = new MatSort;
 
   // ? Inputs & Outputs
-  @Input()
-  refrescar = '';
+  @Input() refrescar = '';
 
   // ? table definitions.
   displayedColumns: string[] = [
@@ -52,12 +51,13 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
 
   //filtros
   formFilter = new FormGroup({
+    id: new FormControl(),
+    monto: new FormControl(),
     start: new FormControl(),
     end: new FormControl(),
     idSucursal: new FormControl(),
     tipoEgreso: new FormControl(),
-    numeroCuota: new FormControl(),
-    monto: new FormControl(),
+    numeroCuota: new FormControl(),    
   })
 
 
@@ -65,23 +65,25 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
   selection = new SelectionModel<EgresoHostal>(true, []);
   tiposEgresos: string[] = [];
   totalSeleccion = 0;
-  cuentasRegistradas: any[] = [];
   selectedRows!: any[];
+  cuentasRegistradas: any[] = [];
+  
   constructor(
     private hostalService: HostalService,
     public dialog: MatDialog,
     private sucursalService: SucursalSharedService,
-    private cuentasService: CuentasBancariasService
+    private snackBar: MatSnackBar
   ) {
-    this.sucursales = this.sucursalService.sucursalListValue;
+    this.sucursales = this.sucursalService.sucursalListValue;    
     this.tiposEgresos = this.hostalService.tiposEgresosListValue;    
   }
 
   ngOnInit(): void {
     this.aplicarfiltros();
+    this.actualizarTabla();
   }
 
-  // ? refresh when form is ready.
+  
 
   ngOnChanges(changes: SimpleChanges): void {
     for (const propName of Object.keys(changes)) {      
@@ -91,10 +93,9 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
       const changeLog = `${propName}: changed from ${from} to ${to} `;
       this.changelog.push(changeLog);
       this.hostalService.egresoGetAll().subscribe((data: EgresoHostal[]) => {        
-        this.dataEgresos = data.map(egreso => {
-          egreso.sucursal = egreso.Sucursal.razonSocial;
-          egreso.usuario = egreso.Usuario.nombreUsuario;
-          egreso.monto = egreso.monto;
+        this.dataEgresos = data.map(egreso => {          
+          egreso.sucursal = egreso.Sucursal.razonSocial;          
+          egreso.usuario = egreso.Usuario.nombreUsuario;                    
           return egreso;
         });
         //Conviertiendo los numeros de cuotas Nulos en N/A
@@ -130,9 +131,11 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
   }
 
   recuperarArchivos(listArchivos: any) {    
-    this.dialog.open(DialogDownloadsComponent, {
+    setTimeout(() => {
+    this.dialog.open(DialogShow, {
       data: { archivos: listArchivos, servicio: 'hostal-egreso' },
     });
+  }, 1000);    
   }
 
 
@@ -148,8 +151,15 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
 
   aplicarfiltros() {
     this.formFilter.valueChanges.subscribe(res => {
-
+      const { id, monto } = res
       let dataFiltered = this.dataEgresos;      
+
+      if (id) {
+        dataFiltered = dataFiltered.filter((data: EgresoHostal) => (data.id).toString().includes(id))
+      }    
+      if (monto) {
+        dataFiltered = dataFiltered.filter((data: EgresoHostal) => (data.monto).toString().includes(monto))
+      }
 
       if (res.idSucursal) {
         dataFiltered = dataFiltered.filter((data: EgresoHostal) => data.sucursal == res.idSucursal);
@@ -206,11 +216,23 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
       });
   }
 
-  //Metodo exportar excel
   exportAsXLSX(): void {
     this.selectedRows = [];
-    this.selection.selected.forEach((x) => this.selectedRows.push(x));
-    this.hostalService.exportAsExcelFile(this.selectedRows, 'Ingresos-Hostal');
+    if(this.selection.selected.length == 0) {
+      this.snackBar.open('!Seleccione algún registro!', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+    } else {
+      this.selection.selected.forEach((x) => this.selectedRows.push(x));
+        const newArray = this.selectedRows.map((item) => {
+        const { RespaldoEgresos, Usuario, Sucursal, ...newObject } = item
+        return newObject
+      })
+    
+    this.hostalService.exportAsExcelFile(newArray, 'Lista-Egresos-Rentacar');
+
+    }
   }
 
 }

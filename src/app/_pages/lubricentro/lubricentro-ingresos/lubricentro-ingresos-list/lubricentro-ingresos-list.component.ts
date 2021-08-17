@@ -1,11 +1,13 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
+import { DialogShow } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
 import { IngresosLubricentro } from '@app/_models/lubricentro/ingresoLubricentro';
 import { Sucursal } from '@app/_models/shared/sucursal';
 import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuentas-bancarias.service';
@@ -19,6 +21,7 @@ import { LubricentroService } from '../../lubricentro.service';
 export class LubricentroIngresosListComponent implements OnInit, OnChanges {
   // ? childrens
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
+  @ViewChild(MatSort) sort = null;
   // ? Inputs & Outputs
   @Input()
   refrescar = '';
@@ -27,13 +30,26 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
     'select',
     'id',
     'fecha',
-    'monto',
-    'respaldos',
+    'cliente',
+    'telefono',
+    'correo',
+    'tipoVehiculo',
+    'ppu',
+    'marca',
+    'modelo',
+    'anio',
+    'kmActual',
+    'kmProximo',
+    'referenciaCliente',
+    'descripcionIngreso',
     'estadoPago',
+    'nDocumento',
+    'nAutorizacion',
+    'monto',
     'sucursal',
     'tipoIngreso',
     'usuario',
-    'tipoPago'
+    'respaldos'
   ];
   dataSource: MatTableDataSource<IngresosLubricentro> = new MatTableDataSource();
   dataIngresos: IngresosLubricentro[] = [];
@@ -41,30 +57,29 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
   changelog: string[] = [];
 
   formFilter = new FormGroup({
+    id: new FormControl(),
+    monto: new FormControl(),
     start: new FormControl(),
     end: new FormControl(),
-    idSucursal: new FormControl(),
     tipoIngreso: new FormControl(),
     estadoPago: new FormControl(),
-    tipoPago: new FormControl(),
-    monto: new FormControl(),
-
-  })
+    })
 
 
   sucursales: Sucursal[] = [];
   selection = new SelectionModel<IngresosLubricentro>(true, []);
   tiposIngresos: string[] = [];
   totalSeleccion = 0;
+  selectedRows!: any[];
   cuentasRegistradas: any[] = [];
   estadosPagos: string[] = [];
   tipoPago: string[] = [];
-  selectedRows!: any[];
+  
   constructor(
     private lubricentroService: LubricentroService,
     public dialog: MatDialog,
     private sucursalService: SucursalSharedService,
-    private cuentasService: CuentasBancariasService
+    private snackBar: MatSnackBar
   ) {
     this.sucursales = this.sucursalService.sucursalListValue;
     this.tiposIngresos = this.lubricentroService.tiposIngresosListValue;
@@ -75,16 +90,17 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.aplicarfiltros();
+    this.updateTable()
   }
 
 
 
   recuperarArchivos(listArchivos: any) {
-    this.dialog.open(DialogDownloadsComponent, {
-
+    setTimeout(() => {
+    this.dialog.open(DialogShow, {
       data: { archivos: listArchivos, servicio: 'lubricentro-ingreso' },
-
     });
+  }, 1000);
   }
 
 
@@ -99,9 +115,15 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
 
   aplicarfiltros() {
     this.formFilter.valueChanges.subscribe(res => {
-
+      const { id, monto } = res
       let dataFiltered = this.dataIngresos;
 
+      if (id) {
+        dataFiltered = dataFiltered.filter((data: IngresosLubricentro) => (data.id).toString().includes(id))
+      }    
+      if (monto) {
+        dataFiltered = dataFiltered.filter((data: IngresosLubricentro) => (data.monto).toString().includes(monto))
+      }
       if (res.estadoPago) {
         dataFiltered = dataFiltered.filter((data: IngresosLubricentro) => data.estadoPago == res.estadoPago);
       }
@@ -128,18 +150,36 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
 
       this.dataSource = new MatTableDataSource(dataFiltered);
       this.dataSource.paginator = this.paginator.toArray()[0];
+      this.dataSource.sort = this.sort
       this.totalSeleccion = 0;
       this.selection.clear();
     })
   }
 
 
-  limpiarFiltros() {
-    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoIngreso: null, estadoPago: null, tipoPago: null, monto:null})
+  resetTable() {
+    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoIngreso: null, estadoPago: null, })
     this.dataSource = new MatTableDataSource(this.dataIngresos);
     this.dataSource.paginator = this.paginator.toArray()[0];
+    this.dataSource.paginator['_pageIndex'] = 0
+    this.updateTable()
     this.selection.clear()
     this.totalSeleccion = 0;
+  }
+
+  updateTable() {
+    this.lubricentroService.ingresoGetAll().subscribe((data: IngresosLubricentro[]) => {
+      this.dataIngresos = data.map((ingreso: IngresosLubricentro) => {
+        ingreso.sucursal = ingreso.Sucursal.razonSocial
+        ingreso.usuario = ingreso.Usuario.nombreUsuario
+        return ingreso
+      })
+      
+      this.dataSource = new MatTableDataSource(this.dataIngresos)
+      this.dataSource.paginator = this.paginator.toArray()[0]
+      this.dataSource.sort = this.sort
+
+    });
   }
 
 
@@ -157,10 +197,10 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
           ingreso.usuario = ingreso.Usuario.nombreUsuario;
           return ingreso;
         });
-        //console.log(data);
+        
         this.dataSource = new MatTableDataSource(this.dataIngresos);
         this.dataSource.paginator = this.paginator.toArray()[0];
-
+        this.dataSource.sort = this.sort
       });
     }
   }
@@ -185,8 +225,21 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
   //Metodo exportar excel
   exportAsXLSX(): void {
     this.selectedRows = [];
-    this.selection.selected.forEach((x) => this.selectedRows.push(x));
-    this.lubricentroService.exportAsExcelFile(this.selectedRows, 'Ingresos-Lubricentro');
+    if(this.selection.selected.length == 0) {
+      this.snackBar.open('!Seleccione algún registro!', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+    } else {
+      this.selection.selected.forEach((x) => this.selectedRows.push(x));
+      const newArray = this.selectedRows.map((item) => {
+      let { Usuario, Sucursal, RespaldoIngresoLubricentros, estadoPago, ...newObject } = item
+      newObject = { tipoDocumento: estadoPago, ...newObject }
+      return newObject
+    })
+    this.lubricentroService.exportAsExcelFile(newArray, 'Lista-Egresos-Rentacar');
+
+    }
   }
 
 

@@ -5,7 +5,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
+import { DialogShow } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
 import { RegistroEgresoFirma } from '@app/_models/abogados/egresosFirma';
 import { Sucursal } from '@app/_models/shared/sucursal';
 import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuentas-bancarias.service';
@@ -16,6 +16,7 @@ import { ViewChild } from '@angular/core';
 import { DatePipe } from "@angular/common";
 import { Empresa } from '@app/_models/shared/empresa';
 import { first } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -79,7 +80,7 @@ constructor(
   private abogadosService: AbogadosService,
   public dialog: MatDialog,
   private sucursalService: SucursalSharedService,
-  private cuentasService: CuentasBancariasService
+  private snackBar: MatSnackBar
 ) {
   this.sucursales = this.sucursalService.sucursalListValue;
   this.tiposEgresos = this.abogadosService.tiposEgresosListValue;  
@@ -127,16 +128,32 @@ getEmpresa(id: number): any {
 }
 
 recuperarArchivos(listArchivos: any) {
-  this.dialog.open(DialogDownloadsComponent, {    
+  setTimeout(() => {
+  this.dialog.open(DialogShow, {  
     data: { archivos: listArchivos, servicio: 'abogados-egresos' },    
   });
+}, 1000);   
 }
 
 //METODO QUE PERMITE EXPORTA A EXCEL
+
 exportAsXLSX(): void {
   this.selectedRows = [];
-  this.selection.selected.forEach((x) => this.selectedRows.push(x));
-  this.abogadosService.exportAsExcelFile(this.selectedRows, 'Egresos-Abogados');
+  if(this.selection.selected.length == 0) {
+    this.snackBar.open('!Seleccione algún registro!', 'cerrar', {
+      duration: 2000,
+      verticalPosition: 'top',
+    });
+  } else {
+    this.selection.selected.forEach((x) => this.selectedRows.push(x));
+      const newArray = this.selectedRows.map((item) => {
+      const { Cliente, Causas, Sucursal, Usuario, RespaldoEgresos, ...newObject } = item
+      return newObject
+    })
+  
+  this.abogadosService.exportAsExcelFile(newArray, 'Lista-Ingresos-Contratos-FirmaAbogados');
+
+  }
 }
 
 

@@ -67,6 +67,15 @@ export class RentacarService {
       });
   }
 
+  buscarImagenEgreso(url: string) {    
+    const extencion = url.split('.');
+    const extend = extencion[1];    
+    return this.http
+    .get(`${environment.apiUrl}/egresoRentacar/download/${url}`, {
+        responseType: 'blob',
+      })      
+  }
+
 
   public downloadEgresos(fileName: string): void {
     this.http
@@ -89,7 +98,7 @@ export class RentacarService {
     );
   }
 
-    /* Metodo Excel */
+    /* Metodos Excel */
     public exportAsExcelFile(json: any[], excelFileName: string): void {
       const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
       const workbook: XLSX.WorkBook = {
@@ -102,6 +111,7 @@ export class RentacarService {
       });
       this.saveAsExcelFile(excelBuffer, excelFileName);
     }
+
     private saveAsExcelFile(buffer: any, fileName: string): void {
       const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
       FileSaver.saveAs(

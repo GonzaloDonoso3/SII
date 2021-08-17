@@ -1,10 +1,10 @@
 <mat-toolbar color="primary">
-    <button mat-raised-button (click)="limpiarFiltros()" color="accent">
-        Limpiar filtros
+    <button mat-raised-button (click)="resetTable()" color="accent">
+        Actualizar Tabla
     </button>
     <span> Listado Cuotas </span>
     <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="exportAsXLSX()">
-        Exportar
+        Exportar a Excel
     </button>
     <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="getCuotas()">
         <mat-icon>autorenew</mat-icon>
@@ -12,7 +12,7 @@
 </mat-toolbar>
 
 <div class="table-responsive">
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z10">
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z10">
         <!-- check column -->
 
         <ng-container matColumnDef="select">
@@ -31,15 +31,21 @@
 
         <!-- data columns -->
         <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>ID </th>
-            <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="limit-width-40">
+                <div [formGroup]="formFilter" class="limit-width-40">
+                    <mat-form-field >
+                        <input matInput placeholder="ID" formControlName="id" />
+                    </mat-form-field>
+                </div>
+            </th>
+                <td mat-cell *matCellDef="let element">{{ element.id }}</td>
         </ng-container>
 
 
         <!-- Campo Fecha Compromiso -->
         <ng-container matColumnDef="fechaPago" class="mat-column-date">
-            <th mat-header-cell *matHeaderCellDef>
-                <div [formGroup]="formFilter">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="limit-width-180">
+                <div [formGroup]="formFilter" class="limit-width-180">
                     <mat-form-field class="fill">
                         <input matInput placeholder="fecha Compromiso" formControlName="fechaPago" />
                     </mat-form-field>
@@ -49,17 +55,17 @@
         </ng-container>
 
 
-        <ng-container matColumnDef="monto">
-            <th mat-header-cell *matHeaderCellDef> 
-                <div [formGroup]="formFilter">
+        <ng-container matColumnDef="montoCuota">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="limit-width-120">
+                <div [formGroup]="formFilter" class="limit-width-120">
                     <mat-form-field class="fill">
                         <input matInput placeholder="Monto Cuota" formControlName="montoCuota" />
                     </mat-form-field>
                 </div>
             </th>
-            <td mat-cell *matCellDef="let element">
-                {{ element.montoCuota | currency: "$":"symbol":"1.0-0" }}
-            </td>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.montoCuota | currency: "$":"symbol":"1.0-0" }}
+                </td>
         </ng-container>
 
         <!-- Campo Estado Pago-->
@@ -78,9 +84,9 @@
         </ng-container>
 
         <!-- Campo N° Contrato -->
-        <ng-container matColumnDef="numeroContrato">
-            <th mat-header-cell *matHeaderCellDef>
-                <div [formGroup]="formFilter">
+        <ng-container matColumnDef="idContrato">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="limit-width-120">
+                <div [formGroup]="formFilter" class="limit-width-120">
                     <mat-form-field class="fill">
                         <input matInput placeholder="Número Contrato" formControlName="numeroContrato" type="number" />
                     </mat-form-field>
@@ -92,8 +98,8 @@
 
         <!-- Campo Fecha Registro-->
 
-        <ng-container matColumnDef="fechaRegistro">
-            <th mat-header-cell *matHeaderCellDef>
+        <ng-container matColumnDef="createdAt">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
                 <mat-form-field>
                     <mat-label>fechaRegistro</mat-label>
                     <mat-date-range-input [formGroup]="formFilter" [rangePicker]="picker">
@@ -110,16 +116,16 @@
                 </mat-form-field>
             </th>
             <td style="text-align:center" mat-cell *matCellDef="let element">
-                {{element.createdAt | date: 'dd/MM/yyyy'}}
+                {{element.createdAt | date: 'shortDate'}}
             </td>
         </ng-container>
 
 
 
         <!-- Campo Fecha Actualización -->
-        <ng-container matColumnDef="fechaActualizacion">
-            <th mat-header-cell *matHeaderCellDef>
-                <mat-form-field appearance="fill">
+        <ng-container matColumnDef="updatedAt">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="limit-width-180">
+                <mat-form-field appearance="fill" class="limit-width-180">
                     <mat-label>Fecha Actualización</mat-label>
                     <mat-date-range-input [formGroup]="formFilter" [rangePicker]="picker">
                         <input matStartDate formControlName="startActualizacion" placeholder="inicio" />
@@ -136,7 +142,7 @@
                         date</mat-error>
                 </mat-form-field>
             </th>
-            <td mat-cell *matCellDef="let element">{{ element.updatedAt | date: 'dd/MM/yyyy' }}</td>
+            <td mat-cell *matCellDef="let element">{{ element.updatedAt | date: 'shortDate' }}</td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

@@ -24,7 +24,8 @@ export class DialogRespaldosComponent implements OnInit {
     private snackBar: MatSnackBar,
   ) {
     this.uploader = new FileUploader({
-      url: `https://www.imlchile.cl:3000/api/${this.data.url}`,
+      url: `http://localhost:3000/api/${this.data.url}`,
+      //url: `https://www.imlchile.cl:3000/api/${this.data.url}`,      
       itemAlias: 'photo',
     });    
     this.uploader.onCompleteItem = (

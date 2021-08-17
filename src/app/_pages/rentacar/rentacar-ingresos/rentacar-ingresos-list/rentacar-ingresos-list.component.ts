@@ -4,11 +4,12 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { RentacarService } from './../../rentacar.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { AlertHelper } from '@app/_helpers/alert.helper';
 import { ResponseListaArriendos, Arriendo } from '@app/_models/rentacar/responseListaArriendos';
 import { MatDialog } from '@angular/material/dialog'
 import { RentacarModalDetallePagosComponent } from './rentacar-modal-detalle-pagos/rentacar-modal-detalle-pagos.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface ArriendoTabla {
   id: number;
@@ -31,7 +32,7 @@ interface ArriendoTabla {
 export class RentacarIngresosListComponent implements OnInit {
 
   arriendosTabla: ArriendoTabla[] = [];
-
+  selectedRows!: any[]
   totalEsperadoSeleccion: number = 0;
   totalPagadoSeleccion: number = 0;
 
@@ -39,11 +40,13 @@ export class RentacarIngresosListComponent implements OnInit {
   displayedColumns: string[] = ['select', 'id', 'fecha', 'ingreso', 'patente', 'dias', 'tipo', 'estado', 'sucursal', 'arriendo'];
   dataSource = new MatTableDataSource<ArriendoTabla>();
   selection = new SelectionModel<ArriendoTabla>(true, []);
-  @ViewChild(MatPaginator) paginator = null;
+  @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
   @ViewChild(MatSort) sort = null;
 
   //filtros
   formFilter = new FormGroup({
+    id: new FormControl(),
+    ingreso: new FormControl(),
     start: new FormControl(),
     end: new FormControl(),
     tipo: new FormControl(),
@@ -52,7 +55,7 @@ export class RentacarIngresosListComponent implements OnInit {
     patente: new FormControl()
   })
 
-  constructor(private rentacarService: RentacarService, private alert: AlertHelper, public dialog: MatDialog) { }
+  constructor(private rentacarService: RentacarService, private alert: AlertHelper, public dialog: MatDialog, private snackBar: MatSnackBar) { }
 
 
   ngOnInit(): void {
@@ -89,7 +92,7 @@ export class RentacarIngresosListComponent implements OnInit {
 
     });
     this.dataSource = new MatTableDataSource(this.arriendosTabla);
-    this.dataSource.paginator = this.paginator;
+    this.dataSource.paginator = this.paginator.toArray()[0];
     this.dataSource.sort = this.sort;
 
   }
@@ -108,8 +111,15 @@ export class RentacarIngresosListComponent implements OnInit {
   aplicarfiltros() {
     this.formFilter.valueChanges.subscribe(res => {
 
+      const { id, ingreso } = res
       let dataFiltered = this.arriendosTabla;
 
+      if (id) {
+        dataFiltered = dataFiltered.filter((data: ArriendoTabla) => (data.id).toString().includes(id))
+      }    
+      if (ingreso) {
+        dataFiltered = dataFiltered.filter((data: ArriendoTabla) => (data.ingreso).toString().includes(ingreso))
+      }
       if (res.patente) {
         dataFiltered = dataFiltered.filter((data: ArriendoTabla) => data.patente.includes(res.patente));
       }
@@ -131,7 +141,7 @@ export class RentacarIngresosListComponent implements OnInit {
       }
 
       this.dataSource = new MatTableDataSource(dataFiltered);
-      this.dataSource.paginator = this.paginator;
+      this.dataSource.paginator = this.paginator.toArray()[0];
       this.dataSource.sort = this.sort;
       this.selection.clear();
       this.totalEsperadoSeleccion = 0;
@@ -145,8 +155,9 @@ export class RentacarIngresosListComponent implements OnInit {
     this.formFilter.patchValue({ start: null, end: null, patente: null, sucursal: null, tipo: null, estado: null })
 
     this.dataSource = new MatTableDataSource(this.arriendosTabla);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator.toArray()[0];
+    this.dataSource.paginator['_pageIndex'] = 0
+    this.cargarListaPagosArriendos()
     this.selection.clear()
     this.totalPagadoSeleccion = 0;
     this.totalEsperadoSeleccion = 0;
@@ -165,7 +176,7 @@ export class RentacarIngresosListComponent implements OnInit {
           ingresoPagado = ingresoPagado + pago.monto;
         }
       })
-
+      
       arriendosTabla.arriendo.infoPagos.arrayPagosReemplazo.pagos.forEach((pago) => {
         if (pago.estado === 'PAGADO') {
           ingresoPagado = ingresoPagado + pago.monto;
@@ -198,7 +209,6 @@ export class RentacarIngresosListComponent implements OnInit {
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   isAllSelected() {
-    console.log(this.selection.selected.length);
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected == numRows;
@@ -210,6 +220,26 @@ export class RentacarIngresosListComponent implements OnInit {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+
+  exportAsXLSX(): void {
+    this.selectedRows = [];
+    console.log(this.selection.selected)
+    if(this.selection.selected.length == 0) {
+      this.snackBar.open('!Seleccione algún registro!', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+    } else {
+      this.selection.selected.forEach((x) => this.selectedRows.push(x));
+        const newArray = this.selectedRows.map((item) => {
+        const { arriendo, ...newObject } = item
+        return newObject
+      })
+    
+    this.rentacarService.exportAsExcelFile(newArray, 'Lista-Egresos-Rentacar');
+
+    }
   }
 
 }

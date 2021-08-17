@@ -6,6 +6,8 @@ import { InmobiliariaService } from '@app/_pages/inmobiliaria/inmobiliaria.servi
 import { RentacarService } from '@app/_pages/rentacar/rentacar.service';
 import { ImportadoraService } from '@app/_pages/importadora/importadora.service';
 import { AbogadosService } from '@app/_pages/abogados/abogados.service';
+import { DomSanitizer} from '@angular/platform-browser';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 export interface DialogData {
@@ -30,7 +32,7 @@ export class DialogDownloadsComponent implements OnInit {
     private importadoraService: ImportadoraService,
     private abogadosService: AbogadosService
   ) {
-    this.archivos = this.data.archivos;
+    this.archivos = this.data.archivos;        
   }
   descargar(url: string) {
     switch (this.data.servicio) {
@@ -73,7 +75,261 @@ export class DialogDownloadsComponent implements OnInit {
 
   }
   ngOnInit(): void {
+    
   }
 
 }
+
+
+@Component({
+  selector: 'dialog-show',
+  templateUrl: 'dialog-show.html',
+})
+export class DialogShow implements OnInit{
+  archivos: any[];
+  servicio: string;
+  imagen: any;
+  timeStamp = '';
+  descargarImagen = '';
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private hostalService: HostalService,
+    private sanitizer: DomSanitizer,
+    private abogadosService: AbogadosService,
+    private snackBar: MatSnackBar, 
+    private lubricentroService: LubricentroService,   
+    private inmobiliariaService: InmobiliariaService,
+    private rentacarService: RentacarService,
+    private importadoraService: ImportadoraService,
+  )  
+  {
+    this.archivos = this.data.archivos;
+    this.servicio = this.data.servicio;     
+  }
+
+  ngOnInit(): void {     
+    if (this.servicio === 'hostal-ingreso') {
+      this.hostalService.buscarImagen(this.archivos[0].url)
+      .pipe()
+      .subscribe(
+        (data:any) => {                            
+          this.imagen = window.URL.createObjectURL(data);        
+          this.descargarImagen = window.URL.createObjectURL(data);
+          this.imagen = this.sanitizer.bypassSecurityTrustUrl(this.imagen);          
+        },
+        (error: any) => {
+          (document.getElementById('cerrarModal') as HTMLInputElement).click();
+          this.snackBar.open('No existe documento asociado a este ingreso', 'cerrar', {
+            duration: 2000,
+            verticalPosition: 'top',
+          });
+          console.log(error);
+        }
+      );
+    }
+    if (this.servicio === 'hostal-egreso') {
+      this.hostalService.egresosBuscarImagen(this.archivos[0].url)
+      .pipe()
+      .subscribe(
+        (data:any) => {        
+          this.imagen = window.URL.createObjectURL(data);        
+          this.descargarImagen = window.URL.createObjectURL(data);
+          this.imagen = this.sanitizer.bypassSecurityTrustUrl(this.imagen);                
+        },
+        (error: any) => {
+          (document.getElementById('cerrarModal') as HTMLInputElement).click();
+          this.snackBar.open('No existe documento asociado a este egreso', 'cerrar', {
+            duration: 2000,
+            verticalPosition: 'top',
+          });
+          console.log(error);
+        }
+      );
+    }
+    if (this.servicio === 'abogados-egresos') {
+      this.abogadosService.buscarImagen(this.archivos[0].url)
+      .pipe()
+      .subscribe(
+        (data:any) => {        
+          this.imagen = window.URL.createObjectURL(data); 
+          this.descargarImagen = window.URL.createObjectURL(data);       
+          this.imagen = this.sanitizer.bypassSecurityTrustUrl(this.imagen);                
+        },
+        (error: any) => {
+          (document.getElementById('cerrarModal') as HTMLInputElement).click();
+          this.snackBar.open('No existe documento asociado a este egreso', 'cerrar', {
+            duration: 2000,
+            verticalPosition: 'top',
+          });
+          console.log(error);
+        }
+      );
+    }
+    if (this.servicio === 'lubricentro-ingreso') {
+      this.lubricentroService.buscarImagen(this.archivos[0].url)
+      .pipe()
+      .subscribe(
+        (data:any) => {        
+          this.imagen = window.URL.createObjectURL(data);  
+          this.descargarImagen = window.URL.createObjectURL(data);             
+          this.imagen = this.sanitizer.bypassSecurityTrustUrl(this.imagen);                
+        },
+        (error: any) => {
+          (document.getElementById('cerrarModal') as HTMLInputElement).click();
+          this.snackBar.open('No existe documento asociado a este ingreso', 'cerrar', {
+            duration: 2000,
+            verticalPosition: 'top',
+          });
+          console.log(error);
+        }
+      );
+    }
+    if (this.servicio === 'lubricentro-egreso') {
+      this.lubricentroService.buscarImagenEgreso(this.archivos[0].url)
+      .pipe()
+      .subscribe(
+        (data:any) => {        
+          this.imagen = window.URL.createObjectURL(data);        
+          this.descargarImagen = window.URL.createObjectURL(data);             
+          this.imagen = this.sanitizer.bypassSecurityTrustUrl(this.imagen);                
+        },
+        (error: any) => {
+          (document.getElementById('cerrarModal') as HTMLInputElement).click();
+          this.snackBar.open('No existe documento asociado a este egreso', 'cerrar', {
+            duration: 2000,
+            verticalPosition: 'top',
+          });
+          console.log(error);
+        }
+      );
+    }
+    if (this.servicio === 'inmobiliaria-ingreso') {
+      this.inmobiliariaService.buscarImagen(this.archivos[0].url)
+      .pipe()
+      .subscribe(
+        (data:any) => {        
+          this.imagen = window.URL.createObjectURL(data);  
+          this.descargarImagen = window.URL.createObjectURL(data);             
+          this.imagen = this.sanitizer.bypassSecurityTrustUrl(this.imagen);                
+        },
+        (error: any) => {
+          (document.getElementById('cerrarModal') as HTMLInputElement).click();
+          this.snackBar.open('No existe documento asociado a este ingreso', 'cerrar', {
+            duration: 2000,
+            verticalPosition: 'top',
+          });
+          console.log(error);
+        }
+      );
+    }
+    if (this.servicio === 'inmobiliaria-egreso') {      
+      this.inmobiliariaService.buscarImagenEgreso(this.archivos[0].url)
+      .pipe()
+      .subscribe(
+        (data:any) => {         
+          this.imagen = window.URL.createObjectURL(data);        
+          this.descargarImagen = window.URL.createObjectURL(data);             
+          this.imagen = this.sanitizer.bypassSecurityTrustUrl(this.imagen);                
+        },
+        (error: any) => {
+          (document.getElementById('cerrarModal') as HTMLInputElement).click();
+          this.snackBar.open('No existe documento asociado a este egreso', 'cerrar', {
+            duration: 2000,
+            verticalPosition: 'top',
+          });
+          console.log(error);
+        }
+      );
+    }    
+    if (this.servicio === 'rentacar-egreso') {      
+      this.rentacarService.buscarImagenEgreso(this.archivos[0].url)
+      .pipe()
+      .subscribe(
+        (data:any) => {         
+          this.imagen = window.URL.createObjectURL(data);        
+          this.descargarImagen = window.URL.createObjectURL(data);             
+          this.imagen = this.sanitizer.bypassSecurityTrustUrl(this.imagen);                
+        },
+        (error: any) => {
+          (document.getElementById('cerrarModal') as HTMLInputElement).click();
+          this.snackBar.open('No existe documento asociado a este egreso', 'cerrar', {
+            duration: 2000,
+            verticalPosition: 'top',
+          });
+          console.log(error);
+        }
+      );
+    }
+    if (this.servicio === 'importadora-ingreso') {
+      this.importadoraService.buscarImagen(this.archivos[0].url)
+      .pipe()
+      .subscribe(
+        (data:any) => {        
+          this.imagen = window.URL.createObjectURL(data);  
+          this.descargarImagen = window.URL.createObjectURL(data);             
+          this.imagen = this.sanitizer.bypassSecurityTrustUrl(this.imagen);                
+        },
+        (error: any) => {
+          (document.getElementById('cerrarModal') as HTMLInputElement).click();
+          this.snackBar.open('No existe documento asociado a este ingreso', 'cerrar', {
+            duration: 2000,
+            verticalPosition: 'top',
+          });
+          console.log(error);
+        }
+      );
+    }
+    if (this.servicio === 'importadora-egresoFijo') {      
+      this.importadoraService.buscarImagenEgreso(this.archivos[0].url)
+      .pipe()
+      .subscribe(
+        (data:any) => {         
+          this.imagen = window.URL.createObjectURL(data);        
+          this.descargarImagen = window.URL.createObjectURL(data);             
+          this.imagen = this.sanitizer.bypassSecurityTrustUrl(this.imagen);                
+        },
+        (error: any) => {
+          (document.getElementById('cerrarModal') as HTMLInputElement).click();
+          this.snackBar.open('No existe documento asociado a este egreso', 'cerrar', {
+            duration: 2000,
+            verticalPosition: 'top',
+          });
+          console.log(error);
+        }
+      );
+    }
+    if (this.servicio === 'importadora-egresoConteiner') {      
+      this.importadoraService.buscarImagenEgresoC(this.archivos[0].url)
+      .pipe()
+      .subscribe(
+        (data:any) => {         
+          this.imagen = window.URL.createObjectURL(data);        
+          this.descargarImagen = window.URL.createObjectURL(data);             
+          this.imagen = this.sanitizer.bypassSecurityTrustUrl(this.imagen);                
+        },
+        (error: any) => {
+          (document.getElementById('cerrarModal') as HTMLInputElement).click();
+          this.snackBar.open('No existe documento asociado a este egreso', 'cerrar', {
+            duration: 2000,
+            verticalPosition: 'top',
+          });
+          console.log(error);
+        }
+      );
+    }      
+  }
+
+  download() {    
+    let a = document.createElement('a');                    
+          a.href = this.descargarImagen;
+          a.download = "img.png";
+          a.click();                    
+  }
+
+  loaded(event: any) {    
+    this.timeStamp = event.timeStamp;
+  }
+}
+
 

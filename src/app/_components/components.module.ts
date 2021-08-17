@@ -7,6 +7,7 @@ import { DialogRespaldosComponent } from './dialogs/dialog-respaldos/dialog-resp
 import { FileUploadModule } from 'ng2-file-upload';
 import { TableComponent } from './tables/table/table.component';
 import { DialogDownloadsComponent } from './dialogs/dialog-downloads/dialog-downloads.component';
+import { DialogShow } from './dialogs/dialog-downloads/dialog-downloads.component';
 import { AuthComponent } from './auth/auth.component';
 
 
@@ -14,7 +15,7 @@ import { AuthComponent } from './auth/auth.component';
 
 
 @NgModule({
-  declarations: [FormComponent, DialogRespaldosComponent, TableComponent, DialogDownloadsComponent, AuthComponent],
+  declarations: [FormComponent, DialogRespaldosComponent, TableComponent, DialogDownloadsComponent, DialogShow, AuthComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

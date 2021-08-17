@@ -225,18 +225,6 @@ export class DialogNeumaticosComponent implements OnInit {
     this.importadoraService.exportAsExcelFile(this.selectedRows, 'Lista-Neumaticos-Conteiner-Importadora');
     }
     
-    //Abrir Modal Editar  
-//   openDialogEdit(){      
-//   //Selecciona los valores de la fila seleccionada
-//   this.selectedRows = [];
-//   this.selection.selected.forEach((x) => this.selectedRows.push(x));
-//   this.selectedRows.forEach((x) => {
-//     localStorage.setItem("idConteiner", x.id);
-//   });
-//   //Se ejecuta el metodo que abre el dialog, enviandole le id del contrato
-//   let idConteiner = localStorage.getItem("idConteiner");  
-//   this.importadoraService.openDialogEditContainerN(idConteiner);
-// }
 
 openDialogEdit2
   ( 

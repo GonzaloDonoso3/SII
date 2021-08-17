@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
-    <button mat-raised-button (click)="limpiarFiltros()" color="accent">
-        Limpiar filtros
+    <button mat-raised-button (click)="resetTable()" color="accent">
+        Actualizar Tabla
     </button>
     <span>Ingresos Hostal</span>
     <span>Monto Registros Seleccionados:
@@ -16,7 +16,7 @@
 
 <div class="table-responsive">
 
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z10">
+    <table mat-table [dataSource]="dataSource" matSort matSortActive="id" matSortDirection="desc" class="mat-elevation-z8">
         <!-- check column -->
 
         <ng-container matColumnDef="select">
@@ -34,12 +34,19 @@
         </ng-container>
         <!-- data columns -->
         <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>ID</th>
-            <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <div [formGroup]="formFilter">
+                    <mat-form-field class="fill limit-width-40">
+                        <input matInput placeholder="ID" formControlName="id" />
+                    </mat-form-field>
+                </div>
+            </th>
+                <td mat-cell *matCellDef="let element">{{ element.id }}</td>
         </ng-container>
+
         <ng-container matColumnDef="fecha" class="mat-column-date">
-            <th mat-header-cell *matHeaderCellDef>
-                <mat-form-field appearance="fill">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="limit-width-180">
+                <mat-form-field appearance="fill" class="limit-width-180">
                     <mat-label>Fecha</mat-label>
                     <mat-date-range-input [formGroup]="formFilter" [rangePicker]="picker">
                         <input matStartDate formControlName="start" placeholder="Start date" />
@@ -54,8 +61,9 @@
                     </mat-error>
                 </mat-form-field>
             </th>
-            <td mat-cell *matCellDef="let element">{{ element.fecha | date: 'dd/MM/yyyy' }}</td>
+            <td mat-cell *matCellDef="let element">{{ element.fecha | date: 'shortDate' }}</td>
         </ng-container>
+
         <ng-container matColumnDef="sucursal">
             <th mat-header-cell *matHeaderCellDef>
                 <div [formGroup]="formFilter">
@@ -120,17 +128,17 @@
             </th>
             <td mat-cell *matCellDef="let element">{{ element.tipoIngreso }}</td>
         </ng-container>
-        <ng-container matColumnDef="monto">            
-            <th mat-header-cell *matHeaderCellDef>
-            <div [formGroup]="formFilter">
-                <mat-form-field class="fill">
-                    <input matInput placeholder="Monto" formControlName="monto" />
-                </mat-form-field>
-            </div>
-             </th>
-            <td mat-cell *matCellDef="let element">
-                {{ element.monto | currency: "$":"symbol":"1.0-0" }}
-            </td>
+        <ng-container matColumnDef="monto">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <div [formGroup]="formFilter">
+                    <mat-form-field class="fill limit-width-60">
+                        <input matInput placeholder="Monto" formControlName="monto" />
+                    </mat-form-field>
+                </div>
+            </th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.monto | currency: "$":"symbol":"1.0-0" }}
+                </td>
         </ng-container>
 
         <ng-container matColumnDef="usuario">

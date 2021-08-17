@@ -208,6 +208,16 @@ export class AbogadosService {
         window.open(window.URL.createObjectURL(res));
       });
   }
+
+  buscarImagen(url: string) {    
+    const extencion = url.split('.');
+    const extend = extencion[1];    
+    return this.http
+    .get(`${environment.apiUrl}/egresoFirma/download/${url}`, {
+        responseType: 'blob',
+      })      
+  }
+
   getById(id: string): any {        
     return this.http.get<any>(
       `${environment.apiUrl}/egreso${this.empresa}/${id}`

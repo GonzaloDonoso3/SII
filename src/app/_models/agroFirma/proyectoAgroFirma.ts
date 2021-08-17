@@ -2,14 +2,11 @@ export class ProyectoAgrofirma {
     id!: string;
     nombre!: string;
     ubicacion!: string;
-    geoLocation!: string;
-    fechaIncio!: Date;
+    geoLocalizacion!: string;
+    fechaInicio!: Date;
     estado!: boolean;
     totalInversion!: number;
     capitalInicial!: number;
-    idSucursal!: number;
     idUsuario!: number;
-    createdAt!: string;
-    updatedAt!: string;
     }
   

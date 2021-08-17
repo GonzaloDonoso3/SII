@@ -9,11 +9,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Sucursal } from '@app/_models/shared/sucursal';
-import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
+import { DialogShow } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
 import { EmpresaSharedService } from '@app/_pages/shared/shared-services/empresa-shared.service';
 import { first } from 'rxjs/operators';
 import { Empresa } from '@app/_models/shared/empresa';
 import { DatePipe } from "@angular/common";
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 
@@ -60,6 +61,8 @@ export class RentacarEgresosListComponent implements OnInit {
   changelog: string[] = [];
 
   formFilter = new FormGroup({
+    id: new FormControl(),
+    monto: new FormControl(),
     start: new FormControl(),
     end: new FormControl(),
     idSucursal: new FormControl(),
@@ -67,8 +70,7 @@ export class RentacarEgresosListComponent implements OnInit {
     tipoEgreso: new FormControl(),
     usuario: new FormControl(),
     responsable: new FormControl(),
-    numeroCuota: new FormControl(),
-    monto: new FormControl(),
+    numeroCuota: new FormControl(),    
   })
 
   _pageIndex = 0;
@@ -86,8 +88,8 @@ export class RentacarEgresosListComponent implements OnInit {
   constructor(
     private rentacarService: RentacarService,    
     public dialog: MatDialog,
-    private sucursalService: SucursalSharedService,
-    private empresaService: EmpresaSharedService,   
+    private empresaService: EmpresaSharedService,
+    private snackBar: MatSnackBar 
   ) { 
 
   }
@@ -99,8 +101,7 @@ export class RentacarEgresosListComponent implements OnInit {
     this.aplicarfiltros();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    //console.log(this.refrescar);
+  ngOnChanges(changes: SimpleChanges): void {    
     this.getEgresos();
     this.aplicarfiltros();
   }
@@ -165,8 +166,15 @@ export class RentacarEgresosListComponent implements OnInit {
   aplicarfiltros() {
     this.formFilter.valueChanges.subscribe(res => {
 
+      const { id, monto } = res
       let dataFiltered = this.dataEgresos;
 
+      if (id) {
+        dataFiltered = dataFiltered.filter((data: EgresosRentacar) => (data.id).toString().includes(id))
+      }    
+      if (monto) {
+        dataFiltered = dataFiltered.filter((data: EgresosRentacar) => (data.monto).toString().includes(monto))
+      }
       if (res.descripcionEgreso) {
         dataFiltered = dataFiltered.filter((data: EgresosRentacar) => data.descripcion.includes(res.descripcionEgreso));
       }
@@ -219,16 +227,31 @@ export class RentacarEgresosListComponent implements OnInit {
 
   //Cargar los archivos de respaldo
   recuperarArchivos(listArchivos: any) {
-    this.dialog.open(DialogDownloadsComponent, {
+    setTimeout(() => {
+    this.dialog.open(DialogShow, {
       data: { archivos: listArchivos, servicio: 'rentacar-egreso' },
     });
+  }, 1000);
   }
 
   //Metodo exportar excel
   exportAsXLSX(): void {
-    this.selectedRows = [];
-    this.selection.selected.forEach((x) => this.selectedRows.push(x));
-    this.rentacarService.exportAsExcelFile(this.selectedRows, 'Lista-Egresos-Rentacar');
+    this.selectedRows = []
+    if(this.selection.selected.length == 0) {
+      this.snackBar.open('!Seleccione algún registro!', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      })
+    } else {
+      this.selection.selected.forEach((x) => this.selectedRows.push(x))
+        const newArray = this.selectedRows.map((item) => {
+        const { RespaldoEgresos, Usuario, Sucursal, ...newObject } = item
+        return newObject
+      })
+    
+    this.rentacarService.exportAsExcelFile(newArray, 'Lista-Egresos-Rentacar')
+
+    }
   }
 
   }

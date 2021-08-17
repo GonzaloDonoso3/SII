@@ -186,8 +186,8 @@ export class DialogMostrarContratosComponent implements OnInit {
       localStorage.setItem("idContratoPago", x.id);
     });
     //Se ejecuta el metodo que abre el dialog, enviandole le id del contrato
-    let idContato = localStorage.getItem("idContratoPago");
-    this.abogadosService.openDialogRegistrarPago(idContato);
+    let idContrato = localStorage.getItem("idContratoPago");
+    this.abogadosService.openDialogRegistrarPago(idContrato);
   }
 
   // Abrir Ventana Modal Repactar Cuotas

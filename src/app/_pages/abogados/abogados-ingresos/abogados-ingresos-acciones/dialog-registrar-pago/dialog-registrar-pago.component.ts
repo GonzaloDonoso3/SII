@@ -55,13 +55,22 @@ export class DialogRegistrarPagoComponent implements OnInit {
     private abogadosTabsService: AbogadosTabsService,
     private abogadosService: AbogadosService,
     public dialog: MatDialog,
-  ) { }
+    private snackBar: MatSnackBar
+  ) {  }
 
   ngOnInit(): void {
     this.getContratosCliente();
     this.aplicarfiltros();
+
   }
 
+  disableCompletedRows() {
+    let flag = true
+    this.selection.selected.forEach((x) => {
+      if(x.estado == 'pagado') flag = false
+    })
+      return flag
+  }
 //obtener los contratos del cliente
   getContratosCliente(){
     //Carga Tabla 
@@ -95,42 +104,59 @@ export class DialogRegistrarPagoComponent implements OnInit {
 
   //Metodo que permite procesar pago
   procesarPago(){
-    //Esto abre un dialog que permite subir un archivo
-   const dialogRef = this.dialog.open(DialogRespaldosComponent, {
-      data: { url: 'cuotasContrato/upload' }
-    });
-    //Despues de subir el archivo se ejecuta esto
-    dialogRef.afterClosed().subscribe(result => {
-      //Se declaran las variables que se usaran para subir el respaldo
-      let respaldo = {};
-      const arrayRespaldos: {}[] = [];
-      const respuesta = result;
-      let idCuota: string;
-      let cuota: any;
-
-      //Se captura la id de la fila seleccionada en la tabla
-      this.selectedRows = [];
-      this.selection.selected.forEach((x) => this.selectedRows.push(x));
+    if(this.disableCompletedRows()) {
+      let idCuota: string
+    let cuota: any
+    this.selectedRows = [];
+    if(this.selection.selected.length == 0) {
+      this.snackBar.open('!Seleccione algún registro!', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+    } else {
+      this.selection.selected.forEach((x) => this.selectedRows.push(x))
       this.selectedRows.forEach((x) => {
-        idCuota = x.id;
-        cuota = x;
-      });
-      //Se guardan los datos en las variables creada
-      respuesta.forEach((resp: any) => {
-        respaldo = { idCuotaFirma: idCuota, url: resp };
-        arrayRespaldos.push(respaldo);
-      });
+          idCuota = x.id
+          cuota = x
+      })
+    
 
-      //Se le agrega el respaldo al pago seleccionado
-      this.abogadosTabsService.agregarRespaldos(arrayRespaldos).subscribe(
-        () => {
-          this.pagarCuota(idCuota, cuota);
-        },
-        (error: any) => {
-          console.log(error);
-        }
-      );
-    });
+      //Esto abre un dialog que permite subir un archivo
+      const dialogRef = this.dialog.open(DialogRespaldosComponent, {
+          data: { url: 'cuotasContrato/upload' }
+      });
+        //Despues de subir el archivo se ejecuta esto
+      dialogRef.afterClosed().subscribe(result => {
+
+          //Se declaran las variables que se usaran para subir el respaldo
+        let respaldo = {};
+        const arrayRespaldos: {}[] = [];
+        const respuesta = result;
+        //Se captura la id de la fila seleccionada en la tabla
+          
+          //Se guardan los datos en las variables creada
+          respuesta.forEach((resp: any) => {
+            respaldo = { idCuotaFirma: idCuota, url: resp };
+            arrayRespaldos.push(respaldo);
+          });
+
+          //Se le agrega el respaldo al pago seleccionado
+          this.abogadosTabsService.agregarRespaldos(arrayRespaldos).subscribe(
+            () => {
+              this.pagarCuota(idCuota, cuota);
+            },
+            (error: any) => {
+              console.log(error);
+            }
+          );
+        });
+
+    }
+    } else {
+      console.log("es falso")
+    }
+    
+    
   }
 
   //Metodo que permite realizar el pago de la cuota

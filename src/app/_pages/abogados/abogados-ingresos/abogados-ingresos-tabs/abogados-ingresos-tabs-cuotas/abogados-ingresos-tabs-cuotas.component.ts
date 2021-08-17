@@ -49,6 +49,7 @@ export class AbogadosIngresosTabsCuotasComponent implements OnInit {
     endActualizacion: new FormControl(),
     estadoPago: new FormControl(),
     idContrato: new FormControl(),
+    numeroContrato: new FormControl()
   })
 
   selection = new SelectionModel<any>(true, []);

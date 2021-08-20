@@ -7,6 +7,11 @@ import { environment } from '@environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
+import { EgresoInmobiliariaCuota } from '@app/_models/inmobiliaria/egresoInmobiliariaCuota';
+import { MatDialog } from '@angular/material/dialog';
+import { InmobiliariaEgresosCuotaDialogComponent } from '@app/_pages/inmobiliaria/inmobiliaria-egresos/inmobiliaria-egresos-list/inmobiliaria-egresos-cuotas/inmobiliaria-egresos-cuota-dialog/inmobiliaria-egresos-cuota-dialog.component';
+import { InmobiliariaEgresosCuotasComponent } from '@app/_pages/inmobiliaria/inmobiliaria-egresos/inmobiliaria-egresos-list/inmobiliaria-egresos-cuotas/inmobiliaria-egresos-cuotas.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 const EXCEL_TYPE =
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
@@ -33,7 +38,11 @@ export class InmobiliariaService {
    private tiposEgresosInmobiliaria = ['Gastos', 'Costos', 'Remuneraciones', 'Bancarios', 'Impuestos', 'Inversiones'];
    private empresa = 'Inmobiliaria';
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(
+    private http: HttpClient, 
+    private router: Router,
+    public dialog:MatDialog,
+    private snackBar: MatSnackBar) {
     //Init private Subjects;
     //ingresos;
     this.tiposIngresosListSubject = new BehaviorSubject<string[]>(
@@ -156,7 +165,68 @@ export class InmobiliariaService {
         responseType: 'blob',
       })      
   }
+
+  /* Egresos Por cuotas */
+  getCuotas(id: any) {        
+    return this.http.get<EgresoInmobiliariaCuota>(
+      `${environment.apiUrl}/egresoInmobiliariaCuota/${id}`
+    );
+  }
+
+  agregarRespaldos(arrayRespaldos: any): any {
+    return this.http.post(
+      `${environment.apiUrl}/egresoInmobiliariaCuota/agregarRespaldos/`,
+      arrayRespaldos
+    );
+  }
+
+  closeDialogModal(){
+    this.dialog.closeAll();
+    localStorage.removeItem("idEgresoPago");
+  }
+
+  buscarImagenC(id: any): any {
+    return this.http.get<EgresoInmobiliariaCuota>(
+      `${environment.apiUrl}/respaldoEgresoInmobiliariaCuota/${id}`
+    );
+  }
+
+  buscarImagenCuota(url: string) {    
+    const extencion = url.split('.');
+    const extend = extencion[1];    
+    return this.http
+    .get(`${environment.apiUrl}/egresoInmobiliariaCuota/download/${url}`, {
+        responseType: 'blob',
+      })      
+  }
+
+  // Metodo que permite abrir un Dialog (Modal)
+  openDialogCuota():void{
+    const dialogRef = this.dialog.open(InmobiliariaEgresosCuotaDialogComponent, {})
+    dialogRef.afterClosed().subscribe((res) => {})
+  }
   
+  // Metodo que permite abrir un Dialog (Modal)
+  openDialogRegistrarPago(idEgreso: any):void{
+    //Si el cliente selecciono un contrato se habre el modal    
+    if(idEgreso != null){
+      const dialogRef = this.dialog.open(InmobiliariaEgresosCuotasComponent,{});
+      dialogRef.afterClosed().subscribe(res =>{
+        console.log(res);
+      });
+    }else{
+      //Si no, se muestra un error
+      this.snackBar.open('Por favor seleccione un egreso con cuotas sin pagar', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+    } 
+  }
+  
+  updateMonto(id: any, body: any[]) {    
+    return this.http.put(`${environment.apiUrl}/egresoInmobiliariaCuota/${id}`, body);                
+  }
+
   // METODO PARA EXPORTAR EXCEL
   public exportAsExcelFile(json: any[], excelFileName: string): void {
     const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);

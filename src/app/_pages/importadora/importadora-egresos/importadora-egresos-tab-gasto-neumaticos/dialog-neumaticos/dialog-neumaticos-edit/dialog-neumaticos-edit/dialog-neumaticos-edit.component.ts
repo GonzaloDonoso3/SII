@@ -1,15 +1,12 @@
 import { Component, OnInit, EventEmitter } from '@angular/core';
 import { EgresosContainerImportadora } from '@app/_models/importadora/egresoContainerImportadora';
 import { FormBuilder, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { first } from 'rxjs/operators';
 import { ImportadoraService } from '@app/_pages/importadora/importadora.service';
 import { Empresa } from '@app/_models/shared/empresa';
-import { EmpresaSharedService } from '@app/_pages/shared/shared-services/empresa-shared.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
-import { EgresosFijoImportadora } from '@app/_models/importadora/egresoFijoImportadora';
 
 @Component({
   selector: 'app-dialog-neumaticos-edit',
@@ -19,7 +16,6 @@ import { EgresosFijoImportadora } from '@app/_models/importadora/egresoFijoImpor
 export class DialogNeumaticosEditComponent implements OnInit {
   
   formularioListo = new EventEmitter<string>();
-  container: EgresosContainerImportadora = JSON.parse(localStorage.getItem('container') + '');
   dataSource: MatTableDataSource<EgresosContainerImportadora> = new MatTableDataSource();   
   
   dataContainer: any;    
@@ -79,8 +75,7 @@ export class DialogNeumaticosEditComponent implements OnInit {
     private fb: FormBuilder,
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private importadoraService: ImportadoraService,
-    private empresaService: EmpresaSharedService,    
+    private importadoraService: ImportadoraService,       
   ) { }
 
   ngOnInit(): void {
@@ -147,8 +142,7 @@ export class DialogNeumaticosEditComponent implements OnInit {
         this.f.montoTotal.setValue(this.totalEdit);
         this.f.totalVenta.setValue(this.totalVentaEdit);
         this.f.pGanancia.setValue(this.gananciaEdit);
-        this.f.utilidad.setValue(this.utilidadEdit);
-        //localStorage.clear();
+        this.f.utilidad.setValue(this.utilidadEdit);        
   }
 
   get f() {

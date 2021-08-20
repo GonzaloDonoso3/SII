@@ -118,9 +118,13 @@ export class HostalConsolidadosComponent implements OnInit {
   uniqueArr2: any[] = []
   fechaUnica: any[] = []
   fechaUnicaE: any[] = []
-  Arreglotrimestre: any[] = []
-  Arreglotrimestre2: any[] = []
-  
+  arreglotrimestre: any[] = []
+  arreglotrimestre2: any[] = []
+  arreglotrimestreF: any[] = []
+  arreglotrimestreE: any[] = []
+  arreglotrimestre2E: any[] = []
+  arreglotrimestreFE: any[] = []
+  nameMoth: any[] = []
 
   constructor(
     private fb: FormBuilder,
@@ -356,19 +360,7 @@ export class HostalConsolidadosComponent implements OnInit {
                   this.totalEgresoG.map((monto)=>{
                     this.sumEgresos = this.sumEgresos + monto;
                   })
-
-                  // for (var i = 0; i < this.dataEgresos.length; i++) {
-                  //   this.totalEgreso = this.dataEgresos[i]['monto']                    
-                  //   this.egresoPorDia = this.dataEgresos[i]['fecha']
-                  //   this.montoEgreso.push(this.totalEgreso)
-                  //   this.sumEgresos = this.sumEgresos + this.totalEgreso
-
-                  //   // Guardando en el array para recorrer
-                  //   this.totalEgresoG.push({
-                  //     fecha: this.egresoPorDia,
-                  //     monto: this.totalIngreso
-                  //   })
-                  // }                  
+                  
                   this.mostrarGraficoE()
                   //this.chart.destroy();
                 }
@@ -404,28 +396,38 @@ export class HostalConsolidadosComponent implements OnInit {
                   for (var i = 0; i < this.dataIngresos.length; i++) {
                     this.uniqueArr.push(this.dataIngresos[i]['fecha'])
                      const fechaTrimestre = this.dataIngresos[i]['fecha'].substring(5, 7);                     
-                    this.Arreglotrimestre.push(fechaTrimestre);
-                    this.Arreglotrimestre2.push({fecha: fechaTrimestre, monto: this.dataIngresos[i]['monto']});
-                  }
+                    this.arreglotrimestre.push(fechaTrimestre);                    
+                    this.arreglotrimestre2.push({fecha: fechaTrimestre, monto: this.dataIngresos[i]['monto']});
+                  }                  
                   this.fechaUnica = [...new Set(this.uniqueArr)]
-                  this.Arreglotrimestre = [...new Set(this.Arreglotrimestre)]
+                  this.arreglotrimestre = [...new Set(this.arreglotrimestre)]
                   this.fechaUnica.sort()
-                                 
-                  // console.log("verificando fechas", this.Arreglotrimestre2)
-                  // this.Arreglotrimestre.sort()
-                  // if(this.Arreglotrimestre.length > 2){
-                  // let sumMonto = 0;
-                  //   for (var i = 0; i < this.Arreglotrimestre.length; i++) {                      
-                  //     this.Arreglotrimestre2.filter((num2) => {
-                  //       if(num2 == this.Arreglotrimestre2[i]['fecha']){
-                  //         sumMonto = sumMonto + num2.monto;
-                  //       }                      
-                  //     })
-                  //   this.totalIngresoG.push(sumMonto)                    
-                  //   }                                                            
-                  // }
-                  
-
+                  this.arreglotrimestre.sort()                                 
+                  // si el arreglo tienes 3 meses de los ingresos
+                  if(this.arreglotrimestre.length > 2){
+                    const monthMes = this.buscarMes(this.arreglotrimestre);                    
+                    this.nameMoth = monthMes;  
+                    let sumMonto = 0;                    
+                    this.arreglotrimestre.map((num) => {
+                      sumMonto = 0;
+                      this.arreglotrimestre2.filter((num2) => {
+                        if(num2.fecha == num){
+                          sumMonto = sumMonto + num2.monto;
+                        }                      
+                      })
+                    this.arreglotrimestreF.push(sumMonto)
+                    this.ingresoN.push({
+                      fecha: num,
+                      monto: sumMonto
+                    })                    
+                    })   
+                    this.totalIngresoG.push(this.arreglotrimestreF[0], this.arreglotrimestreF[1], this.arreglotrimestreF[2])
+                    this.totalIngresoG.map((monto)=>{                    
+                      this.sumIngresos = this.sumIngresos + monto;
+                    })  
+                    console.log("resultado", this.totalIngresoG)                                                       
+                  } else {                  
+                    //se calcula el mes del ingreso
                   let sum = 0;
                   this.fechaUnica.map((num) => {
                     sum = 0;
@@ -439,17 +441,47 @@ export class HostalConsolidadosComponent implements OnInit {
                       fecha: num,
                       monto: sum
                     })
-                  })                   
+                  })                    
                   this.totalIngresoG.map((monto)=>{                    
                     this.sumIngresos = this.sumIngresos + monto;
                   })
+                  console.log("resultado2", this.totalIngresoG)
+                }
                   //*********************EGRESOS*********************
                   // Obteniendo fecha unica en los egresos     
                   for (var i = 0; i < this.dataEgresos.length; i++) {
                     this.uniqueArr2.push(this.dataEgresos[i]['fecha']) 
+                    const fechaTrimestre = this.dataEgresos[i]['fecha'].substring(5, 7);                     
+                    this.arreglotrimestreE.push(fechaTrimestre);
+                    this.arreglotrimestre2E.push({fecha: fechaTrimestre, monto: this.dataIngresos[i]['monto']});
                   }  
                   this.fechaUnicaE = [...new Set(this.uniqueArr2)]
+                  this.arreglotrimestreE = [...new Set(this.arreglotrimestreE)]
                   this.fechaUnicaE.sort()
+                  this.arreglotrimestreE.sort()
+
+                  // si el arreglo tienes 3 meses de los egresos
+                  if(this.arreglotrimestreE.length > 2){
+                    let sumMonto = 0;                    
+                      this.arreglotrimestreE.map((num) => {
+                        sumMonto = 0;
+                        this.arreglotrimestre2E.filter((num2) => {
+                          if(num2.fecha == num){
+                            sumMonto = sumMonto + num2.monto;
+                          }                      
+                        })
+                      this.arreglotrimestreFE.push(sumMonto)
+                      this.egresoN.push({
+                        fecha: num,
+                        monto: sumMonto
+                      })                    
+                      })   
+                      this.totalEgresoG.push(this.arreglotrimestreFE[0], this.arreglotrimestreFE[1], this.arreglotrimestreFE[2])
+                      this.totalIngresoG.map((monto)=>{                    
+                        this.sumEgresos = this.sumEgresos + monto;
+                      })                        
+                    }else {
+                    //Se calcula el mes egreso
                   let sumE = 0;
                   this.fechaUnicaE.map((num) => {
                     sumE = 0;
@@ -467,9 +499,9 @@ export class HostalConsolidadosComponent implements OnInit {
                   this.totalEgresoG.map((monto)=>{
                     this.sumEgresos = this.sumEgresos + monto;
                   })                                                    
-                                    
+                }              
 
-                  //****************** INGRESOS - EGRESOS********************
+                  //****************** INGRESOS - EGRESOS********************                  
                   for (var i = 0; i < this.ingresoN.length; i++) {
                     for (var f = 0; f < this.egresoN.length; f++) {
                       if (this.ingresoN[i].fecha == this.egresoN[f].fecha) {
@@ -477,9 +509,14 @@ export class HostalConsolidadosComponent implements OnInit {
                         this.resultado.push(this.resultadoIE);
                       }
                     }
-                  }                                    
+                  }
+                  console.log("total", this.resultado)                                    
                   this.totalConsolidado = this.sumIngresos - this.sumEgresos
+                  if(this.arreglotrimestreE.length > 2 || this.arreglotrimestre.length > 2){
+                    this.mostrarGraficoT();
+                  } else {
                   this.mostrarGraficoIE();                  
+                }
                   //this.chart.destroy();
                 }
 
@@ -622,6 +659,27 @@ export class HostalConsolidadosComponent implements OnInit {
     }
   }
 
+  buscarMes(mes: any) {
+    let nombreMes;
+    let arrayMonth: any = [];
+    mes.forEach((element: any) => {      
+      if(element == '01'){nombreMes = 'Enero', arrayMonth.push(nombreMes)}
+      if(element == '02'){nombreMes = 'Febrero', arrayMonth.push(nombreMes)}
+      if(element == '03'){nombreMes = 'Marzo', arrayMonth.push(nombreMes)}
+      if(element == '04'){nombreMes = 'Abril', arrayMonth.push(nombreMes)}
+      if(element == '05'){nombreMes = 'Mayo', arrayMonth.push(nombreMes)}
+      if(element == '06'){nombreMes = 'Junio', arrayMonth.push(nombreMes)}
+      if(element == '07'){nombreMes = 'Julio', arrayMonth.push(nombreMes)}
+      if(element == '08'){nombreMes = 'Agosto', arrayMonth.push(nombreMes)}
+      if(element == '09'){nombreMes = 'Septiembre', arrayMonth.push(nombreMes)}
+      if(element == '10'){nombreMes = 'Octubre', arrayMonth.push(nombreMes)}
+      if(element == '11'){nombreMes = 'Noviembre', arrayMonth.push(nombreMes)}
+      if(element == '12'){nombreMes = 'Diciembre', arrayMonth.push(nombreMes)}
+    });
+    console.log("recorriendo for", arrayMonth)
+    return arrayMonth;
+  }
+
   // ? selection rows
   // *  INFO this.selection.selected : return array with all selected objects(rows) into table
   isAllSelected() {
@@ -680,25 +738,6 @@ export class HostalConsolidadosComponent implements OnInit {
           this.selection.select(row)
         })
   }
-
-  //************* Funcion PDF ****************
-
-  // public openPDF():void {
-  //   let ll = document.getElementById('htmlData') as HTMLImageElement;
-
-  //   html2canvas(ll).then(canvas => {
-
-  //       let fileWidth = 208;
-  //       let fileHeight = canvas.height * fileWidth / canvas.width;
-
-  //       const FILEURI = canvas.toDataURL('image/png')
-  //       let PDF = new jsPDF('p', 'mm', 'a4');
-  //       let position = 0;
-  //       PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight)
-
-  //       PDF.save('angular-demo.pdf');
-  //   });
-  //   }
 
   // ************************ GRAFICOS ************************
   mostrarGraficoI() {
@@ -788,7 +827,48 @@ export class HostalConsolidadosComponent implements OnInit {
         }      
      }
     })           
-  } 
+  }
+  
+  mostrarGraficoT() {     
+    this._cdref.detectChanges()
+    this.chart = new Chart(this.chartRef.nativeElement, {
+    type: 'line',
+    data: {        
+      labels: this.nameMoth,
+      datasets: [
+        {
+          label: 'Ingresos',            
+          data: this.totalIngresoG,
+          fill: false,
+          borderColor: 'rgb(75, 192, 192)',
+          tension: 0.1
+        },
+        {
+          label: 'Egresos',                        
+          data: this.totalEgresoG,
+          fill: false,
+          borderColor: '#64c04b',
+          tension: 0.1
+        },
+        {
+          label: 'Resultado',            
+          data: this.resultado,
+          fill: false,
+          borderColor: '#a74bc0',
+          tension: 0.1
+        },
+      ]
+    },
+    options: {
+      //responsive: false,                
+      animation : {
+         onComplete : () => {
+          this.base64I = this.chart.toBase64Image();
+         }
+      }      
+   }
+  })           
+}
   
   mostrarGrafico() { 
     this._cdref.detectChanges()

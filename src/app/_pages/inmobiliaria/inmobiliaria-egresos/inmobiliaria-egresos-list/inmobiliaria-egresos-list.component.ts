@@ -11,6 +11,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Sucursal } from '@app/_models/shared/sucursal';
 import { DialogShow } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
 import { DatePipe } from "@angular/common";
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-inmobiliaria-egresos-list',
@@ -76,7 +77,8 @@ export class InmobiliariaEgresosListComponent implements OnInit {
   constructor(
     private inmobiliariaService: InmobiliariaService,
     public dialog: MatDialog,
-    private sucursalService: SucursalSharedService
+    private sucursalService: SucursalSharedService,
+    private snackBar: MatSnackBar
   ) {
 
   }
@@ -113,6 +115,29 @@ export class InmobiliariaEgresosListComponent implements OnInit {
         this.dataSource.sort = this.sort;
       });
     }
+  }
+
+  // Abrir Ventana Modal Registrar Pago
+  openDialogRegistrarPago(){
+    //Selecciona los valores de la fila seleccionada    
+    this.selectedRows = [];
+    this.selection.selected.forEach((x) => {            
+      this.selectedRows.push(x)});
+    this.selectedRows.forEach((x) => {      
+      localStorage.setItem("idEgresoPago", x.id);
+      localStorage.setItem("numeroCuota", x.numeroCuota);
+    });
+    //Se ejecuta el metodo que abre el dialog, enviandole le id del Egreso por cuota
+    let idEgresoPagoCuota = localStorage.getItem("idEgresoPago");
+    let valorNumeroC = localStorage.getItem("numeroCuota");
+    if(valorNumeroC != "N/A"){
+      this.inmobiliariaService.openDialogRegistrarPago(idEgresoPagoCuota);
+    } else{    
+      this.snackBar.open('Por favor seleccione un egreso con cuotas sin pagar', 'cerrar', {
+      duration: 2000,
+      verticalPosition: 'top',
+    });
+  }
   }
 
   actualizarTabla(){

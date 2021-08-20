@@ -14,7 +14,9 @@ import { InmobiliariaIngresosListComponent } from './inmobiliaria-ingresos/inmob
 import { InmobiliariaIngresosFormComponent } from './inmobiliaria-ingresos/inmobiliaria-ingresos-form/inmobiliaria-ingresos-form.component';
 import { FullCalendarModule } from '@fullcalendar/angular'; 
 import dayGridPlugin from '@fullcalendar/daygrid'; 
-import interactionPlugin from '@fullcalendar/interaction'; 
+import interactionPlugin from '@fullcalendar/interaction';
+import { InmobiliariaEgresosCuotasComponent } from './inmobiliaria-egresos/inmobiliaria-egresos-list/inmobiliaria-egresos-cuotas/inmobiliaria-egresos-cuotas.component';
+import { InmobiliariaEgresosCuotaDialogComponent } from './inmobiliaria-egresos/inmobiliaria-egresos-list/inmobiliaria-egresos-cuotas/inmobiliaria-egresos-cuota-dialog/inmobiliaria-egresos-cuota-dialog.component'; 
 
 FullCalendarModule.registerPlugins([ 
   dayGridPlugin,
@@ -23,7 +25,7 @@ FullCalendarModule.registerPlugins([
 
 
 @NgModule({
-  declarations: [InmobiliariaHomeComponent, InmobiliariaIngresosComponent, InmobiliariaEgresosComponent, InmobiliariaEgresosFormComponent, InmobiliariaEgresosListComponent, InmobiliariaIngresosListComponent, InmobiliariaIngresosFormComponent],
+  declarations: [InmobiliariaHomeComponent, InmobiliariaIngresosComponent, InmobiliariaEgresosComponent, InmobiliariaEgresosFormComponent, InmobiliariaEgresosListComponent, InmobiliariaIngresosListComponent, InmobiliariaIngresosFormComponent, InmobiliariaEgresosCuotasComponent, InmobiliariaEgresosCuotaDialogComponent],
   imports: [
     CommonModule,
     InmobiliariaRoutingModule,

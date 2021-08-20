@@ -130,64 +130,7 @@ export class InmobiliariaEgresosFormComponent implements OnInit {
         } else {
           this.egreso.propiedad = this.addressForm.value.propiedad;
         }
-
-        if(this.addressForm.value.numeroCuota > 1){                          
-          let sumarMes= 0;
-          let restarMes= 0;
-          let contadorCuota = 0;                                               
-            for (let i = 0; i < this.addressForm.value.numeroCuota; i++) {                     
-                  this.addressForm.value.fecha.setMonth(this.addressForm.value.fecha.getMonth() + sumarMes);                                                                                                  
-                  this.egreso.fecha = this.addressForm.value.fecha;
-                  sumarMes = sumarMes + 1;
-                  contadorCuota = contadorCuota + 1;
-                  this.egreso.numeroCuota = contadorCuota.toString().concat("/").concat(this.addressForm.value.numeroCuota);                                                                                                                                                                                                                                                                                                                                                                                         
-                  restarMes = (sumarMes + 1) - sumarMes;                                 
-                  if(sumarMes >= 2){                                            
-                    sumarMes = restarMes;                      
-                  }
-
-                  //Se le asigna la id del usuario logueado
-        this.egreso.idUsuario = this.usuario.id;
-
-        //Se le agrega los respaldos subidos
-        for (const name of this.nameRespaldo) {
-          this.egreso.RespaldoEgresoInmobiliaria.push({ url: name });
-        }
-        //Si todo esta correcto se ingresa el objeto
-        if (result.length > 0) {
-          this.inmobiliariaService
-            .createEgresos(this.egreso)
-            .pipe()
-            .subscribe(
-              (data) => {
-                this.alert.createAlert("Registro Creado con exito!");
-                this.formularioListo.emit('true');
-                this.addressForm.reset();
-
-              },
-              (error) => {
-                this.snackBar.open('Tenemos Problemas para realizar el registro, favor contactar al equipo de desarrollo', 'cerrar', {
-                  duration: 2000,
-                  verticalPosition: 'top',
-                });
-              }
-            );
-        } else {
-          //Si es incorrecto se envía un mensaje de error
-          this.snackBar.open('Debemos Recibir sus respaldos para continuar !!', 'cerrar', {
-            duration: 5000,
-            verticalPosition: 'top',
-          });
-        }
-            }
-            return;
-          }
-          else {
-            this.egreso.fecha = this.addressForm.value.fecha;                         
-            this.addressForm.value.numeroCuota = "1/1";             
-            this.egreso.numeroCuota = this.addressForm.value.numeroCuota;          
-          }
-        
+              
         //Se le asigna la id del usuario logueado
         this.egreso.idUsuario = this.usuario.id;
 

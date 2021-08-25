@@ -190,23 +190,30 @@ export class LubricentroEgresosListComponent implements OnInit, OnChanges {
   openDialogRegistrarPago(){
     //Selecciona los valores de la fila seleccionada    
     this.selectedRows = [];
-    this.selection.selected.forEach((x) => {            
-      this.selectedRows.push(x)});
-    this.selectedRows.forEach((x) => {      
-      localStorage.setItem("idEgresoPago", x.id);
-      localStorage.setItem("numeroCuota", x.numeroCuota);
-    });
-    //Se ejecuta el metodo que abre el dialog, enviandole le id del Egreso por cuota
-    let idEgresoPagoCuota = localStorage.getItem("idEgresoPago");
-    let valorNumeroC = localStorage.getItem("numeroCuota");
-    if(valorNumeroC != "N/A"){
-      this.lubricentroService.openDialogRegistrarPago(idEgresoPagoCuota);
-    } else{    
-    this.snackBar.open('Por favor seleccione un egreso con cuotas sin pagar', 'cerrar', {
-      duration: 2000,
-      verticalPosition: 'top',
-    });
-  }
+    this.selection.selected.forEach((x) => {this.selectedRows.push(x)});
+    if(this.selectedRows.length > 0){
+      this.selectedRows.forEach((x) => {      
+        localStorage.setItem("idEgresoPago", x.id);
+        localStorage.setItem("numeroCuota", x.numeroCuota);
+      });
+      //Se ejecuta el metodo que abre el dialog, enviandole le id del Egreso por cuota
+      let idEgresoPagoCuota = localStorage.getItem("idEgresoPago");
+      let valorNumeroC = localStorage.getItem("numeroCuota");
+      if(valorNumeroC != "N/A"){
+        this.lubricentroService.openDialogRegistrarPago(idEgresoPagoCuota);
+      } else{    
+      this.snackBar.open('Por favor seleccione un egreso con cuotas sin pagar', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+    }
+    } else {
+      this.snackBar.open('Por favor seleccione un egreso con cuotas', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+    } 
+    
   }
 
   actualizarTabla(){

@@ -208,7 +208,7 @@ export class RentacarIngresosListComponent implements OnInit {
 
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
-  isAllSelected() {
+  isAllSelected() {    
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected == numRows;

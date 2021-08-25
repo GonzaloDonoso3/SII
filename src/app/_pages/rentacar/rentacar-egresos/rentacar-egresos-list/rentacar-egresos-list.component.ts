@@ -17,7 +17,6 @@ import { DatePipe } from "@angular/common";
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 
-
 @Component({
   selector: 'app-rentacar-egresos-list',
   templateUrl: './rentacar-egresos-list.component.html',
@@ -88,8 +87,9 @@ export class RentacarEgresosListComponent implements OnInit {
   constructor(
     private rentacarService: RentacarService,    
     public dialog: MatDialog,
+    private sucursalService: SucursalSharedService,
     private empresaService: EmpresaSharedService,
-    private snackBar: MatSnackBar 
+    private snackBar: MatSnackBar   
   ) { 
 
   }
@@ -123,6 +123,36 @@ export class RentacarEgresosListComponent implements OnInit {
       this.dataSource.paginator = this.paginator.toArray()[0];
       this.dataSource.sort = this.sort;
     });
+  }
+
+  // Abrir Ventana Modal Registrar Pago
+  openDialogRegistrarPago(){
+    //Selecciona los valores de la fila seleccionada    
+    this.selectedRows = [];
+    this.selection.selected.forEach((x) => {this.selectedRows.push(x)});
+    if(this.selectedRows.length > 0){
+      this.selectedRows.forEach((x) => {      
+        localStorage.setItem("idEgresoPago", x.id);
+        localStorage.setItem("numeroCuota", x.numeroCuota);
+      });
+      //Se ejecuta el metodo que abre el dialog, enviandole le id del Egreso por cuota
+      let idEgresoPagoCuota = localStorage.getItem("idEgresoPago");
+      let valorNumeroC = localStorage.getItem("numeroCuota");
+      if(valorNumeroC != "N/A"){
+        this.rentacarService.openDialogRegistrarPago(idEgresoPagoCuota);
+      } else{    
+      this.snackBar.open('Por favor seleccione un egreso con cuotas sin pagar', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+    }
+    } else {
+      this.snackBar.open('Por favor seleccione un egreso con cuotas', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+    }
+    
   }
 
   getEmpresa(id: number): any {

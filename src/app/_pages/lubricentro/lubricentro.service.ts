@@ -9,6 +9,7 @@ import { environment } from '@environments/environment';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { LubricentroEgresosCuotasComponent } from '@app/_pages/lubricentro/lubricentro-egresos/lubricentro-egresos-list/lubricentro-egresos-cuotas/lubricentro-egresos-cuotas.component';
+import { LubricentroEgresosCuotaDialogComponent } from '@app/_pages/lubricentro/lubricentro-egresos/lubricentro-egresos-list/lubricentro-egresos-cuotas/lubricentro-egresos-cuota-dialog/lubricentro-egresos-cuota-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 /* Imports Excel */
@@ -202,14 +203,7 @@ export class LubricentroService {
         responseType: 'blob',
       })      
   }
-  buscarImagenCuota(url: string) {    
-    const extencion = url.split('.');
-    const extend = extencion[1];    
-    return this.http
-    .get(`${environment.apiUrl}/egresoLubricentroCuota/download/${url}`, {
-        responseType: 'blob',
-      })      
-  }
+  
   getById(id: string): any {
     return this.http.get<EgresoLubricentro>(
       `${environment.apiUrl}/egreso${this.empresa}/${id}`
@@ -222,6 +216,16 @@ export class LubricentroService {
       `${environment.apiUrl}/egresoLubricentroCuota/${id}`
     );
   }
+
+  buscarImagenCuota(url: string) {    
+    const extencion = url.split('.');
+    const extend = extencion[1];    
+    return this.http
+    .get(`${environment.apiUrl}/egresoLubricentroCuota/download/${url}`, {
+        responseType: 'blob',
+      })      
+  }
+  
   agregarRespaldos(arrayRespaldos: any): any {
     return this.http.post(
       `${environment.apiUrl}/egresoLubricentroCuota/agregarRespaldos/`,
@@ -232,6 +236,16 @@ export class LubricentroService {
     return this.http.get<EgresoLubricentroCuota>(
       `${environment.apiUrl}/respaldoEgresoLubricentroCuota/${id}`
     );
+  }
+
+  // Metodo que permite abrir un Dialog (Modal)
+  openDialogCuota():void{
+    const dialogRef = this.dialog.open(LubricentroEgresosCuotaDialogComponent, {})
+    dialogRef.afterClosed().subscribe((res) => {})
+  }
+
+  updateMonto(id: any, body: any[]) {    
+    return this.http.put(`${environment.apiUrl}/egresoLubricentroCuota/${id}`, body);                
   }
 
   // Metodo que permite abrir un Dialog (Modal)

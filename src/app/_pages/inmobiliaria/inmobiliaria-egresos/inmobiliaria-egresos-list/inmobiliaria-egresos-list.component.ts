@@ -119,6 +119,29 @@ export class InmobiliariaEgresosListComponent implements OnInit {
     }
   }
 
+  // Abrir Ventana Modal Registrar Pago
+  openDialogRegistrarPago(){
+    //Selecciona los valores de la fila seleccionada    
+    this.selectedRows = [];
+    this.selection.selected.forEach((x) => {            
+      this.selectedRows.push(x)});
+    this.selectedRows.forEach((x) => {      
+      localStorage.setItem("idEgresoPago", x.id);
+      localStorage.setItem("numeroCuota", x.numeroCuota);
+    });
+    //Se ejecuta el metodo que abre el dialog, enviandole le id del Egreso por cuota
+    let idEgresoPagoCuota = localStorage.getItem("idEgresoPago");
+    let valorNumeroC = localStorage.getItem("numeroCuota");
+    if(valorNumeroC != "N/A"){
+      this.inmobiliariaService.openDialogRegistrarPago(idEgresoPagoCuota);
+    } else{    
+      this.snackBar.open('Por favor seleccione un egreso con cuotas sin pagar', 'cerrar', {
+      duration: 2000,
+      verticalPosition: 'top',
+    });
+  }
+  }
+
   actualizarTabla(){
     this.inmobiliariaService.getAllEgresos().subscribe((egresos: EgresosInmobiliaria[]) => {
       this.dataEgresos = egresos.map(Egresos => {

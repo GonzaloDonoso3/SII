@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChildren, QueryList, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { EgresoLubricentroCuota } from '../../../../../_models/lubricentro/egresoLubricentroCuota';
+import { EgresoInmobiliariaCuota } from '../../../../../_models/inmobiliaria/egresoInmobiliariaCuota';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { LubricentroService } from '@app/_pages/lubricentro/lubricentro.service';
+import { InmobiliariaService } from '@app/_pages/inmobiliaria/inmobiliaria.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,12 +11,13 @@ import { DialogRespaldosComponent } from 'src/app/_components/dialogs/dialog-res
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DialogShow } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
 import { AlertHelper } from '@app/_helpers/alert.helper';
+
 @Component({
-  selector: 'app-lubricentro-egresos-cuotas',
-  templateUrl: './lubricentro-egresos-cuotas.component.html',
-  styleUrls: ['./lubricentro-egresos-cuotas.component.scss']
+  selector: 'app-inmobiliaria-egresos-cuotas',
+  templateUrl: './inmobiliaria-egresos-cuotas.component.html',
+  styleUrls: ['./inmobiliaria-egresos-cuotas.component.scss']
 })
-export class LubricentroEgresosCuotasComponent implements OnInit {
+export class InmobiliariaEgresosCuotasComponent implements OnInit {
 
   // ? childrens
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
@@ -32,8 +33,8 @@ export class LubricentroEgresosCuotasComponent implements OnInit {
     'respaldos',
     'acciones'
   ];
-  dataSource: MatTableDataSource<EgresoLubricentroCuota> = new MatTableDataSource();  
-  dataCuota: EgresoLubricentroCuota[] = [];
+  dataSource: MatTableDataSource<EgresoInmobiliariaCuota> = new MatTableDataSource();  
+  dataCuota: EgresoInmobiliariaCuota[] = [];
 
   idEgreso = localStorage.getItem('idEgresoPago')
   idCuota : any;
@@ -52,10 +53,10 @@ export class LubricentroEgresosCuotasComponent implements OnInit {
   selection = new SelectionModel<any>(true, []);
   totalSeleccion = 0;
   selectedRows!: any[];
-  
+
   constructor(
     private fb: FormBuilder,
-    private lubricentroService: LubricentroService,
+    private inmobiliariaService: InmobiliariaService,
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
     private alert: AlertHelper
@@ -67,7 +68,7 @@ export class LubricentroEgresosCuotasComponent implements OnInit {
   }
 
   obtenerCuotas(){
-    this.lubricentroService.getCuotas(this.idEgreso)
+    this.inmobiliariaService.getCuotas(this.idEgreso)
     .pipe()
     .subscribe((x:any) => {      
       this.dataSource = new MatTableDataSource(x);
@@ -94,7 +95,7 @@ export class LubricentroEgresosCuotasComponent implements OnInit {
 
     //Esto abre un dialog que permite subir un archivo
    const dialogRef = this.dialog.open(DialogRespaldosComponent, {
-      data: { url: 'egresoLubricentroCuota/upload' }
+      data: { url: 'egresoInmobiliariaCuota/upload' }
     });
     //Despues de subir el archivo se ejecuta esto
     dialogRef.afterClosed().subscribe(result => {     
@@ -122,10 +123,10 @@ export class LubricentroEgresosCuotasComponent implements OnInit {
       
 
       //Se le agrega el respaldo al pago seleccionado
-      this.lubricentroService.agregarRespaldos(arrayRespaldos).subscribe(
+      this.inmobiliariaService.agregarRespaldos(arrayRespaldos).subscribe(
         (data: any) => {         
           //this.pagarCuota(idCuota, cuota);
-          this.lubricentroService.closeDialogModal();
+          this.inmobiliariaService.closeDialogModal();
           this.alert.createAlert("Registro de pago Creado con exito!");                  
         },
         (error: any) => {
@@ -149,11 +150,11 @@ export class LubricentroEgresosCuotasComponent implements OnInit {
         verticalPosition: 'top',          
       });
     } else {            
-      this.lubricentroService.buscarImagenC(archivos.id).subscribe(
+      this.inmobiliariaService.buscarImagenC(archivos.id).subscribe(
         (dataImagen: any) => {                  
           setTimeout(() => {
             this.dialog.open(DialogShow, {
-              data: { archivos: dataImagen, servicio: 'lubricentro-egreso-cuota' },
+              data: { archivos: dataImagen, servicio: 'inmobiliaria-egreso-cuota' },
             });
           }, 1000);       
         },
@@ -179,7 +180,7 @@ export class LubricentroEgresosCuotasComponent implements OnInit {
     localStorage.setItem('idEgresoPago', id);
     localStorage.setItem('montoEgreso', monto);
     if(cuota == "Pendiente"){
-      this.lubricentroService.openDialogCuota();
+      this.inmobiliariaService.openDialogCuota();
     }else {    
     this.snackBar.open('El pago de esta cuota ya fue registrado', 'cerrar', {
       duration: 2000,
@@ -221,7 +222,7 @@ export class LubricentroEgresosCuotasComponent implements OnInit {
 
    // Cerrar Dialog
    closeDialog(){
-    this.lubricentroService.closeDialogModal();
+    this.inmobiliariaService.closeDialogModal();
    }
 
 }

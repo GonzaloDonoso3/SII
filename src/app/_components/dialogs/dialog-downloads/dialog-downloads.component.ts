@@ -260,6 +260,25 @@ export class DialogShow implements OnInit{
           console.log(error);
         }
       );
+    }
+    if (this.servicio === 'inmobiliaria-egreso-cuota') {
+      this.inmobiliariaService.buscarImagenCuota(this.archivos[0].url)
+      .pipe()
+      .subscribe(
+        (data:any) => {        
+          this.imagen = window.URL.createObjectURL(data);        
+          this.descargarImagen = window.URL.createObjectURL(data);             
+          this.imagen = this.sanitizer.bypassSecurityTrustUrl(this.imagen);                
+        },
+        (error: any) => {
+          (document.getElementById('cerrarModal') as HTMLInputElement).click();
+          this.snackBar.open('No existe documento asociado a este egreso', 'cerrar', {
+            duration: 2000,
+            verticalPosition: 'top',
+          });
+          console.log(error);
+        }
+      );
     }    
     if (this.servicio === 'rentacar-egreso') {      
       this.rentacarService.buscarImagenEgreso(this.archivos[0].url)

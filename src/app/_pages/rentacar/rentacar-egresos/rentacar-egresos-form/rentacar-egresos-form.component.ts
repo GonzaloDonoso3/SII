@@ -117,8 +117,7 @@ export class RentacarEgresosFormComponent implements OnInit {
           
 
           data: { url: 'egresoRentacar/upload' }
-        });
-        console.log("cargando el archivo", dialogRef )
+        });        
         dialogRef.afterClosed().subscribe(result => {                      
           //Se le asignan los datos del formulario al objeto EgresoInmobiliaria
           this.nameRespaldo = result;
@@ -135,63 +134,64 @@ export class RentacarEgresosFormComponent implements OnInit {
           this.egreso.tipoEgreso = this.addressForm.value.tipoEgreso;
           this.egreso.idArriendo = this.addressForm.value.idArriendo;
           this.egreso.numeroCuota = this.addressForm.value.numeroCuota;           
-          if(this.addressForm.value.numeroCuota > 1){                          
-            let sumarMes= 0;
-            let restarMes= 0;
-            let contadorCuota = 0;                                               
-              for (let i = 0; i < this.addressForm.value.numeroCuota; i++) {                     
-                    this.addressForm.value.fecha.setMonth(this.addressForm.value.fecha.getMonth() + sumarMes);                                                                                                  
-                    this.egreso.fecha = this.addressForm.value.fecha;
-                    sumarMes = sumarMes + 1;
-                    contadorCuota = contadorCuota + 1;
-                    this.egreso.numeroCuota = contadorCuota.toString().concat("/").concat(this.addressForm.value.numeroCuota);                                                                                                                                                                                                                                                                                                                                                                                         
-                    restarMes = (sumarMes + 1) - sumarMes;                                 
-                    if(sumarMes >= 2){                                            
-                      sumarMes = restarMes;                      
-                    }                                        
+          this.egreso.fecha = this.addressForm.value.fecha;
+          // if(this.addressForm.value.numeroCuota > 1){                          
+          //   let sumarMes= 0;
+          //   let restarMes= 0;
+          //   let contadorCuota = 0;                                               
+          //     for (let i = 0; i < this.addressForm.value.numeroCuota; i++) {                     
+          //           this.addressForm.value.fecha.setMonth(this.addressForm.value.fecha.getMonth() + sumarMes);                                                                                                  
+          //           this.egreso.fecha = this.addressForm.value.fecha;
+          //           sumarMes = sumarMes + 1;
+          //           contadorCuota = contadorCuota + 1;
+          //           this.egreso.numeroCuota = contadorCuota.toString().concat("/").concat(this.addressForm.value.numeroCuota);                                                                                                                                                                                                                                                                                                                                                                                         
+          //           restarMes = (sumarMes + 1) - sumarMes;                                 
+          //           if(sumarMes >= 2){                                            
+          //             sumarMes = restarMes;                      
+          //           }                                        
                 
-                //Se le asigna la id del usuario logueado
-                this.egreso.idUsuario = this.usuario.id;
+          //       //Se le asigna la id del usuario logueado
+          //       this.egreso.idUsuario = this.usuario.id;
 
-          //Se le agrega los respaldos subidos
-          for (const name of this.nameRespaldo) {
-            this.egreso.RespaldoEgresos.push({ url: name });
-          }
-          //Si todo esta correcto se ingresa el objeto
-          if (result.length > 0) {            
-            this.rentacarService
-              .createEgresos(this.egreso)
-              .pipe(first())
-              .subscribe(
-                (data: any) => {                                                                 
-                  this.alert.createAlert("Registro Creado con exito");                  
-                  this.formularioListo.emit(this.num + "");
-                  this.num++;
-                  this.addressForm.reset();
+          // //Se le agrega los respaldos subidos
+          // for (const name of this.nameRespaldo) {
+          //   this.egreso.RespaldoEgresos.push({ url: name });
+          // }
+          // //Si todo esta correcto se ingresa el objeto
+          // if (result.length > 0) {            
+          //   this.rentacarService
+          //     .createEgresos(this.egreso)
+          //     .pipe(first())
+          //     .subscribe(
+          //       (data: any) => {                                                                 
+          //         this.alert.createAlert("Registro Creado con exito");                  
+          //         this.formularioListo.emit(this.num + "");
+          //         this.num++;
+          //         this.addressForm.reset();
 
-                },
-                (error: any) => {
-                  this.snackBar.open('Tenemos Problemas para realizar el registro, favor contactar al equipo de desarrollo', 'cerrar', {
-                    duration: 2000,
-                    verticalPosition: 'top',
-                  });
-                }
-              );
-          } else {
-            //Si es incorrecto se envía un mensaje de error
-            this.snackBar.open('Debemos Recibir sus respaldos para continuar', 'cerrar', {
-              duration: 5000,
-              verticalPosition: 'top',
-            });
-          }
-            }   
-            return;
-          }
-          else {
-            this.egreso.fecha = this.addressForm.value.fecha;                         
-            this.addressForm.value.numeroCuota = "1/1";             
-            this.egreso.numeroCuota = this.addressForm.value.numeroCuota;          
-          }          
+          //       },
+          //       (error: any) => {
+          //         this.snackBar.open('Tenemos Problemas para realizar el registro, favor contactar al equipo de desarrollo', 'cerrar', {
+          //           duration: 2000,
+          //           verticalPosition: 'top',
+          //         });
+          //       }
+          //     );
+          // } else {
+          //   //Si es incorrecto se envía un mensaje de error
+          //   this.snackBar.open('Debemos Recibir sus respaldos para continuar', 'cerrar', {
+          //     duration: 5000,
+          //     verticalPosition: 'top',
+          //   });
+          // }
+          //   }   
+          //   return;
+          // }
+          // else {
+          //   this.egreso.fecha = this.addressForm.value.fecha;                         
+          //   this.addressForm.value.numeroCuota = "1/1";             
+          //   this.egreso.numeroCuota = this.addressForm.value.numeroCuota;          
+          // }          
 
 
           //Se le asigna la id del usuario logueado

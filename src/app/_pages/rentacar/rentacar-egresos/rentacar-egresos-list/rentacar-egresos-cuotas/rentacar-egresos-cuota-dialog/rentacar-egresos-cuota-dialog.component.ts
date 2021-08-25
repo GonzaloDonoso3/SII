@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { InmobiliariaService } from '@app/_pages/inmobiliaria/inmobiliaria.service';
-
+import { RentacarService } from '@app/_pages/rentacar/rentacar.service';
 
 @Component({
-  selector: 'app-inmobiliaria-egresos-cuota-dialog',
-  templateUrl: './inmobiliaria-egresos-cuota-dialog.component.html',
-  styleUrls: ['./inmobiliaria-egresos-cuota-dialog.component.scss']
+  selector: 'app-rentacar-egresos-cuota-dialog',
+  templateUrl: './rentacar-egresos-cuota-dialog.component.html',
+  styleUrls: ['./rentacar-egresos-cuota-dialog.component.scss']
 })
-export class InmobiliariaEgresosCuotaDialogComponent implements OnInit {
+export class RentacarEgresosCuotaDialogComponent implements OnInit {
 
   idCuotaEdit : any;
   montoCuotaEdit : any;
@@ -22,7 +21,7 @@ export class InmobiliariaEgresosCuotaDialogComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
-    private inmobiliariaService: InmobiliariaService
+    private rentacarService: RentacarService
   ) { }
 
   ngOnInit(): void {
@@ -43,7 +42,7 @@ export class InmobiliariaEgresosCuotaDialogComponent implements OnInit {
     switch (this.addressForm.status) {
       //Si el formulario esta correcto
       case 'VALID':
-        this.inmobiliariaService
+        this.rentacarService
       .updateMonto(this.idCuotaEdit ,this.addressForm.value)
       .pipe()
       .subscribe(
@@ -53,7 +52,7 @@ export class InmobiliariaEgresosCuotaDialogComponent implements OnInit {
             verticalPosition: 'top',
           });
           this.addressForm.reset();
-          this.inmobiliariaService.closeDialogModal();
+          this.rentacarService.closeDialogModal();
           
         },
         (error) => {          

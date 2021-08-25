@@ -424,8 +424,7 @@ export class HostalConsolidadosComponent implements OnInit {
                     this.totalIngresoG.push(this.arreglotrimestreF[0], this.arreglotrimestreF[1], this.arreglotrimestreF[2])
                     this.totalIngresoG.map((monto)=>{                    
                       this.sumIngresos = this.sumIngresos + monto;
-                    })  
-                    console.log("resultado", this.totalIngresoG)                                                       
+                    })                      
                   } else {                  
                     //se calcula el mes del ingreso
                   let sum = 0;
@@ -444,8 +443,7 @@ export class HostalConsolidadosComponent implements OnInit {
                   })                    
                   this.totalIngresoG.map((monto)=>{                    
                     this.sumIngresos = this.sumIngresos + monto;
-                  })
-                  console.log("resultado2", this.totalIngresoG)
+                  })                  
                 }
                   //*********************EGRESOS*********************
                   // Obteniendo fecha unica en los egresos     
@@ -509,8 +507,7 @@ export class HostalConsolidadosComponent implements OnInit {
                         this.resultado.push(this.resultadoIE);
                       }
                     }
-                  }
-                  console.log("total", this.resultado)                                    
+                  }                  
                   this.totalConsolidado = this.sumIngresos - this.sumEgresos
                   if(this.arreglotrimestreE.length > 2 || this.arreglotrimestre.length > 2){
                     this.mostrarGraficoT();
@@ -675,8 +672,7 @@ export class HostalConsolidadosComponent implements OnInit {
       if(element == '10'){nombreMes = 'Octubre', arrayMonth.push(nombreMes)}
       if(element == '11'){nombreMes = 'Noviembre', arrayMonth.push(nombreMes)}
       if(element == '12'){nombreMes = 'Diciembre', arrayMonth.push(nombreMes)}
-    });
-    console.log("recorriendo for", arrayMonth)
+    });    
     return arrayMonth;
   }
 

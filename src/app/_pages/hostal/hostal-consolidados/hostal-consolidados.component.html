@@ -412,21 +412,20 @@
 
 <!-- -----------GRAFICOS------------- -->
     
-    <!-- <div *ngIf="montoIngreso.length > 0"> -->
     <div *ngIf="totalIngresoG.length > 0">
     <canvas #barChart>
       {{chart}}
     </canvas>
     </div>
 
-    <!-- <div *ngIf="montoEgreso.length > 0"> -->
         <div *ngIf="totalEgresoG.length > 0">
         <canvas #barChart>
           {{chart}}
         </canvas>
         </div>
 
-        <div class="row" *ngIf="montoIngreso.length > 0" id="ocultar">
+        <!-- <div class="row" *ngIf="totalIngresoG.length > 0" id="ocultar"> -->
+        <div class="row" *ngIf="totalEgresoG.length > 0" id="ocultar">
         <mat-card-actions>
             <button mat-raised-button color="primary" (click)="openPDF('#ocultar', false)">
               <mat-icon>send</mat-icon> PDF

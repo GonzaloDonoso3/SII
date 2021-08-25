@@ -80,8 +80,9 @@ export class LubricentroEgresosCuotasComponent implements OnInit {
   //Metodo que permite procesar pago
   procesarPago(){
     this.selectedRows = [];
-    this.selection.selected.forEach((x) => this.selectedRows.push(x));      
-      this.selectedRows.forEach((x) => {                                
+    this.selection.selected.forEach((x) => this.selectedRows.push(x));    
+    if(this.selectedRows.length > 0){
+      this.selectedRows.forEach((x) => {                                       
         this.estadoCuota = x.estadoCuota;        
       });
     
@@ -134,6 +135,13 @@ export class LubricentroEgresosCuotasComponent implements OnInit {
       );    
     });
   }
+    } else {
+      this.snackBar.open('Seleccione una cuota', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+    }   
+    
   }
     
   isAllSelected() {

@@ -1,23 +1,23 @@
 import { Component, OnInit, ViewChildren, QueryList, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { EgresoInmobiliariaCuota } from '../../../../../_models/inmobiliaria/egresoInmobiliariaCuota';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { InmobiliariaService } from '@app/_pages/inmobiliaria/inmobiliaria.service';
-import { SelectionModel } from '@angular/cdk/collections';
 import { MatSort } from '@angular/material/sort';
-import { MatDialog } from '@angular/material/dialog';
-import { DialogRespaldosComponent } from 'src/app/_components/dialogs/dialog-respaldos/dialog-respaldos.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { EgresoRentacarCuota } from '@app/_models/rentacar/egresoRentacarCuota';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { SelectionModel } from '@angular/cdk/collections';
+import { RentacarService } from '@app/_pages/rentacar/rentacar.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DialogShow } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
+import { MatDialog } from '@angular/material/dialog';
 import { AlertHelper } from '@app/_helpers/alert.helper';
+import { DialogShow } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
+import { DialogRespaldosComponent } from 'src/app/_components/dialogs/dialog-respaldos/dialog-respaldos.component';
 
 @Component({
-  selector: 'app-inmobiliaria-egresos-cuotas',
-  templateUrl: './inmobiliaria-egresos-cuotas.component.html',
-  styleUrls: ['./inmobiliaria-egresos-cuotas.component.scss']
+  selector: 'app-rentacar-egresos-cuotas',
+  templateUrl: './rentacar-egresos-cuotas.component.html',
+  styleUrls: ['./rentacar-egresos-cuotas.component.scss']
 })
-export class InmobiliariaEgresosCuotasComponent implements OnInit {
+export class RentacarEgresosCuotasComponent implements OnInit {
 
   // ? childrens
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
@@ -33,8 +33,8 @@ export class InmobiliariaEgresosCuotasComponent implements OnInit {
     'respaldos',
     'acciones'
   ];
-  dataSource: MatTableDataSource<EgresoInmobiliariaCuota> = new MatTableDataSource();  
-  dataCuota: EgresoInmobiliariaCuota[] = [];
+  dataSource: MatTableDataSource<EgresoRentacarCuota> = new MatTableDataSource();  
+  dataCuota: EgresoRentacarCuota[] = [];
 
   idEgreso = localStorage.getItem('idEgresoPago')
   idCuota : any;
@@ -53,10 +53,10 @@ export class InmobiliariaEgresosCuotasComponent implements OnInit {
   selection = new SelectionModel<any>(true, []);
   totalSeleccion = 0;
   selectedRows!: any[];
-
+  
   constructor(
     private fb: FormBuilder,
-    private inmobiliariaService: InmobiliariaService,
+    private rentacarService: RentacarService,
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
     private alert: AlertHelper
@@ -68,7 +68,7 @@ export class InmobiliariaEgresosCuotasComponent implements OnInit {
   }
 
   obtenerCuotas(){
-    this.inmobiliariaService.getCuotas(this.idEgreso)
+    this.rentacarService.getCuotas(this.idEgreso)
     .pipe()
     .subscribe((x:any) => {      
       this.dataSource = new MatTableDataSource(x);
@@ -83,7 +83,7 @@ export class InmobiliariaEgresosCuotasComponent implements OnInit {
     this.selectedRows = [];
     this.selection.selected.forEach((x) => this.selectedRows.push(x));      
     if(this.selectedRows.length > 0){
-      this.selectedRows.forEach((x) => {                                
+      this.selectedRows.forEach((x) => {                                        
         this.estadoCuota = x.estadoCuota;        
       });
     
@@ -96,7 +96,7 @@ export class InmobiliariaEgresosCuotasComponent implements OnInit {
 
     //Esto abre un dialog que permite subir un archivo
    const dialogRef = this.dialog.open(DialogRespaldosComponent, {
-      data: { url: 'egresoInmobiliariaCuota/upload' }
+      data: { url: 'egresoRentacarCuota/upload' }
     });
     //Despues de subir el archivo se ejecuta esto
     dialogRef.afterClosed().subscribe(result => {     
@@ -124,10 +124,10 @@ export class InmobiliariaEgresosCuotasComponent implements OnInit {
       
 
       //Se le agrega el respaldo al pago seleccionado
-      this.inmobiliariaService.agregarRespaldos(arrayRespaldos).subscribe(
+      this.rentacarService.agregarRespaldos(arrayRespaldos).subscribe(
         (data: any) => {         
           //this.pagarCuota(idCuota, cuota);
-          this.inmobiliariaService.closeDialogModal();
+          this.rentacarService.closeDialogModal();
           this.alert.createAlert("Registro de pago Creado con exito!");                  
         },
         (error: any) => {
@@ -136,10 +136,10 @@ export class InmobiliariaEgresosCuotasComponent implements OnInit {
       );    
     });
   }
-    }else {
+    } else {
       this.snackBar.open('Seleccione una cuota', 'cerrar', {
         duration: 2000,
-        verticalPosition: 'top',          
+        verticalPosition: 'top',        
       });
     }
       
@@ -158,11 +158,11 @@ export class InmobiliariaEgresosCuotasComponent implements OnInit {
         verticalPosition: 'top',          
       });
     } else {            
-      this.inmobiliariaService.buscarImagenC(archivos.id).subscribe(
+      this.rentacarService.buscarImagenC(archivos.id).subscribe(
         (dataImagen: any) => {                  
           setTimeout(() => {
             this.dialog.open(DialogShow, {
-              data: { archivos: dataImagen, servicio: 'inmobiliaria-egreso-cuota' },
+              data: { archivos: dataImagen, servicio: 'rentacar-egreso-cuota' },
             });
           }, 1000);       
         },
@@ -188,7 +188,7 @@ export class InmobiliariaEgresosCuotasComponent implements OnInit {
     localStorage.setItem('idEgresoPago', id);
     localStorage.setItem('montoEgreso', monto);
     if(cuota == "Pendiente"){
-      this.inmobiliariaService.openDialogCuota();
+      this.rentacarService.openDialogCuota();
     }else {    
     this.snackBar.open('El pago de esta cuota ya fue registrado', 'cerrar', {
       duration: 2000,
@@ -230,7 +230,8 @@ export class InmobiliariaEgresosCuotasComponent implements OnInit {
 
    // Cerrar Dialog
    closeDialog(){
-    this.inmobiliariaService.closeDialogModal();
+    this.rentacarService.closeDialogModal();
    }
+
 
 }

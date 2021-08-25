@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { EgresoLubricentroCuota } from '@app/_models/lubricentro/egresoLubricentroCuota';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LubricentroService } from '@app/_pages/lubricentro/lubricentro.service';

@@ -22,7 +22,9 @@ import { RentacarModalSubirFilesComponent } from './rentacar-ingresos/rentacar-i
 import { RentacarModalVerFilesComponent } from './rentacar-ingresos/rentacar-ingresos-form/rentacar-modal-ver-files/rentacar-modal-ver-files.component';
 import { FullCalendarModule } from '@fullcalendar/angular'; 
 import dayGridPlugin from '@fullcalendar/daygrid'; 
-import interactionPlugin from '@fullcalendar/interaction'; 
+import interactionPlugin from '@fullcalendar/interaction';
+import { RentacarEgresosCuotasComponent } from './rentacar-egresos/rentacar-egresos-list/rentacar-egresos-cuotas/rentacar-egresos-cuotas.component';
+import { RentacarEgresosCuotaDialogComponent } from './rentacar-egresos/rentacar-egresos-list/rentacar-egresos-cuotas/rentacar-egresos-cuota-dialog/rentacar-egresos-cuota-dialog.component'; 
 
 FullCalendarModule.registerPlugins([ 
   dayGridPlugin,
@@ -31,7 +33,7 @@ FullCalendarModule.registerPlugins([
 
 
 @NgModule({
-  declarations: [RentacarEgresosComponent, RentacarIngresosComponent, RentacarHomeComponent, RentacarEgresosFormComponent, RentacarEgresosListComponent, RentacarIngresosListComponent, RentacarIngresosFormComponent, RentacarModalDetallePagosComponent, RentacarModalDetallePagosClientesComponent, RentacarModalDetallePagosReemplazosComponent, RentacarModalDetallePagosDaniosComponent, RentacarModalDetallePagosExtrasComponent, RentacarIngresosList2Component, RentacarModalSubirFilesComponent, RentacarModalVerFilesComponent],
+  declarations: [RentacarEgresosComponent, RentacarIngresosComponent, RentacarHomeComponent, RentacarEgresosFormComponent, RentacarEgresosListComponent, RentacarIngresosListComponent, RentacarIngresosFormComponent, RentacarModalDetallePagosComponent, RentacarModalDetallePagosClientesComponent, RentacarModalDetallePagosReemplazosComponent, RentacarModalDetallePagosDaniosComponent, RentacarModalDetallePagosExtrasComponent, RentacarIngresosList2Component, RentacarModalSubirFilesComponent, RentacarModalVerFilesComponent, RentacarEgresosCuotasComponent, RentacarEgresosCuotaDialogComponent],
   imports: [
     CommonModule,
     RentacarRoutingModule,

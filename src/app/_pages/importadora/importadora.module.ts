@@ -20,12 +20,14 @@ import { ImportadoraEgresosTabGastoNeumaticosFormComponent } from './importadora
 import { ImportadoraEgresosTabGastoNeumaticosListComponent } from './importadora-egresos/importadora-egresos-tab-gasto-neumaticos/importadora-egresos-tab-gasto-neumaticos-list/importadora-egresos-tab-gasto-neumaticos-list.component';
 import { DialogNeumaticosComponent } from './importadora-egresos/importadora-egresos-tab-gasto-neumaticos/dialog-neumaticos/dialog-neumaticos.component';
 import { DialogNeumaticosEditComponent } from './importadora-egresos/importadora-egresos-tab-gasto-neumaticos/dialog-neumaticos/dialog-neumaticos-edit/dialog-neumaticos-edit/dialog-neumaticos-edit.component';
+import { ImportadoraEgresosTabCuotasComponent } from './importadora-egresos/importadora-egresos-tab-gasto-fijo/importadora-egresos-tab-gasto-fijo-list/importadora-egresos-tab-cuotas/importadora-egresos-tab-cuotas.component';
+import { ImportadoraEgresosTabCuotaDialogComponent } from './importadora-egresos/importadora-egresos-tab-gasto-fijo/importadora-egresos-tab-gasto-fijo-list/importadora-egresos-tab-cuotas/importadora-egresos-tab-cuota-dialog/importadora-egresos-tab-cuota-dialog.component';
 
 
 
 
 @NgModule({
-  declarations: [ImportadoraHomeComponent, ImportadoraIngresosComponent, ImportadoraEgresosComponent, ImportadoraIngresosFormComponent, ImportadoraIngresosListComponent, ImportadoraEgresosTabGastoFijoComponent, ImportadoraEgresosTabGastoNeumaticosComponent, ImportadoraEgresosTabGastoFijoFormComponent, ImportadoraEgresosTabGastoFijoListComponent, ImportadoraEgresosTabGastoNeumaticosFormComponent, ImportadoraEgresosTabGastoNeumaticosListComponent, DialogNeumaticosComponent, DialogNeumaticosEditComponent],
+  declarations: [ImportadoraHomeComponent, ImportadoraIngresosComponent, ImportadoraEgresosComponent, ImportadoraIngresosFormComponent, ImportadoraIngresosListComponent, ImportadoraEgresosTabGastoFijoComponent, ImportadoraEgresosTabGastoNeumaticosComponent, ImportadoraEgresosTabGastoFijoFormComponent, ImportadoraEgresosTabGastoFijoListComponent, ImportadoraEgresosTabGastoNeumaticosFormComponent, ImportadoraEgresosTabGastoNeumaticosListComponent, DialogNeumaticosComponent, DialogNeumaticosEditComponent, ImportadoraEgresosTabCuotasComponent, ImportadoraEgresosTabCuotaDialogComponent],
   imports: [
     CommonModule,
     ImportadoraRoutingModule,

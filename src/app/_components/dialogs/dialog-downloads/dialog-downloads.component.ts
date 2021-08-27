@@ -375,6 +375,25 @@ export class DialogShow implements OnInit{
         }
       );
     }
+    if (this.servicio === 'importadora-egresoFijo-cuota') {      
+      this.rentacarService.buscarImagenCuota(this.archivos[0].url)
+      .pipe()
+      .subscribe(
+        (data:any) => {         
+          this.imagen = window.URL.createObjectURL(data);        
+          this.descargarImagen = window.URL.createObjectURL(data);             
+          this.imagen = this.sanitizer.bypassSecurityTrustUrl(this.imagen);                
+        },
+        (error: any) => {
+          (document.getElementById('cerrarModal') as HTMLInputElement).click();
+          this.snackBar.open('No existe documento asociado a este egreso', 'cerrar', {
+            duration: 2000,
+            verticalPosition: 'top',
+          });
+          console.log(error);
+        }
+      );
+    }    
     if (this.servicio === 'importadora-egresoConteiner') {      
       this.importadoraService.buscarImagenEgresoC(this.archivos[0].url)
       .pipe()

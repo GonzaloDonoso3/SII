@@ -12,6 +12,9 @@
     <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="exportAsXLSX()">
         Exportar a Excel
     </button>
+    <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="openDialogRegistrarPago()">
+        Ver cuotas 
+      </button>       
     <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="getEgreso()">
         <mat-icon>autorenew</mat-icon>
     </button>
@@ -157,6 +160,14 @@
                 </div>
             </th>
             <td mat-cell *matCellDef="let element">{{ element.usuario }}</td>
+        </ng-container>
+
+        <!-- Campo Numero de cuotas -->
+        <ng-container matColumnDef="numeroCuota">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nº de cuotas</th>                                    
+        <td mat-cell *matCellDef="let element">
+            {{ element.numeroCuota }}
+            </td>
         </ng-container>
 
         <!-- Campo Respaldos-->

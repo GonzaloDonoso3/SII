@@ -12,5 +12,6 @@ export class EgresosFijoImportadora {
   usuario!: string;
   Sucursal!: Sucursal;
   Usuario!: Usuario;
+  numeroCuota!: string;
   RespaldoEgresoFijoImportadoras!: any[];
 }

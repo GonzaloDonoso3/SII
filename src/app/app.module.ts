@@ -1,5 +1,5 @@
 import { AlertHelper } from './_helpers/alert.helper';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptor } from './_helpers/error.interceptor';
 import { AuthInterceptor } from './_helpers/auth.interceptor';
 import { NgModule, LOCALE_ID } from '@angular/core';
@@ -30,6 +30,7 @@ FullCalendarModule.registerPlugins([
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import {DecimalPipe} from '@angular/common';
+import { MatSortModule } from '@angular/material/sort';
 
 
 registerLocaleData(localeEs, 'es');
@@ -51,7 +52,9 @@ registerLocaleData(localeEs, 'es');
     BrowserAnimationsModule,
     LayoutModule,
     MaterialModule,
-    FullCalendarModule
+    FullCalendarModule,
+    HttpClientModule,
+    MatSortModule
   ],
   providers: [
     DecimalPipe,

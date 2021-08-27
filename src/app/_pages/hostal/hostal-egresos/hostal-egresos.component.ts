@@ -14,6 +14,7 @@ export class HostalEgresosComponent implements OnInit {
   sucursales: Sucursal[] = [];
   empresa: Empresa = new Empresa();
   refrescar = '';
+  
   constructor(
     private sucursalService: SucursalSharedService,
     private empresaService: EmpresaSharedService,
@@ -27,10 +28,9 @@ export class HostalEgresosComponent implements OnInit {
     });
   }
   formularioListo(e: string): void {
-
-    this.ngOnInit();
     this.refrescar = e;
   }
+
   ngOnInit(): void {
 
   }

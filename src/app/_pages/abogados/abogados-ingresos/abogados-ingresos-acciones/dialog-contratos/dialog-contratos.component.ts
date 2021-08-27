@@ -96,8 +96,9 @@ export class DialogContratosComponent implements OnInit {
     this.contrato.idUsuario = this.usuario.id;
     
     this.contrato.estadoPago = 'pendiente';
-    this.abogadosTabService
+
     //Si el contrato no existe se crea
+    this.abogadosTabService
       .crearSinoExisteContrato(this.contrato)
       .pipe()
       .subscribe((x: any) => {

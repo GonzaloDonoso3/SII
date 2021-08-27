@@ -17,6 +17,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { HostalConsolidadosComponent } from './hostal-consolidados/hostal-consolidados.component';
 
 
+
 @NgModule({
   declarations: [
     HostalHomeComponent,

@@ -48,7 +48,7 @@ export class LubricentroService {
   private tiposClientes = ['Particular', 'Empresa'];
   private referencias = ['Llamada', 'Booking', 'Correo', 'PaginaWeb', 'Facebook', 'Institucion Publica', 'otros...'];
   private tiposPagos = ['Efectivo', 'Debito', 'Credito', 'Transferencia', 'Cheque', 'Entidad Publica', 'pago 30 dias'];
-  private estadosPagos = ['PENDIENTE', 'PAGADO'];
+  private estadosPagos = ['BOLETA', 'FACTURA'];
 
   private tiposEgresos = ['Gastos', 'Costos', 'Remuneraciones', 'Impuestos', 'Bancarios'];
   private empresa = 'Lubricentro';  
@@ -185,6 +185,7 @@ export class LubricentroService {
   egresoGetAll(): any {
     return this.http.get<EgresoLubricentro[]>(`${environment.apiUrl}/egreso${this.empresa}`);
   }
+
   egresoGetFiles(fileName: string): any {
     return this.http
       .get(`${environment.apiUrl}/egreso${this.empresa}/download/${fileName}`, {
@@ -271,6 +272,7 @@ export class LubricentroService {
       Sheets: { data: worksheet },
       SheetNames: ['data'],
     };
+    
     const excelBuffer: any = XLSX.write(workbook, {
       bookType: 'xlsx',
       type: 'array',

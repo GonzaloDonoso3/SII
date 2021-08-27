@@ -54,14 +54,15 @@ export class InmobiliariaEgresosListComponent implements OnInit {
   changelog: string[] = [];
 
   formFilter = new FormGroup({
+    id: new FormControl(),
+    monto: new FormControl(),
     start: new FormControl(),
     end: new FormControl(),
     idSucursal: new FormControl(),
     descripcionEgreso: new FormControl(),
     tipoEgreso: new FormControl(),
-    Propiedad: new FormControl(),
-    numeroCuota: new FormControl(),
-    monto: new FormControl(),
+    propiedad: new FormControl(),
+    numeroCuota: new FormControl(),    
   })
 
 
@@ -72,8 +73,9 @@ export class InmobiliariaEgresosListComponent implements OnInit {
   tiposEgresos: string[] = [];
   estadosPagos: string[] = [];
   totalSeleccion = 0;
+  selectedRows!: any[]
   cuentasRegistradas: any[] = [];
-  selectedRows!: any[];
+  
   constructor(
     private inmobiliariaService: InmobiliariaService,
     public dialog: MatDialog,
@@ -207,9 +209,16 @@ export class InmobiliariaEgresosListComponent implements OnInit {
 
   aplicarfiltros() {
     this.formFilter.valueChanges.subscribe(res => {
+      const { id, monto } = res
 
       let dataFiltered = this.dataEgresos;
 
+      if (id) {
+        dataFiltered = dataFiltered.filter((data: EgresosInmobiliaria) => (data.id).toString().includes(id))
+      }    
+      if (monto) {
+        dataFiltered = dataFiltered.filter((data: EgresosInmobiliaria) => (data.monto).toString().includes(monto))
+      }
       if (res.Propiedad) {
         dataFiltered = dataFiltered.filter((data: EgresosInmobiliaria) => data.propiedad.includes(res.Propiedad));
       }
@@ -258,13 +267,22 @@ export class InmobiliariaEgresosListComponent implements OnInit {
     this.totalSeleccion = 0;
   }
 
-
-  //Metodo exportar excel
   exportAsXLSX(): void {
     this.selectedRows = [];
-    this.selection.selected.forEach((x) => this.selectedRows.push(x));
-    this.inmobiliariaService.exportAsExcelFile(this.selectedRows, 'Egresos-Inmobiliaria');
+    if(this.selection.selected.length == 0) {
+      this.snackBar.open('!Seleccione algún registro!', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+    } else {
+      this.selection.selected.forEach((x) => this.selectedRows.push(x));
+        const newArray = this.selectedRows.map((item) => {
+        const { Sucursal, Usuario, RespaldoEgresoInmobiliaria, ...newObject } = item
+        return newObject
+      })
+    
+    this.inmobiliariaService.exportAsExcelFile(newArray, 'Lista-Egresos-Rentacar');
+
+    }
   }
-
-
 }

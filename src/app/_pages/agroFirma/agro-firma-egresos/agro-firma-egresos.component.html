@@ -53,8 +53,8 @@
     </div>
 </div>
 <jw-modal id="apendice"> 
-  <app-agro-firma-egresos-form></app-agro-firma-egresos-form>
-  <app-agro-firma-egresos-list></app-agro-firma-egresos-list>
+  <app-agro-firma-egresos-form [projectId]="projectId" (formReady)="formReady($event)"></app-agro-firma-egresos-form>
+  <app-agro-firma-egresos-list [projectId]="projectId" [updateTable]="updateTable"></app-agro-firma-egresos-list>
     <div class="card text-left">
       <!-- <div class="card-body">        
         <router-outlet></router-outlet>

@@ -1,0 +1,129 @@
+<form [formGroup]="ingresosForm" novalidate (ngSubmit)="onSubmit()">
+  <mat-card class="shipping-card mat-elevation-z10">
+    <mat-card-title class="shipping-card">
+      <h1> Ingresos Agro Firma </h1>
+    </mat-card-title>
+    <mat-grid-list cols="3" rowHeight="100px">
+
+      <!-- select fecha -->
+      <mat-grid-tile>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-label>Seleccionar fecha</mat-label>
+            <input matInput formControlName="fecha" [matDatepicker]="picker" />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="ingresosForm.controls['fecha'].hasError('required')">
+              fecha <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <!-- select tipoIngreso -->
+      <mat-grid-tile>
+        <div class="col">
+          <mat-form-field class="full-width" style="width:160%">
+            <mat-select placeholder="Tipo Ingreso" formControlName="tipoIngreso">
+              <mat-option value="Transferencia">
+                Transferencia
+              </mat-option>
+              <mat-option value="Cheque">
+                Cheque
+              </mat-option>
+              <mat-option value="Efectivo">
+                Efectivo
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <!-- monto -->
+        <div class="col">
+          <mat-form-field class="full-width" style="width:160%">
+            <input matInput placeholder="Monto" formControlName="monto" type="number" />
+            <mat-error *ngIf="ingresosForm.controls['monto'].hasError('required')">
+              Monto <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <!-- Descripción  -->
+      <mat-grid-tile>
+        <div class="col">
+          <mat-form-field class="full-width" style="width:160%">
+            <input matInput placeholder="Descripción ingreso" formControlName="descripcionIngreso" type="text" />
+            <mat-error *ngIf="ingresosForm.controls['descripcionIngreso'].hasError('required')">
+              Descripción de ingreso <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <!-- Numero de documento -->
+      <mat-grid-tile>
+        <div class="col">
+          <mat-form-field class="full-width" style="width:160%">
+            <input matInput placeholder="Numero de documento" formControlName="nDocumento" type="text" />
+            <mat-error *ngIf="ingresosForm.controls['nDocumento'].hasError('required')">
+              Numero de documento <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <!-- select tipoIngreso -->
+      <mat-grid-tile>
+        <div class="col">
+          <mat-form-field class="full-width" style="width:160%">
+            <mat-select placeholder="Estado de pago" formControlName="estadoPago">
+              <mat-option value="Pendiente">
+                Pendiente
+              </mat-option>
+              <mat-option value="Pagado">
+                Pagado
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <!-- select Cuenta bancaria -->
+      <mat-grid-tile>
+        <div class="col">
+          <mat-form-field class="full-width" style="width:160%">
+            <mat-select placeholder="Cuenta proyecto" formControlName="idCuentaProyecto">
+              <mat-option value="">Seleccione..</mat-option>
+              <mat-option *ngFor="let cuenta of cuentasRegistradas" [value]="cuenta.id">
+                {{ cuenta.Banco.NombreInstitucion }} {{ cuenta.tipoCuenta }} {{ cuenta.numeroCuenta }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <!-- Numero de autorización -->
+      <mat-grid-tile>
+        <div class="col">
+          <mat-form-field class="full-width" style="width:160%">
+            <input matInput placeholder="Numero de autorización" formControlName="nAutorizacion" type="text" />
+            <mat-error *ngIf="ingresosForm.controls['nAutorizacion'].hasError('required')">
+              Numero de autorización <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit">
+        <mat-icon id="boton">send</mat-icon> Enviar
+      </button>
+    </mat-card-actions>
+
+
+  </mat-card>
+</form>

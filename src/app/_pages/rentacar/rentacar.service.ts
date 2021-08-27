@@ -181,6 +181,7 @@ export class RentacarService {
       });
       this.saveAsExcelFile(excelBuffer, excelFileName);
     }
+
     private saveAsExcelFile(buffer: any, fileName: string): void {
       const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
       FileSaver.saveAs(

@@ -8,6 +8,7 @@ import { AgroFirmaEgresosListComponent } from '@app/_pages/agroFirma/agro-firma-
 import { first } from 'rxjs/operators';
 import { ModalService } from '@app/_components/_modal';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -20,7 +21,9 @@ export class AgroFirmaEgresosComponent implements OnInit {
   //Creación de variables y asignación de datos
   dataSource: MatTableDataSource<ProyectoAgrofirma> = new MatTableDataSource();
   proyectos: ProyectoAgrofirma[] = [];
-  idProyecto = null; 
+  projectId!: Observable<number>
+
+  updateTable!: number
 
   constructor(
     private agroFirmaService:  AgroFirmaService,
@@ -37,10 +40,10 @@ export class AgroFirmaEgresosComponent implements OnInit {
       });
   }
          
-  formulario(idModal: any, idProyecto: any): void {
-    this.modalService.open(idModal);
-    this.router.navigate(['agrofirma/egresos/add', idProyecto]);        
-    localStorage.setItem("proyectoID", idProyecto);          
+  formulario(idModal: any, projectId: any): void {
+    this.modalService.open(idModal)
+    this.router.navigate(['agrofirma/egresos/add', projectId])      
+    this.projectId = projectId         
   }
 
   listado(idModal: any, idProyecto: any): void {
@@ -51,6 +54,10 @@ export class AgroFirmaEgresosComponent implements OnInit {
   closeModal(id: any): void {
     this.modalService.close(id);
     this.router.navigate(['agrofirma/egresos']);
+  }
+
+  formReady(datetime: number): void {
+    this.updateTable = datetime
   }
       
 }

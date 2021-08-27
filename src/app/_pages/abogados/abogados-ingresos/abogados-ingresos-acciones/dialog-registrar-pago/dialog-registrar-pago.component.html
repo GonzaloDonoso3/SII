@@ -16,17 +16,20 @@
     <div class="table-responsive">
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z10">
             <!-- check column -->
-
             <ng-container matColumnDef="select">
                 <th mat-header-cell *matHeaderCellDef>
-                    <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()">
                     </mat-checkbox>
                 </th>
                 <td mat-cell *matCellDef="let row">
-                    <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                    <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)">
                     </mat-checkbox>
                 </td>
             </ng-container>
+            
             <!-- data columns -->
             <ng-container matColumnDef="id">
                 <th mat-header-cell *matHeaderCellDef>ID </th>
@@ -48,7 +51,7 @@
                         <mat-error *ngIf="formFilter.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
                     </mat-form-field>
                 </th>
-                <td mat-cell *matCellDef="let element">{{ element.fechaPago | date: 'dd/MM/yyyy' }}</td>
+                <td mat-cell *matCellDef="let element">{{ element.fechaPago | date: 'shortDate' }}</td>
             </ng-container>
 
             <ng-container matColumnDef="monto">

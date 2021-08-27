@@ -34,8 +34,7 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.estadoSesion = this.authService.estadoSesion();
-    console.log(this.estadoSesion);
+    this.estadoSesion = this.authService.estadoSesion();    
   }
 
   get f() {

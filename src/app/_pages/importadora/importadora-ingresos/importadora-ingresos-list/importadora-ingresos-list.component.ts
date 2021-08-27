@@ -11,6 +11,8 @@ import { first } from 'rxjs/operators';
 import { Empresa } from '@app/_models/shared/empresa';
 import { IngresosImportadora } from '@app/_models/importadora/ingresoImportadora';
 import { ImportadoraService } from '../../importadora.service';
+import { MatSort } from '@angular/material/sort';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-importadora-ingresos-list',
@@ -19,9 +21,10 @@ import { ImportadoraService } from '../../importadora.service';
 })
 export class ImportadoraIngresosListComponent implements OnInit {
 
-   // ? childrens
-   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
 
+  // ? childrens
+  @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
+  @ViewChild(MatSort) sort = null;
    // ? Inputs & Outputs
    @Input()
    refrescar = '';
@@ -49,6 +52,8 @@ export class ImportadoraIngresosListComponent implements OnInit {
  changelog: string[] = [];
 
  formFilter = new FormGroup({
+   id: new FormControl(),
+   monto: new FormControl(),
    start: new FormControl(),
    end: new FormControl(),
    idSucursal: new FormControl(),
@@ -76,6 +81,7 @@ export class ImportadoraIngresosListComponent implements OnInit {
    public dialog: MatDialog,
    private empresaService: EmpresaSharedService,
    private importadoraService: ImportadoraService,
+   private snackBar: MatSnackBar
  ) { }
 
  ngOnInit(): void {
@@ -94,6 +100,7 @@ export class ImportadoraIngresosListComponent implements OnInit {
      });
      this.dataSource = new MatTableDataSource(this.dataIngresos);
      this.dataSource.paginator = this.paginator.toArray()[0];
+     this.dataSource.sort = this.sort;
    });
  }
 
@@ -137,6 +144,13 @@ export class ImportadoraIngresosListComponent implements OnInit {
  aplicarfiltros() {
    this.formFilter.valueChanges.subscribe((res) => {
      let dataFiltered = this.dataIngresos
+     const { id, monto } = res
+     if (id) {
+      dataFiltered = dataFiltered.filter((data: IngresosImportadora) => (data.id).toString().includes(id))
+    }    
+    if (monto) {
+      dataFiltered = dataFiltered.filter((data: IngresosImportadora) => (data.monto).toString().includes(monto))
+    }
 
      if (res.descripcionIngreso) {
        dataFiltered = dataFiltered.filter((data: IngresosImportadora) => data.descripcionIngreso == res.descripcionIngreso)
@@ -178,10 +192,12 @@ export class ImportadoraIngresosListComponent implements OnInit {
 
 
  // Inicio Filtros
- limpiarFiltros() {
+ resetTable() {
    this.formFilter.patchValue({ start: null, end: null, idSucursal: null, tipoEgreso: null, vendedor: null, descripcionEgreso: null, usuario: null, codigoAutorizacion: null, medioPago: null})
    this.dataSource = new MatTableDataSource(this.dataIngresos);
    this.dataSource.paginator = this.paginator.toArray()[0];
+   this.dataSource.paginator['_pageIndex'] = 0
+   this.getIngresos()
    this.selection.clear()
    this.totalSeleccion = 0;
  }
@@ -196,9 +212,23 @@ export class ImportadoraIngresosListComponent implements OnInit {
  }
 
  //Metodo exportar excel
+
 exportAsXLSX(): void {
- this.selectedRows = [];
- this.selection.selected.forEach((x) => this.selectedRows.push(x));
- this.importadoraService.exportAsExcelFile(this.selectedRows, 'Lista-Ingresos-Importadora');
+  this.selectedRows = [];
+  if(this.selection.selected.length == 0) {
+    this.snackBar.open('!Seleccione algún registro!', 'cerrar', {
+      duration: 2000,
+      verticalPosition: 'top',
+    });
+  } else {
+    this.selection.selected.forEach((x) => this.selectedRows.push(x));
+      const newArray = this.selectedRows.map((item) => {
+      const { Sucursal, Usuario, RespaldoIngresoImportadoras, idSucursal, idUsuario, ...newObject } = item
+      return newObject
+    })
+  
+  this.importadoraService.exportAsExcelFile(newArray, 'Lista-Ingresos-Importadora');
+
+  }
 }
 }

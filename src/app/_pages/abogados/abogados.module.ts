@@ -27,6 +27,8 @@ import { DialogContratosComponent } from './abogados-ingresos/abogados-ingresos-
 import { DialogMostrarContratosComponent } from './abogados-ingresos/abogados-ingresos-acciones/dialog-mostrar-contratos/dialog-mostrar-contratos.component';
 import { DialogRegistrarPagoComponent } from './abogados-ingresos/abogados-ingresos-acciones/dialog-registrar-pago/dialog-registrar-pago.component';
 import { DialogRepactarCuotasComponent } from './abogados-ingresos/abogados-ingresos-acciones/dialog-repactar-cuotas/dialog-repactar-cuotas.component';
+import { AbogadosEgresosCuotasComponent } from './abogados-egresos/abogados-egresos-list/abogados-egresos-cuotas/abogados-egresos-cuotas.component';
+import { AbogadosEgresosCuotaDialogComponent } from './abogados-egresos/abogados-egresos-list/abogados-egresos-cuotas/abogados-egresos-cuota-dialog/abogados-egresos-cuota-dialog.component';
 
 
 FullCalendarModule.registerPlugins([ 
@@ -51,7 +53,7 @@ FullCalendarModule.registerPlugins([
     DialogContratosComponent, 
     DialogMostrarContratosComponent, 
     DialogRegistrarPagoComponent, 
-    DialogRepactarCuotasComponent
+    DialogRepactarCuotasComponent, AbogadosEgresosCuotasComponent, AbogadosEgresosCuotaDialogComponent
   ],
   imports: [
     CommonModule,

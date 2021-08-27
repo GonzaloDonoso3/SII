@@ -16,7 +16,7 @@ import { ViewChild } from '@angular/core';
 import { DatePipe } from "@angular/common";
 import { Empresa } from '@app/_models/shared/empresa';
 import { first } from 'rxjs/operators';
-
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-abogados-egresos-list',
@@ -79,7 +79,8 @@ constructor(
   private abogadosService: AbogadosService,
   public dialog: MatDialog,
   private sucursalService: SucursalSharedService,
-  private cuentasService: CuentasBancariasService
+  private cuentasService: CuentasBancariasService,
+  private snackBar: MatSnackBar
 ) {
   this.sucursales = this.sucursalService.sucursalListValue;
   this.tiposEgresos = this.abogadosService.tiposEgresosListValue;  
@@ -124,6 +125,36 @@ getEmpresa(id: number): any {
       x.Sucursals = Object.values(x.Sucursals);
       this.empresa = x;
     });
+}
+
+// Abrir Ventana Modal Registrar Pago
+openDialogRegistrarPago(){
+  //Selecciona los valores de la fila seleccionada    
+  this.selectedRows = [];
+  this.selection.selected.forEach((x) => {this.selectedRows.push(x)});
+  if(this.selectedRows.length > 0){
+    this.selectedRows.forEach((x) => {      
+      localStorage.setItem("idEgresoPago", x.id);
+      localStorage.setItem("numeroCuota", x.numeroCuota);
+    });
+    //Se ejecuta el metodo que abre el dialog, enviandole le id del Egreso por cuota
+    let idEgresoPagoCuota = localStorage.getItem("idEgresoPago");
+    let valorNumeroC = localStorage.getItem("numeroCuota");
+    if(valorNumeroC != "N/A"){
+      this.abogadosService.openDialogRegistrarPagoCuota(idEgresoPagoCuota);
+    } else{    
+    this.snackBar.open('Por favor seleccione un egreso con cuotas sin pagar', 'cerrar', {
+      duration: 2000,
+      verticalPosition: 'top',
+    });
+  }
+  } else {
+    this.snackBar.open('Por favor seleccione un egreso con cuotas', 'cerrar', {
+      duration: 2000,
+      verticalPosition: 'top',
+    });
+  } 
+  
 }
 
 recuperarArchivos(listArchivos: any) {

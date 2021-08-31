@@ -7,7 +7,10 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 import { IngresoAgroFirma } from '@app/_models/agroFirma/ingresoAgroFirma';
-
+import { AgroFirmaEgresosCuotasComponent } from './agro-firma-egresos/agro-firma-egresos-list/agro-firma-egresos-cuotas/agro-firma-egresos-cuotas.component';
+import { AgroFirmaEgresosCuotaDialogComponent } from './agro-firma-egresos/agro-firma-egresos-list/agro-firma-egresos-cuotas/agro-firma-egresos-cuota-dialog/agro-firma-egresos-cuota-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 
 const EXCEL_TYPE =
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
@@ -34,7 +37,10 @@ export class AgroFirmaService {
   private tiposEgresos = ['Gastos', 'Costos', 'Remuneraciones', 'Impuestos', 'Bancarios', 'Prestamos Bancarios', 'Prestamos Automotriz'];
   private empresa = 'agroFirma';
 
-  constructor( private http: HttpClient ) {
+  constructor( 
+    private http: HttpClient,
+    public dialog:MatDialog, 
+    private snackBar: MatSnackBar ) {
     //egresos;
     this.tiposEgresosListSubject = new BehaviorSubject<string[]>(
       JSON.parse(localStorage.getItem('tiposEgresos')!)
@@ -113,6 +119,15 @@ export class AgroFirmaService {
     );
   }
 
+  buscarImagen(url: string) {    
+    const extencion = url.split('.');
+    const extend = extencion[1];    
+    return this.http
+    .get(`${environment.apiUrl}/egresoAgrofirma/download/${url}`, {
+        responseType: 'blob',
+      })      
+  }
+
   //-----------Metodos Ingresos---------------//
 
   registrarIngreso(ingreso: IngresoAgroFirma): any {
@@ -154,5 +169,64 @@ export class AgroFirmaService {
   getBanks(): any {
     return this.http.get<[]>(`${environment.apiUrl}/banco/obtenerBancos`)
   }
+  //****** EGRESOS POR CUOTAS ******//
+  /* Egresos Por cuotas */
+  getCuotas(id: any) {    
+    return this.http.get<AgroFirmaEgresosCuotasComponent>(
+      `${environment.apiUrl}/egresoAgroFirmaCuota/${id}`
+    );
+  }
 
+  buscarImagenCuota(url: string) {    
+    const extencion = url.split('.');
+    const extend = extencion[1];    
+    return this.http
+    .get(`${environment.apiUrl}/egresoAgroFirmaCuota/download/${url}`, {
+        responseType: 'blob',
+      })      
+  }
+  
+  agregarRespaldos(arrayRespaldos: any): any {
+    return this.http.post(
+      `${environment.apiUrl}/egresoAgroFirmaCuota/agregarRespaldos/`,
+      arrayRespaldos
+    );
+  }
+  buscarImagenC(id: any): any {
+    return this.http.get<AgroFirmaEgresosCuotasComponent>(
+      `${environment.apiUrl}/respaldoEgresoAgroFirmaCuota/${id}`
+    );
+  }
+
+  // Metodo que permite abrir un Dialog (Modal)
+  openDialogCuota():void{
+    const dialogRef = this.dialog.open(AgroFirmaEgresosCuotaDialogComponent, {})
+    dialogRef.afterClosed().subscribe((res) => {})
+  }
+
+  updateMonto(id: any, body: any[]) {    
+    return this.http.put(`${environment.apiUrl}/egresoAgroFirmaCuota/${id}`, body);                
+  }
+
+  // Metodo que permite abrir un Dialog (Modal)
+  openDialogRegistrarPago(idEgreso: any):void{
+    //Si el cliente selecciono un contrato se habre el modal    
+    if(idEgreso != null){
+      const dialogRef = this.dialog.open(AgroFirmaEgresosCuotasComponent,{});
+      dialogRef.afterClosed().subscribe(res =>{
+        console.log(res);
+      });
+    }else{
+      //Si no, se muestra un error
+      this.snackBar.open('Por favor seleccione un egreso con cuotas sin pagar', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+    } 
+  }
+
+  closeDialogModal(){
+    this.dialog.closeAll();
+    localStorage.removeItem("idEgresoPago");
+  }
 }

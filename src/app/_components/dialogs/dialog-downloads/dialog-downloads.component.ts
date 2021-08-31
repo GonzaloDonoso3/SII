@@ -6,6 +6,7 @@ import { InmobiliariaService } from '@app/_pages/inmobiliaria/inmobiliaria.servi
 import { RentacarService } from '@app/_pages/rentacar/rentacar.service';
 import { ImportadoraService } from '@app/_pages/importadora/importadora.service';
 import { AbogadosService } from '@app/_pages/abogados/abogados.service';
+import { AgroFirmaService } from '@app/_pages/agroFirma/agro-firma.service';
 import { DomSanitizer} from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -102,6 +103,7 @@ export class DialogShow implements OnInit{
     private inmobiliariaService: InmobiliariaService,
     private rentacarService: RentacarService,
     private importadoraService: ImportadoraService,
+    private AgroFirmaService: AgroFirmaService,
   )  
   {
     this.archivos = this.data.archivos;
@@ -399,6 +401,44 @@ export class DialogShow implements OnInit{
       .pipe()
       .subscribe(
         (data:any) => {         
+          this.imagen = window.URL.createObjectURL(data);        
+          this.descargarImagen = window.URL.createObjectURL(data);             
+          this.imagen = this.sanitizer.bypassSecurityTrustUrl(this.imagen);                
+        },
+        (error: any) => {
+          (document.getElementById('cerrarModal') as HTMLInputElement).click();
+          this.snackBar.open('No existe documento asociado a este egreso', 'cerrar', {
+            duration: 2000,
+            verticalPosition: 'top',
+          });
+          console.log(error);
+        }
+      );
+    }
+    if (this.servicio === 'agroFirma-egreso-cuota') {
+      this.AgroFirmaService.buscarImagenCuota(this.archivos[0].url)
+      .pipe()
+      .subscribe(
+        (data:any) => {        
+          this.imagen = window.URL.createObjectURL(data);        
+          this.descargarImagen = window.URL.createObjectURL(data);             
+          this.imagen = this.sanitizer.bypassSecurityTrustUrl(this.imagen);                
+        },
+        (error: any) => {
+          (document.getElementById('cerrarModal') as HTMLInputElement).click();
+          this.snackBar.open('No existe documento asociado a este egreso', 'cerrar', {
+            duration: 2000,
+            verticalPosition: 'top',
+          });
+          console.log(error);
+        }
+      );
+    }
+    if (this.servicio === 'agroFirma-egreso') {
+      this.AgroFirmaService.buscarImagen(this.archivos[0].url)
+      .pipe()
+      .subscribe(
+        (data:any) => {        
           this.imagen = window.URL.createObjectURL(data);        
           this.descargarImagen = window.URL.createObjectURL(data);             
           this.imagen = this.sanitizer.bypassSecurityTrustUrl(this.imagen);                

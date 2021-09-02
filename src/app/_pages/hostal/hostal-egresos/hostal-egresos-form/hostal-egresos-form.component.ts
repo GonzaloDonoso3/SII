@@ -131,61 +131,7 @@ export class HostalEgresosFormComponent implements OnInit {
           this.egreso.idUsuario = this.usuario.id;
           this.egreso.tipoEgreso = this.egresosForm.value.tipoEgreso;
           this.egreso.numeroCuota = this.egresosForm.value.numeroCuota;          
-
-          if(this.egresosForm.value.numeroCuota > 1){              
-            let sumarMes= 0;
-            let restarMes= 0;
-            let contadorCuota = 0;                    
-              for (let i = 0; i < this.egresosForm.value.numeroCuota; i++) {                                                                                                                                                                                                                                                                                                                             
-                    this.egresosForm.value.fecha.setMonth(this.egresosForm.value.fecha.getMonth() + sumarMes);                                                                                                  
-                    this.egreso.fecha = this.egresosForm.value.fecha;
-                    sumarMes = sumarMes + 1;
-                    contadorCuota = contadorCuota + 1;
-                    this.egreso.numeroCuota = contadorCuota.toString().concat("/").concat(this.egresosForm.value.numeroCuota);                                                                                                                                                                                                                                                                                                                                                                                         
-                    restarMes = (sumarMes + 1) - sumarMes;                                 
-                    if(sumarMes >= 2){                                            
-                      sumarMes = restarMes;                      
-                    }    
-                    for (const respaldo of this.nameRespaldo) {
-                      this.egreso.RespaldoEgresos.push({ url: respaldo });
-                    }
-                    if (this.egreso.RespaldoEgresos.length > 0) {                        
-                      this.hostalService
-                        .egresoRegistrar(this.egreso)
-                        .pipe()
-                        .subscribe(
-                          (data: any) => {
-                            this.alert.createAlert("Registro Creado con exito!");
           
-                            /*  this.snackBar.open('Regitro Exitoso !!', 'cerrar', {
-                               duration: 2000,
-                               verticalPosition: 'top',
-                             }); */
-                            this.formularioListo.emit('true');
-                            this.egresosForm.reset();
-                          },
-                          (error: any) => {
-                            this.snackBar.open('Tenemos Problemas para realizar el registro, porfavor contactar al equipo de desarrollo', 'cerrar', {
-                              duration: 2000,
-                              verticalPosition: 'top',
-                            });
-                            console.log(error);
-                          }
-                        );
-                    } else {
-                      this.snackBar.open('Debemos Recibir sus respaldos para continuar !!', 'cerrar', {
-                        duration: 5000,
-                        verticalPosition: 'top',
-                      });
-                    }                    
-              }
-              return;
-          }
-          else {
-            this.egreso.fecha = this.egresosForm.value.fecha;          
-            this.egresosForm.value.numeroCuota = "1/1";             
-            this.egreso.numeroCuota = this.egresosForm.value.numeroCuota;          
-          }
 
           for (const respaldo of this.nameRespaldo) {
             this.egreso.RespaldoEgresos.push({ url: respaldo });

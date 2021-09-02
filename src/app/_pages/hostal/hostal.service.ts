@@ -10,6 +10,9 @@ import { ConsolidadosHostal } from '@app/_models/hostal/consolidadosHostal';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 import {MatDialog} from '@angular/material/dialog';
+import { HostalEgresosCuotasComponent } from './hostal-egresos/hostal-egresos-list/hostal-egresos-cuotas/hostal-egresos-cuotas.component';
+import { HostalEgresosCuotaDialogComponent } from './hostal-egresos/hostal-egresos-list/hostal-egresos-cuotas/hostal-egresos-cuota-dialog/hostal-egresos-cuota-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 const EXCEL_TYPE =
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
@@ -49,7 +52,7 @@ export class HostalService {
 
   private tiposEgresos = ['Gastos', 'Costos', 'Remuneraciones', 'Impuestos', 'Bancarios'];
   private empresa = 'Hostal';
-  constructor(private http: HttpClient, private router: Router, private dialog: MatDialog) {
+  constructor(private http: HttpClient, private router: Router, private dialog: MatDialog, private snackBar: MatSnackBar) {
     //Init private Subjects;
     //ingresos;
 
@@ -190,6 +193,11 @@ export class HostalService {
       `${environment.apiUrl}/egreso${this.empresa}/${id}`
     );
   }
+  closeDialogModal(){
+    this.dialog.closeAll();
+    localStorage.removeItem("idEgresoPago");
+  }
+  
   /* /egresos */
 
 
@@ -199,6 +207,61 @@ export class HostalService {
       `${environment.apiUrl}/ingreso${this.empresa}/ingresosEgresos`,
       consolidado      
     );
+  }
+
+  /* Egresos Por cuotas */
+  getCuotas(id: any) {    
+    return this.http.get<HostalEgresosCuotasComponent>(
+      `${environment.apiUrl}/egresoHostalCuota/${id}`
+    );
+  }
+
+  buscarImagenCuota(url: string) {    
+    const extencion = url.split('.');
+    const extend = extencion[1];    
+    return this.http
+    .get(`${environment.apiUrl}/egresoHostalCuota/download/${url}`, {
+        responseType: 'blob',
+      })      
+  }
+  
+  agregarRespaldos(arrayRespaldos: any): any {
+    return this.http.post(
+      `${environment.apiUrl}/egresoHostalCuota/agregarRespaldos/`,
+      arrayRespaldos
+    );
+  }
+  buscarImagenC(id: any): any {
+    return this.http.get<HostalEgresosCuotasComponent>(
+      `${environment.apiUrl}/respaldoEgresoHostalCuota/${id}`
+    );
+  }
+
+  // Metodo que permite abrir un Dialog (Modal)
+  openDialogCuota():void{
+    const dialogRef = this.dialog.open(HostalEgresosCuotaDialogComponent, {})
+    dialogRef.afterClosed().subscribe((res) => {})
+  }
+
+  updateMonto(id: any, body: any[]) {    
+    return this.http.put(`${environment.apiUrl}/egresoHostalCuota/${id}`, body);                
+  }
+
+  // Metodo que permite abrir un Dialog (Modal)
+  openDialogRegistrarPago(idEgreso: any):void{
+    //Si el cliente selecciono un contrato se habre el modal    
+    if(idEgreso != null){
+      const dialogRef = this.dialog.open(HostalEgresosCuotasComponent,{});
+      dialogRef.afterClosed().subscribe(res =>{
+        console.log(res);
+      });
+    }else{
+      //Si no, se muestra un error
+      this.snackBar.open('Por favor seleccione un egreso con cuotas sin pagar', 'cerrar', {
+        duration: 2000,
+        verticalPosition: 'top',
+      });
+    } 
   }
 
   // METODO PARA EXPORTAR EXCEL

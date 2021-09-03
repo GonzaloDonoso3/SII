@@ -10,6 +10,9 @@ import { DatePipe } from "@angular/common";
 import { CalendarOptions } from '@fullcalendar/angular';
 import { EgresoLubricentro } from '@app/_models/lubricentro/egresoLubricentro';
 import { LubricentroService } from '@app/_pages/lubricentro/lubricentro.service';
+import { MatDialog } from '@angular/material/dialog';
+import { LubricentroEgresosCuotasComponent } from '../lubricentro-egresos/lubricentro-egresos-list/lubricentro-egresos-cuotas/lubricentro-egresos-cuotas.component';
+import { EgresoLubricentroCuota } from '@app/_models/lubricentro/egresoLubricentroCuota';
 
 @Component({
   selector: 'app-lubricentro-home',
@@ -20,11 +23,11 @@ import { LubricentroService } from '@app/_pages/lubricentro/lubricentro.service'
 export class LubricentroHomeComponent implements OnInit {
 
 //Creación de variables y asignación de datos
-dataSource: MatTableDataSource<EgresoLubricentro> = new MatTableDataSource();
-dataEgresos: EgresoLubricentro[] = [];
+dataSource: MatTableDataSource<EgresoLubricentroCuota> = new MatTableDataSource();
+dataEgresos: EgresoLubricentroCuota[] = [];
 
 eventsCalendar : any = [];
-calendarOptions!: CalendarOptions; 
+calendarOptions!: CalendarOptions;
 
   sucursales: Sucursal[] = [];
   empresa: Empresa = new Empresa();
@@ -34,6 +37,7 @@ calendarOptions!: CalendarOptions;
     private sucursalService: SucursalSharedService,
     private empresaService: EmpresaSharedService,
     private miDatePipe: DatePipe,
+    public dialog: MatDialog
   ) {
     this.empresaService.getAll().subscribe(data => {
       const empresa = data.filter(data => data.razonSocial.includes('LUBRICENTRO'));
@@ -56,11 +60,11 @@ calendarOptions!: CalendarOptions;
   }
 
   getEgresos() {           
-    this.lubricentroService.egresoGetAll().subscribe((egresos: EgresoLubricentro[]) => {            
+    this.lubricentroService.buscarCuotas().subscribe((egresos: EgresoLubricentroCuota[]) => {            
       this.dataEgresos = egresos.map(Egresos => {        
         return Egresos;
-      });
-      this.dataEgresos.forEach(data => {                       
+      });      
+      this.dataEgresos.forEach(data => {                              
           let hoy = new Date();                                            
           let devolucion = new Date();
           devolucion.setDate(hoy.getDate() + 3);
@@ -75,33 +79,43 @@ calendarOptions!: CalendarOptions;
           {
           //Si la cuota esta por vencerse
           this.eventsCalendar.push(
-            {        
+            {                      
               title: 'Egreso:  ' + data.tipoEgreso,
               start: fechaFormateada,  
-              color: 'red',        
+              color: 'red',
+              description: data.idEgreso,              
             });
           } else{
           this.eventsCalendar.push(
-            {        
+            {                      
               title: 'Egreso:  ' + data.tipoEgreso,
               start: fechaFormateada,  
-              color: 'blue',        
+              color: 'blue',
+              description: data.idEgreso,                      
             });
           }
         }
         });        
-        this.calendarOptions = {
+        this.calendarOptions = {          
           initialView: 'dayGridMonth',
+          dayMaxEvents: true,          
           dateClick: this.handleDateClick.bind(this),
           events: this.eventsCalendar,          
-          locale: esLocale,          
+          locale: esLocale,
+          eventClick: this.mostrar.bind(this),          
         };
+        
     });
   }
-
+  
+  mostrar(arg: any){
+    let idCuota = arg.event._def.extendedProps.description;
+    localStorage.setItem("idEgresoPago", idCuota);    
+    this.lubricentroService.openDialogRegistrarPago(idCuota);    
+  }
   
   handleDateClick(arg: any) {    
-    this.lubricentroService.egresoGetAll().subscribe((egresos: EgresoLubricentro[]) => {            
+    this.lubricentroService.buscarCuotas().subscribe((egresos: EgresoLubricentroCuota[]) => {            
       this.dataEgresos = egresos.map(Egresos => {        
         return Egresos;
       });

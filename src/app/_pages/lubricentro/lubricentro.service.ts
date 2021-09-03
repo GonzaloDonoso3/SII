@@ -186,6 +186,12 @@ export class LubricentroService {
     return this.http.get<EgresoLubricentro[]>(`${environment.apiUrl}/egreso${this.empresa}`);
   }
 
+  buscarCuotas(): any {
+    return this.http.get<EgresoLubricentroCuota>(
+      `${environment.apiUrl}/egresoLubricentroCuota/`
+    );
+  }
+
   egresoGetFiles(fileName: string): any {
     return this.http
       .get(`${environment.apiUrl}/egreso${this.empresa}/download/${fileName}`, {
@@ -250,6 +256,7 @@ export class LubricentroService {
 
   // Metodo que permite abrir un Dialog (Modal)
   openDialogRegistrarPago(idEgreso: any):void{
+    console.log("llegando", idEgreso)
     //Si el cliente selecciono un contrato se habre el modal    
     if(idEgreso != null){
       const dialogRef = this.dialog.open(LubricentroEgresosCuotasComponent,{});

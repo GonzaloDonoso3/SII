@@ -264,12 +264,22 @@
 
 <br><br>
 
+<!-- <div #content id="htmlData" class="content">
+    <p>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
+  molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
+  numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
+  optio, eaque rerum! Provident similique accusantium nemo autem.
+</p>
+</div> -->
+<button (click)="openPDF()">make pdf</button>
+
 <!-- MODAL QUE MUESTRA EL LISTADO Y LOS TOTALES -->
 <!-- *********** TABLE INGRESOS **************** -->
 <!-- <div *ngIf="montoIngreso.length > 0"> -->
 <mat-card class="shipping-card mat-elevation-z10">
 <mat-grid-list cols="2">    
-    <div class="table-responsive">
+    <div class="table-responsive" id="htmlData">
         <mat-toolbar color="primary">            
             <span class="center-title">Ingresos Hostal</span>         
         </mat-toolbar>        
@@ -326,7 +336,7 @@
 <!-- </div> -->
 <!-- *********** TABLE EGRESOS **************** -->
 <!-- <div *ngIf="montoEgreso.length > 0"> -->
-<mat-card class="shipping-card mat-elevation-z10" id="htmlData">
+<mat-card class="shipping-card mat-elevation-z10">
     <mat-grid-list cols="2">    
         <div class="table-responsive">
             <mat-toolbar color="primary">            
@@ -427,7 +437,8 @@
         <!-- <div class="row" *ngIf="totalIngresoG.length > 0" id="ocultar"> -->
         <div class="row" *ngIf="totalEgresoG.length > 0" id="ocultar">
         <mat-card-actions>
-            <button mat-raised-button color="primary" (click)="openPDF('#ocultar', false)">
+            <!-- <button mat-raised-button color="primary" (click)="openPDF('#ocultar', false)"></button> -->
+            <button mat-raised-button color="primary" (click)="openPDF()">
               <mat-icon>send</mat-icon> PDF
             </button>
           </mat-card-actions>

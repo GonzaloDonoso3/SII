@@ -6,5 +6,6 @@ export class EgresoLubricentroCuota {
     monto!: number;        
     estadoCuota!: String;
     numeroCuota!: number;
-    tipoEgreso!: String;    
+    tipoEgreso!: String;
+    descripcion!: String;    
 }

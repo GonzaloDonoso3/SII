@@ -64,6 +64,12 @@ export class RentacarService {
     return this.http.get<[]>(`${environment.apiUrl}/egresoRentacar/getEgresos`);
   }
 
+  buscarCuotas(): any {
+    return this.http.get<EgresoRentacarCuota>(
+      `${environment.apiUrl}/egresoRentacarCuota/`
+    );
+  }
+
   egresoGetFiles(fileName: string): any {
     return this.http
       .get(`${environment.apiUrl}/egresoRentacar/download/${fileName}`, {

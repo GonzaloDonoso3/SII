@@ -13,6 +13,7 @@ import {MatDialog} from '@angular/material/dialog';
 import { HostalEgresosCuotasComponent } from './hostal-egresos/hostal-egresos-list/hostal-egresos-cuotas/hostal-egresos-cuotas.component';
 import { HostalEgresosCuotaDialogComponent } from './hostal-egresos/hostal-egresos-list/hostal-egresos-cuotas/hostal-egresos-cuota-dialog/hostal-egresos-cuota-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { EgresoHostalCuota } from '@app/_models/hostal/egresoHostalCuota';
 
 const EXCEL_TYPE =
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
@@ -171,6 +172,13 @@ export class HostalService {
   egresoGetAll(): any {    
     return this.http.get<[]>(`${environment.apiUrl}/egresoHostal`);
   }
+
+  buscarCuotas(): any {
+    return this.http.get<EgresoHostalCuota>(
+      `${environment.apiUrl}/egresoHostalCuota/`
+    );
+  }
+
   egresoGetFiles(fileName: string): any {    
     return this.http
       .get(`${environment.apiUrl}/egreso${this.empresa}/download/${fileName}`, {

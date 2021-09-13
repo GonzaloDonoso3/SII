@@ -106,7 +106,7 @@ export class AbogadosService {
 
   // Metodo que permite abrir un Dialog (Modal)
   openDialogRegistrarPago(idContrato: any):void{
-    //Si el cliente selecciono un contrato se habre el modal
+    //Si el cliente selecciono un contrato se habre el modal    
     if(idContrato != null){
       const dialogRef = this.dialog.open(DialogRegistrarPagoComponent,{});
       dialogRef.afterClosed().subscribe(res =>{
@@ -198,6 +198,13 @@ export class AbogadosService {
   egresoGetAll(): any {            
     return this.http.get<[]>(`${environment.apiUrl}/egresoFirma`);    
   }
+
+  buscarCuotas(): any {
+    return this.http.get<EgresoFirmaCuota>(
+      `${environment.apiUrl}/egresoFirmaCuota/`
+    );
+  }
+
   getByIdWithSucursales(id: number) {
     return this.http.get<Empresa>(
       `${environment.apiUrl}/empresa/empresaSucursales/${id}`

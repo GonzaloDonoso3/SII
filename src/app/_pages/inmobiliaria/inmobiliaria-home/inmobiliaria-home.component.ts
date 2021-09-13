@@ -6,6 +6,10 @@ import { CalendarOptions } from '@fullcalendar/angular';
 import { InmobiliariaService } from '@app/_pages/inmobiliaria/inmobiliaria.service';
 import * as moment from "moment";
 import esLocale from '@fullcalendar/core/locales/es';
+import tippy from "tippy.js";
+import { MatDialog } from '@angular/material/dialog';
+import { EgresoInmobiliariaCuota } from '@app/_models/inmobiliaria/egresoInmobiliariaCuota';
+import { AlertHelper } from '@app/_helpers/alert.helper';
 
 @Component({
   selector: 'app-inmobiliaria-home',
@@ -16,8 +20,8 @@ import esLocale from '@fullcalendar/core/locales/es';
 export class InmobiliariaHomeComponent implements OnInit {
 
   //Creación de variables y asignación de datos
-  dataSource: MatTableDataSource<EgresosInmobiliaria> = new MatTableDataSource();
-  dataEgresos: EgresosInmobiliaria[] = [];
+  dataSource: MatTableDataSource<EgresoInmobiliariaCuota> = new MatTableDataSource();
+  dataEgresos: EgresoInmobiliariaCuota[] = [];
 
   eventsCalendar : any = [];
   calendarOptions!: CalendarOptions; 
@@ -26,6 +30,7 @@ export class InmobiliariaHomeComponent implements OnInit {
   constructor(
     private inmobiliariaService: InmobiliariaService,
     private miDatePipe: DatePipe,
+    private alert: AlertHelper
   ) { }
 
   ngOnInit(): void {
@@ -33,7 +38,7 @@ export class InmobiliariaHomeComponent implements OnInit {
   }
 
   getEgresos() {           
-    this.inmobiliariaService.getAllEgresos().subscribe((egresos: EgresosInmobiliaria[]) => {            
+    this.inmobiliariaService.buscarCuotas().subscribe((egresos: EgresoInmobiliariaCuota[]) => {            
       this.dataEgresos = egresos.map(Egresos => {        
         return Egresos;
       });
@@ -48,36 +53,68 @@ export class InmobiliariaHomeComponent implements OnInit {
           var time2 = moment(fechaTermino).format('YYYY-MM-DD');
           var time3 = moment(fechaFormateada).format('YYYY-MM-DD');
           if(data.tipoEgreso == "Prestamos Bancarios" || data.tipoEgreso == "Prestamos Automotriz"){
-          if(time3 >= time1 && time3 <= time2)
-          {
-          //Si la cuota esta por vencerse
-          this.eventsCalendar.push(
-            {        
-              title: 'Egreso:  ' + data.tipoEgreso,
-              start: fechaFormateada,  
-              color: 'red',        
-            });
-          } else{
-          this.eventsCalendar.push(
-            {        
-              title: 'Egreso:  ' + data.tipoEgreso,
-              start: fechaFormateada,  
-              color: 'blue',        
-            });
+            if(time3 >= time1 && data.estadoCuota == "Pendiente")
+            // if(time3 >= time1 && time3 <= time2 && data.estadoCuota == "Pendiente")
+            {                                
+            this.eventsCalendar.push(
+              {                      
+                //Verde
+                title: 'Descripcion:  ' + data.descripcion,
+                start: fechaFormateada,  
+                color: '#0da62e',
+                description: data.idEgreso,              
+              });
+            } 
+            if(data.estadoCuota == "Pendiente" && time3 < time1){
+              this.alert.reminderAlert(`La cuota ${data.descripcion} esta vencida`);                  
+              this.eventsCalendar.push(
+                {    
+                  //Rojo                  
+                  title: 'Descripcion:  ' + data.descripcion,
+                  start: fechaFormateada,  
+                  color: '#ba1206',
+                  description: data.idEgreso,                
+                });
+            }
+            if(data.estadoCuota == "Pagado"){
+            this.eventsCalendar.push(
+              {    
+                //Azul                  
+                title: 'Descripcion:  ' + data.descripcion,
+                start: fechaFormateada,  
+                color: '#2e4fd1',
+                description: data.idEgreso,                            
+              });
+            }
           }
-        }
-        });        
+          });        
         this.calendarOptions = {
           initialView: 'dayGridMonth',
           dateClick: this.handleDateClick.bind(this),
           events: this.eventsCalendar,          
-          locale: esLocale,          
+          locale: esLocale,
+          eventClick: this.mostrar.bind(this), 
+          eventDidMount: (info) => {
+            tippy(info.el, {
+             content: info.event.title,                                       
+             })
+           }                    
         };
     });
   }
 
+  mostrar(arg: any){
+    let idCuota = arg.event._def.extendedProps.description;
+    localStorage.setItem("idEgresoPago", idCuota);    
+    this.inmobiliariaService.openDialogRegistrarPago(idCuota);    
+  }
+  
+  ActualizarCalendario(){
+    window.location.reload();    
+  }
+
   handleDateClick(arg: any) {    
-    this.inmobiliariaService.getAllEgresos().subscribe((egresos: EgresosInmobiliaria[]) => {            
+    this.inmobiliariaService.buscarCuotas().subscribe((egresos: EgresoInmobiliariaCuota[]) => {            
       this.dataEgresos = egresos.map(Egresos => {        
         return Egresos;
       });

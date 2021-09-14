@@ -300,4 +300,11 @@ updateMonto(id: any, body: any[]) {
       });
     } 
   }
+
+  //Metodos del Home
+  buscarCuotas(): any {
+    return this.http.get<EgresoFijoImportadoraCuota>(
+      `${environment.apiUrl}/egresoFijoImportadoraCuota/`
+    );
+  }
 }

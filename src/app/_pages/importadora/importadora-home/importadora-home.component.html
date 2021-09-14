@@ -1,11 +1,20 @@
-<!-- <br>
-<h1> Modulo Importadora</h1>
-<mat-divider></mat-divider> -->
-<div class="responsive">
-    <br>
-    <h1> Modulo Importadora</h1>
-    <mat-divider></mat-divider>
-    <img src="assets/images/hostal.png" alt="" width="650" height="350">
+<br>
+<h1> Modulo Lubricentro Rent A Car</h1>
+<div style="margin-left: 25%;">
+<ul class="legend">
+  <li><span class="superawesome"></span> Pagados</li>
+  <li><span class="awesomeN"></span> Proximos pagos a vencerse</li>
+  <li><span class="awesome"></span> Pagos vencidos</li>
+</ul>
 </div>
-<br><br>
-<br><br>
+<br>
+<br>
+<div style="text-align:center">
+<button mat-raised-button color="accent"  (click)="ActualizarCalendario()">
+  Actualizar Calendario
+</button>       
+</div>
+<br>
+<full-calendar [options]="calendarOptions"></full-calendar>
+<mat-divider></mat-divider>
+<br>

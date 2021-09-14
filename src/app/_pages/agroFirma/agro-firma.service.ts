@@ -11,6 +11,7 @@ import { AgroFirmaEgresosCuotasComponent } from './agro-firma-egresos/agro-firma
 import { AgroFirmaEgresosCuotaDialogComponent } from './agro-firma-egresos/agro-firma-egresos-list/agro-firma-egresos-cuotas/agro-firma-egresos-cuota-dialog/agro-firma-egresos-cuota-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
+import { EgresoAgroFirmaCuota } from '@app/_models/agroFirma/egresoAgroFirmaCuota';
 
 const EXCEL_TYPE =
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
@@ -228,5 +229,12 @@ export class AgroFirmaService {
   closeDialogModal(){
     this.dialog.closeAll();
     localStorage.removeItem("idEgresoPago");
+  }
+
+  //Calendario 
+  buscarCuotas(): any {
+    return this.http.get<EgresoAgroFirmaCuota>(
+      `${environment.apiUrl}/egresoAgroFirmaCuota/`
+    );
   }
 }

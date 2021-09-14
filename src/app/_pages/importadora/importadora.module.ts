@@ -22,7 +22,7 @@ import { DialogNeumaticosComponent } from './importadora-egresos/importadora-egr
 import { DialogNeumaticosEditComponent } from './importadora-egresos/importadora-egresos-tab-gasto-neumaticos/dialog-neumaticos/dialog-neumaticos-edit/dialog-neumaticos-edit/dialog-neumaticos-edit.component';
 import { ImportadoraEgresosTabCuotasComponent } from './importadora-egresos/importadora-egresos-tab-gasto-fijo/importadora-egresos-tab-gasto-fijo-list/importadora-egresos-tab-cuotas/importadora-egresos-tab-cuotas.component';
 import { ImportadoraEgresosTabCuotaDialogComponent } from './importadora-egresos/importadora-egresos-tab-gasto-fijo/importadora-egresos-tab-gasto-fijo-list/importadora-egresos-tab-cuotas/importadora-egresos-tab-cuota-dialog/importadora-egresos-tab-cuota-dialog.component';
-
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 
 
@@ -33,7 +33,8 @@ import { ImportadoraEgresosTabCuotaDialogComponent } from './importadora-egresos
     ImportadoraRoutingModule,
     MaterialModule,
     ComponentsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FullCalendarModule
   ]
 })
 export class ImportadoraModule { }

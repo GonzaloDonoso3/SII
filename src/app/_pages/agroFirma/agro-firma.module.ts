@@ -19,6 +19,7 @@ import { CreateBankAccountFormComponent } from './agro-firma-ingresos/create-ban
 import { BankAccountListComponent } from './agro-firma-ingresos/bank-account-list/bank-account-list.component';
 import { AgroFirmaEgresosCuotasComponent } from './agro-firma-egresos/agro-firma-egresos-list/agro-firma-egresos-cuotas/agro-firma-egresos-cuotas.component';
 import { AgroFirmaEgresosCuotaDialogComponent } from './agro-firma-egresos/agro-firma-egresos-list/agro-firma-egresos-cuotas/agro-firma-egresos-cuota-dialog/agro-firma-egresos-cuota-dialog.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { AgroFirmaEgresosCuotaDialogComponent } from './agro-firma-egresos/agro-
     ComponentsModule,
     ReactiveFormsModule,
     ModalModule,
+    FullCalendarModule
   ],
   exports: [
     AgroFirmaEgresosFormComponent,

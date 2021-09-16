@@ -16,6 +16,7 @@ import { ImportadoraService } from '../../../importadora.service';
 import { Empresa } from '@app/_models/shared/empresa';
 import { EmpresaSharedService } from '@app/_pages/shared/shared-services/empresa-shared.service';
 
+
 @Component({
   selector: 'app-importadora-egresos-tab-gasto-fijo-form',
   templateUrl: './importadora-egresos-tab-gasto-fijo-form.component.html',
@@ -23,12 +24,20 @@ import { EmpresaSharedService } from '@app/_pages/shared/shared-services/empresa
 })
 export class ImportadoraEgresosTabGastoFijoFormComponent implements OnInit {
 
+  formularioListo = new EventEmitter<string>();
   usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '');
 
   nameRespaldo = '';
   tiposIngresos: any[] = [];
   idEmpresa = 9;
   empresa = new Empresa();
+
+  mostrarDatos : boolean = true;
+  datoCuota = 'N/A';
+  montoTotal = '1000';
+  selected: any;
+  opcionSeleccionado: string = '0';
+  verSeleccion: string = '';
 
 
   // ? Validar si es necesario importar modelos de datos
@@ -39,7 +48,9 @@ export class ImportadoraEgresosTabGastoFijoFormComponent implements OnInit {
     tipoEgreso: [null, Validators.required],
     descripcion: [null, Validators.required],
     fecha: [null, Validators.required],
-    monto: [null, Validators.required],
+    monto: [null],
+    montoCuota: [null],
+    numeroCuota: [null],
   });
 
   constructor(
@@ -49,7 +60,8 @@ export class ImportadoraEgresosTabGastoFijoFormComponent implements OnInit {
     private sucursalService: SucursalSharedService,
     private usuariosService: UsuarioSharedService,
     private ImportadoraService: ImportadoraService,
-    private empresaService: EmpresaSharedService
+    private empresaService: EmpresaSharedService,
+    private alert: AlertHelper
   ) { 
   }
 
@@ -67,6 +79,33 @@ export class ImportadoraEgresosTabGastoFijoFormComponent implements OnInit {
        });
    }
 
+   //Metodo para mostrar numero de cuotas
+  activarEdicion(): void {
+    this.mostrarDatos = false; 
+    this.addressForm.controls["numeroCuota"].setValidators(Validators.required);
+    this.addressForm.controls["numeroCuota"].updateValueAndValidity();  
+    this.addressForm.controls["monto"].clearValidators();           
+    this.addressForm.controls["monto"].updateValueAndValidity();
+                          
+  }
+//Metodo para ocultar los numeros de cuotas
+  desactivarEdicion(): void {
+    this.mostrarDatos = true;
+    this.addressForm.controls["monto"].setValidators(Validators.required);
+    this.addressForm.controls["monto"].updateValueAndValidity();                         
+    this.addressForm.controls["numeroCuota"].clearValidators();           
+    this.addressForm.controls["numeroCuota"].updateValueAndValidity();
+   
+  }
+
+//Capturamos los tipos de egresos
+  capturar() {
+    this.verSeleccion = this.opcionSeleccionado;
+    if(this.verSeleccion == "Prestamos Bancarios"  || this.verSeleccion == "Prestamos Automotriz"){
+      this.montoTotal == "1000";        
+    }        
+  }
+
   onSubmit(){
     // $ consulta el estado del formulario antes de recibir los adjuntos
     switch (this.addressForm.status) {
@@ -83,7 +122,13 @@ export class ImportadoraEgresosTabGastoFijoFormComponent implements OnInit {
           this.egreso.tipoEgreso = this.addressForm.value.tipoEgreso;
           this.egreso.descripcion = this.addressForm.value.descripcion;
           this.egreso.fecha = this.addressForm.value.fecha;
-          this.egreso.monto = this.addressForm.value.monto;
+          this.egreso.numeroCuota = this.addressForm.value.numeroCuota;
+          // Si el usuario ingresa Egreso Bancario y Automotriz al monto se le asigna el numero de cuota                    
+          if(this.addressForm.value.monto == null) {                        
+            this.egreso.monto = this.addressForm.value.montoCuota;
+          } else {
+            this.egreso.monto = this.addressForm.value.monto;                    
+          }
           
           //Se le asigna la id del usuario logueado
           this.egreso.idUsuario = this.usuario.id;
@@ -103,6 +148,8 @@ export class ImportadoraEgresosTabGastoFijoFormComponent implements OnInit {
                     duration: 2000,
                     verticalPosition: 'top',
                   });
+                  this.alert.createAlert("Registro Creado con exito!");                  
+                  this.formularioListo.emit('true');
                   this.addressForm.reset();
 
                 },

@@ -54,7 +54,7 @@ registerLocaleData(localeEs, 'es');
     MaterialModule,
     FullCalendarModule,
     HttpClientModule,
-    MatSortModule
+    MatSortModule, 
   ],
   providers: [
     DecimalPipe,

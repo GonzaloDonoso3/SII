@@ -11,7 +11,7 @@ import { ProyectoAgrofirma } from '@app/_models/agroFirma/proyectoAgroFirma';
 import { AgroFirmaService } from '@app/_pages/agroFirma/agro-firma.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
-import { DialogDownloadsComponent } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
+import { DialogDownloadsComponent, DialogShow } from '@app/_components/dialogs/dialog-downloads/dialog-downloads.component';
 import { Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -41,6 +41,7 @@ export class AgroFirmaEgresosListComponent implements OnInit {
     'tipoEgreso',    
     'descripcion',    
     'numeroCuota',
+    'respaldos',
   ];
 
 
@@ -125,12 +126,41 @@ export class AgroFirmaEgresosListComponent implements OnInit {
       });
     }
   
-    recuperarArchivos(listArchivos: any) {    
-      this.dialog.open(DialogDownloadsComponent, {
+    recuperarArchivos(listArchivos: any) {          
+      this.dialog.open(DialogShow, { 
         data: { archivos: listArchivos, servicio: 'agroFirma-egreso' },
       });
     }
     
+    openDialogRegistrarPago(){
+      //Selecciona los valores de la fila seleccionada    
+      this.selectedRows = [];
+      this.selection.selected.forEach((x) => {this.selectedRows.push(x)});
+      if(this.selectedRows.length > 0){
+        this.selectedRows.forEach((x) => {      
+          localStorage.setItem("idEgresoPago", x.id);
+          localStorage.setItem("numeroCuota", x.numeroCuota);
+        });
+        //Se ejecuta el metodo que abre el dialog, enviandole le id del Egreso por cuota
+        let idEgresoPagoCuota = localStorage.getItem("idEgresoPago");
+        let valorNumeroC = localStorage.getItem("numeroCuota");
+        if(valorNumeroC != "N/A"){
+          this.agroFirmaService.openDialogRegistrarPago(idEgresoPagoCuota);
+        } else{    
+        this.snackBar.open('Por favor seleccione un egreso con cuotas sin pagar', 'cerrar', {
+          duration: 2000,
+          verticalPosition: 'top',
+        });
+      }
+      } else {
+        this.snackBar.open('Por favor seleccione un egreso con cuotas', 'cerrar', {
+          duration: 2000,
+          verticalPosition: 'top',
+        });
+      } 
+      
+    }
+
     //METODO QUE PERMITE EXPORTA A EXCEL
     
     exportAsXLSX(): void {

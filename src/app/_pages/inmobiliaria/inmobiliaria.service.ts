@@ -142,6 +142,12 @@ export class InmobiliariaService {
     return this.http.get<[]>(`${environment.apiUrl}/egresoInmobiliaria`);
   }
 
+  buscarCuotas(): any {
+    return this.http.get<EgresoInmobiliariaCuota>(
+      `${environment.apiUrl}/egresoInmobiliariaCuota/`
+    );
+  }
+
   createEgresos(ingresosInmobiliaria: IngresosInmobiliaria) {
     console.log(ingresosInmobiliaria);
     return this.http.post(

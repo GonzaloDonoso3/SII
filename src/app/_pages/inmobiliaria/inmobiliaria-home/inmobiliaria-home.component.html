@@ -1,19 +1,18 @@
-<!-- <div class="responsive">
-    <br>
-    <h1> Modulo Inmobiliaria</h1>
-    <mat-divider></mat-divider>
-    <img src="assets/images/firmacorretajeschile.png" alt="" width="650" height="350">
-</div> -->
-
 <br>
 <h1> Modulo Inmobiliaria</h1>
 <div style="margin-left: 25%;">
     <ul class="legend">
-      <li><span class="superawesome"></span> Proximos pagos</li>
-      <li><span class="awesome"></span> Proximos pagos a vencerse</li>
+      <li><span class="superawesome"></span> Pagados</li>
+      <li><span class="awesomeN"></span> Proximos pagos a vencerse</li>
+      <li><span class="awesome"></span> Pagos vencidos</li>
     </ul>
     </div>
     <br>
+    <br>
+    <div style="text-align:center">
+    <button mat-raised-button color="accent"  (click)="ActualizarCalendario()">
+      Actualizar Calendario
+    </button>       
     <full-calendar [options]="calendarOptions"></full-calendar>
     <mat-divider></mat-divider>
     <br>

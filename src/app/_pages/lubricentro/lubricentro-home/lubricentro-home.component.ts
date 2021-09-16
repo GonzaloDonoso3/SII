@@ -8,8 +8,11 @@ import esLocale from '@fullcalendar/core/locales/es';
 import * as moment from "moment";
 import { DatePipe } from "@angular/common";
 import { CalendarOptions } from '@fullcalendar/angular';
-import { EgresoLubricentro } from '@app/_models/lubricentro/egresoLubricentro';
 import { LubricentroService } from '@app/_pages/lubricentro/lubricentro.service';
+import { MatDialog } from '@angular/material/dialog';
+import { EgresoLubricentroCuota } from '@app/_models/lubricentro/egresoLubricentroCuota';
+import { AlertHelper } from '@app/_helpers/alert.helper';
+import tippy from "tippy.js";
 
 @Component({
   selector: 'app-lubricentro-home',
@@ -20,11 +23,11 @@ import { LubricentroService } from '@app/_pages/lubricentro/lubricentro.service'
 export class LubricentroHomeComponent implements OnInit {
 
 //Creación de variables y asignación de datos
-dataSource: MatTableDataSource<EgresoLubricentro> = new MatTableDataSource();
-dataEgresos: EgresoLubricentro[] = [];
+dataSource: MatTableDataSource<EgresoLubricentroCuota> = new MatTableDataSource();
+dataEgresos: EgresoLubricentroCuota[] = [];
 
 eventsCalendar : any = [];
-calendarOptions!: CalendarOptions; 
+calendarOptions!: CalendarOptions;
 
   sucursales: Sucursal[] = [];
   empresa: Empresa = new Empresa();
@@ -34,6 +37,8 @@ calendarOptions!: CalendarOptions;
     private sucursalService: SucursalSharedService,
     private empresaService: EmpresaSharedService,
     private miDatePipe: DatePipe,
+    public dialog: MatDialog,
+    private alert: AlertHelper
   ) {
     this.empresaService.getAll().subscribe(data => {
       const empresa = data.filter(data => data.razonSocial.includes('LUBRICENTRO'));
@@ -56,11 +61,11 @@ calendarOptions!: CalendarOptions;
   }
 
   getEgresos() {           
-    this.lubricentroService.egresoGetAll().subscribe((egresos: EgresoLubricentro[]) => {            
+    this.lubricentroService.buscarCuotas().subscribe((egresos: EgresoLubricentroCuota[]) => {            
       this.dataEgresos = egresos.map(Egresos => {        
         return Egresos;
-      });
-      this.dataEgresos.forEach(data => {                       
+      });      
+      this.dataEgresos.forEach(data =>  {                                                                          
           let hoy = new Date();                                            
           let devolucion = new Date();
           devolucion.setDate(hoy.getDate() + 3);
@@ -70,38 +75,71 @@ calendarOptions!: CalendarOptions;
           var time1 = moment(fechaInicio).format('YYYY-MM-DD');
           var time2 = moment(fechaTermino).format('YYYY-MM-DD');
           var time3 = moment(fechaFormateada).format('YYYY-MM-DD');          
-          if(data.tipoEgreso == "Prestamos Bancarios" || data.tipoEgreso == "Prestamos Automotriz"){
-          if(time3 >= time1 && time3 <= time2)
-          {
-          //Si la cuota esta por vencerse
+          if(data.tipoEgreso == "Prestamos Bancarios" || data.tipoEgreso == "Prestamos Automotriz"){            
+          if(time3 >= time1 && data.estadoCuota == "Pendiente")
+          // if(time3 >= time1 && time3 <= time2 && data.estadoCuota == "Pendiente")
+          {                                
           this.eventsCalendar.push(
-            {        
-              title: 'Egreso:  ' + data.tipoEgreso,
+            {                      
+              //Verde
+              title: 'Descripcion:  ' + data.descripcion,
               start: fechaFormateada,  
-              color: 'red',        
+              color: '#0da62e',
+              description: data.idEgreso,              
             });
-          } else{
+          } 
+          if(data.estadoCuota == "Pendiente" && time3 < time1){
+            this.alert.reminderAlert(`La cuota ${data.descripcion} esta vencida`);                  
+            this.eventsCalendar.push(
+              {    
+                //Rojo                  
+                title: 'Descripcion:  ' + data.descripcion,
+                start: fechaFormateada,  
+                color: '#ba1206',
+                description: data.idEgreso,                
+              });
+          }
+          if(data.estadoCuota == "Pagado"){
           this.eventsCalendar.push(
-            {        
-              title: 'Egreso:  ' + data.tipoEgreso,
+            {    
+              //Azul                  
+              title: 'Descripcion:  ' + data.descripcion,
               start: fechaFormateada,  
-              color: 'blue',        
+              color: '#2e4fd1',
+              description: data.idEgreso,                            
             });
           }
         }
-        });        
-        this.calendarOptions = {
+        });       
+        this.calendarOptions = {          
           initialView: 'dayGridMonth',
+          dayMaxEvents: true,          
           dateClick: this.handleDateClick.bind(this),
           events: this.eventsCalendar,          
-          locale: esLocale,          
-        };
+          locale: esLocale,
+          eventClick: this.mostrar.bind(this), 
+          eventDidMount: (info) => {
+            tippy(info.el, {
+             content: info.event.title,                                       
+             })
+           }
+        };        
     });
   }
+    
 
+  mostrar(arg: any){
+    let idCuota = arg.event._def.extendedProps.description;
+    localStorage.setItem("idEgresoPago", idCuota);    
+    this.lubricentroService.openDialogRegistrarPago(idCuota);    
+  }
   
+  ActualizarCalendario(){
+    window.location.reload();    
+  }  
+
   handleDateClick(arg: any) {    
-    this.lubricentroService.egresoGetAll().subscribe((egresos: EgresoLubricentro[]) => {            
+    this.lubricentroService.buscarCuotas().subscribe((egresos: EgresoLubricentroCuota[]) => {            
       this.dataEgresos = egresos.map(Egresos => {        
         return Egresos;
       });

@@ -71,8 +71,7 @@
                         <mat-select placeholder="Sucursal" formControlName="idSucursal">
                             <mat-option *ngFor="let sucursal of sucursales" [value]="sucursal.razonSocial">
                                 {{ sucursal.razonSocial }}
-                            </mat-option>
-                            <mat-option value="0"> test vacio </mat-option>
+                            </mat-option>                            
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -120,8 +119,7 @@
                         <mat-select placeholder="Tipo Ingreso" formControlName="tipoIngreso">
                             <mat-option *ngFor="let tipo of tiposIngresos" [value]="tipo">
                                 {{ tipo }}
-                            </mat-option>
-                            <mat-option value="0"> test vacio </mat-option>
+                            </mat-option>                            
                         </mat-select>
                     </mat-form-field>
                 </div>

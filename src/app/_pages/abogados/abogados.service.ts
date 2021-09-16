@@ -12,6 +12,10 @@ import { DialogRegistrarPagoComponent } from './abogados-ingresos/abogados-ingre
 import { DialogRepactarCuotasComponent } from './abogados-ingresos/abogados-ingresos-acciones/dialog-repactar-cuotas/dialog-repactar-cuotas.component';
 import { DialogContratosComponent } from './abogados-ingresos/abogados-ingresos-acciones/dialog-contratos/dialog-contratos.component';
 import { Empresa } from '@models/shared/empresa';
+import { EgresoFirmaCuota } from '@app/_models/abogados/egresoFirmaCuota';
+import { AbogadosEgresosCuotaDialogComponent } from './abogados-egresos/abogados-egresos-list/abogados-egresos-cuotas/abogados-egresos-cuota-dialog/abogados-egresos-cuota-dialog.component';
+import { AbogadosEgresosCuotasComponent } from './abogados-egresos/abogados-egresos-list/abogados-egresos-cuotas/abogados-egresos-cuotas.component';
+
 
 const EXCEL_TYPE =
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
@@ -102,7 +106,7 @@ export class AbogadosService {
 
   // Metodo que permite abrir un Dialog (Modal)
   openDialogRegistrarPago(idContrato: any):void{
-    //Si el cliente selecciono un contrato se habre el modal
+    //Si el cliente selecciono un contrato se habre el modal    
     if(idContrato != null){
       const dialogRef = this.dialog.open(DialogRegistrarPagoComponent,{});
       dialogRef.afterClosed().subscribe(res =>{
@@ -194,6 +198,13 @@ export class AbogadosService {
   egresoGetAll(): any {            
     return this.http.get<[]>(`${environment.apiUrl}/egresoFirma`);    
   }
+
+  buscarCuotas(): any {
+    return this.http.get<EgresoFirmaCuota>(
+      `${environment.apiUrl}/egresoFirmaCuota/`
+    );
+  }
+
   getByIdWithSucursales(id: number) {
     return this.http.get<Empresa>(
       `${environment.apiUrl}/empresa/empresaSucursales/${id}`
@@ -228,5 +239,60 @@ export class AbogadosService {
     this.dialog.closeAll();
     localStorage.removeItem("idContratoPago");
   }
+
+/* Egresos Por cuotas */
+getCuotas(id: any) {      
+  return this.http.get<EgresoFirmaCuota>(
+    `${environment.apiUrl}/egresoFirmaCuota/${id}`
+  );
+}
+
+buscarImagenCuota(url: string) {    
+  const extencion = url.split('.');
+  const extend = extencion[1];    
+  return this.http
+  .get(`${environment.apiUrl}/egresoFirmaCuota/download/${url}`, {
+      responseType: 'blob',
+    })      
+}
+
+agregarRespaldos(arrayRespaldos: any): any {
+  return this.http.post(
+    `${environment.apiUrl}/egresoFirmaCuota/agregarRespaldos/`,
+    arrayRespaldos
+  );
+}
+buscarImagenC(id: any): any {
+  return this.http.get<EgresoFirmaCuota>(
+    `${environment.apiUrl}/respaldoEgresoFirmaCuota/${id}`
+  );
+}
+
+// Metodo que permite abrir un Dialog (Modal)
+openDialogCuota():void{
+  const dialogRef = this.dialog.open(AbogadosEgresosCuotaDialogComponent, {})
+  dialogRef.afterClosed().subscribe((res) => {})
+}
+
+updateMonto(id: any, body: any[]) {    
+  return this.http.put(`${environment.apiUrl}/egresoFirmaCuota/${id}`, body);                
+}
+
+// Metodo que permite abrir un Dialog (Modal)
+openDialogRegistrarPagoCuota(idEgreso: any):void{  
+  //Si el cliente selecciono un contrato se habre el modal    
+  if(idEgreso != null){
+    const dialogRef = this.dialog.open(AbogadosEgresosCuotasComponent,{});
+    dialogRef.afterClosed().subscribe(res =>{
+      console.log(res);
+    });
+  }else{
+    //Si no, se muestra un error
+    this.snackBar.open('Por favor seleccione un egreso con cuotas sin pagar', 'cerrar', {
+      duration: 2000,
+      verticalPosition: 'top',
+    });
+  } 
+}
 
   } 

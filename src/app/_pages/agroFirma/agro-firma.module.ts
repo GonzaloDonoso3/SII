@@ -17,6 +17,9 @@ import { AgroFirmaProyectosComponent } from './agro-firma-proyectos/agro-firma-p
 import { AgroFirmaProyectosFormComponent } from './agro-firma-proyectos/agro-firma-proyectos-form/agro-firma-proyectos-form.component';
 import { CreateBankAccountFormComponent } from './agro-firma-ingresos/create-bank-account-form/create-bank-account-form.component';
 import { BankAccountListComponent } from './agro-firma-ingresos/bank-account-list/bank-account-list.component';
+import { AgroFirmaEgresosCuotasComponent } from './agro-firma-egresos/agro-firma-egresos-list/agro-firma-egresos-cuotas/agro-firma-egresos-cuotas.component';
+import { AgroFirmaEgresosCuotaDialogComponent } from './agro-firma-egresos/agro-firma-egresos-list/agro-firma-egresos-cuotas/agro-firma-egresos-cuota-dialog/agro-firma-egresos-cuota-dialog.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 @NgModule({
   declarations: [
@@ -31,6 +34,8 @@ import { BankAccountListComponent } from './agro-firma-ingresos/bank-account-lis
     AgroFirmaProyectosFormComponent,
     CreateBankAccountFormComponent,
     BankAccountListComponent,
+    AgroFirmaEgresosCuotasComponent,
+    AgroFirmaEgresosCuotaDialogComponent,
     ],
   imports: [
     HttpClientModule,
@@ -40,6 +45,7 @@ import { BankAccountListComponent } from './agro-firma-ingresos/bank-account-lis
     ComponentsModule,
     ReactiveFormsModule,
     ModalModule,
+    FullCalendarModule
   ],
   exports: [
     AgroFirmaEgresosFormComponent,

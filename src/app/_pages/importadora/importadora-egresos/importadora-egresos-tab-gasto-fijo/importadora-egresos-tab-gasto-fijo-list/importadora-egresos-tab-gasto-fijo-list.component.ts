@@ -39,7 +39,10 @@ export class ImportadoraEgresosTabGastoFijoListComponent implements OnInit {
      'descripcion',
      'sucursal',
      'usuario',
+     'numeroCuota',
    ];
+
+   result = "N/A";
 
      //Creación de variables y asignación de datos
  dataSource: MatTableDataSource<EgresosFijoImportadora> = new MatTableDataSource();
@@ -56,6 +59,7 @@ export class ImportadoraEgresosTabGastoFijoListComponent implements OnInit {
    descripcion: new FormControl(),
    tipoEgreso: new FormControl(),
    usuario: new FormControl(),
+   numeroCuota: new FormControl(),
  })
 
 
@@ -91,6 +95,11 @@ export class ImportadoraEgresosTabGastoFijoListComponent implements OnInit {
        Egresos.usuario = Egresos.Usuario.nombreUsuario;
        return Egresos;
      });
+     this.dataEgresos.forEach(data => {
+      if (data['numeroCuota']== null) {
+        data.numeroCuota = this.result;          
+      }
+    });
      this.dataSource = new MatTableDataSource(this.dataEgresos);
      this.dataSource.paginator = this.paginator.toArray()[0];
      this.dataSource.sort = this.sort;
@@ -192,6 +201,36 @@ export class ImportadoraEgresosTabGastoFijoListComponent implements OnInit {
    });
   }, 1000);
  }
+
+ // Abrir Ventana Modal Registrar Pago
+ openDialogRegistrarPago(){
+  //Selecciona los valores de la fila seleccionada    
+  this.selectedRows = [];
+  this.selection.selected.forEach((x) => {this.selectedRows.push(x)});
+  if(this.selectedRows.length > 0){
+    this.selectedRows.forEach((x) => {      
+      localStorage.setItem("idEgresoPago", x.id);
+      localStorage.setItem("numeroCuota", x.numeroCuota);
+    });
+    //Se ejecuta el metodo que abre el dialog, enviandole le id del Egreso por cuota
+    let idEgresoPagoCuota = localStorage.getItem("idEgresoPago");
+    let valorNumeroC = localStorage.getItem("numeroCuota");
+    if(valorNumeroC != "N/A"){
+      this.importadoraService.openDialogRegistrarPago(idEgresoPagoCuota);
+    } else{    
+    this.snackBar.open('Por favor seleccione un egreso con cuotas sin pagar', 'cerrar', {
+      duration: 2000,
+      verticalPosition: 'top',
+    });
+  }
+  } else {
+    this.snackBar.open('Por favor seleccione un egreso con cuotas', 'cerrar', {
+      duration: 2000,
+      verticalPosition: 'top',
+    });
+  } 
+  
+}
 
  //Metodo exportar excel
 

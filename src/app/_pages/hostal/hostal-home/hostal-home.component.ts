@@ -12,6 +12,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import esLocale from '@fullcalendar/core/locales/es';
 import * as moment from "moment";
+import tippy from "tippy.js";
+import { EgresoHostalCuota } from '@app/_models/hostal/egresoHostalCuota';
+import { AlertHelper } from '@app/_helpers/alert.helper';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-hostal-home',
@@ -25,8 +29,8 @@ export class HostalHomeComponent implements OnInit {
   @ViewChild(MatSort) sort = null;
   
   //Creación de variables y asignación de datos
-  dataSource: MatTableDataSource<EgresoHostal> = new MatTableDataSource();
-  dataEgresos: EgresoHostal[] = [];
+  dataSource: MatTableDataSource<EgresoHostalCuota> = new MatTableDataSource();
+  dataEgresos: EgresoHostalCuota[] = [];
 
   eventsCalendar : any = [];
   calendarOptions!: CalendarOptions; 
@@ -40,6 +44,8 @@ export class HostalHomeComponent implements OnInit {
     private sucursalService: SucursalSharedService,
     private empresaService: EmpresaSharedService,
     private miDatePipe: DatePipe,
+    public dialog: MatDialog,
+    private alert: AlertHelper    
   ) {
     this.empresaService.getAll().subscribe(empresas => {
       const empresaFound = empresas
@@ -55,7 +61,7 @@ export class HostalHomeComponent implements OnInit {
   }
 
   getEgresos() {           
-    this.hostalService.egresoGetAll().subscribe((egresos: EgresoHostal[]) => {            
+    this.hostalService.buscarCuotas().subscribe((egresos: EgresoHostalCuota[]) => {            
       this.dataEgresos = egresos.map(Egresos => {        
         return Egresos;
       });
@@ -70,37 +76,68 @@ export class HostalHomeComponent implements OnInit {
           var time2 = moment(fechaTermino).format('YYYY-MM-DD');
           var time3 = moment(fechaFormateada).format('YYYY-MM-DD');
           if(data.tipoEgreso == "Prestamos Bancarios" || data.tipoEgreso == "Prestamos Automotriz"){
-          if(time3 >= time1 && time3 <= time2)
-          {
-          //Si la cuota esta por vencerse
-          this.eventsCalendar.push(
-            {        
-              title: 'Egreso:  ' + data.tipoEgreso,
-              start: fechaFormateada,  
-              color: 'red',        
-            });
-          } else{
-          this.eventsCalendar.push(
-            {        
-              title: 'Egreso:  ' + data.tipoEgreso,
-              start: fechaFormateada,  
-              color: 'blue',        
-            });
+            if(time3 >= time1 && data.estadoCuota == "Pendiente")
+            // if(time3 >= time1 && time3 <= time2 && data.estadoCuota == "Pendiente")
+            {                                
+            this.eventsCalendar.push(
+              {                      
+                //Verde
+                title: 'Descripcion:  ' + data.descripcion,
+                start: fechaFormateada,  
+                color: '#0da62e',
+                description: data.idEgreso,              
+              });
+            } 
+            if(data.estadoCuota == "Pendiente" && time3 < time1){
+              this.alert.reminderAlert(`La cuota ${data.descripcion} esta vencida`);                  
+              this.eventsCalendar.push(
+                {    
+                  //Rojo                  
+                  title: 'Descripcion:  ' + data.descripcion,
+                  start: fechaFormateada,  
+                  color: '#ba1206',
+                  description: data.idEgreso,                
+                });
+            }
+            if(data.estadoCuota == "Pagado"){
+            this.eventsCalendar.push(
+              {    
+                //Azul                  
+                title: 'Descripcion:  ' + data.descripcion,
+                start: fechaFormateada,  
+                color: '#2e4fd1',
+                description: data.idEgreso,                            
+              });
+            }
           }
-        }
-        });        
+          });
         this.calendarOptions = {
           initialView: 'dayGridMonth',
           dateClick: this.handleDateClick.bind(this),
           events: this.eventsCalendar,          
-          locale: esLocale,          
+          locale: esLocale,
+          eventClick: this.mostrar.bind(this), 
+          eventDidMount: (info) => {
+            tippy(info.el, {              
+              content: info.event.title,                                                    
+             })
+           }          
         };
     });
   }
 
-  
+  mostrar(arg: any){
+    let idCuota = arg.event._def.extendedProps.description;
+    localStorage.setItem("idEgresoPago", idCuota);    
+    this.hostalService.openDialogRegistrarPago(idCuota);    
+  }
+
+  ActualizarCalendario(){
+    window.location.reload();    
+  }  
+
   handleDateClick(arg: any) {    
-    this.hostalService.egresoGetAll().subscribe((egresos: EgresoHostal[]) => {            
+    this.hostalService.buscarCuotas().subscribe((egresos: EgresoHostalCuota[]) => {            
       this.dataEgresos = egresos.map(Egresos => {        
         return Egresos;
       });

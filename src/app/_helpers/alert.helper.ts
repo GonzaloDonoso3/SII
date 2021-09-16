@@ -52,4 +52,17 @@ export class AlertHelper {
     })
   }
 
+  reminderAlert(TEXT: string) {
+    Swal.fire({
+      title: "Atencion",
+      text: TEXT,
+      icon: "warning",
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+    })
+  }
+
 }

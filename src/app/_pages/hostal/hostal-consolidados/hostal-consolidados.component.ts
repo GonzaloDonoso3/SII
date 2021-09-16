@@ -16,15 +16,15 @@ import * as Excel from "exceljs";
 import * as FileSaver from 'file-saver';
 import { link } from 'fs'
 import { timeout } from 'rxjs/operators'
-//import { jsPDF } from 'jspdf'
-//import html2canvas from 'html2canvas'
+import { jsPDF } from 'jspdf'
+import html2canvas from 'html2canvas'
 
 @Component({
   selector: 'app-hostal-consolidados',
   templateUrl: './hostal-consolidados.component.html',
   styleUrls: ['./hostal-consolidados.component.scss']
 })
-export class HostalConsolidadosComponent implements OnInit {
+export class HostalConsolidadosComponent implements OnInit {    
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>()
   @ViewChild(MatSort) sort = null
 
@@ -133,7 +133,9 @@ export class HostalConsolidadosComponent implements OnInit {
     private hostalService: HostalService,
     private elementRef: ElementRef,
     private _cdref: ChangeDetectorRef
-  ) { }
+  ) { 
+    this.openPDF();
+  }
 
   ngOnInit(): void {}
 
@@ -655,7 +657,7 @@ export class HostalConsolidadosComponent implements OnInit {
         break
     }
   }
-
+  
   buscarMes(mes: any) {
     let nombreMes;
     let arrayMonth: any = [];
@@ -684,14 +686,30 @@ export class HostalConsolidadosComponent implements OnInit {
     return numSelected === numRows
   }
 
-  openPDF(selector: any, visible: any) {
-    var elemento = document.querySelector(selector);    
-    if (elemento != null) {
-    elemento.style.display = visible?'block':'none';
-    }
-    window.print()
-    elemento.style.display = visible?'none':'block';
+  public openPDF() : void{
+    // Extraemos el
+    const DATA = document.getElementById('htmlData') as HTMLCanvasElement;    
+    const doc = new jsPDF('p', 'pt', 'a4');
+    const options = {
+      background: 'white',
+      scale: 3
+    };
+    html2canvas(DATA, options).then((canvas) => {
+      var myBase64Image = this.base64I;          
+      const img = canvas.toDataURL('image/PNG');
+      // Add image Canvas to PDF
+      const bufferX = 15;
+      const bufferY = 15;
+      const imgProps = (doc as any).getImageProperties(img);
+      const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX;
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      doc.addImage(myBase64Image, 'PNG', bufferX, bufferY, pdfWidth, pdfHeight, undefined, 'FAST');
+      return doc;
+    }).then((docResult) => {
+      docResult.save(`${new Date().toISOString()}_consolidadoHostal.pdf`);
+    });
   }
+
 
   //Metodo exportar excel
   // exportAsXLSX(): void {

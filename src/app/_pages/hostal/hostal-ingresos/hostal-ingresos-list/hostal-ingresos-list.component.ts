@@ -82,7 +82,7 @@ export class HostalIngresosListComponent implements OnInit, OnChanges {
   ngOnInit(): void {
 
     this.sucursales = this.sucursalService.sucursalListValue;
-    this.tiposIngresos = this.hostalService.tiposIngresosListValue;
+    this.tiposIngresos = ['Alojamiento', 'Desayuno', 'Almuerzo', 'Cena', ' Consumo Bebidas', 'Consumo Varios'];
     this.estadosPagos = this.hostalService.estadosPagosListValue;
 
     this.aplicarfiltros();

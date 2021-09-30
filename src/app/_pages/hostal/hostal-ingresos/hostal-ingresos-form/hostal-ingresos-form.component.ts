@@ -68,7 +68,7 @@ export class HostalIngresosFormComponent {
   ) {
 
     this.sucursales = this.sucursalService.sucursalListValue;
-    this.defTiposIngreso = this.hostalService.tiposIngresosListValue;
+    this.defTiposIngreso = ['Alojamiento', 'Desayuno', 'Almuerzo', 'Cena', ' Consumo Bebidas', 'Consumo Varios'];
     this.tiposCliente = this.hostalService.tiposClientesListValue;
     this.referencias = this.hostalService.referenciasListValue;
     this.tiposPagos = this.hostalService.tiposPagosListValue;

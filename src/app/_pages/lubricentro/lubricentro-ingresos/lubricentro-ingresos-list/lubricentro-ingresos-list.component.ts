@@ -61,6 +61,7 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
     monto: new FormControl(),
     start: new FormControl(),
     end: new FormControl(),
+    idSucursal: new FormControl(),
     tipoIngreso: new FormControl(),
     estadoPago: new FormControl(),
     })
@@ -82,7 +83,7 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
     private snackBar: MatSnackBar
   ) {
     this.sucursales = this.sucursalService.sucursalListValue;
-    this.tiposIngresos = this.lubricentroService.tiposIngresosListValue;
+    this.tiposIngresos = ['Lavado', 'Reparacion', 'Mantencion', 'Venta de Insumos'];
     this.estadosPagos = this.lubricentroService.estadosPagosListValue;
     this.tipoPago = this.lubricentroService.tiposPagosListValue;
   }

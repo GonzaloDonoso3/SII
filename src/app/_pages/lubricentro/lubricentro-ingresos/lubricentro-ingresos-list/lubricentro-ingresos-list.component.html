@@ -62,7 +62,7 @@
     <th mat-header-cell *matHeaderCellDef>
       <div [formGroup]="formFilter">
         <mat-form-field class="full-width">
-          <mat-select placeholder="Sucursal">
+          <mat-select placeholder="Sucursal" formControlName="idSucursal">
             <mat-option *ngFor="let sucursal of sucursales" [value]="sucursal.razonSocial">
               {{ sucursal.razonSocial }}
             </mat-option>

@@ -38,8 +38,11 @@ export class RentacarEgresosFormComponent implements OnInit {
   datoCuota = 'N/A';
   montoTotal = '1000';
   selected: any;
-  opcionSeleccionado: string = '0';
+  opcionSeleccionado: string = '';
   verSeleccion: string = '';
+  result2='';
+  result3='';
+  numberConvert='';
 
   
   // ? Configuración de formulario
@@ -94,8 +97,10 @@ export class RentacarEgresosFormComponent implements OnInit {
   capturar() {
     this.verSeleccion = this.opcionSeleccionado;
     if(this.verSeleccion == "Prestamos Bancarios"  || this.verSeleccion == "Prestamos Automotriz"){
-      this.montoTotal == "1000";        
-    }        
+      this.transform('');     
+    }else{
+      this.transform('');
+    }       
   }
 
   getEmpresa(id: number): any {
@@ -123,11 +128,15 @@ export class RentacarEgresosFormComponent implements OnInit {
           this.nameRespaldo = result;
           this.egreso.RespaldoEgresos = [];
           // Si el usuario ingresa Egreso Bancario y Automotriz al monto se le asigna el numero de cuota                    
-          if(this.addressForm.value.monto == null) {                        
-            this.egreso.monto = this.addressForm.value.montoCuota;
+          if((this.addressForm.value.monto == '' || this.addressForm.value.monto == null) 
+          && (this.addressForm.value.montoCuota == '' || this.addressForm.value.montoCuota == null)) { 
+            //this.egreso.monto = this.addressForm.value.montoCuota;
+            this.transform('');
+            this.egreso.monto = 1000;                  
           } else {
-            this.egreso.monto = this.addressForm.value.monto;                    
-          }                        
+            //this.egreso.monto = this.addressForm.value.monto; 
+            this.egreso.monto = parseInt(this.numberConvert);                   
+          }                  
           this.egreso.descripcion = this.addressForm.value.descripcionEgreso;
           this.egreso.responsable = this.addressForm.value.responsable;
           this.egreso.idSucursal = this.addressForm.value.idSucursal;
@@ -242,6 +251,59 @@ export class RentacarEgresosFormComponent implements OnInit {
         break;
     }
   }
+
+  transform(val: any) {
+    if (val!='' || val != null) {
+      //console.log(val, '*************')
+      val = this.format_number(val, '');
+    }else{
+      val = this.format_number('', '');
+    }
+    return val;
+  }
+
+  format_number(number: any, prefix: any) {
+    let result = '', number_string= ''; 
+    if (number!='' && number!=null) {
+      let thousand_separator = '.',
+      decimal_separator = ',',
+      regex = new RegExp('[^' + decimal_separator + '\\d]', 'g');
+      number_string = number.replace(regex, '').toString();
+      let split = number_string.split(decimal_separator),
+      rest = split[0].length % 3;
+      result = split[0].substr(0, rest);
+      let thousands = split[0].substr(rest).match(/\d{3}/g);
+      if (thousands) {
+        let separator = rest ? thousand_separator : '';
+        result += separator + thousands.join(thousand_separator);
+      }
+      result =
+        split[1] != undefined ? result + decimal_separator + split[1] : result;
+    }
+    this.result2=result;
+    this.result3=result;
+    this.numberConvert=number_string;
+    return prefix == undefined ? result : result ? prefix + result : '';
+  }
+
+  restrictNumeric(e: any) {
+    let input;
+    if (e.metaKey || e.ctrlKey) {
+      return true;
+    }
+    if (e.which === 32) {
+     return false;
+    }
+    if (e.which === 0) {
+     return true;
+    }
+    if (e.which < 33) {
+      return true;
+    }
+    input = String.fromCharCode(e.which);
+    return !!/[\d\s]/.test(input);
+   }
+
 
 }
 

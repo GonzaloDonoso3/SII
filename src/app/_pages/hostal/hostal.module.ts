@@ -31,7 +31,7 @@ import { HostalEgresosCuotaDialogComponent } from './hostal-egresos/hostal-egres
     HostalEgresosListComponent,
     HostalConsolidadosComponent,
     HostalEgresosCuotasComponent,
-    HostalEgresosCuotaDialogComponent    
+    HostalEgresosCuotaDialogComponent 
   ],
   imports: [
     HttpClientModule,

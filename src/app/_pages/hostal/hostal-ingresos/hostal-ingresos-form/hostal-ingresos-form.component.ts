@@ -1,9 +1,9 @@
 import { Usuario } from '@models/shared/usuario';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, Directive, Pipe, PipeTransform } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { DialogRespaldosComponent } from 'src/app/_components/dialogs/dialog-respaldos/dialog-respaldos.component';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HostalService } from '../../hostal.service';
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
@@ -20,6 +20,7 @@ export interface DialogData {
   templateUrl: './hostal-ingresos-form.component.html',
   styleUrls: ['./hostal-ingresos-form.component.scss']
 })
+
 export class HostalIngresosFormComponent {
   @Output()
   formularioListo = new EventEmitter<string>();
@@ -29,6 +30,8 @@ export class HostalIngresosFormComponent {
 
   nameRespaldo = '';
   tiposIngresos: any[] = [];
+  value:any;
+  name = 'Angular 6';
 
 
   // ? Validar si es necesario importar modelos de datos
@@ -57,6 +60,9 @@ export class HostalIngresosFormComponent {
   tiposPagos: string[];
   estadoPagos: string[];
   cuentasRegistradas: any[] = [];
+  result2='';
+  numberConvert='';
+
   constructor(
     private fb: FormBuilder,
     public dialog: MatDialog,
@@ -96,7 +102,8 @@ export class HostalIngresosFormComponent {
           this.nameRespaldo = result;
           this.ingreso.RespaldoIngresos = [];
           this.ingreso.fecha = this.addressForm.value.fecha;
-          this.ingreso.monto = this.addressForm.value.monto;
+          //this.ingreso.monto = this.addressForm.value.monto;
+          this.ingreso.monto = parseInt(this.numberConvert);
           this.ingreso.tipoPago = this.addressForm.value.tipoPago;
           this.ingreso.cliente = this.addressForm.value.cliente;
           this.ingreso.tipoCliente = this.addressForm.value.tipoCliente;
@@ -178,6 +185,51 @@ export class HostalIngresosFormComponent {
 
   }
 
+  transform(val: any) {
+    if (val) {
+      val = this.format_number(val, '');
+    }
+    return val;
+  }
+
+  format_number(number: any, prefix: any) {
+    let thousand_separator = '.',
+      decimal_separator = ',',
+      regex = new RegExp('[^' + decimal_separator + '\\d]', 'g'),
+      number_string = number.replace(regex, '').toString(),
+      split = number_string.split(decimal_separator),
+      rest = split[0].length % 3,
+      result = split[0].substr(0, rest),
+      thousands = split[0].substr(rest).match(/\d{3}/g);
+    if (thousands) {
+      let separator = rest ? thousand_separator : '';
+      result += separator + thousands.join(thousand_separator);
+    }
+    result =
+      split[1] != undefined ? result + decimal_separator + split[1] : result;
+      
+      this.result2=result;
+      this.numberConvert=number_string;  
+    return prefix == undefined ? result : result ? prefix + result : '';
+  }
+
+  restrictNumeric(e: any) {
+    let input;
+    if (e.metaKey || e.ctrlKey) {
+      return true;
+    }
+    if (e.which === 32) {
+     return false;
+    }
+    if (e.which === 0) {
+     return true;
+    }
+    if (e.which < 33) {
+      return true;
+    }
+    input = String.fromCharCode(e.which);
+    return !!/[\d\s]/.test(input);
+   }
 
 
 }

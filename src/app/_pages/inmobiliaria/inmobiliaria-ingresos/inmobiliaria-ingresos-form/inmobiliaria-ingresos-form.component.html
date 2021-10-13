@@ -124,9 +124,9 @@
                 <!-- monto -->
                 <div class="col">
                     <mat-form-field class="full-width">
-                        <input matInput placeholder="Monto" formControlName="monto" />
+                        <input matInput placeholder="Monto" formControlName="monto" type="text" [ngModel]="result2" (ngModelChange)="transform($event)" (keypress)="restrictNumeric($event)"/>
                         <mat-error *ngIf="addressForm.controls['monto'].hasError('required')">
-                            cliente es <strong>requerido</strong>
+                            Monto es <strong>requerido</strong>
                         </mat-error>
                     </mat-form-field>
                 </div>

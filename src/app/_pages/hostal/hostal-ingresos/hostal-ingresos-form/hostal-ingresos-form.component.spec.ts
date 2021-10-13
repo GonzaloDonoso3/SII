@@ -9,6 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { HostalIngresosFormComponent } from './hostal-ingresos-form.component';
 
+
 describe('HostalIngresosFormComponent', () => {
   let component: HostalIngresosFormComponent;
   let fixture: ComponentFixture<HostalIngresosFormComponent>;
@@ -37,4 +38,5 @@ describe('HostalIngresosFormComponent', () => {
   it('should compile', () => {
     expect(component).toBeTruthy();
   });
+  
 });

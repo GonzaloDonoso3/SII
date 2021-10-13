@@ -93,9 +93,9 @@
                 <!-- monto -->
                 <div class="col" *ngIf="mostrarDatos">
                     <mat-form-field class="full-width">
-                        <input matInput placeholder="Monto" formControlName="monto" />
+                        <input matInput placeholder="Monto" formControlName="monto" type="text" [ngModel]="result3" (ngModelChange)="transform($event)" (keypress)="restrictNumeric($event)"/>
                         <mat-error *ngIf="addressForm.controls['monto'].hasError('required')">
-                            cliente es <strong>requerido</strong>
+                            Monto es <strong>requerido</strong>
                         </mat-error>
                     </mat-form-field>
                 </div>
@@ -103,8 +103,8 @@
                  <!-- monto de las cuotas -->
                 <div class="col" *ngIf="!mostrarDatos">
                 <mat-form-field class="full-width">
-                <input matInput placeholder="Monto por cuota" formControlName="montoCuota" type="number" [ngModel]="montoTotal"/>
-                Capital: 500 + Interes 500                        
+                <input matInput placeholder="Monto por cuota" formControlName="montoCuota" type="text" [ngModel]="result2" (ngModelChange)="transform($event)" (keypress)="restrictNumeric($event)"/>
+                Capital + Interes                       
                 <mat-error *ngIf="addressForm.controls['montoCuota'].hasError('required')">
                     monto es <strong>requerido</strong>
                 </mat-error>

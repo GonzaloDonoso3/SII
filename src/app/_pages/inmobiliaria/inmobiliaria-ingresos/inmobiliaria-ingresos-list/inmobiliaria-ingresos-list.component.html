@@ -1,9 +1,9 @@
 <mat-toolbar color="primary">
-    <button mat-raised-button (click)="resetTable()" color="accent">
+    <button style="margin-right: 3rem" mat-raised-button (click)="resetTable()" color="accent">
         Actualizar Tabla
     </button>
-    <span> Ingresos Inmobiliaria </span>
-    <span> Monto Registros Seleccionados:
+    <span style="margin-right: 3rem"> Ingresos Inmobiliaria </span>
+    <span style="margin-right: 4rem"> Monto Registros Seleccionados:
         {{ totalSeleccion | currency: "$":"symbol":"1.0-0" }}
     </span>
     <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="revelarTotal()">

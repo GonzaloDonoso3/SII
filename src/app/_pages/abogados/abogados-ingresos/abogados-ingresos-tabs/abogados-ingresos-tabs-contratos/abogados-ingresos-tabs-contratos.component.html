@@ -1,14 +1,14 @@
 <mat-toolbar color="primary">
-    <button mat-raised-button (click)="resetTable()" color="accent">
+    <button style="margin-right: 5rem" mat-raised-button (click)="resetTable()" color="accent">
         Actualizar Tabla
     </button>
-    <span> Listado Contratos </span>
+    <span style="margin-left: 9rem; margin-right: 9rem"> Listado Contratos </span>
     <!-- ***************************** cambiar metodo botón ********************************** -->
-    <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="exportAsXLSX()">
+    <button mat-raised-button color="accent" style="margin-left: 2rem" (click)="exportAsXLSX()">
         Exportar a Excel
     </button>
 
-    <button mat-raised-button color="accent" style="margin-left: 1rem" (click)="getContratos()">
+    <button mat-raised-button color="accent" (click)="getContratos()">
         <mat-icon>autorenew</mat-icon>
     </button>
 </mat-toolbar>
@@ -20,8 +20,8 @@
         <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>
                 <mat-checkbox (change)="$event ? masterToggle() : null"
-                    [checked]="selection.hasValue() && isAllSelected()"
-                    [indeterminate]="selection.hasValue() && !isAllSelected()">
+                [checked]="selection.hasValue() && isAllSelected()"
+                [indeterminate]="selection.hasValue() && !isAllSelected()">
                 </mat-checkbox>
             </th>
             <td mat-cell *matCellDef="let row">

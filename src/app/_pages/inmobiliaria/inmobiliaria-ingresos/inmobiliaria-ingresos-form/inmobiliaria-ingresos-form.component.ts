@@ -29,6 +29,8 @@ export class InmobiliariaIngresosFormComponent implements OnInit {
 
   nameRespaldo = '';
   tiposIngresos: any[] = [];
+  result2='';
+  numberConvert='';
 
 
   // ? Validar si es necesario importar modelos de datos
@@ -79,7 +81,8 @@ export class InmobiliariaIngresosFormComponent implements OnInit {
           this.ingreso.tipoIngreso = this.addressForm.value.tipoIngreso;
           this.ingreso.descripcionIngreso = this.addressForm.value.descripcionIngreso;
           this.ingreso.fecha = this.addressForm.value.fecha;
-          this.ingreso.monto = this.addressForm.value.monto;
+          //this.ingreso.monto = this.addressForm.value.monto;
+          this.ingreso.monto = parseInt(this.numberConvert);
 
           //Si el usuario elegio otra propiedad se le asigna el nombre ingresado
           if (this.addressForm.value.propiedad == 'Otra') {
@@ -148,5 +151,52 @@ export class InmobiliariaIngresosFormComponent implements OnInit {
   get f() {
     return this.addressForm.controls;
   }
+
+  transform(val: any) {
+    if (val) {
+      //console.log(val, '*************')
+      val = this.format_number(val, '');
+    }
+    return val;
+  }
+
+  format_number(number: any, prefix: any) {
+    let thousand_separator = '.',
+      decimal_separator = ',',
+      regex = new RegExp('[^' + decimal_separator + '\\d]', 'g'),
+      number_string = number.replace(regex, '').toString(),
+      split = number_string.split(decimal_separator),
+      rest = split[0].length % 3,
+      result = split[0].substr(0, rest),
+      thousands = split[0].substr(rest).match(/\d{3}/g);
+    if (thousands) {
+      let separator = rest ? thousand_separator : '';
+      result += separator + thousands.join(thousand_separator);
+    }
+    result =
+      split[1] != undefined ? result + decimal_separator + split[1] : result;
+      
+      this.result2=result;
+      this.numberConvert=number_string;  
+    return prefix == undefined ? result : result ? prefix + result : '';
+  }
+
+  restrictNumeric(e: any) {
+    let input;
+    if (e.metaKey || e.ctrlKey) {
+      return true;
+    }
+    if (e.which === 32) {
+     return false;
+    }
+    if (e.which === 0) {
+     return true;
+    }
+    if (e.which < 33) {
+      return true;
+    }
+    input = String.fromCharCode(e.which);
+    return !!/[\d\s]/.test(input);
+   }
 
 }

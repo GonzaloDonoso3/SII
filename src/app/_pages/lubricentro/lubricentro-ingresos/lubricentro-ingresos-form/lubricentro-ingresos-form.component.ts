@@ -27,6 +27,8 @@ export class LubricentroIngresosFormComponent {
 
   nameRespaldo = '';
   tiposIngresos: any[] = [];
+  result2='';
+  numberConvert='';
 
 
   // ? Validar si es necesario importar modelos de datos
@@ -97,7 +99,8 @@ export class LubricentroIngresosFormComponent {
           this.nameRespaldo = result;
           this.ingreso.RespaldoIngresoLubricentros = [];
           this.ingreso.fecha = this.ingresosForm.value.fecha;
-          this.ingreso.monto = this.ingresosForm.value.monto;
+          //this.ingreso.monto = this.ingresosForm.value.monto;
+          this.ingreso.monto = parseInt(this.numberConvert);
           this.ingreso.tipoPago = this.ingresosForm.value.tipoPago;
           this.ingreso.cliente = this.ingresosForm.value.cliente;
           this.ingreso.tipoCliente = this.ingresosForm.value.tipoCliente;
@@ -181,5 +184,52 @@ export class LubricentroIngresosFormComponent {
     }
 
   }
+
+  transform(val: any) {
+    if (val) {
+      //console.log(val, '*************')
+      val = this.format_number(val, '');
+    }
+    return val;
+  }
+
+  format_number(number: any, prefix: any) {
+    let thousand_separator = '.',
+      decimal_separator = ',',
+      regex = new RegExp('[^' + decimal_separator + '\\d]', 'g'),
+      number_string = number.replace(regex, '').toString(),
+      split = number_string.split(decimal_separator),
+      rest = split[0].length % 3,
+      result = split[0].substr(0, rest),
+      thousands = split[0].substr(rest).match(/\d{3}/g);
+    if (thousands) {
+      let separator = rest ? thousand_separator : '';
+      result += separator + thousands.join(thousand_separator);
+    }
+    result =
+      split[1] != undefined ? result + decimal_separator + split[1] : result;
+      
+      this.result2=result;
+      this.numberConvert=number_string;  
+    return prefix == undefined ? result : result ? prefix + result : '';
+  }
+
+  restrictNumeric(e: any) {
+    let input;
+    if (e.metaKey || e.ctrlKey) {
+      return true;
+    }
+    if (e.which === 32) {
+     return false;
+    }
+    if (e.which === 0) {
+     return true;
+    }
+    if (e.which < 33) {
+      return true;
+    }
+    input = String.fromCharCode(e.which);
+    return !!/[\d\s]/.test(input);
+   }
 
 }

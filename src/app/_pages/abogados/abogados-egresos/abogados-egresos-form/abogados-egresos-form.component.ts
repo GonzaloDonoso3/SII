@@ -38,8 +38,11 @@ export class AbogadosEgresosFormComponent implements OnInit {
   datoCuota = 'N/A';
   montoTotal = '1000';
   selected: any;
-  opcionSeleccionado: string = '0';
+  opcionSeleccionado: string = '';
   verSeleccion: string = '';
+  result2='';
+  result3='';
+  numberConvert='';
 
   // ARMANDO EL FORMULARIO
 
@@ -103,7 +106,9 @@ export class AbogadosEgresosFormComponent implements OnInit {
   capturar() {
     this.verSeleccion = this.opcionSeleccionado;
     if(this.verSeleccion == "Prestamos Bancarios"  || this.verSeleccion == "Prestamos Automotriz"){
-      this.montoTotal == "1000";        
+      this.transform('');     
+    }else{
+      this.transform('');
     }        
   }
 
@@ -130,10 +135,14 @@ export class AbogadosEgresosFormComponent implements OnInit {
           this.egreso.RespaldoEgresos = [];
           this.egreso.fecha = this.egresosForm.value.fecha;
           // Si el usuario ingresa Egreso Bancario y Automotriz al monto se le asigna el numero de cuota                    
-          if(this.egresosForm.value.monto == null) {                        
-            this.egreso.monto = this.egresosForm.value.montoCuota;
+          if((this.egresosForm.value.monto == '' || this.egresosForm.value.monto == null) 
+          && (this.egresosForm.value.montoCuota == '' || this.egresosForm.value.montoCuota == null)) { 
+            //this.egreso.monto = this.addressForm.value.montoCuota;
+            this.transform('');
+            this.egreso.monto = 1000;                  
           } else {
-            this.egreso.monto = this.egresosForm.value.monto;                    
+            //this.egreso.monto = this.addressForm.value.monto; 
+            this.egreso.monto = parseInt(this.numberConvert);                   
           }
           this.egreso.descripcion = this.egresosForm.value.descripcion;
           this.egreso.responsable = this.egresosForm.value.responsable;
@@ -183,4 +192,58 @@ export class AbogadosEgresosFormComponent implements OnInit {
         break;
     }
 
-  }}
+  }
+
+  transform(val: any) {
+    if (val!='' || val != null) {
+      //console.log(val, '*************')
+      val = this.format_number(val, '');
+    }else{
+      val = this.format_number('', '');
+    }
+    return val;
+  }
+
+  format_number(number: any, prefix: any) {
+    let result = '', number_string= ''; 
+    if (number!='' && number!=null) {
+      let thousand_separator = '.',
+      decimal_separator = ',',
+      regex = new RegExp('[^' + decimal_separator + '\\d]', 'g');
+      number_string = number.replace(regex, '').toString();
+      let split = number_string.split(decimal_separator),
+      rest = split[0].length % 3;
+      result = split[0].substr(0, rest);
+      let thousands = split[0].substr(rest).match(/\d{3}/g);
+      if (thousands) {
+        let separator = rest ? thousand_separator : '';
+        result += separator + thousands.join(thousand_separator);
+      }
+      result =
+        split[1] != undefined ? result + decimal_separator + split[1] : result;
+    }
+    this.result2=result;
+    this.result3=result;
+    this.numberConvert=number_string;
+    return prefix == undefined ? result : result ? prefix + result : '';
+  }
+
+  restrictNumeric(e: any) {
+    let input;
+    if (e.metaKey || e.ctrlKey) {
+      return true;
+    }
+    if (e.which === 32) {
+     return false;
+    }
+    if (e.which === 0) {
+     return true;
+    }
+    if (e.which < 33) {
+      return true;
+    }
+    input = String.fromCharCode(e.which);
+    return !!/[\d\s]/.test(input);
+   }
+
+}

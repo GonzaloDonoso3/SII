@@ -17,7 +17,7 @@ export class AgroFirmaIngresosComponent implements OnInit {
   projectId!: Observable<number>
   dataSource: MatTableDataSource<ProyectoAgrofirma> = new MatTableDataSource();
   proyectos: ProyectoAgrofirma[] = [];
-  idProyecto: null
+  idProyecto!: null
   updateTime!: number
 
   constructor(

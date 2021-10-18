@@ -15,6 +15,7 @@ export class NavComponent {
   menuItems: MenusItems[];
   subMenuItems: MenusItems[];
   subMenuItemsAgrofirma: MenusItems[];
+  subMenuItemsPrestamos: MenusItems[];
   menuItemsAdmin: MenusItems[];
   subMenuItemsAdmin: MenusItems[];
 
@@ -33,6 +34,7 @@ export class NavComponent {
       { name: 'FIRMA ABOGADOS', icon: 'account_balance', url: 'firmaAbogado' },
       { name: 'AGROFIRMA', icon: 'agriculture', url: 'agrofirma' },
       { name: 'IMPORTADORA', icon: 'flight_land', url: 'importadora' },      
+      { name: 'PRESTAMOS', icon: 'flip_camera_android', url: 'prestamos' },      
       
       /* { name: 'AGROFIRMA PROYECTOS', icon: 'agriculture', url: 'agrofirma' } */
     ];
@@ -52,6 +54,10 @@ export class NavComponent {
       { name: 'INGRESOS', icon: 'align_horizontal_right', url: 'ingresos' },
       {name: 'EGRESOS', icon: 'align_horizontal_right', url: 'egresos' },
       {name: 'PROYECTOS', icon: 'align_horizontal_right', url: 'proyectos'}
+    ];
+
+    this.subMenuItemsPrestamos = [
+      { name: 'EMPRESAS', icon: 'align_horizontal_right', url: 'empresas' },      
     ]
 
 

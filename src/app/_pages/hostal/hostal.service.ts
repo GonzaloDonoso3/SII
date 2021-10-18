@@ -25,7 +25,6 @@ const EXCEL_EXTENSION = '.xlsx';
 })
 export class HostalService {
   // public values
-  public tiposIngresosList: Observable<string[]>;
   public tiposClientesList: Observable<string[]>;
   public referenciasList: Observable<string[]>;
   public tiposPagosList: Observable<string[]>;
@@ -36,7 +35,6 @@ export class HostalService {
   // private values
 
   //ingresos values
-  private tiposIngresosListSubject: BehaviorSubject<any[]>;
   private tiposClientesListSubject: BehaviorSubject<string[]>;
   private referenciasListSubject: BehaviorSubject<string[]>;
   private tiposPagosListSubject: BehaviorSubject<string[]>;
@@ -44,8 +42,7 @@ export class HostalService {
   //egresos values
   private tiposEgresosListSubject: BehaviorSubject<string[]>;
 
-  // ! strict lists
-  private tiposIngresos = ['Alojamiento', 'Desayuno', 'Almuerzo', 'Cena', ' Consumo Bebidas', 'Consumo Varios'];
+  // ! strict lists  
   private tiposClientes = ['Particular', 'Empresa'];
   private referencias = ['Llamada', 'Booking', 'Correo', 'PaginaWeb', 'Facebook'];
   private tiposPagos = ['Efectivo', 'Debito', 'Credito', 'Transferencia', 'Cheque'];
@@ -56,10 +53,7 @@ export class HostalService {
   constructor(private http: HttpClient, private router: Router, private dialog: MatDialog, private snackBar: MatSnackBar) {
     //Init private Subjects;
     //ingresos;
-
-    this.tiposIngresosListSubject = new BehaviorSubject<string[]>(
-      JSON.parse(localStorage.getItem('tiposIngresos')!)
-    );
+    
     this.tiposClientesListSubject = new BehaviorSubject<string[]>(
       JSON.parse(localStorage.getItem('tipos_clientes')!)
     );
@@ -79,9 +73,6 @@ export class HostalService {
 
     // public states:
     //ingresos;
-    this.tiposIngresosList = this.tiposIngresosListSubject.asObservable();
-    localStorage.setItem('tiposIngresos', JSON.stringify(this.tiposIngresos));
-
     this.tiposClientesList = this.tiposClientesListSubject.asObservable();
     localStorage.setItem('tipos_clientes', JSON.stringify(this.tiposClientes));
 
@@ -98,10 +89,7 @@ export class HostalService {
     localStorage.setItem('tiposEgresos', JSON.stringify(this.tiposEgresos));
   }
 
-  //ingresos values get methods:
-  public get tiposIngresosListValue(): string[] {
-    return this.tiposIngresosListSubject.value;
-  }
+  //ingresos values get methods:  
   public get tiposClientesListValue(): string[] {
     return this.tiposClientesListSubject.value;
   }

@@ -32,6 +32,16 @@
                     </a> 
                     </ng-template>
                 </mat-nav-list>
+                <mat-nav-list>
+                    <div *ngIf="item.name == 'PRESTAMOS'" >
+                        <a *ngFor="let subitemThree of subMenuItemsPrestamos" mat-list-item
+                            [routerLink]="'/' + item.url + '/' + subitemThree.url">
+                        <mat-icon color="grey">{{ subitemThree.icon }}</mat-icon>
+                            {{ subitemThree.name }}
+                        </a>
+                    </div>
+                    
+                </mat-nav-list>
             </mat-expansion-panel>
         </mat-accordion>
     </mat-sidenav>

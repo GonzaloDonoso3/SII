@@ -310,7 +310,7 @@ export class HostalConsolidadosComponent implements OnInit {
                         sum = sum + num2.monto;
                       }                      
                     })                                        
-                    this.totalIngresoG.push(sum)
+                    this.totalIngresoG.push(sum)                    
                     this.ingresoN.push({
                       fecha: num,
                       monto: sum
@@ -657,7 +657,7 @@ export class HostalConsolidadosComponent implements OnInit {
         break
     }
   }
-  
+    
   buscarMes(mes: any) {
     let nombreMes;
     let arrayMonth: any = [];
@@ -702,7 +702,7 @@ export class HostalConsolidadosComponent implements OnInit {
       const bufferY = 15;
       const imgProps = (doc as any).getImageProperties(img);
       const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX;
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;      
       doc.addImage(myBase64Image, 'PNG', bufferX, bufferY, pdfWidth, pdfHeight, undefined, 'FAST');
       return doc;
     }).then((docResult) => {
@@ -711,12 +711,6 @@ export class HostalConsolidadosComponent implements OnInit {
   }
 
 
-  //Metodo exportar excel
-  // exportAsXLSX(): void {
-  //   this.selectedRows = [];
-  //   this.selection.selected.forEach((x) => this.selectedRows.push(x));
-  //   this.hostalService.exportAsExcelFile(this.selectedRows, 'Consolidados-Hostal');
-  // }
 
   exportAsXLSX(): void {
     let worksheet = this.workbook.addWorksheet('My Sheet', {

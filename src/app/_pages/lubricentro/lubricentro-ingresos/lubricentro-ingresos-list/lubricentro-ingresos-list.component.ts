@@ -61,6 +61,7 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
     monto: new FormControl(),
     start: new FormControl(),
     end: new FormControl(),
+    idSucursal: new FormControl(),
     tipoIngreso: new FormControl(),
     estadoPago: new FormControl(),
     })
@@ -82,7 +83,7 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
     private snackBar: MatSnackBar
   ) {
     this.sucursales = this.sucursalService.sucursalListValue;
-    this.tiposIngresos = this.lubricentroService.tiposIngresosListValue;
+    this.tiposIngresos = ['Lavado', 'Reparacion', 'Mantencion', 'Venta de Insumos'];
     this.estadosPagos = this.lubricentroService.estadosPagosListValue;
     this.tipoPago = this.lubricentroService.tiposPagosListValue;
   }
@@ -116,6 +117,8 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
     this.formFilter.valueChanges.subscribe(res => {
       const { id, monto } = res
       let dataFiltered = this.dataIngresos;
+      console.log("res", res);
+      console.log("this.dataIngresos", this.dataIngresos);
 
       if (id) {
         dataFiltered = dataFiltered.filter((data: IngresosLubricentro) => (data.id).toString().includes(id))
@@ -191,6 +194,7 @@ export class LubricentroIngresosListComponent implements OnInit, OnChanges {
       const changeLog = `${propName}: changed from ${from} to ${to} `;
       this.changelog.push(changeLog);
       this.lubricentroService.ingresoGetAll().subscribe((data: IngresosLubricentro[]) => {
+        console.log("en lubricentro", data)
         this.dataIngresos = data.map((ingreso: IngresosLubricentro) => {
           ingreso.sucursal = ingreso.Sucursal.razonSocial;
           ingreso.usuario = ingreso.Usuario.nombreUsuario;

@@ -5,10 +5,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DialogRespaldosComponent } from '@app/_components/dialogs/dialog-respaldos/dialog-respaldos.component';
 import { AlertHelper } from '@app/_helpers/alert.helper';
 import { RegistroEgresoFirma } from '@app/_models/abogados/egresosFirma';
-import { Sucursal } from '@app/_models/shared/sucursal';
 import { Usuario } from '@app/_models/shared/usuario';
 import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuentas-bancarias.service';
-import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 import { AbogadosService } from '@app/_pages/abogados/abogados.service';
 import { DatePipe } from "@angular/common";
 import { EmpresaSharedService } from '../../../shared/shared-services/empresa-shared.service';
@@ -65,15 +63,11 @@ export class AbogadosEgresosFormComponent implements OnInit {
     private fb: FormBuilder,
     public dialog: MatDialog,
     private snackBar: MatSnackBar,    
-    private abogadosService: AbogadosService,
-    private sucursalService: SucursalSharedService,
+    private abogadosService: AbogadosService,    
     private cuentasService: CuentasBancariasService,
     private alert: AlertHelper,
     private empresaService: EmpresaSharedService,
-  ) {
-    //this.sucursales = this.sucursalService.sucursalListValue;
-  
-  }
+  ) { }
 
   ngOnInit(): void {
     this.getEmpresa(this.idEmpresa);    
@@ -136,12 +130,10 @@ export class AbogadosEgresosFormComponent implements OnInit {
           this.egreso.fecha = this.egresosForm.value.fecha;
           // Si el usuario ingresa Egreso Bancario y Automotriz al monto se le asigna el numero de cuota                    
           if((this.egresosForm.value.monto == '' || this.egresosForm.value.monto == null) 
-          && (this.egresosForm.value.montoCuota == '' || this.egresosForm.value.montoCuota == null)) { 
-            //this.egreso.monto = this.addressForm.value.montoCuota;
+          && (this.egresosForm.value.montoCuota == '' || this.egresosForm.value.montoCuota == null)) {             
             this.transform('');
             this.egreso.monto = 1000;                  
-          } else {
-            //this.egreso.monto = this.addressForm.value.monto; 
+          } else {            
             this.egreso.monto = parseInt(this.numberConvert);                   
           }
           this.egreso.descripcion = this.egresosForm.value.descripcion;
@@ -195,8 +187,7 @@ export class AbogadosEgresosFormComponent implements OnInit {
   }
 
   transform(val: any) {
-    if (val!='' || val != null) {
-      //console.log(val, '*************')
+    if (val!='' || val != null) {      
       val = this.format_number(val, '');
     }else{
       val = this.format_number('', '');

@@ -5,12 +5,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DialogRespaldosComponent } from '@app/_components/dialogs/dialog-respaldos/dialog-respaldos.component';
 import { EgresoLubricentro } from '@app/_models/lubricentro/egresoLubricentro';
-import { Sucursal } from '@app/_models/shared/sucursal';
 import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuentas-bancarias.service';
-import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 import { LubricentroService } from '../../lubricentro.service';
 import { AlertHelper } from '@app/_helpers/alert.helper';
 import { DatePipe } from "@angular/common";
+import { EmpresaSharedService } from '@app/_pages/shared/shared-services/empresa-shared.service';
+import { first } from 'rxjs/operators';
+import { Empresa } from '@app/_models/shared/empresa';
 
 @Component({
   selector: 'app-lubricentro-egresos-form',
@@ -30,6 +31,8 @@ export class LubricentroEgresosFormComponent implements OnInit {
   usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '');
   //Variables que usan para los egresos de Prestamos bancarios y automotriz
   mostrarDatos : boolean = true;
+  empresa = new Empresa();
+  idEmpresa = 3;
   datoCuota = 'N/A';
   montoTotal = '1000';
   selected: any;
@@ -55,30 +58,37 @@ export class LubricentroEgresosFormComponent implements OnInit {
   });
   egreso: EgresoLubricentro = new EgresoLubricentro();
   nameRespaldo: string[] = [];
-
-  sucursales: Sucursal[];
+  
   constructor(
     private fb: FormBuilder,
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private lubricentroService: LubricentroService,
-    private sucursalService: SucursalSharedService,
+    private lubricentroService: LubricentroService,    
     private cuentasService: CuentasBancariasService,
-    private alert: AlertHelper
-  ) {
-    this.sucursales = this.sucursalService.sucursalListValue;
-
-  }
+    private alert: AlertHelper,
+    private empresaService: EmpresaSharedService,
+  ) { }
 
   ngOnInit(): void {
+    this.getEmpresa(this.idEmpresa);
     this.tiposEgresos = this.lubricentroService.tiposEgresosListValue;
     this.cuentasService.obtenerCuentas().subscribe(data => {
       this.cuentasRegistradas = data;
 
     });
-
-
   }
+
+  getEmpresa(id: number): any {
+    this.empresaService
+      .getByIdWithSucursales(id)
+      .pipe(first())
+      .subscribe((x) => {        
+        x.Sucursals = Object.values(x.Sucursals);
+        this.empresa = x;        
+      });
+  }
+
+
 
   //Metodo para mostrar numero de cuotas
   activarEdicion(): void {

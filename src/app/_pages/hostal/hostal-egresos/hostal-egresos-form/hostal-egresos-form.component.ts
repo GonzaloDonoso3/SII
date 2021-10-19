@@ -11,7 +11,9 @@ import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuen
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 import { HostalService } from '../../hostal.service';
 import { DatePipe } from "@angular/common";
-
+import { Empresa } from '@app/_models/shared/empresa';
+import { EmpresaSharedService } from '@app/_pages/shared/shared-services/empresa-shared.service';
+import { first } from 'rxjs/operators';
 
 
 @Component({
@@ -31,6 +33,8 @@ export class HostalEgresosFormComponent implements OnInit {
   //Variables que usan para los egresos de Prestamos bancarios y automotriz
   mostrarDatos : boolean = true;
   datoCuota = 'N/A';
+  idEmpresa = 1;
+  empresa = new Empresa();
   montoTotal = '1.000';
   selected: any;
   opcionSeleccionado: string = '';
@@ -65,22 +69,28 @@ export class HostalEgresosFormComponent implements OnInit {
     private sucursalService: SucursalSharedService,
     private cuentasService: CuentasBancariasService,
     private alert: AlertHelper,
-    private miDatePipe: DatePipe,
+    private empresaService: EmpresaSharedService,    
   ) {
     this.sucursales = this.sucursalService.sucursalListValue;
 
   }
 
   ngOnInit(): void {
-
-
+    this.getEmpresa(this.idEmpresa); 
     this.tiposEgresos = this.hostalService.tiposEgresosListValue;
     this.cuentasService.obtenerCuentas().subscribe(data => {
       this.cuentasRegistradas = data;
-
     });
+  }
 
-
+  getEmpresa(id: number): any {
+    this.empresaService
+      .getByIdWithSucursales(id)
+      .pipe(first())
+      .subscribe((x) => {
+        x.Sucursals = Object.values(x.Sucursals);
+        this.empresa = x;        
+      });
   }
 
   //Metodo para mostrar numero de cuotas

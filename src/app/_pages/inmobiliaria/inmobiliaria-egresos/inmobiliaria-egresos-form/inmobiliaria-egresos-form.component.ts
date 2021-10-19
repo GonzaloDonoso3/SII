@@ -1,15 +1,17 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Usuario } from '@models/shared/usuario';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { FormBuilder, Validators } from '@angular/forms';
 import { DialogRespaldosComponent } from 'src/app/_components/dialogs/dialog-respaldos/dialog-respaldos.component';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { InmobiliariaService } from '../../inmobiliaria.service';
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 import { Sucursal } from '@app/_models/shared/sucursal';
 import { AlertHelper } from '@app/_helpers/alert.helper';
 import { DatePipe } from "@angular/common";
+import { EmpresaSharedService } from '@app/_pages/shared/shared-services/empresa-shared.service';
+import { first } from 'rxjs/operators';
+import { Empresa } from '@app/_models/shared/empresa';
 
 @Component({
   selector: 'app-inmobiliaria-egresos-form',
@@ -29,6 +31,8 @@ export class InmobiliariaEgresosFormComponent implements OnInit {
   tiposEgresos: any[] = [];
   //Variables que usan para los egresos de Prestamos bancarios y automotriz
   mostrarDatos : boolean = true;
+  idEmpresa = 5;
+  empresa = new Empresa();
   datoCuota = 'N/A';
   montoTotal = '1000';
   selected: any;
@@ -61,13 +65,24 @@ export class InmobiliariaEgresosFormComponent implements OnInit {
     private snackBar: MatSnackBar,
     private sucursalService: SucursalSharedService,
     private alert: AlertHelper,
-    private inmobiliariaService: InmobiliariaService,
-    private miDatePipe: DatePipe,
+    private inmobiliariaService: InmobiliariaService, 
+    private empresaService: EmpresaSharedService,   
   ) { 
     this.sucursales = this.sucursalService.sucursalListValue;
   }
 
   ngOnInit(): void {
+    this.getEmpresa(this.idEmpresa);
+  }
+
+  getEmpresa(id: number): any {
+    this.empresaService
+      .getByIdWithSucursales(id)
+      .pipe(first())
+      .subscribe((x) => {
+        x.Sucursals = Object.values(x.Sucursals);
+        this.empresa = x;        
+      });
   }
 
   //Metodo para mostrar numero de cuotas
@@ -115,12 +130,10 @@ export class InmobiliariaEgresosFormComponent implements OnInit {
         this.egreso.RespaldoEgresoInmobiliaria = [];
         // Si el usuario ingresa Egreso Bancario o Automotriz al monto se le asigna el numero de cuota
         if((this.addressForm.value.monto == '' || this.addressForm.value.monto == null) 
-          && (this.addressForm.value.montoCuota == '' || this.addressForm.value.montoCuota == null)) { 
-            //this.egreso.monto = this.addressForm.value.montoCuota;
+          && (this.addressForm.value.montoCuota == '' || this.addressForm.value.montoCuota == null)) {             
             this.transform('');
             this.egreso.monto = 1000;                  
-          } else {
-          //this.egreso.monto = this.addressForm.value.monto; 
+          } else {          
           this.egreso.monto = parseInt(this.numberConvert);                   
         }
         this.egreso.idSucursal = this.addressForm.value.idSucursal;

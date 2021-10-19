@@ -29,9 +29,7 @@ export class HostalIngresosFormComponent {
   usuario: Usuario = JSON.parse(localStorage.getItem('usuario') + '');
 
   nameRespaldo = '';
-  tiposIngresos: any[] = [];
-  value:any;
-  name = 'Angular 6';
+  tiposIngresos: any[] = [];  
 
 
   // ? Validar si es necesario importar modelos de datos
@@ -74,7 +72,7 @@ export class HostalIngresosFormComponent {
   ) {
 
     this.sucursales = this.sucursalService.sucursalListValue;
-    this.defTiposIngreso = this.hostalService.tiposIngresosListValue;
+    this.defTiposIngreso = ['Alojamiento', 'Desayuno', 'Almuerzo', 'Cena', ' Consumo Bebidas', 'Consumo Varios'];
     this.tiposCliente = this.hostalService.tiposClientesListValue;
     this.referencias = this.hostalService.referenciasListValue;
     this.tiposPagos = this.hostalService.tiposPagosListValue;

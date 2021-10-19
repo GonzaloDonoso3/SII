@@ -36,8 +36,14 @@
         </ng-container>
         <!-- ID CON LA VERIFICACION -->
         <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-            <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="limit-width-40">
+                <div [formGroup]="formFilter" class="limit-width-40">
+                    <mat-form-field >
+                        <input matInput placeholder="ID" formControlName="id" />
+                    </mat-form-field>
+                </div>
+            </th>
+                <td mat-cell *matCellDef="let element">{{ element.id }}</td>
         </ng-container>
         <!-- SELECTOR DE FECHA -->
         <ng-container matColumnDef="fecha" class="mat-column-date">

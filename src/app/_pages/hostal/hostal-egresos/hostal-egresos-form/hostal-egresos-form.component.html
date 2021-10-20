@@ -123,23 +123,21 @@
               descripcion es <strong>requerido</strong>
             </mat-error>
           </mat-form-field>
-        </div>
-
-        <!-- cuentas registradas -->
-        <!--     <div class="col">
+        </div> 
+        
+        <!-- tipo pago -->
+        <div class="col">
           <mat-form-field class="full-width">
-            <mat-select placeholder="Cuenta Bancaria" formControlName="idCuentaAsignada">
-              <mat-option *ngFor="let cuenta of cuentasRegistradas" [value]="cuenta.id">
-                {{ cuenta.alias }} : {{ cuenta.numeroCuenta }}
+            <mat-select placeholder="Tipo Pago" formControlName="tipoPago">
+              <mat-option *ngFor="let tipoPago of tiposPagos" [value]="tipoPago">
+                {{ tipoPago }}
               </mat-option>
             </mat-select>
-            <mat-error *ngIf="
-                egresosForm.controls['idCuentaAsignada'].hasError('required')
-              ">
-              estadoPago es <strong>requrido</strong>
+            <mat-error *ngIf="egresosForm.controls['tipoPago'].hasError('required')">
+              este campo es <strong>requrido</strong>
             </mat-error>
           </mat-form-field>
-        </div> -->
+        </div>
       </div>
     </mat-card-content>
     <mat-card-actions>

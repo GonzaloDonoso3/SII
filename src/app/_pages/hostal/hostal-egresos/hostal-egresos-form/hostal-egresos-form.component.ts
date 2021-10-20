@@ -52,6 +52,7 @@ export class HostalEgresosFormComponent implements OnInit {
     descripcion: [null, Validators.required],
     responsable: [null, Validators.required],
     idSucursal: [null, Validators.required],
+    tipoPago: [null, Validators.required],
     montoCuota: [null],
     numeroCuota: [null],
 
@@ -59,6 +60,7 @@ export class HostalEgresosFormComponent implements OnInit {
   });
   egreso: EgresoHostal = new EgresoHostal();
   nameRespaldo: string[] = [];
+  tiposPagos: string[];
 
   sucursales: Sucursal[];
   constructor(
@@ -72,7 +74,7 @@ export class HostalEgresosFormComponent implements OnInit {
     private empresaService: EmpresaSharedService,    
   ) {
     this.sucursales = this.sucursalService.sucursalListValue;
-
+    this.tiposPagos = this.hostalService.tiposPagosListValue;
   }
 
   ngOnInit(): void {
@@ -147,6 +149,7 @@ export class HostalEgresosFormComponent implements OnInit {
           this.egreso.descripcion = this.egresosForm.value.descripcion;
           this.egreso.responsable = this.egresosForm.value.responsable;
           this.egreso.idSucursal = this.egresosForm.value.idSucursal;
+          this.egreso.tipoPago = this.egresosForm.value.tipoPago;
           this.egreso.idUsuario = this.usuario.id;
           this.egreso.tipoEgreso = this.egresosForm.value.tipoEgreso;
           this.egreso.numeroCuota = this.egresosForm.value.numeroCuota;          

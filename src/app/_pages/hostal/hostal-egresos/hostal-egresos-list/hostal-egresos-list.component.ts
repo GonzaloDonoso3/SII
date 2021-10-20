@@ -36,6 +36,7 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
     'monto',
     'respaldos',
     'tipoEgreso',
+    'tipoPago',
     'sucursal',
     'usuario',
     'numeroCuota',
@@ -57,6 +58,7 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
     end: new FormControl(),
     idSucursal: new FormControl(),
     tipoEgreso: new FormControl(),
+    tipoPago: new FormControl(),
     numeroCuota: new FormControl(),    
   })
 
@@ -67,6 +69,7 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
   totalSeleccion = 0;
   selectedRows!: any[];
   cuentasRegistradas: any[] = [];
+  tiposPagos: any[] = [];
   
   constructor(
     private hostalService: HostalService,
@@ -75,7 +78,8 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
     private snackBar: MatSnackBar
   ) {
     this.sucursales = this.sucursalService.sucursalListValue;    
-    this.tiposEgresos = this.hostalService.tiposEgresosListValue;    
+    this.tiposEgresos = this.hostalService.tiposEgresosListValue;
+    this.tiposPagos = this.hostalService.tiposPagosListValue;    
   }
 
   ngOnInit(): void {
@@ -197,6 +201,10 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
 
       if (res.tipoEgreso) {
         dataFiltered = dataFiltered.filter((data: EgresoHostal) => data.tipoEgreso == res.tipoEgreso);
+      }
+
+      if (res.tipoPago) {
+        dataFiltered = dataFiltered.filter((data: EgresoHostal) => data.tipoPago == res.tipoPago);
       }
 
       if (res.start && res.end) {

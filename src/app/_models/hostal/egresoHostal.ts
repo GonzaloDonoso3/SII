@@ -21,6 +21,5 @@ export class EgresoHostal {
     sucursal!: string;
     fechaf!: string;
     numeroCuota!: string;
-
-
+    tipoPago!: string;
 }

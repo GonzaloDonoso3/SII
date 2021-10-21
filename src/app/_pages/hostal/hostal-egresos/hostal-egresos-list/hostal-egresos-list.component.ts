@@ -40,6 +40,7 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
     'sucursal',
     'usuario',
     'numeroCuota',
+    'botones',
   ];
 
   result = "N/A"; 
@@ -70,6 +71,7 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
   selectedRows!: any[];
   cuentasRegistradas: any[] = [];
   tiposPagos: any[] = [];
+  parentCount = 0;
   
   constructor(
     private hostalService: HostalService,
@@ -271,6 +273,11 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
     this.hostalService.exportAsExcelFile(newArray, 'Lista-Egresos-Rentacar');
 
     }
+  }
+
+  openDialogEdit(id: any){    
+    localStorage.setItem("idEgresoHostal", id);    
+    this.hostalService.openDialogEditEgreso();    
   }
 
 }

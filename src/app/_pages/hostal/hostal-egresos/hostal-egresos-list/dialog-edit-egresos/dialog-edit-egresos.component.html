@@ -1,0 +1,99 @@
+<button color="accent" class="cerrar" (click)="closeDialog()" title="Cerrar">
+    <mat-icon>highlight_off</mat-icon>
+  </button>
+  
+  <form
+    [formGroup]="addressForm"
+    novalidate
+    (ngSubmit)="onSubmit()"
+    class="mat-elevation-z10"
+  >
+    <mat-card class="shipping-card">
+      <mat-card-header>
+        <h1>Editar Egresos de Hostal</h1>
+      </mat-card-header>
+  
+      <mat-card-content>
+        <!-- Fila 1 -->
+        <div class="row">          
+          <!-- Tipo Egreso -->
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                placeholder="Tipo egreso"
+                formControlName="tipoEgreso"
+              />
+              <mat-error
+                *ngIf="addressForm.controls['tipoEgreso'].hasError('required')"
+              >
+                Este campo es <strong>requerido.</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <!-- Fila 2 -->
+        <div class="row">
+          <!-- Monto -->
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Monto" formControlName="monto" />
+              <mat-error
+                *ngIf="addressForm.controls['monto'].hasError('required')"
+              >
+                Este campo es <strong>requerido.</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <!-- Fecha -->
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Fecha" formControlName="fecha" />
+              <mat-error
+                *ngIf="addressForm.controls['fecha'].hasError('required')"
+                >Este campo es <strong>requerido.</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+            
+        </div>
+        <!-- Fila 3 -->
+        <div class="row">
+          <!-- Tipo ingreso  -->
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                placeholder="Tipo de Pago"
+                formControlName="tipoPago"
+              />
+              <mat-error
+                *ngIf="addressForm.controls['tipoPago'].hasError('required')"
+              >
+                Este campo es <strong>requerido.</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <!-- Responsable  -->
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                placeholder="Responsable"
+                formControlName="responsable"
+              />
+              <mat-error
+                *ngIf="addressForm.controls['responsable'].hasError('required')"
+              >
+                Este campo es <strong>requerido.</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>          
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" type="submit">Guardar</button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+   

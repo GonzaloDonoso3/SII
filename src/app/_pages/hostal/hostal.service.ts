@@ -14,6 +14,7 @@ import { HostalEgresosCuotasComponent } from './hostal-egresos/hostal-egresos-li
 import { HostalEgresosCuotaDialogComponent } from './hostal-egresos/hostal-egresos-list/hostal-egresos-cuotas/hostal-egresos-cuota-dialog/hostal-egresos-cuota-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EgresoHostalCuota } from '@app/_models/hostal/egresoHostalCuota';
+import { DialogEditEgresosComponent } from './hostal-egresos/hostal-egresos-list/dialog-edit-egresos/dialog-edit-egresos.component';
 
 const EXCEL_TYPE =
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
@@ -24,6 +25,8 @@ const EXCEL_EXTENSION = '.xlsx';
   providedIn: 'root'
 })
 export class HostalService {
+  
+
   // public values
   public tiposIngresosList: Observable<string[]>;
   public tiposClientesList: Observable<string[]>;
@@ -208,11 +211,15 @@ export class HostalService {
   
   /* /egresos */
 
+  /** metodo actualizar datos editados de una hostal */
+  updateHostalIngreso(id: any, params: any[]) {
+    return this.http.put(`${environment.apiUrl}/egreso${this.empresa}/${id}`, params);
+  }
 
   /* CONSOLIDADOS */  
   buscarConsolidado(consolidado: ConsolidadosHostal): any {        
     return this.http.post(      
-      `${environment.apiUrl}/ingreso${this.empresa}/ingresosEgresos`,
+      `${environment.apiUrl}/egreso${this.empresa}/ingresosEgresos`,
       consolidado      
     );
   }
@@ -243,11 +250,17 @@ export class HostalService {
     return this.http.get<HostalEgresosCuotasComponent>(
       `${environment.apiUrl}/respaldoEgresoHostalCuota/${id}`
     );
-  }
+  }  
 
   // Metodo que permite abrir un Dialog (Modal)
   openDialogCuota():void{
     const dialogRef = this.dialog.open(HostalEgresosCuotaDialogComponent, {})
+    dialogRef.afterClosed().subscribe((res) => {})
+  }
+
+  // Metodo que permite abrir un Dialog (Modal)
+  openDialogEditEgreso(): void {
+    const dialogRef = this.dialog.open(DialogEditEgresosComponent, {})
     dialogRef.afterClosed().subscribe((res) => {})
   }
 

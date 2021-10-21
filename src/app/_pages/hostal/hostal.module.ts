@@ -17,6 +17,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { HostalConsolidadosComponent } from './hostal-consolidados/hostal-consolidados.component';
 import { HostalEgresosCuotasComponent } from './hostal-egresos/hostal-egresos-list/hostal-egresos-cuotas/hostal-egresos-cuotas.component';
 import { HostalEgresosCuotaDialogComponent } from './hostal-egresos/hostal-egresos-list/hostal-egresos-cuotas/hostal-egresos-cuota-dialog/hostal-egresos-cuota-dialog.component';
+import { DialogEditEgresosComponent } from './hostal-egresos/hostal-egresos-list/dialog-edit-egresos/dialog-edit-egresos.component';
 
 
 
@@ -31,7 +32,8 @@ import { HostalEgresosCuotaDialogComponent } from './hostal-egresos/hostal-egres
     HostalEgresosListComponent,
     HostalConsolidadosComponent,
     HostalEgresosCuotasComponent,
-    HostalEgresosCuotaDialogComponent 
+    HostalEgresosCuotaDialogComponent,
+    DialogEditEgresosComponent 
   ],
   imports: [
     HttpClientModule,

@@ -164,12 +164,7 @@ export class HostalEgresosFormComponent implements OnInit {
               .pipe()
               .subscribe(
                 (data: any) => {
-                  this.alert.createAlert("Registro Creado con exito!");
-
-                  /*  this.snackBar.open('Regitro Exitoso !!', 'cerrar', {
-                     duration: 2000,
-                     verticalPosition: 'top',
-                   }); */
+                  this.alert.createAlert("Registro Creado con exito!");                  
                   this.formularioListo.emit('true');
                   this.egresosForm.reset();
                 },
@@ -203,8 +198,7 @@ export class HostalEgresosFormComponent implements OnInit {
   }
 
   transform(val: any) {
-    if (val!='' || val != null) {
-      //console.log(val, '*************')
+    if (val!='' || val != null) {      
       val = this.format_number(val, '');
     }else{
       val = this.format_number('', '');

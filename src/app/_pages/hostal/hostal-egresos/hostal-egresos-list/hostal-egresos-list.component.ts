@@ -109,6 +109,9 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
         if (data['numeroCuota']== null) {
           data.numeroCuota = this.result;          
           }
+          if (data['tipoPago']== null) {
+            data.tipoPago = this.result;          
+          }
         });
         this.dataSource = new MatTableDataSource(this.dataEgresos);
         this.dataSource.paginator = this.paginator.toArray()[0];
@@ -128,6 +131,9 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
       this.dataEgresos.forEach(data => {
       if (data['numeroCuota']== null) {
         data.numeroCuota = this.result;          
+        }
+        if (data['tipoPago']== null) {
+            data.tipoPago = this.result;          
         }
       });
       this.dataSource = new MatTableDataSource(this.dataEgresos);

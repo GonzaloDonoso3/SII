@@ -17,22 +17,14 @@
                     </mat-panel-title>
                 </mat-expansion-panel-header>
                 <mat-nav-list>
-                    <div *ngIf="item.name != 'AGROFIRMA'; else elseBlock" >
+                    <div *ngIf="item.name != 'AGROFIRMA' && item.name != 'PRESTAMOS'" >
                         <a *ngFor="let subitem of subMenuItems" mat-list-item
                             [routerLink]="'/' + item.url + '/' + subitem.url">
                         <mat-icon color="grey">{{ subitem.icon }}</mat-icon>
                             {{ subitem.name }}
                         </a>
                     </div>
-                    <ng-template #elseBlock>
-                        <a *ngFor="let subitemTwo of subMenuItemsAgrofirma" mat-list-item
-                        [routerLink]="'/' + item.url + '/' + subitemTwo.url">
-                    <mat-icon color="grey">{{ subitemTwo.icon }}</mat-icon>
-                        {{ subitemTwo.name }}
-                    </a> 
-                    </ng-template>
-                </mat-nav-list>
-                <mat-nav-list>
+
                     <div *ngIf="item.name == 'PRESTAMOS'" >
                         <a *ngFor="let subitemThree of subMenuItemsPrestamos" mat-list-item
                             [routerLink]="'/' + item.url + '/' + subitemThree.url">
@@ -41,7 +33,16 @@
                         </a>
                     </div>
                     
+                    <!-- <ng-template #elseBlock> -->
+                    <div *ngIf="item.name == 'AGROFIRMA'" >
+                        <a *ngFor="let subitemTwo of subMenuItemsAgrofirma" mat-list-item
+                        [routerLink]="'/' + item.url + '/' + subitemTwo.url">
+                    <mat-icon color="grey">{{ subitemTwo.icon }}</mat-icon>
+                        {{ subitemTwo.name }}
+                        </a> 
+                    </div>                    
                 </mat-nav-list>
+                
             </mat-expansion-panel>
         </mat-accordion>
     </mat-sidenav>

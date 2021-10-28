@@ -23,90 +23,12 @@ const EXCEL_EXTENSION = '.xlsx';
 @Injectable({
   providedIn: 'root'
 })
-export class HostalService {
-  // public values
-  public tiposClientesList: Observable<string[]>;
-  public referenciasList: Observable<string[]>;
-  public tiposPagosList: Observable<string[]>;
-  public estadosPagosList: Observable<string[]>;
-  //egresos values
-  public tiposEgresosList: Observable<string[]>;
+export class HostalService {  
+  // private value  
 
-  // private values
-
-  //ingresos values
-  private tiposClientesListSubject: BehaviorSubject<string[]>;
-  private referenciasListSubject: BehaviorSubject<string[]>;
-  private tiposPagosListSubject: BehaviorSubject<string[]>;
-  private estadosPagosListSubject: BehaviorSubject<string[]>;
-  //egresos values
-  private tiposEgresosListSubject: BehaviorSubject<string[]>;
-
-  // ! strict lists  
-  private tiposClientes = ['Particular', 'Empresa'];
-  private referencias = ['Llamada', 'Booking', 'Correo', 'PaginaWeb', 'Facebook'];
-  private tiposPagos = ['Efectivo', 'Debito', 'Credito', 'Transferencia', 'Cheque'];
-  private estadosPagos = ['PENDIENTE', 'PAGADO'];
-
-  private tiposEgresos = ['Gastos', 'Costos', 'Remuneraciones', 'Impuestos', 'Bancarios'];
   private empresa = 'Hostal';
-  constructor(private http: HttpClient, private router: Router, private dialog: MatDialog, private snackBar: MatSnackBar) {
-    //Init private Subjects;
-    //ingresos;
-    
-    this.tiposClientesListSubject = new BehaviorSubject<string[]>(
-      JSON.parse(localStorage.getItem('tipos_clientes')!)
-    );
-    this.referenciasListSubject = new BehaviorSubject<string[]>(
-      JSON.parse(localStorage.getItem('referencias')!)
-    );
-    this.tiposPagosListSubject = new BehaviorSubject<string[]>(
-      JSON.parse(localStorage.getItem('tipos_pagos')!)
-    );
-    this.estadosPagosListSubject = new BehaviorSubject<string[]>(
-      JSON.parse(localStorage.getItem('estadosPagos')!)
-    );
-    //egresos;
-    this.tiposEgresosListSubject = new BehaviorSubject<string[]>(
-      JSON.parse(localStorage.getItem('tiposEgresos')!)
-    );
-
-    // public states:
-    //ingresos;
-    this.tiposClientesList = this.tiposClientesListSubject.asObservable();
-    localStorage.setItem('tipos_clientes', JSON.stringify(this.tiposClientes));
-
-    this.referenciasList = this.referenciasListSubject.asObservable();
-    localStorage.setItem('referencias', JSON.stringify(this.referencias));
-
-    this.tiposPagosList = this.tiposPagosListSubject.asObservable();
-    localStorage.setItem('tipos_pagos', JSON.stringify(this.tiposPagos));
-
-    this.estadosPagosList = this.estadosPagosListSubject.asObservable();
-    localStorage.setItem('estadosPagos', JSON.stringify(this.estadosPagos));
-    //egresos;
-    this.tiposEgresosList = this.tiposEgresosListSubject.asObservable();
-    localStorage.setItem('tiposEgresos', JSON.stringify(this.tiposEgresos));
-  }
-
-  //ingresos values get methods:  
-  public get tiposClientesListValue(): string[] {
-    return this.tiposClientesListSubject.value;
-  }
-  public get referenciasListValue(): string[] {
-    return this.referenciasListSubject.value;
-  }
-  public get tiposPagosListValue(): string[] {
-    return this.tiposPagosListSubject.value;
-  }
-  public get estadosPagosListValue(): string[] {
-    return this.estadosPagosListSubject.value;
-  }
-  //egresos values get methods:
-  public get tiposEgresosListValue(): string[] {
-    return this.tiposEgresosListSubject.value;
-  }
-
+  constructor(private http: HttpClient, private router: Router, private dialog: MatDialog, private snackBar: MatSnackBar) { }
+  
   /* ingresos */
   ingresoRegistrar(ingresos: IngresosHostal) {
     console.log(ingresos);

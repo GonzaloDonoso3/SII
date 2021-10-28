@@ -74,8 +74,8 @@ export class HostalEgresosListComponent implements OnInit, OnChanges {
     private sucursalService: SucursalSharedService,
     private snackBar: MatSnackBar
   ) {
-    this.sucursales = this.sucursalService.sucursalListValue;    
-    this.tiposEgresos = this.hostalService.tiposEgresosListValue;    
+    this.sucursales = this.sucursalService.sucursalListValue;            
+    this.tiposEgresos = ['Gastos', 'Costos', 'Remuneraciones', 'Impuestos', 'Bancarios', 'Prestamos Bancarios', 'Prestamos Automotriz'];
   }
 
   ngOnInit(): void {

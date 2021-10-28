@@ -5,6 +5,8 @@ import { DialogRespaldosComponent } from '@app/_components/dialogs/dialog-respal
 import { MatDialog } from '@angular/material/dialog';
 import { PrestamosService} from '@app/_pages/prestamos/prestamos.service'
 import { AlertHelper } from '@app/_helpers/alert.helper';
+import { first } from 'rxjs/operators';
+import { Prestamos } from '@app/_models/prestamos/prestamos';
 
 export interface DialogData {
   url: any;
@@ -24,6 +26,11 @@ export class PrestamosFormComponent implements OnInit {
 
   //importando los modelos al arreglo
   prestamos: any = {};
+  prestamosE = new Prestamos();  
+  arraylist: any = [];
+  arrayListE: any = [];
+  arrayBanco: any = [];
+  arrayEmpresa: any = [];
 
   addressForm = this.fb.group({
     empresaS: [null, Validators.required],    
@@ -40,6 +47,8 @@ export class PrestamosFormComponent implements OnInit {
   empresas: string[];
   bancos: string[];
   tiposPagos: string[];
+  bancosN!: string[];
+
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
@@ -54,6 +63,36 @@ export class PrestamosFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getBanco();
+    this.getEmpresa();   
+  }
+
+  getBanco(): any {
+    this.prestamosService
+      .getBancos()
+      .pipe(first())
+      .subscribe((x) => {        
+        this.arraylist = x;  
+        for (const item of this.arraylist) {          
+          this.prestamosE.NombreInstitucion = item.NombreInstitucion;
+          this.arrayBanco.push(this.prestamosE.NombreInstitucion);
+        }      
+        this.prestamosE.NombreInstitucion = this.arrayBanco;                
+      });
+  }
+
+  getEmpresa(): any {
+    this.prestamosService
+      .getEmpresas()
+      .pipe(first())
+      .subscribe((e) => {        
+        this.arrayListE = e;  
+        for (const data of this.arrayListE) {          
+          this.prestamosE.nombre = data.nombre;
+          this.arrayEmpresa.push(this.prestamosE.nombre);
+        }      
+        this.prestamosE.nombre = this.arrayEmpresa;
+      });
   }
   
   onSubmit() {

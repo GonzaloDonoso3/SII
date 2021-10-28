@@ -52,22 +52,10 @@
 
             <ng-container matColumnDef="monto">
                 <th mat-header-cell *matHeaderCellDef> Monto Cuota</th>
-                <td mat-cell *matCellDef="let element">
-                    - 10.000 $
-                    <!-- {{ element.monto | currency: "$":"symbol":"1.0-0" }} -->
+                <td mat-cell *matCellDef="let element">                    
+                    {{ element.monto | currency: "$":"symbol":"1.0-0" }}
                 </td>
-            </ng-container>  
-            
-            <!-- <ng-container matColumnDef="empresaS">
-                <th mat-header-cell *matHeaderCellDef>
-                    <div [formGroup]="formFilter">
-                        <mat-form-field class="fill" style="padding-right: 10px;">
-                            <input matInput placeholder="Empresa Prestamista" formControlName="empresaS" />
-                        </mat-form-field>
-                    </div>
-                </th>
-                <td mat-cell *matCellDef="let element">{{ element.empresaS }}</td>
-            </ng-container> -->
+            </ng-container>                      
 
             <ng-container matColumnDef="empresaD">
                 <th mat-header-cell *matHeaderCellDef>

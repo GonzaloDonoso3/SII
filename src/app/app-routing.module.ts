@@ -14,6 +14,7 @@ const abogadosModule = () => import('./_pages/abogados/abogados.module').then((x
 const administracionModule = () => import('./_pages/administracion/administracion.module').then((x) => x.AdministracionModule);
 const importadoraModule = () => import('./_pages/importadora/importadora.module').then((x) => x.ImportadoraModule);
 const prestamosModule = () => import('./_pages/prestamos/prestamos.module').then((x) => x.PrestamosModule);
+const facturaModule = () => import('./_pages/factura/factura-module.module').then((x) => x.FacturaModule);
 
 const routes: Routes = [
   { path: '', canActivate: [AuthGuard], component: HomeMainComponent, },
@@ -28,6 +29,7 @@ const routes: Routes = [
   { path: 'administracion', canActivate: [AuthGuard], loadChildren: administracionModule },
   { path: 'importadora', canActivate: [AuthGuard], loadChildren: importadoraModule },
   { path: 'prestamos', canActivate: [AuthGuard], loadChildren: prestamosModule },
+  { path: 'sii', canActivate: [AuthGuard], loadChildren: facturaModule },
 
 ];
 

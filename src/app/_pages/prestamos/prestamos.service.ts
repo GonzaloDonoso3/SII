@@ -60,8 +60,7 @@ export class PrestamosService {
         );
       }
 
-      buscarImagen(url: string) {
-        console.log("en el servicio")    
+      buscarImagen(url: string) {            
         const extencion = url.split('.');
         const extend = extencion[1];    
         return this.http
@@ -75,6 +74,16 @@ export class PrestamosService {
         return this.http.get<Prestamos>(
       `${environment.apiUrl}/${this.empresa}/${id}`
         );
+    }
+
+    getBancos() {
+      return this.http.get<Prestamos>(
+        `${environment.apiUrl}/banco/obtenerBancos/`
+      );
+    }
+
+    getEmpresas() {      
+      return this.http.get<[]>(`${environment.apiUrl}/${this.empresa}/empresas/`);
     }
 
     // Metodo que permite abrir un Dialog (Modal)

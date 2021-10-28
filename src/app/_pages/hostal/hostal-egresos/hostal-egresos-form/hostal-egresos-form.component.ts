@@ -68,13 +68,9 @@ export class HostalEgresosFormComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
-
-
-    this.tiposEgresos = this.hostalService.tiposEgresosListValue;
+  ngOnInit(): void {    
     this.cuentasService.obtenerCuentas().subscribe(data => {
       this.cuentasRegistradas = data;
-
     });
 
 

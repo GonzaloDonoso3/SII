@@ -1,0 +1,91 @@
+<form [formGroup]="addressForm" novalidate (ngSubmit)="onSubmit()" class="mat-elevation-z10">
+    <mat-card class="shipping-card">
+      <mat-card-header>
+        <h1> Factura electrónica </h1>
+      </mat-card-header>
+      <br><br>
+      <mat-card-content>
+        <div class="row">
+          <!-- Empresa Prestamista-->          
+          <div class="col">
+            <mat-form-field class="full-width">
+              <mat-select placeholder="Razon social" formControlName="empresa">
+                <mat-option *ngFor="let empresa of factura.NombreInstitucion" [value]="empresa">
+                  {{ empresa }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="addressForm.controls['empresa'].hasError('required')">
+                empresa es <strong>requrido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>          
+                <!-- rut del receptor -->
+                <div class="col">
+                  <mat-form-field class="full-width">
+                    <input matInput placeholder="Rut receptor" formControlName="rutReceptor" type="number" />
+                    <mat-error *ngIf="addressForm.controls['rutReceptor'].hasError('required')">
+                      Rut es <strong>requerido</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>                                
+              </div>
+
+              <div class="row">  
+              <!-- Razon social del receptor -->
+                <div class="col">
+                  <mat-form-field class="full-width">
+                    <input matInput placeholder="Razon social del receptor" formControlName="razonSocialR" />
+                    <mat-error *ngIf="addressForm.controls['razonSocialR'].hasError('required')">
+                    Razon social es <strong>requerido</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>  
+
+                <!-- Giro -->
+                <div class="col">
+                    <mat-form-field class="full-width">
+                      <input matInput placeholder="Giro" formControlName="giro" />
+                      <mat-error *ngIf="addressForm.controls['giro'].hasError('required')">
+                      giro es <strong>requerido</strong>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>  
+
+                  <!-- Direccion -->
+                <div class="col">
+                    <mat-form-field class="full-width">
+                      <input matInput placeholder="Direccion" formControlName="direccion" />
+                      <mat-error *ngIf="addressForm.controls['direccion'].hasError('required')">
+                      direccion es <strong>requerido</strong>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>  
+
+                  <!-- Ciudad -->
+                <div class="col">
+                    <mat-form-field class="full-width">
+                      <input matInput placeholder="Ciudad" formControlName="ciudad" />
+                      <mat-error *ngIf="addressForm.controls['ciudad'].hasError('required')">
+                      ciudad es <strong>requerido</strong>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>  
+                
+                <!-- Comuna -->
+          <!-- <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="ingrese una descripcion del registro" formControlName="descripcion" />
+              <mat-error *ngIf="addressForm.controls['descripcion'].hasError('required')">
+                descripcion es <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>         -->
+            </div>
+        </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" type="submit">
+          <mat-icon>send</mat-icon> Enviar
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </form>

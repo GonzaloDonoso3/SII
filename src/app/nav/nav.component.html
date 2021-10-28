@@ -17,7 +17,7 @@
                     </mat-panel-title>
                 </mat-expansion-panel-header>
                 <mat-nav-list>
-                    <div *ngIf="item.name != 'AGROFIRMA' && item.name != 'PRESTAMOS'" >
+                    <div *ngIf="item.name != 'AGROFIRMA' && item.name != 'PRESTAMOS' && item.name != 'SII'" >
                         <a *ngFor="let subitem of subMenuItems" mat-list-item
                             [routerLink]="'/' + item.url + '/' + subitem.url">
                         <mat-icon color="grey">{{ subitem.icon }}</mat-icon>
@@ -30,6 +30,14 @@
                             [routerLink]="'/' + item.url + '/' + subitemThree.url">
                         <mat-icon color="grey">{{ subitemThree.icon }}</mat-icon>
                             {{ subitemThree.name }}
+                        </a>
+                    </div>
+
+                    <div *ngIf="item.name == 'SII'" >
+                        <a *ngFor="let subitemFour of subMenuItemsSii" mat-list-item
+                            [routerLink]="'/' + item.url + '/' + subitemFour.url">
+                        <mat-icon color="grey">{{ subitemFour.icon }}</mat-icon>
+                            {{ subitemFour.name }}
                         </a>
                     </div>
                     

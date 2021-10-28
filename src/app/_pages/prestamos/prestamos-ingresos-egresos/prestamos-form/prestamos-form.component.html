@@ -1,5 +1,3 @@
-<!-- <p>prestamos-form works!</p> -->
-
 <form [formGroup]="addressForm" novalidate (ngSubmit)="onSubmit()" class="mat-elevation-z10">
     <mat-card class="shipping-card">
       <mat-card-header>
@@ -12,7 +10,7 @@
           <div class="col">
             <mat-form-field class="full-width">
               <mat-select placeholder="Empresa Prestamista" formControlName="empresaS">
-                <mat-option *ngFor="let empresaS of empresas" [value]="empresaS">
+                <mat-option *ngFor="let empresaS of prestamosE.nombre" [value]="empresaS">
                   {{ empresaS }}
                 </mat-option>
               </mat-select>
@@ -21,27 +19,26 @@
               </mat-error>
             </mat-form-field>
           </div>
-          <!-- checkbox banco -->
+          <!-- BANCOS PRESTAMISTA-->
           <div class="col">
             <mat-form-field class="full-width">
-              <mat-select placeholder="Banco Prestamista" formControlName="bancoS">
-                <mat-option *ngFor="let bancoS of bancos" [value]="bancoS">
-                  {{ bancoS }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="addressForm.controls['bancoS'].hasError('required')">
-                banco es <strong>requrido</strong>
-              </mat-error>
+                <mat-select placeholder="Banco Prestamista" formControlName="bancoS">
+                    <mat-option *ngFor="let s of prestamosE.NombreInstitucion" value="{{ s }}">                    
+                        {{ s }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="addressForm.controls['bancoS'].hasError('required')">
+                    sucursal es <strong>requrido</strong>
+                </mat-error>
             </mat-form-field>
-          </div>
-          <!-- fin -->
+        </div>          
         </div>
-        <div class="row">
+        <div class="row">          
             <!-- Empresa que adeuda-->          
             <div class="col">
               <mat-form-field class="full-width">
                 <mat-select placeholder="Empresa que recibe el prestamo" formControlName="empresaD">
-                  <mat-option *ngFor="let empresaD of empresas" [value]="empresaD">
+                  <mat-option *ngFor="let empresaD of prestamosE.nombre" [value]="empresaD">
                     {{ empresaD }}
                   </mat-option>
                 </mat-select>
@@ -50,19 +47,20 @@
                 </mat-error>
               </mat-form-field>
             </div>        
-            <!-- checkbox banco -->
-            <div class="col">
-              <mat-form-field class="full-width">
+
+            <!-- BANCOS QUE ADEUDA-->
+          <div class="col">
+            <mat-form-field class="full-width">
                 <mat-select placeholder="Banco que recibe el prestamo" formControlName="bancoD">
-                  <mat-option *ngFor="let bancoD of bancos" [value]="bancoD">
-                    {{ bancoD }}
-                  </mat-option>
+                    <mat-option *ngFor="let s of prestamosE.NombreInstitucion" value="{{ s }}">                    
+                        {{ s }}
+                    </mat-option>
                 </mat-select>
                 <mat-error *ngIf="addressForm.controls['bancoD'].hasError('required')">
-                  banco es <strong>requrido</strong>
+                    sucursal es <strong>requrido</strong>
                 </mat-error>
-              </mat-form-field>
-            </div>
+            </mat-form-field>
+          </div>            
           </div>
             <!-- fin -->
             <div class="row">

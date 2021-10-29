@@ -70,13 +70,12 @@ export class HostalIngresosFormComponent {
     private cuentasService: CuentasBancariasService,
     private alert: AlertHelper
   ) {
-
-    this.sucursales = this.sucursalService.sucursalListValue;
-    this.defTiposIngreso = ['Alojamiento', 'Desayuno', 'Almuerzo', 'Cena', ' Consumo Bebidas', 'Consumo Varios'];
-    this.tiposCliente = this.hostalService.tiposClientesListValue;
-    this.referencias = this.hostalService.referenciasListValue;
-    this.tiposPagos = this.hostalService.tiposPagosListValue;
-    this.estadoPagos = this.hostalService.estadosPagosListValue;
+    this.sucursales = this.sucursalService.sucursalListValue;    
+    this.defTiposIngreso = ['Alojamiento', 'Desayuno', 'Almuerzo', 'Cena', ' Consumo Bebidas', 'Consumo Varios'];    
+    this.tiposCliente = ['Particular', 'Empresa'];
+    this.referencias = ['Llamada', 'Booking', 'Correo', 'PaginaWeb', 'Facebook'];
+    this.tiposPagos = ['Efectivo', 'Debito', 'Credito', 'Transferencia', 'Cheque'];
+    this.estadoPagos = ['PENDIENTE', 'PAGADO'];
     this.obtenerCuentas();
   }
 

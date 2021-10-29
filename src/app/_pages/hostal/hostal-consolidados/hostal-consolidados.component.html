@@ -257,26 +257,13 @@
 <mat-card-actions>
     <button mat-raised-button color="primary" type="submit">
       <mat-icon>send</mat-icon> Enviar
-    </button>
+    </button>            
   </mat-card-actions>
 </mat-card>
 </form>
 
 <br><br>
 
-<!-- <div #content id="htmlData" class="content">
-    <p>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-  molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
-  numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
-  optio, eaque rerum! Provident similique accusantium nemo autem.
-</p>
-</div> -->
-<button (click)="openPDF()">make pdf</button>
-
-<!-- MODAL QUE MUESTRA EL LISTADO Y LOS TOTALES -->
-<!-- *********** TABLE INGRESOS **************** -->
-<!-- <div *ngIf="montoIngreso.length > 0"> -->
 <mat-card class="shipping-card mat-elevation-z10">
 <mat-grid-list cols="2">    
     <div class="table-responsive" id="htmlData">
@@ -439,14 +426,13 @@
         <mat-card-actions>
             <!-- <button mat-raised-button color="primary" (click)="openPDF('#ocultar', false)"></button> -->
             <button mat-raised-button color="primary" (click)="openPDF()">
-              <mat-icon>send</mat-icon> PDF
-            </button>
+                <mat-icon>send</mat-icon> PDF
+            </button>            
           </mat-card-actions>
-
           <mat-card-actions>
             <button id="margin" mat-raised-button color="primary" (click)="exportAsXLSX()">
               <mat-icon>send</mat-icon> Excell
             </button>
-          </mat-card-actions>
+          </mat-card-actions>          
         </div>
 </mat-card>

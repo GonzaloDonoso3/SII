@@ -11,9 +11,7 @@ import { CuentasBancariasService } from '@app/_pages/shared/shared-services/cuen
 import { SucursalSharedService } from '@app/_pages/shared/shared-services/sucursal-shared.service';
 import { HostalService } from '../../hostal.service';
 import { DatePipe } from "@angular/common";
-import { Empresa } from '@app/_models/shared/empresa';
-import { EmpresaSharedService } from '@app/_pages/shared/shared-services/empresa-shared.service';
-import { first } from 'rxjs/operators';
+
 
 
 @Component({
@@ -33,15 +31,10 @@ export class HostalEgresosFormComponent implements OnInit {
   //Variables que usan para los egresos de Prestamos bancarios y automotriz
   mostrarDatos : boolean = true;
   datoCuota = 'N/A';
-  idEmpresa = 1;
-  empresa = new Empresa();
-  montoTotal = '1.000';
+  montoTotal = '1000';
   selected: any;
-  opcionSeleccionado: string = '';
+  opcionSeleccionado: string = '0';
   verSeleccion: string = '';
-  result2='';
-  result3='';
-  numberConvert='';
   
   // ? construccion del formulario,
   egresosForm = this.fb.group({
@@ -52,7 +45,6 @@ export class HostalEgresosFormComponent implements OnInit {
     descripcion: [null, Validators.required],
     responsable: [null, Validators.required],
     idSucursal: [null, Validators.required],
-    tipoPago: [null, Validators.required],
     montoCuota: [null],
     numeroCuota: [null],
 
@@ -60,7 +52,6 @@ export class HostalEgresosFormComponent implements OnInit {
   });
   egreso: EgresoHostal = new EgresoHostal();
   nameRespaldo: string[] = [];
-  tiposPagos: string[];
 
   sucursales: Sucursal[];
   constructor(
@@ -71,28 +62,18 @@ export class HostalEgresosFormComponent implements OnInit {
     private sucursalService: SucursalSharedService,
     private cuentasService: CuentasBancariasService,
     private alert: AlertHelper,
-    private empresaService: EmpresaSharedService,    
+    private miDatePipe: DatePipe,
   ) {
     this.sucursales = this.sucursalService.sucursalListValue;
-    this.tiposPagos = this.hostalService.tiposPagosListValue;
+
   }
 
-  ngOnInit(): void {
-    this.getEmpresa(this.idEmpresa); 
-    this.tiposEgresos = this.hostalService.tiposEgresosListValue;
+  ngOnInit(): void {    
     this.cuentasService.obtenerCuentas().subscribe(data => {
       this.cuentasRegistradas = data;
     });
-  }
 
-  getEmpresa(id: number): any {
-    this.empresaService
-      .getByIdWithSucursales(id)
-      .pipe(first())
-      .subscribe((x) => {
-        x.Sucursals = Object.values(x.Sucursals);
-        this.empresa = x;        
-      });
+
   }
 
   //Metodo para mostrar numero de cuotas
@@ -118,10 +99,8 @@ export class HostalEgresosFormComponent implements OnInit {
   capturar() {
     this.verSeleccion = this.opcionSeleccionado;
     if(this.verSeleccion == "Prestamos Bancarios"  || this.verSeleccion == "Prestamos Automotriz"){
-      this.transform('');     
-    }else{
-      this.transform('');
-    }
+      this.montoTotal == "1000";        
+    }        
   }
 
   onSubmit() {
@@ -137,19 +116,14 @@ export class HostalEgresosFormComponent implements OnInit {
           this.egreso.RespaldoEgresos = [];
           this.egreso.fecha = this.egresosForm.value.fecha;
           // Si el usuario ingresa Egreso Bancario y Automotriz al monto se le asigna el numero de cuota
-          if((this.egresosForm.value.monto == '' || this.egresosForm.value.monto == null) 
-          && (this.egresosForm.value.montoCuota == '' || this.egresosForm.value.montoCuota == null)) { 
-            //this.egreso.monto = this.addressForm.value.montoCuota;
-            this.transform('');
-            this.egreso.monto = 1000;                  
+          if(this.egresosForm.value.monto == null) {                        
+            this.egreso.monto = this.egresosForm.value.montoCuota;
           } else {
-            //this.egreso.monto = this.addressForm.value.monto;
-            this.egreso.monto = parseInt(this.numberConvert);                   
+            this.egreso.monto = this.egresosForm.value.monto;                    
           }
           this.egreso.descripcion = this.egresosForm.value.descripcion;
           this.egreso.responsable = this.egresosForm.value.responsable;
           this.egreso.idSucursal = this.egresosForm.value.idSucursal;
-          this.egreso.tipoPago = this.egresosForm.value.tipoPago;
           this.egreso.idUsuario = this.usuario.id;
           this.egreso.tipoEgreso = this.egresosForm.value.tipoEgreso;
           this.egreso.numeroCuota = this.egresosForm.value.numeroCuota;          
@@ -164,7 +138,12 @@ export class HostalEgresosFormComponent implements OnInit {
               .pipe()
               .subscribe(
                 (data: any) => {
-                  this.alert.createAlert("Registro Creado con exito!");                  
+                  this.alert.createAlert("Registro Creado con exito!");
+
+                  /*  this.snackBar.open('Regitro Exitoso !!', 'cerrar', {
+                     duration: 2000,
+                     verticalPosition: 'top',
+                   }); */
                   this.formularioListo.emit('true');
                   this.egresosForm.reset();
                 },
@@ -195,57 +174,9 @@ export class HostalEgresosFormComponent implements OnInit {
         break;
     }
 
-  }
 
-  transform(val: any) {
-    if (val!='' || val != null) {      
-      val = this.format_number(val, '');
-    }else{
-      val = this.format_number('', '');
-    }
-    return val;
-  }
 
-  format_number(number: any, prefix: any) {
-    let result = '', number_string= ''; 
-    if (number!='' && number!=null) {
-      let thousand_separator = '.',
-      decimal_separator = ',',
-      regex = new RegExp('[^' + decimal_separator + '\\d]', 'g');
-      number_string = number.replace(regex, '').toString();
-      let split = number_string.split(decimal_separator),
-      rest = split[0].length % 3;
-      result = split[0].substr(0, rest);
-      let thousands = split[0].substr(rest).match(/\d{3}/g);
-      if (thousands) {
-        let separator = rest ? thousand_separator : '';
-        result += separator + thousands.join(thousand_separator);
-      }
-      result =
-        split[1] != undefined ? result + decimal_separator + split[1] : result;
-    }
-    this.result2=result;
-    this.result3=result;
-    this.numberConvert=number_string;
-    return prefix == undefined ? result : result ? prefix + result : '';
-  }
 
-  restrictNumeric(e: any) {
-    let input;
-    if (e.metaKey || e.ctrlKey) {
-      return true;
-    }
-    if (e.which === 32) {
-     return false;
-    }
-    if (e.which === 0) {
-     return true;
-    }
-    if (e.which < 33) {
-      return true;
-    }
-    input = String.fromCharCode(e.which);
-    return !!/[\d\s]/.test(input);
-   }
+  }
 
 }

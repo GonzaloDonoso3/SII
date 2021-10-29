@@ -9,6 +9,7 @@ import { AbogadosService } from '@app/_pages/abogados/abogados.service';
 import { AgroFirmaService } from '@app/_pages/agroFirma/agro-firma.service';
 import { DomSanitizer} from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PrestamosService } from '@app/_pages/prestamos/prestamos.service';
 
 
 export interface DialogData {
@@ -104,14 +105,16 @@ export class DialogShow implements OnInit{
     private rentacarService: RentacarService,
     private importadoraService: ImportadoraService,
     private AgroFirmaService: AgroFirmaService,
+    private prestamosService: PrestamosService,
   )  
   {
     this.archivos = this.data.archivos;
-    this.servicio = this.data.servicio;     
+    this.servicio = this.data.servicio;    
   }
 
   ngOnInit(): void {     
     if (this.servicio === 'hostal-ingreso') {
+      console.log("datos en ingreo hostal", this.archivos)      
       this.hostalService.buscarImagen(this.archivos[0].url)
       .pipe()
       .subscribe(
@@ -123,6 +126,28 @@ export class DialogShow implements OnInit{
         (error: any) => {
           (document.getElementById('cerrarModal') as HTMLInputElement).click();
           this.snackBar.open('No existe documento asociado a este ingreso', 'cerrar', {
+            duration: 2000,
+            verticalPosition: 'top',
+          });
+          console.log(error);
+        }
+      );
+    }
+    if (this.servicio === 'prestamos') { 
+      console.log("datos del archivo", this.archivos)           
+      //this.prestamosService.buscarImagen(this.archivos[0].url)
+      this.prestamosService.buscarImagen("photo-1634230084073.png")
+      .pipe()
+      .subscribe(
+        (data:any) => {
+          console.log("obteniendo datos de imagen", data)        
+          this.imagen = window.URL.createObjectURL(data);        
+          this.descargarImagen = window.URL.createObjectURL(data);             
+          this.imagen = this.sanitizer.bypassSecurityTrustUrl(this.imagen);                
+        },
+        (error: any) => {
+          (document.getElementById('cerrarModal') as HTMLInputElement).click();
+          this.snackBar.open('No existe documento asociado a este egreso', 'cerrar', {
             duration: 2000,
             verticalPosition: 'top',
           });
@@ -471,7 +496,7 @@ export class DialogShow implements OnInit{
           console.log(error);
         }
       );
-    }      
+    }          
   }
 
   download() {    

@@ -255,8 +255,7 @@ export class LubricentroService {
   }
 
   // Metodo que permite abrir un Dialog (Modal)
-  openDialogRegistrarPago(idEgreso: any):void{
-    console.log("llegando", idEgreso)
+  openDialogRegistrarPago(idEgreso: any):void{    
     //Si el cliente selecciono un contrato se habre el modal    
     if(idEgreso != null){
       const dialogRef = this.dialog.open(LubricentroEgresosCuotasComponent,{});

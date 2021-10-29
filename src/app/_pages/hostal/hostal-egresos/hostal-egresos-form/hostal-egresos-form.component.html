@@ -11,7 +11,7 @@
         <div class="col">
           <mat-form-field class="full-width">
             <mat-select placeholder="Sucursales" formControlName="idSucursal">
-              <mat-option *ngFor="let sucursal of empresa.Sucursals" [value]="sucursal.id">
+              <mat-option *ngFor="let sucursal of sucursales" [value]="sucursal.id">
                 {{ sucursal.razonSocial }}
               </mat-option>
             </mat-select>
@@ -84,7 +84,7 @@
         <!-- monto -->
         <div class="col" *ngIf="mostrarDatos">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Monto" formControlName="monto" type="text" [ngModel]="result3" (ngModelChange)="transform($event)" (keypress)="restrictNumeric($event)" />
+            <input matInput placeholder="Monto" formControlName="monto" type="number" />
             <mat-error *ngIf="egresosForm.controls['monto'].hasError('required')">
               Monto es <strong>requerido</strong>
             </mat-error>
@@ -95,8 +95,8 @@
       <!-- monto de las cuotas -->
       <div class="col" *ngIf="!mostrarDatos">
         <mat-form-field class="full-width">
-            <input matInput placeholder="Monto" formControlName="montoCuota" type="text" [ngModel]="result2" (ngModelChange)="transform($event)" (keypress)="restrictNumeric($event)"/>
-            Capital + Interes                        
+            <input matInput placeholder="Monto" formControlName="montoCuota" type="number" [ngModel]="montoTotal"/>
+            Capital: 500 + Interes 500                        
             <mat-error *ngIf="egresosForm.controls['monto'].hasError('required')">
                 monto es <strong>requerido</strong>
             </mat-error>
@@ -123,21 +123,23 @@
               descripcion es <strong>requerido</strong>
             </mat-error>
           </mat-form-field>
-        </div> 
-        
-        <!-- tipo pago -->
-        <div class="col">
+        </div>
+
+        <!-- cuentas registradas -->
+        <!--     <div class="col">
           <mat-form-field class="full-width">
-            <mat-select placeholder="Tipo Pago" formControlName="tipoPago">
-              <mat-option *ngFor="let tipoPago of tiposPagos" [value]="tipoPago">
-                {{ tipoPago }}
+            <mat-select placeholder="Cuenta Bancaria" formControlName="idCuentaAsignada">
+              <mat-option *ngFor="let cuenta of cuentasRegistradas" [value]="cuenta.id">
+                {{ cuenta.alias }} : {{ cuenta.numeroCuenta }}
               </mat-option>
             </mat-select>
-            <mat-error *ngIf="egresosForm.controls['tipoPago'].hasError('required')">
-              este campo es <strong>requrido</strong>
+            <mat-error *ngIf="
+                egresosForm.controls['idCuentaAsignada'].hasError('required')
+              ">
+              estadoPago es <strong>requrido</strong>
             </mat-error>
           </mat-form-field>
-        </div>
+        </div> -->
       </div>
     </mat-card-content>
     <mat-card-actions>

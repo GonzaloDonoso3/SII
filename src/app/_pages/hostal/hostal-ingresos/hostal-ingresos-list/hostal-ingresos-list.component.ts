@@ -83,7 +83,7 @@ export class HostalIngresosListComponent implements OnInit, OnChanges {
 
     this.sucursales = this.sucursalService.sucursalListValue;
     this.tiposIngresos = ['Alojamiento', 'Desayuno', 'Almuerzo', 'Cena', ' Consumo Bebidas', 'Consumo Varios'];
-    this.estadosPagos = this.hostalService.estadosPagosListValue;
+    this.estadosPagos = ['PENDIENTE', 'PAGADO'];
 
     this.aplicarfiltros();
   }

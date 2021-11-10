@@ -1,91 +1,182 @@
 <form [formGroup]="addressForm" novalidate (ngSubmit)="onSubmit()" class="mat-elevation-z10">
-    <mat-card class="shipping-card">
-      <mat-card-header>
-        <h1> Factura electrónica </h1>
-      </mat-card-header>
-      <br><br>
-      <mat-card-content>
-        <div class="row">
-          <!-- Empresa Prestamista-->          
-          <div class="col">
-            <mat-form-field class="full-width">
-              <mat-select placeholder="Razon social" formControlName="empresa">
-                <mat-option *ngFor="let empresa of factura.NombreInstitucion" [value]="empresa">
-                  {{ empresa }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="addressForm.controls['empresa'].hasError('required')">
-                empresa es <strong>requrido</strong>
-              </mat-error>
-            </mat-form-field>
-          </div>          
-                <!-- rut del receptor -->
-                <div class="col">
-                  <mat-form-field class="full-width">
-                    <input matInput placeholder="Rut receptor" formControlName="rutReceptor" type="number" />
-                    <mat-error *ngIf="addressForm.controls['rutReceptor'].hasError('required')">
-                      Rut es <strong>requerido</strong>
-                    </mat-error>
-                  </mat-form-field>
-                </div>                                
-              </div>
-
-              <div class="row">  
-              <!-- Razon social del receptor -->
-                <div class="col">
-                  <mat-form-field class="full-width">
-                    <input matInput placeholder="Razon social del receptor" formControlName="razonSocialR" />
-                    <mat-error *ngIf="addressForm.controls['razonSocialR'].hasError('required')">
-                    Razon social es <strong>requerido</strong>
-                    </mat-error>
-                  </mat-form-field>
-                </div>  
-
-                <!-- Giro -->
-                <div class="col">
-                    <mat-form-field class="full-width">
-                      <input matInput placeholder="Giro" formControlName="giro" />
-                      <mat-error *ngIf="addressForm.controls['giro'].hasError('required')">
-                      giro es <strong>requerido</strong>
-                      </mat-error>
-                    </mat-form-field>
-                  </div>  
-
-                  <!-- Direccion -->
-                <div class="col">
-                    <mat-form-field class="full-width">
-                      <input matInput placeholder="Direccion" formControlName="direccion" />
-                      <mat-error *ngIf="addressForm.controls['direccion'].hasError('required')">
-                      direccion es <strong>requerido</strong>
-                      </mat-error>
-                    </mat-form-field>
-                  </div>  
-
-                  <!-- Ciudad -->
-                <div class="col">
-                    <mat-form-field class="full-width">
-                      <input matInput placeholder="Ciudad" formControlName="ciudad" />
-                      <mat-error *ngIf="addressForm.controls['ciudad'].hasError('required')">
-                      ciudad es <strong>requerido</strong>
-                      </mat-error>
-                    </mat-form-field>
-                  </div>  
-                
-                <!-- Comuna -->
-          <!-- <div class="col">
-            <mat-form-field class="full-width">
-              <input matInput placeholder="ingrese una descripcion del registro" formControlName="descripcion" />
-              <mat-error *ngIf="addressForm.controls['descripcion'].hasError('required')">
-                descripcion es <strong>requerido</strong>
-              </mat-error>
-            </mat-form-field>
-          </div>         -->
-            </div>
-        </mat-card-content>
-      <mat-card-actions>
-        <button mat-raised-button color="primary" type="submit">
-          <mat-icon>send</mat-icon> Enviar
-        </button>
-      </mat-card-actions>
-    </mat-card>
-  </form>
+  <mat-card class="shipping-card">
+    <mat-card-content>
+      <div class="col">
+        <mat-card-header>
+          <h1>Factura Electrónica</h1>
+        </mat-card-header>
+      </div>
+      <br>
+      <!--Razón social de la empresa emisora de la factura electrónica.-->
+      <div class="col">
+        <h3>Emisor de la Factura Electrónica</h3>
+        <mat-form-field class="full-width">
+          <mat-select placeholder="Empresa" formControlName="empresa">
+            <mat-option *ngFor="let empresa of listaEmpresas" [value]="empresa">
+              {{ empresa.razonSocial }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="addressForm.controls['empresa'].hasError('required')">
+            Este dato es <strong>requeirdo.</strong>
+          </mat-error>
+        </mat-form-field>
+        <ul>
+          <!--Certificado digital de la empresa emisora de la factura electrónica.-->
+          <li><label>Certificado Digital</label></li>
+          <li><input type="file" /></li>
+          <!--Certificado del documento CAF.-->
+          <li><label>Certificado CAF</label></li>
+          <li><input type="file" /></li>
+        </ul>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col">
+          <h3>Receptor de la Factura Electrónica</h3>
+          <!--R.U.T de la empresa o persona receptora de la factura electrónica.-->
+          <mat-form-field class="full-width">
+            <input matInput placeholder="R.U.T" formControlName="rutReceptor" type="text"/>
+            <mat-error *ngIf="addressForm.controls['rutReceptor'].hasError('required')">
+              Este dato es <strong>requeirdo.</strong>
+            </mat-error>
+          </mat-form-field>
+          <!--Razón social de la empresa o persona receptora de la factura electrónica.-->
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Razón Social" formControlName="razonSocialR" type="text"/>
+            <mat-error *ngIf="addressForm.controls['razonSocialR'].hasError('required')">
+              Este dato es <strong>requeirdo.</strong>
+            </mat-error>
+          </mat-form-field>
+          <!--Comuna de la empresa o persona receptora de la factura electrónica.-->
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Comuna" formControlName="comuna">
+              <mat-option value="Primera Comuna">
+                Primera Comuna
+              </mat-option>
+              <mat-option value="Segunda Comuna">
+                Segunda Comuna
+              </mat-option>
+              <mat-option value="Tercera Comuna">
+                Tercera Comuna
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="addressForm.controls['comuna'].hasError('required')">
+              Este dato es <strong>requeirdo.</strong>
+            </mat-error>
+          </mat-form-field>
+          <!--Giro de la empresa o persona receptora de la factura electrónica.-->
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Giro" formControlName="giro" type="text" />
+            <mat-error *ngIf="addressForm.controls['giro'].hasError('required')">
+              Este dato es <strong>requeirdo.</strong>
+            </mat-error>
+          </mat-form-field>
+          <!--Dirección de la empresa o persona receptora de la factura electrónica.-->
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Dirección" formControlName="direccion" type="text" />
+            <mat-error *ngIf="addressForm.controls['direccion'].hasError('required')">
+              Este dato es <strong>requeirdo.</strong>
+            </mat-error>
+          </mat-form-field>
+          <!--Ciudad de la empresa o persona receptora de la factura electrónica.-->
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Ciudad" formControlName="ciudad">
+              <mat-option value="Primera Ciudad">
+                Primera Ciudad
+              </mat-option>
+              <mat-option value="Segunda Ciudad">
+                Segunda Ciudad
+              </mat-option>
+              <mat-option value="Tercera Ciudad">
+                Tercera Ciudad
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="addressForm.controls['ciudad'].hasError('required')">
+              Este dato es <strong>requeirdo.</strong>>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <br>
+        <div class="col">
+          <h3>Detalles de la Factura Electrónica</h3>
+          <!--Número de folio de la factura electrónica.-->
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Número de Folio" type="number" />
+          </mat-form-field>
+          <!--Producto o servicio.-->
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Producto o Servicio" formControlName="productoServicio" type="text" />
+          </mat-form-field>
+          <!--Descripción del producto o servicio.-->
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Descripción" formControlName="descripcion" type="text" />
+          </mat-form-field>          
+          <!--Cantidad del producto o servicio.-->
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Cantidad" formControlName="cantidad" type="number" />
+          </mat-form-field>
+          <!--Precio del producto o servicio.-->
+          <mat-form-field class="full-width">
+            <input matInput type="number" formControlName="precio" placeholder="Precio"/>
+          </mat-form-field>
+          <!--Descuento del producto o servicio.-->
+          <mat-form-field class="full-width">
+            <input matInput max="100" min="0" step="1" type="number" formControlName="descuento" placeholder="Descuento (%)"/>
+          </mat-form-field>
+          <button mat-raised-button color="primary" (click)="AgregarProductoServicio()">
+            <mat-icon>add</mat-icon> Agregar Producto o Servicio
+          </button>
+        </div>
+      </div>
+      <br>
+      <div class="col">
+        <table style="width: 100%;">
+          <tr>
+            <th>Producto o Servicio</th>
+            <th>Descripción</th>            
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Precio Neto</th>
+            <th>Descuento</th>
+            <th>Sub Total</th>
+            <th>Quitar Producto o Servicio</th>
+          </tr>
+          <tr style="text-align: center;" *ngFor="let productoServicio of listaProductosServicios">
+            <td>{{productoServicio.nombre}}</td>
+            <td>{{productoServicio.descripcion}}</td>
+            <td>{{productoServicio.cantidad}}</td>
+            <td>{{productoServicio.precio}}</td>            
+            <td>{{productoServicio.cantidad * productoServicio.precio}}</td>
+            <td>{{productoServicio.descuento}} ({{productoServicio.descuentoPorcentaje}}%)</td>
+            <td>{{productoServicio.subTotal}}</td>
+            <td>
+              <button mat-raised-button color="warn" (click)="QuitarProductoServicio(productoServicio.identificador)" >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <br>
+      <div class="row">
+        <!--Total neto (precio * cantidad).-->
+        <mat-form-field class="full-width">
+          <input matInput type="number" formControlName="totalNeto" placeholder="Total Neto"/>
+        </mat-form-field>
+        <!--IVA (19% del total de la factura electrónica).-->
+        <mat-form-field class="full-width">
+          <input matInput type="number" formControlName="totalIVA" placeholder="IVA"/>
+        </mat-form-field>
+        <!--Total (neto + IVA).-->
+        <mat-form-field class="full-width">
+          <input matInput readonly type="number" formControlName="netoIVA" placeholder="Total Neto + IVA"/>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit" (click)="EmitirFactura()">
+        <mat-icon>send</mat-icon> Emitir Factura Electrónica
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>

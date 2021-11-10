@@ -75,10 +75,7 @@ export class HostalService {
 
   /* egresos */
   egresoRegistrar(egreso: EgresoHostal): any {    
-    return this.http.post(      
-      `${environment.apiUrl}/egreso${this.empresa}/conRespaldo`,
-      egreso      
-    );
+    return this.http.post(`${environment.apiUrl}/egreso${this.empresa}/conRespaldo`,egreso);
   }
   egresoGetAll(): any {    
     return this.http.get<[]>(`${environment.apiUrl}/egresoHostal`);

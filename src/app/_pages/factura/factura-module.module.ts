@@ -7,9 +7,10 @@ import { FacturaHomeComponent } from './factura-home/factura-home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from 'src/app/material.module';
 import { ComponentsModule } from 'src/app/_components/components.module';
+import { FormularioCargaDTEComponent } from './formulario-carga-dte/formulario-carga-dte.component';
 
 @NgModule({
-  declarations: [FacturaEmpresasComponent, FacturaHomeComponent],
+  declarations: [FacturaEmpresasComponent, FacturaHomeComponent, FormularioCargaDTEComponent],
   imports: [
     CommonModule,
     FacturaRoutingModule,

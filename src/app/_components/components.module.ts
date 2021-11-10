@@ -11,9 +11,6 @@ import { DialogShow } from './dialogs/dialog-downloads/dialog-downloads.componen
 import { AuthComponent } from './auth/auth.component';
 
 
-
-
-
 @NgModule({
   declarations: [FormComponent, DialogRespaldosComponent, TableComponent, DialogDownloadsComponent, DialogShow, AuthComponent],
   imports: [
